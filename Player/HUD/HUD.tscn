@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Player/HUD/HUD_font.tres" type="DynamicFont" id=1]
+
+[node name="HUD" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+margin_left = 1.0
+margin_top = 539.0
+margin_right = 193.0
+margin_bottom = 598.0
+color = Color( 0, 0, 0, 0.470588 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthUI" type="Label" parent="Background"]
+margin_left = 10.0
+margin_right = 124.0
+margin_bottom = 27.0
+custom_fonts/font = ExtResource( 1 )
+text = "Health :"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon UI" type="Label" parent="Background"]
+margin_left = 10.0
+margin_top = 25.0
+margin_right = 124.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 1 )
+text = "Ammo :"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Weapon" type="ColorRect" parent="Background"]
+margin_left = 142.0
+margin_top = 7.0
+margin_right = 182.0
+margin_bottom = 47.0
+color = Color( 0, 0, 0, 0.588235 )
+
+[node name="WeaponName" type="Label" parent="Background/Weapon"]
+margin_top = 7.0
+margin_right = 40.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 1 )
+text = "Gun"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+rect_scale = Vector2( 0.1, 0.1 )
+color = Color( 1, 1, 1, 0.588235 )
