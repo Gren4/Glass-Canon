@@ -392,7 +392,12 @@ func process_weapons() -> void:
 		
 	if Input.is_action_just_pressed("reload"):
 		weapon_manager.reload()
+	
+	if Input.is_action_just_pressed("drop"):
+		weapon_manager.drop_weapon()
 		
+	weapon_manager.process_weapon_pickup()
+	
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	set_process(true)

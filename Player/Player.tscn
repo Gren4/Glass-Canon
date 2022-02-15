@@ -103,7 +103,6 @@ script = ExtResource( 7 )
 [node name="Gun" parent="Head/Weapons" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.735, -0.222, -0.589 )
 visible = false
-is_automatic = false
 reload_speed = 2.0
 
 [node name="Unarmed" parent="Head/Weapons" instance=ExtResource( 4 )]
@@ -127,7 +126,7 @@ one_shot = true
 wait_time = 0.5
 
 [node name="Slide" type="Timer" parent="Timers"]
-wait_time = 0.1
+wait_time = 0.08
 one_shot = true
 
 [node name="HUD" parent="." instance=ExtResource( 3 )]

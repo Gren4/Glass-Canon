@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Weapons/WeaponPickUp.gd" type="Script" id=1]
+[ext_resource path="res://Materials/GunMat.tres" type="Material" id=2]
+
+[sub_resource type="CubeMesh" id=1]
+
+[sub_resource type="BoxShape" id=2]
+extents = Vector3( 0.041021, 0.227871, 0.403959 )
+
+[node name="GunPickUp" type="RigidBody"]
+mass = 20.0
+gravity_scale = 4.0
+script = ExtResource( 1 )
+weapon_name = "Gun"
+ammo_in_mag = 10
+extra_ammo = 0
+
+[node name="Up" type="MeshInstance" parent="."]
+transform = Transform( 0.04, 0, 0, 0, 0.103, 0, 0, 0, 0.3, 0.045, 0, -0.3 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="Down" type="MeshInstance" parent="."]
+transform = Transform( 0.04, 0, 0, 0, 0.0307831, -0.157602, 0, 0.0394005, 0.123132, 0.045, -0.148299, 0.0265774 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.045, -0.114241, -0.200884 )
+shape = SubResource( 2 )

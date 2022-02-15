@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Materials/GunBulletHole.tres" type="Material" id=1]
+[ext_resource path="res://Weapons/Armed/ParticleHandle.gd" type="Script" id=2]
+
+[sub_resource type="ParticlesMaterial" id=1]
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+scale = 0.2
+
+[sub_resource type="QuadMesh" id=3]
+material = ExtResource( 1 )
+center_offset = Vector3( 0, 0, 0.1 )
+
+[node name="GunBulletHole" type="Particles"]
+emitting = false
+amount = 1
+lifetime = 4.0
+one_shot = true
+process_material = SubResource( 1 )
+draw_pass_1 = SubResource( 3 )
+script = ExtResource( 2 )

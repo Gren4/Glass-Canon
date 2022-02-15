@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Weapons/Armed/Gun/Gun.gd" type="Script" id=1]
 [ext_resource path="res://Materials/GunMat.tres" type="Material" id=2]
 [ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Weapons/Armed/Gun/GunBulletHole.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Weapons/Armed/Gun/Gun_pickup.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CubeMesh" id=1]
 
@@ -153,8 +155,12 @@ tracks/1/keys = {
 [node name="Gun" type="Spatial"]
 script = ExtResource( 1 )
 weapon_name = "Gun"
-is_automatic = true
+weapon_pickup = ExtResource( 5 )
+ammo_in_mag = 10
+extra_ammo = 1500
+equip_pos = Vector3( 0.735, -0.222, -0.589 )
 impact_effect = ExtResource( 3 )
+hole_effect = ExtResource( 4 )
 muzzle_flash_path = NodePath("Root/Anchor/MuzzleFlash")
 equip_speed = 2.0
 unequip_speed = 2.0
@@ -183,6 +189,8 @@ material/0 = ExtResource( 2 )
 
 [node name="MuzzleFlash" parent="Root/Anchor" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.16914 )
+
+[node name="GunBulletHole" parent="Root/Anchor" instance=ExtResource( 4 )]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Equip = SubResource( 3 )

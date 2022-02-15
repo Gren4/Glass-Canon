@@ -2,3 +2,5 @@
 
 [resource]
 albedo_color = Color( 0, 0, 0, 1 )
+uv1_scale = Vector3( 0.005, 0.005, 0.005 )
+uv1_offset = Vector3( 0.415, 0.595, 0 )

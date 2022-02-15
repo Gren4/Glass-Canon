@@ -1,6 +1,8 @@
 extends WeaponMain
 class_name Armed
 
+export(PackedScene) var weapon_pickup
+
 var animation_player
 
 var is_firing : bool = false
@@ -15,7 +17,10 @@ export var damage = 10
 export var is_automatic : bool = false
 export var fire_rate = 1.0
 
+export var equip_pos = Vector3.ZERO
+
 export(PackedScene) var impact_effect
+export(PackedScene) var hole_effect
 export(NodePath) var muzzle_flash_path
 onready var muzzle_flash = get_node(muzzle_flash_path)
 
@@ -59,6 +64,9 @@ func fire_bullet():
 	if ray.is_colliding():
 		var impact = Global.instantiate_node(impact_effect, ray.get_collision_point())
 		impact.emitting = true
+		if (ray.get_collider().is_in_group("World")):
+			var hole = Global.instantiate_node(hole_effect, ray.get_collision_point(), -ray.get_collision_normal())
+			hole.emitting = true
 
 func reload():
 	if ammo_in_mag < mag_size and extra_ammo > 0:
@@ -101,7 +109,7 @@ func on_animation_finish(anim_name):
 			is_reloading = false
 			update_ammo("reload")
 			
-func update_ammo(action = "Refresh", additional_ammo = 0):
+func update_ammo(action = "Refresh", additional_ammo = 0, update = true):
 	match action:
 		"consume":
 			ammo_in_mag -= 1
@@ -115,12 +123,20 @@ func update_ammo(action = "Refresh", additional_ammo = 0):
 				extra_ammo = 0
 		"add":
 			extra_ammo += additional_ammo	
-				
-	var weapon_data = {
-		"Name" : weapon_name,
-		"Image" : weapon_image,
-		"Ammo" : str(ammo_in_mag),
-		"ExtraAmmo" : str(extra_ammo)
-	}
 	
-	weapon_manager.update_hud(weapon_data)
+	if update:			
+		var weapon_data = {
+			"Name" : weapon_name,
+			"Image" : weapon_image,
+			"Ammo" : str(ammo_in_mag),
+			"ExtraAmmo" : str(extra_ammo)
+		}
+		
+		weapon_manager.update_hud(weapon_data)
+
+func drop_weapon():
+	var pickup = Global.instantiate_node(weapon_pickup, global_transform.origin - player.global_transform.basis.z.normalized())
+	pickup.ammo_in_mag = ammo_in_mag
+	pickup.extra_ammo = extra_ammo
+	pickup.mag_size = mag_size
+	queue_free()
