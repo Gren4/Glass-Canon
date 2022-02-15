@@ -55,6 +55,7 @@ onready var camera = $Head/Camera
 onready var weapon_manager = $Head/Weapons
 onready var rayClimb = $ClimbRays/RayClimb
 onready var rayTop = $ClimbRays/RayTop
+onready var rayTopPoint = $ClimbRays/RayTopPoint
 onready var rayEmpty = $ClimbRays/RayEmpty
 
 onready var timerWallJump = $Timers/WallJump
@@ -77,6 +78,7 @@ func init() -> void:
 func initSlide() -> void:
 	isSliding = true
 	velocity.y = 0
+	#camera.fov = 100
 #	$MeshInstance.mesh.mid_height = 0.4
 #	$CollisionShape.shape.height = 0.4
 #	head.translation.y = 0.4
@@ -92,6 +94,7 @@ func finSlide() -> void:
 	timerCanSlide.start()
 
 func primary_setup(delta) -> void:
+	#camera.fov = camera.fov + (90 - camera.fov) * 10 * delta
 	isfloor_tek = is_on_floor()
 	iswall_tek = is_on_wall()
 	isceil_tek = is_on_ceiling()
@@ -107,12 +110,8 @@ func primary_setup(delta) -> void:
 				velocity.y -= gravity*delta
 			if not isWallRunning and iswall_tek:
 				rayClimb.enabled = true
-				rayTop.enabled = true
-				#rayEmpty.enabled = true
 			else:
 				rayClimb.enabled = false
-				rayTop.enabled = false
-				#rayEmpty.enabled = false
 			
 		accel = ACCEL_AIR
 		if timerCanJump.is_stopped() and canJump:
@@ -125,8 +124,6 @@ func primary_setup(delta) -> void:
 		else:
 			velocity.y = -0.1
 		rayClimb.enabled = false
-		rayTop.enabled = false
-		#rayEmpty.enabled = false
 		canJump = true
 		isWallRunning = false
 		isWallJumping = false
@@ -168,7 +165,7 @@ func get_side(point) -> int:
 	else:
 		return CENTER
 
-func wall_run() -> void:
+func wall_run_and_jump() -> void:
 	var wall_normal : KinematicCollision
 	if canWallRun and Input.is_action_pressed("shift") and Input.is_action_pressed("move_forward") and (velocity.y < (jump_power / 2)) and iswall_tek and not isfloor_tek:
 		for n in get_slide_count() :
@@ -195,7 +192,20 @@ func wall_run() -> void:
 						wallrun_dir = -wallrun_dir
 					# Проверяем под каким углом смотрим на стену. 
 					# При небольшом угле бежать по стене не будем.
-					if (isWallRunning):
+					if not isWallRunning: 
+						# Двумерный вектор2 направления камеры игрока
+						var view_dir_2d : Vector2 = Vector2(player_view_dir.x, player_view_dir.z)
+						# Двумерный вектор2 стены
+						var wallrun_axis_2d : Vector2 = Vector2(wallrun_dir.x, wallrun_dir.z)
+						# Угол между вектором2 стены и вектором2 предыдущей стены
+						var angle : float = wallrun_axis_2d.angle_to(view_dir_2d)
+						angle = rad2deg(angle)
+						if dot < 0:
+							angle = -angle
+						if angle < -75:
+							isWallRunning = false
+							return
+					else:
 						# Двумерный вектор2 стены
 						var wallrun_axis_2d : Vector2 = Vector2(wallrun_dir.x, wallrun_dir.z)
 						# Двумерный вектор2 предыдущей стены
@@ -265,31 +275,45 @@ func wall_run() -> void:
 		
 func edge_climb(delta) -> void:
 	if not isClimbing:
-		if rayTop.enabled:
-			if rayTop.is_colliding() and  1.5 * transform.origin.y >= rayTop.get_collision_point().y:
-				pass
-			else:
-				if rayEmpty.enabled:
-					if not rayEmpty.is_colliding():
-						if iswall_tek and not isWallRunning and rayClimb.enabled and Input.is_action_pressed("move_forward"):
-							if rayClimb.is_colliding():
-								for n in get_slide_count() :
-									if (rayClimb.get_collider() == get_slide_collision(n).collider):
-										var normal : Vector3 = -get_slide_collision(n).normal
-										var normal_2d : Vector2 = Vector2(normal.x, normal.z)
-										# Считываем вектор3 направления камеры
-										var player_view_dir : Vector3 = -head.global_transform.basis.z
-										# Двумерный вектор2 направления камеры игрока
-										var view_dir_2d : Vector2 = Vector2(player_view_dir.x, player_view_dir.z)
-										# Угол между вектором2 стены и вектором2 направлением камеры игрока
-										var angleClimb : float = rad2deg(normal_2d.angle_to(view_dir_2d))
-										rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
-										climbPoint = (rayClimb.get_collision_point())
-										isClimbing = true
-										isWallRunning = false
-										isWallJumping = false
-										direction = normal * 0.5
-										velocity = Vector3(0,jump_power,0)
+		if iswall_tek and not isWallRunning and rayClimb.enabled and Input.is_action_pressed("move_forward"):
+			for n in get_slide_count() :
+				if rayClimb.is_colliding():
+					if (rayClimb.get_collider() == get_slide_collision(n).collider):
+						var ClimbPoint : Vector3 = to_local(rayClimb.get_collision_point())
+						var normal : Vector3 = -get_slide_collision(n).normal
+						var normal_2d : Vector2 = Vector2(normal.x, normal.z)
+						# Считываем вектор3 направления камеры
+						var player_view_dir : Vector3 = -head.global_transform.basis.z
+						# Двумерный вектор2 направления камеры игрока
+						var view_dir_2d : Vector2 = Vector2(player_view_dir.x, player_view_dir.z)
+						# Угол между вектором2 стены и вектором2 направлением камеры игрока
+						var angleClimb : float = rad2deg(normal_2d.angle_to(view_dir_2d))
+						rayEmpty.translation.y = ClimbPoint.y + 0.1
+						rayEmpty.rotation_degrees.y = angleClimb
+						rayTopPoint.translation.y = ClimbPoint.y
+						rayEmpty.force_raycast_update()
+						if not rayEmpty.is_colliding():
+							rayTop.force_raycast_update()
+							if rayTop.is_colliding():
+								var TopPoint : Vector3 = to_local(rayTop.get_collision_point())
+								if TopPoint.y - ClimbPoint.y < 1.3:
+									return
+							rayTopPoint.force_raycast_update()
+							if rayTopPoint.is_colliding():
+								var ClimbTopPoint : Vector3 = to_local(rayTopPoint.get_collision_point())
+								if ClimbTopPoint.y - ClimbPoint.y < 1.3:
+									return
+							rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
+							climbPoint = (rayClimb.get_collision_point())
+							isClimbing = true
+							isWallRunning = false
+							isWallJumping = false
+							timerSlide.stop()
+							finSlide()
+							direction = normal * 0.5
+							velocity = Vector3(0,jump_power,0)
+						break
+							
 	if isClimbing:
 		snap = Vector3.ZERO
 		head.rotation = head.rotation.linear_interpolate(Vector3.ZERO, delta * 10)
@@ -302,24 +326,13 @@ func edge_climb(delta) -> void:
 			isClimbing = false
 		
 func sliding() -> void:
-	if canSlide:
-		if Input.is_action_just_pressed("slide"):
+	if canSlide and not isWallRunning:
+		if Input.is_action_just_pressed("shift"):
 			if not isSliding:
-				if direction == Vector3.ZERO:
+				if direction == Vector3.ZERO or isWallRunning:
 					direction -= self.get_global_transform().basis.z
 				initSlide()
-#	if isSliding:
-#		if rayTop.enabled:
-#			if not isceil_tek:
-#				if rayTop.is_colliding():
-#					if 1.7 * transform.origin.y >= rayTop.get_collision_point().y:
-#						timerSlide.paused = true
-#				else:
-#					timerSlide.paused = false
-#			else:
-#				timerSlide.stop()
-#				finSlide()
-		
+
 func finalize_velocity(delta) -> void:
 	if isSliding:
 		speed = SPEED_S
@@ -360,7 +373,7 @@ func camera_transform(delta) -> void:
 	
 	camera.rotation_degrees = Vector3(0, 0, 1) * wallrun_current_angle
 
-func process_weapons():
+func process_weapons() -> void:
 	if Input.is_action_just_pressed("empty"):
 		weapon_manager.change_weapon("Empty")
 	if Input.is_action_just_pressed("primary"):
@@ -411,21 +424,14 @@ func _process(_delta):
 	
 func _physics_process(delta):
 	primary_setup(delta)
-	
 	floor_jump()
-	
+	edge_climb(delta)
 	if not isClimbing and not isSliding:
 		movement_inputs()
-		wall_run()
-	
+		wall_run_and_jump()
 	sliding()
-	
-	edge_climb(delta)
-	
 	camera_transform(delta)
-	
 	finalize_velocity(delta)
-	
 	process_weapons()
 
 ################################## Таймеры ##################################
@@ -433,19 +439,15 @@ func _on_WallJump_timeout():
 	wall_jump_dir = Vector3.ZERO
 	isWallJumping = false
 
-
 func _on_CanJump_timeout():
 	if canJump:
 		canJump = false
 
-
 func _on_CanWallRun_timeout():
 	canWallRun = true
 
-
 func _on_Slide_timeout():
 		finSlide()
-
 
 func _on_canSlide_timeout():
 	canSlide = true

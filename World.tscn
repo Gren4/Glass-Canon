@@ -162,12 +162,10 @@ material/0 = ExtResource( 3 )
 [node name="CollisionShape" type="CollisionShape" parent="Map/Stairs"]
 shape = SubResource( 8 )
 
-[node name="World" type="Node" parent="."]
-
-[node name="Materials" type="Spatial" parent="World"]
+[node name="Materials" type="Spatial" parent="."]
 visible = false
 
-[node name="GunMat" type="MeshInstance" parent="World/Materials" groups=["materials"]]
+[node name="GunMat" type="MeshInstance" parent="Materials" groups=["materials"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.74757, -7.53611 )
 visible = false
 layers = 4
@@ -178,4 +176,4 @@ __meta__ = {
 "_editor_description_": "GunMat"
 }
 
-[node name="MuzzleFlash" parent="World/Materials" groups=["materials"] instance=ExtResource( 7 )]
+[node name="MuzzleFlash" parent="Materials" groups=["materials"] instance=ExtResource( 7 )]

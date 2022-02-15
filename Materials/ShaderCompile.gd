@@ -13,7 +13,8 @@ var processCount = 0
 var meshParticles: Particles
 
 func _ready():
-	get_tree().current_scene.get_node("World").connect("ready", self, "compileShaders")
+	#print(get_tree().current_scene)
+	get_tree().current_scene.connect("ready", self, "compileShaders")
 	if existFrames <= 0:
 		set_process(false)
 	
@@ -24,7 +25,6 @@ func _process(_delta):
 		for quadMeshInst in quadMeshes:
 			quadMeshInst.visible = false
 		set_process(false)
-	
 
 func compileShaders():
 	instances = get_tree().get_nodes_in_group("materials")

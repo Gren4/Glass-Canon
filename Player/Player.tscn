@@ -47,12 +47,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.04739, -0.982 )
 cast_to = Vector3( 0, -3.5, 0 )
 
 [node name="RayTop" type="RayCast" parent="ClimbRays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.817567, 0 )
-cast_to = Vector3( 0, 4, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39606, 0 )
+cast_to = Vector3( 0, 10, 0 )
 
 [node name="RayEmpty" type="RayCast" parent="ClimbRays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.58838, -0.297467 )
-cast_to = Vector3( 0, 0, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01297, 0.489888 )
+cast_to = Vector3( 0, 0, -1.85 )
+
+[node name="RayTopPoint" type="RayCast" parent="ClimbRays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.449, -0.982 )
+cast_to = Vector3( 0, 2, 0 )
 
 [node name="WeaponNoClipping" type="ViewportContainer" parent="."]
 anchor_right = 1.0
@@ -99,6 +103,7 @@ script = ExtResource( 7 )
 [node name="Gun" parent="Head/Weapons" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.735, -0.222, -0.589 )
 visible = false
+is_automatic = false
 reload_speed = 2.0
 
 [node name="Unarmed" parent="Head/Weapons" instance=ExtResource( 4 )]
