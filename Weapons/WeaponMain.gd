@@ -10,7 +10,7 @@ var is_equipped : bool = false
 export var weapon_name = "Weapon"
 export(Texture) var weapon_image = null
 
-func is_automatic():
+func is_weapon_automatic():
 	pass
 
 func equip() -> void:
