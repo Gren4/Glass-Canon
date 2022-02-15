@@ -119,8 +119,8 @@ func reload():
 	if not changing_weapon:
 		current_weapon.reload()
 
-func is_automatic():
-	return current_weapon.is_automatic()
+func is_weapon_automatic():
+	return current_weapon.is_weapon_automatic()
 		
 func add_ammo(weapon_name, amount, weapon_instance = null) -> bool:
 	if weapon_instance != null:

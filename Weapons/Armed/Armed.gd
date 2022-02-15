@@ -28,7 +28,7 @@ export var equip_speed : float = 1.0
 export var unequip_speed : float = 1.0
 export var reload_speed : float = 1.0
 	
-func is_automatic() -> bool:
+func is_weapon_automatic() -> bool:
 	return is_automatic
 	
 func fire():

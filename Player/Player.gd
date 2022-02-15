@@ -78,19 +78,11 @@ func init() -> void:
 func initSlide() -> void:
 	isSliding = true
 	velocity.y = 0
-	#camera.fov = 100
-#	$MeshInstance.mesh.mid_height = 0.4
-#	$CollisionShape.shape.height = 0.4
-#	head.translation.y = 0.4
 	timerSlide.start()
 	
 func finSlide() -> void:
 	canSlide = false
 	isSliding = false
-	velocity.y = 0
-#	$MeshInstance.mesh.mid_height = 1.25
-#	$CollisionShape.shape.height = 1.25
-#	head.translation.y = 0.818
 	timerCanSlide.start()
 
 func primary_setup(delta) -> void:
@@ -99,15 +91,17 @@ func primary_setup(delta) -> void:
 	iswall_tek = is_on_wall()
 	isceil_tek = is_on_ceiling()
 	
-	if (isceil_tek):
-		velocity.y = -gravity/4
-	
 	if (not isfloor_tek):
 		if not isClimbing:
 			if isSliding:
 				velocity.y = 0
 			else:
-				velocity.y -= gravity*delta
+				if isWallRunning:
+					velocity.y -= gravity / 30 * delta
+				elif iswall_tek and velocity.y <= 0:
+					velocity.y -= gravity / 4 * delta
+				else:
+					velocity.y -= gravity * delta
 			if not isWallRunning and iswall_tek:
 				rayClimb.enabled = true
 			else:
@@ -129,6 +123,9 @@ func primary_setup(delta) -> void:
 		isWallJumping = false
 		canWallRun = true
 		accel = ACCEL
+	
+	if (isceil_tek):
+		velocity.y = -gravity/4
 
 func floor_jump() -> void:
 	if Input.is_action_just_pressed("jump") and canJump:
@@ -223,13 +220,12 @@ func wall_run_and_jump() -> void:
 					# Добавляем к направлению движения небольшую силу в сторону стены, 
 					# чтобы не отрываться от неё
 					wallrun_dir += -normal * 0.05
+					velocity.y = 0
 					isWallRunning = true
 					# Сбрасываем признак
 					isWallJumping = false
 				# Сохраняем номер последней стены, по которой бежали
 				wall_id = wall_normal.collider_id;
-				# Выставляем небольшую силу, тянущую вниз
-				velocity.y = -0.01
 				# Расчитываем сторону, противоположную от стены
 				sideW = get_side(wall_normal.position)
 				# Переопределяем глобальный вектор направления.
@@ -381,7 +377,7 @@ func process_weapons() -> void:
 	if Input.is_action_just_pressed("secondary"):
 		weapon_manager.change_weapon("Secondary")
 
-	if weapon_manager.is_automatic():
+	if weapon_manager.is_weapon_automatic():
 		if Input.is_action_pressed("fire"):
 			weapon_manager.fire()
 		if Input.is_action_just_released("fire"):
