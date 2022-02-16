@@ -1,5 +1,6 @@
 extends Particles
 
+export(PackedScene) var my_instance
 
 func _process(delta):
 	#Удаляем частицы, которые заспавинили в основной ноде

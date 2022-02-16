@@ -1,5 +1,5 @@
 #https://github.com/webnetweaver/Godot_shadercompile/blob/main/shaderCompile.gd
-
+# НЕ ИСПОЛЬЗУЕТСЯ
 extends Node
 
 export(int) var verticalDisplacement = 2
@@ -13,10 +13,11 @@ var processCount = 0
 var meshParticles: Particles
 
 func _ready():
+	set_process(false)
 	#print(get_tree().current_scene)
-	get_tree().current_scene.connect("ready", self, "compileShaders")
-	if existFrames <= 0:
-		set_process(false)
+	#get_tree().current_scene.connect("ready", self, "compileShaders")
+	#if existFrames <= 0:
+	#	set_process(false)
 	
 func _process(_delta):
 	processCount += 1

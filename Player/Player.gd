@@ -86,7 +86,6 @@ func finSlide() -> void:
 	timerCanSlide.start()
 
 func primary_setup(delta) -> void:
-	#camera.fov = camera.fov + (90 - camera.fov) * 10 * delta
 	isfloor_tek = is_on_floor()
 	iswall_tek = is_on_wall()
 	isceil_tek = is_on_ceiling()
@@ -391,13 +390,15 @@ func process_weapons() -> void:
 	
 	if Input.is_action_just_pressed("drop"):
 		weapon_manager.drop_weapon()
-		
+	
 	weapon_manager.process_weapon_pickup()
 	
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	set_process(true)
 	set_physics_process(true)
+	set_process_input(true)
+	
 
 func _input(event):
 	if event is InputEventMouseMotion and not isClimbing:

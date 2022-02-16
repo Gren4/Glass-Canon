@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Weapons/Armed/Gun/Gun.gd" type="Script" id=1]
-[ext_resource path="res://Materials/GunMat.tres" type="Material" id=2]
+[ext_resource path="res://Materials/Shader/Gun_shadermaterial.tres" type="Material" id=2]
 [ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Weapons/Armed/Gun/Gun_pickup.tscn" type="PackedScene" id=5]
@@ -175,14 +175,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
 
 [node name="Up" type="MeshInstance" parent="Root/Anchor/Body"]
 transform = Transform( 0.04, 0, 0, 0, 0.103, 0, 0, 0, 0.3, 0, 0, -0.3 )
-layers = 4
+layers = 2
 mesh = SubResource( 1 )
 skeleton = NodePath("../../../..")
 material/0 = ExtResource( 2 )
 
 [node name="Down" type="MeshInstance" parent="Root/Anchor/Body"]
 transform = Transform( 0.04, 0, 0, 0, 0.0307831, -0.157602, 0, 0.0394005, 0.123132, 0, -0.148299, 0.0265774 )
-layers = 4
+layers = 2
 mesh = SubResource( 1 )
 skeleton = NodePath("../../../..")
 material/0 = ExtResource( 2 )
@@ -191,6 +191,7 @@ material/0 = ExtResource( 2 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.16914 )
 
 [node name="GunBulletHole" parent="Root/Anchor" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.04336 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Equip = SubResource( 3 )
