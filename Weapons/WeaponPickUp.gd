@@ -18,3 +18,13 @@ func get_weapon_pickup_data():
 
 func on_sleeping():
 	mode = MODE_STATIC
+
+
+func _on_Area_body_entered(body):
+	if body.get_name() == "Player":
+		body.interactable_items_count += 1
+
+
+func _on_Area_body_exited(body):
+	if body.get_name() == "Player":
+		body.interactable_items_count -= 1

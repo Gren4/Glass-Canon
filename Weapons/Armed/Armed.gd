@@ -64,10 +64,15 @@ func fire_bullet():
 	if ray.is_colliding():
 		var impact = Global.instantiate_node(impact_effect, ray.get_collision_point())
 		impact.emitting = true
-		if (ray.get_collider().is_in_group("World")):
-			var hole = Global.instantiate_node(hole_effect, ray.get_collision_point(), -ray.get_collision_normal())
-			hole.emitting = true
-
+		var obj : Object = ray.get_collider()
+		if (obj.is_in_group("World")):
+			var inh_obj : Object = null
+			if (obj.get_class() == "KinematicBody"):
+				inh_obj = obj
+			var hole = Global.instantiate_node(hole_effect, ray.get_collision_point(), -ray.get_collision_normal(), null , inh_obj)	
+			hole.to_end = true
+			hole.visible = true
+			
 func reload():
 	if ammo_in_mag < mag_size and extra_ammo > 0:
 		is_firing = false

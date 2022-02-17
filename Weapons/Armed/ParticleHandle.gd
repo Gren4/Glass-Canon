@@ -1,8 +1,7 @@
 extends Particles
+class_name ParticleHandle
 
-export(PackedScene) var my_instance
-
-func _process(delta):
+func free_scene(delta):
 	#Удаляем частицы, которые заспавинили в основной ноде
 	if get_parent().name == "World":
 		if not emitting:

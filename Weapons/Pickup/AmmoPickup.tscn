@@ -66,6 +66,11 @@ tracks/1/keys = {
 }
 
 [node name="AmmoPickup" type="Area"]
+monitorable = false
+gravity_vec = Vector3( 0, 0, 0 )
+gravity = 0.0
+linear_damp = 0.0
+angular_damp = 0.0
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

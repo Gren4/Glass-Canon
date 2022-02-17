@@ -147,6 +147,7 @@ func _add_material(material: Material) -> void:
 	var newMesh: MeshInstance = MeshInstance.new()
 	newMesh.mesh = quad
 	newMesh.set_surface_material(0, material)
+	newMesh.set_layer_mask_bit(0, _visible_layer == 0)
 	newMesh.set_layer_mask_bit(_visible_layer, true)
 	
 	add_child(newMesh)
@@ -164,15 +165,16 @@ func _setup_particle(part : Particles):
 
 func _add_particle(particle: Particles) -> void:
 	var proc_mat : Particles = Particles.new()
-	proc_mat.set_process_material(particle.process_material)
+	if is_instance_valid(particle.process_material):
+		proc_mat.set_process_material(particle.process_material)
+		proc_mat.process_material.set_gravity(Vector3.ZERO)
+	proc_mat.set_layer_mask_bit(0, _visible_layer == 0)
 	proc_mat.set_layer_mask_bit(_visible_layer, true)
 	proc_mat.emitting = true
 	proc_mat.one_shot = false
-	proc_mat.process_material.set_gravity(Vector3.ZERO)
 	var num_passes = particle.draw_passes
 	proc_mat.set_draw_passes(num_passes)
 	for i in num_passes:
-		#_set_draw_passes(proc_mat,particle,i)
 		proc_mat.set_draw_pass_mesh(i,particle.get_draw_pass_mesh(i))
 	add_child(proc_mat)
 	proc_mat.set_owner(self)
@@ -180,14 +182,6 @@ func _add_particle(particle: Particles) -> void:
 	proc_mat.global_transform.origin.x += randf() - 0.5
 	proc_mat.global_transform.origin.x += randf()/2 - 0.25
 	proc_mat.global_transform.origin.z += randf() - 0.5
-
-#func _set_draw_passes(to_particle : Particles, particle: Particles, i : int) -> void:
-#	var quad: QuadMesh = QuadMesh.new()
-#	quad.surface_set_material(0,particle.get_draw_pass_mesh(i).surface_get_material(0))
-#	for i2 in range(particle.get_draw_pass_mesh(i).get_surface_count()):
-#		pass#_setup_material(particle.get_draw_pass_mesh(i).surface_get_material(i2))
-#	to_particle.set_draw_pass_mesh(i,quad)
-#	to_particle.set_draw_pass_mesh(i,particle.get_draw_pass_mesh(i))
 
 
 func _rotate_children() -> void:

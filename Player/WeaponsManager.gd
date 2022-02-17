@@ -26,7 +26,7 @@ func _ready():
 	
 	weapons = {
 		"Empty" : $Unarmed,
-		"Primary" : $Gun,
+		"Primary" : null,
 		"Secondary" : null
 	}
 	
@@ -130,7 +130,7 @@ func add_ammo(weapon_name, amount, weapon_instance = null) -> bool:
 	else:
 		for i in weapons:
 			if is_instance_valid(weapons[i]):
-				if weapons[i].name == weapon_name:
+				if weapons[i].weapon_name == weapon_name:
 					var updateNeeded : bool = true if current_weapon == weapons[i] else false
 					weapons[i].update_ammo("add", amount, updateNeeded)
 					return true
@@ -171,8 +171,8 @@ func add_weapon(weapon_data):
 func switch_weapon(weapon_data):
 	for i in weapons:
 		if is_instance_valid(weapons[i]):
-			if weapons[i].name == weapon_data["Name"]:
-				add_ammo(weapons[i].name, weapon_data["Ammo"] + weapon_data["ExtraAmmo"], weapons[i])
+			if weapons[i].weapon_name == weapon_data["Name"]:
+				add_ammo(weapons[i].weapon_name, weapon_data["Ammo"] + weapon_data["ExtraAmmo"], weapons[i])
 				return
 		else:
 			add_weapon(weapon_data)
@@ -210,7 +210,6 @@ func process_weapon_pickup():
 	
 	if collision:
 		var body = collision["collider"]
-		
 		if body.has_method("get_weapon_pickup_data"):
 			var weapon_data = body.get_weapon_pickup_data()
 			show_interaction_promt(weapon_data["Name"])
@@ -220,3 +219,5 @@ func process_weapon_pickup():
 				hide_interaction_promt()
 		else:
 			hide_interaction_promt()
+	else:
+		hide_interaction_promt()

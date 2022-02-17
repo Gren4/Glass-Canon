@@ -24,6 +24,8 @@ var velocity : Vector3 = Vector3.ZERO
 var direction : Vector3 = Vector3.ZERO
 var snap : Vector3 = Vector3.ZERO
 
+var not_on_moving_platform : bool = true
+
 var canJump : bool = true
 
 var isSliding : bool = false
@@ -49,6 +51,8 @@ var wall_jump_dir : Vector3 = Vector3.ZERO
 var wall_jump_horizontal_power : float = 5.0
 var wall_jump_vertical_power : float = 0.7
 var wall_jump_factor : float = 0.4
+
+var interactable_items_count : int = 0
 
 onready var head = $Head
 onready var camera = $Head/Camera
@@ -90,6 +94,9 @@ func primary_setup(delta) -> void:
 	iswall_tek = is_on_wall()
 	isceil_tek = is_on_ceiling()
 	
+	
+	if (isceil_tek):
+		velocity.y -= 9.8
 	if (not isfloor_tek):
 		if not isClimbing:
 			if isSliding:
@@ -122,9 +129,6 @@ func primary_setup(delta) -> void:
 		isWallJumping = false
 		canWallRun = true
 		accel = ACCEL
-	
-	if (isceil_tek):
-		velocity.y = -gravity/4
 
 func floor_jump() -> void:
 	if Input.is_action_just_pressed("jump") and canJump:
@@ -311,11 +315,9 @@ func edge_climb(delta) -> void:
 							
 	if isClimbing:
 		snap = Vector3.ZERO
-		head.rotation = head.rotation.linear_interpolate(Vector3.ZERO, delta * 10)
 		self.rotation_degrees = self.rotation_degrees.linear_interpolate(rotateTo, delta * 10)
 		if transform.origin.y > climbPoint.y + 1.25:
 			velocity = Vector3(0,-gravity/4,0)
-		if isfloor_tek:
 			direction = Vector3.ZERO
 			velocity = Vector3.ZERO
 			isClimbing = false
@@ -342,7 +344,7 @@ func finalize_velocity(delta) -> void:
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	
-	var vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, true, 4, deg2rad(45))
+	var vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	
 	if vel_info.length() > 3.0 and canJump and not isClimbing and not isWallJumping and not isWallRunning and not isSliding:
 		animation_player.play("HeadBop", 0.1, 1.5)
@@ -390,8 +392,8 @@ func process_weapons() -> void:
 	
 	if Input.is_action_just_pressed("drop"):
 		weapon_manager.drop_weapon()
-	
-	weapon_manager.process_weapon_pickup()
+	if interactable_items_count > 0:
+		weapon_manager.process_weapon_pickup()
 	
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -401,10 +403,11 @@ func _ready():
 	
 
 func _input(event):
-	if event is InputEventMouseMotion and not isClimbing:
+	if event is InputEventMouseMotion:
 		head.rotate_x(deg2rad(-event.relative.y * mouseSensivity))
 		head.rotation.x = clamp(head.rotation.x, -1.54, 1.54)
-		self.rotate_y(deg2rad(-event.relative.x * mouseSensivity))
+		if not isClimbing:
+			self.rotate_y(deg2rad(-event.relative.x * mouseSensivity))
 		
 	if event is InputEventMouseButton:
 		if event.pressed:

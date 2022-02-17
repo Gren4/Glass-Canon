@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Weapons/Armed/Armed.gd"
 }, {
+"base": "Particles",
+"class": "ParticleHandle",
+"language": "GDScript",
+"path": "res://Weapons/Armed/ParticleHandle.gd"
+}, {
 "base": "Spatial",
 "class": "WeaponMain",
 "language": "GDScript",
@@ -21,6 +26,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Armed": "",
+"ParticleHandle": "",
 "WeaponMain": ""
 }
 
@@ -139,27 +145,12 @@ drop={
  ]
 }
 
-[layer_names]
-
-3d_physics/layer_2="Wall"
-
 [physics]
 
-common/physics_fps=80
+common/physics_fps=120
 common/enable_pause_aware_picking=true
 
 [rendering]
 
 threads/thread_model=2
-quality/reflections/texture_array_reflections=false
-quality/reflections/high_quality_ggx=false
-quality/shading/force_vertex_shading=true
-quality/shading/force_vertex_shading.mobile=false
-quality/shading/force_lambert_over_burley=true
-quality/shading/force_lambert_over_burley.mobile=false
-quality/shading/force_blinn_over_ggx=true
-quality/shading/force_blinn_over_ggx.mobile=false
-quality/skinning/force_software_skinning=true
-quality/lightmapping/use_bicubic_sampling=false
-quality/subsurface_scattering/quality=0
 environment/default_environment="res://default_env.tres"

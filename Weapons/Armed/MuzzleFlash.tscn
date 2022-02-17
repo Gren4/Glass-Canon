@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Weapons/Armed/ParticleHandle.gd" type="Script" id=1]
+[ext_resource path="res://Weapons/Armed/MuzzleFlash.gd" type="Script" id=1]
 
 [sub_resource type="ParticlesMaterial" id=1]
 spread = 180.0
@@ -26,4 +26,3 @@ explosiveness = 1.0
 process_material = SubResource( 1 )
 draw_pass_1 = SubResource( 3 )
 script = ExtResource( 1 )
-my_instance = null

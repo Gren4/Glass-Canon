@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Materials/Test_material_3.tres" type="Material" id=4]
 [ext_resource path="res://World.gd" type="Script" id=5]
 [ext_resource path="res://Weapons/Armed/Gun/Gun_pickup.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Platform4.gd" type="Script" id=7]
 [ext_resource path="res://Weapons/Pickup/AmmoPickup.tscn" type="PackedScene" id=8]
 
 [sub_resource type="BoxShape" id=1]
@@ -15,6 +16,41 @@
 [sub_resource type="CubeMesh" id=3]
 
 [sub_resource type="BoxShape" id=4]
+
+[sub_resource type="BoxShape" id=9]
+extents = Vector3( 1, 0.139748, 1 )
+
+[sub_resource type="Animation" id=10]
+resource_name = "Float"
+length = 10.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2, 4.1, 7, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 54.8686, 11.3345, -48.7524 ), Vector3( 7.82635, 11.3345, -48.7524 ), Vector3( 20.1749, 11.3345, -83.4685 ), Vector3( 66.9878, 11.3345, -77.8371 ), Vector3( 54.8686, 11.3345, -48.7524 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 54.8686, 11.3345, -48.7524 ) ]
+}
 
 [sub_resource type="BoxShape" id=5]
 
@@ -41,7 +77,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8005, 1.51433, 0 )
 weapon_name = "Gun"
 
 [node name="GunPickUp" parent="Pickups" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.1827, 14.8805, -5.64778 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102757, 14.8805, -5.64778 )
+extra_ammo = 100
+
+[node name="GunPickUp2" parent="Pickups" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.0139, 1.90787, -33.6518 )
 
 [node name="Map" type="Spatial" parent="."]
 
@@ -65,6 +105,34 @@ material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Platform"]
 shape = SubResource( 4 )
+
+[node name="MoovingPlatform" type="KinematicBody" parent="Map" groups=["Wall", "World"]]
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 54.8686, 11.3345, -48.7524 )
+collision_mask = 3
+script = ExtResource( 7 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Map/MoovingPlatform"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="Map/MoovingPlatform"]
+shape = SubResource( 4 )
+
+[node name="Area" type="Area" parent="Map/MoovingPlatform"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.98348, 0 )
+monitorable = false
+gravity_vec = Vector3( 0, 0, 0 )
+gravity = -32.0
+
+[node name="CollisionShape" type="CollisionShape" parent="Map/MoovingPlatform/Area"]
+shape = SubResource( 9 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Map/MoovingPlatform"]
+autoplay = "Float"
+playback_process_mode = 0
+playback_speed = 0.3
+anims/Float = SubResource( 10 )
+anims/RESET = SubResource( 11 )
 
 [node name="Platform2" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 37.2323, 3.97002, 0 )
@@ -163,3 +231,6 @@ material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Stairs"]
 shape = SubResource( 8 )
+
+[connection signal="body_entered" from="Map/MoovingPlatform/Area" to="Map/MoovingPlatform" method="_on_Area_body_entered"]
+[connection signal="body_exited" from="Map/MoovingPlatform/Area" to="Map/MoovingPlatform" method="_on_Area_body_exited"]
