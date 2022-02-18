@@ -16,7 +16,7 @@ mass = 20.0
 gravity_scale = 4.0
 script = ExtResource( 1 )
 weapon_name = "Gun"
-ammo_in_mag = 10
+ammo_in_mag = 20
 extra_ammo = 0
 
 [node name="Area" type="Area" parent="."]

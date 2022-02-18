@@ -22,23 +22,47 @@ resource_name = "HeadBop"
 length = 0.7
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head/Camera:translation")
+tracks/0/path = NodePath("Head/HeadBop:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.2, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.1, 0 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.08, 0 ), Vector3( 0, 0.1, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=4]
 length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Head/HeadBop:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.1, 0 ) ]
+}
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
+head_path = NodePath("Head")
+camera_path = NodePath("Head/HeadBop/Camera")
+weapon_manager_path = NodePath("Head/Weapons")
+ray_climb_path = NodePath("ClimbRays/RayClimb")
+ray_top_path = NodePath("ClimbRays/RayTop")
+ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
+ray_empty_path = NodePath("ClimbRays/RayEmpty")
+timer_can_jump_path = NodePath("Timers/CanJump")
+timer_can_wall_run_path = NodePath("Timers/CanWallRun")
+timer_slide_path = NodePath("Timers/Slide")
+timer_can_slide_path = NodePath("Timers/CanSlide")
+animation_player_path = NodePath("AnimationPlayer")
 
 [node name="ClimbRays" type="Spatial" parent="."]
 
@@ -80,26 +104,31 @@ fov = 90.0
 near = 0.01
 far = 7.0
 script = ExtResource( 6 )
-main_cam_path = NodePath("../../../Head/Camera")
+main_cam_path = NodePath("../../../Head/HeadBop/Camera")
 
 [node name="ShaderPrecompiler" parent="WeaponNoClipping/Viewport/WeaponCamera" instance=ExtResource( 9 )]
 
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.818, 0 )
 
-[node name="Camera" type="Camera" parent="Head"]
-cull_mask = 1048571
+[node name="HeadBop" type="Spatial" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
+
+[node name="Camera" type="Camera" parent="Head/HeadBop"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0 )
+cull_mask = 1048573
 current = true
 fov = 90.0
 far = 250.0
 
-[node name="RayCast" type="RayCast" parent="Head/Camera"]
+[node name="RayCast" type="RayCast" parent="Head/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )
 
-[node name="ShaderPrecompiler" parent="Head/Camera" instance=ExtResource( 9 )]
+[node name="ShaderPrecompiler" parent="Head/HeadBop/Camera" instance=ExtResource( 9 )]
 
 [node name="Weapons" type="Spatial" parent="Head"]
 script = ExtResource( 7 )
+ray_path = NodePath("../HeadBop/Camera/RayCast")
 
 [node name="Gun" parent="Head/Weapons" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.735, -0.222, -0.589 )
@@ -113,10 +142,6 @@ visible = false
 
 [node name="CanWallRun" type="Timer" parent="Timers"]
 wait_time = 0.5
-one_shot = true
-
-[node name="WallJump" type="Timer" parent="Timers"]
-wait_time = 0.3
 one_shot = true
 
 [node name="CanJump" type="Timer" parent="Timers"]
@@ -146,7 +171,6 @@ anims/HeadBop = SubResource( 3 )
 anims/RESET = SubResource( 4 )
 
 [connection signal="timeout" from="Timers/CanWallRun" to="." method="_on_CanWallRun_timeout"]
-[connection signal="timeout" from="Timers/WallJump" to="." method="_on_WallJump_timeout"]
 [connection signal="timeout" from="Timers/CanJump" to="." method="_on_CanJump_timeout"]
 [connection signal="timeout" from="Timers/CanSlide" to="." method="_on_canSlide_timeout"]
 [connection signal="timeout" from="Timers/Slide" to="." method="_on_Slide_timeout"]

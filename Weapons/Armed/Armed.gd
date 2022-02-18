@@ -27,7 +27,17 @@ onready var muzzle_flash = get_node(muzzle_flash_path)
 export var equip_speed : float = 1.0
 export var unequip_speed : float = 1.0
 export var reload_speed : float = 1.0
-	
+
+var sway_pivot = null
+
+export var ads_pos = Vector3.ZERO
+var ads_speed = 10
+var is_ads = false
+
+func _ready():
+	set_as_toplevel(true)
+	call_deferred("create_sway_pivot")
+
 func is_weapon_automatic() -> bool:
 	return is_automatic
 	
@@ -62,16 +72,13 @@ func fire_bullet():
 	ray.force_raycast_update()
 	
 	if ray.is_colliding():
-		var impact = Global.instantiate_node(impact_effect, ray.get_collision_point())
+		var impact = Global.spawn_node_from_pool(impact_effect, ray.get_collision_point())
 		impact.emitting = true
 		var obj : Object = ray.get_collider()
 		if (obj.is_in_group("World")):
-			var inh_obj : Object = null
-			if (obj.get_class() == "KinematicBody"):
-				inh_obj = obj
-			var hole = Global.instantiate_node(hole_effect, ray.get_collision_point(), -ray.get_collision_normal(), null , inh_obj)	
-			hole.to_end = true
-			hole.visible = true
+			var hole = Global.spawn_node_from_pool(hole_effect, ray.get_collision_point(), -ray.get_collision_normal(), obj)
+			hole.emitting = true
+			hole.cur_transparency = 1.0
 			
 func reload():
 	if ammo_in_mag < mag_size and extra_ammo > 0:
@@ -145,3 +152,41 @@ func drop_weapon():
 	pickup.extra_ammo = extra_ammo
 	pickup.mag_size = mag_size
 	queue_free()
+
+func create_sway_pivot():
+	sway_pivot = Spatial.new()
+	get_parent().add_child(sway_pivot)
+	sway_pivot.transform.origin = equip_pos
+	sway_pivot.name = weapon_name + "_Sway"
+	
+func sway(delta):
+	global_transform.origin = sway_pivot.global_transform.origin
+	
+	var self_quat = global_transform.basis.get_rotation_quat()
+	var pivot_quat = sway_pivot.global_transform.basis.get_rotation_quat()
+	
+	var cth = self_quat.angle_to(pivot_quat)
+	var new_quat = Quat()
+	
+	if is_ads == false:
+		new_quat = self_quat.slerp(pivot_quat, 80 * cth * delta)
+	else:
+		new_quat = pivot_quat
+	
+	global_transform.basis = Basis(new_quat)
+
+func aim_down_sights(value, delta):
+	is_ads = value
+	
+	if  is_ads == false and player.camera.fov == 90:
+		return
+	
+	if is_ads:
+		sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(ads_pos,ads_speed * delta)
+		player.camera.fov = lerp(player.camera.fov, 50, ads_speed * delta)
+	else:
+		sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(equip_pos,ads_speed * delta)
+		player.camera.fov = lerp(player.camera.fov, 90, ads_speed * delta)
+		
+func _exit_tree():
+	sway_pivot.queue_free()

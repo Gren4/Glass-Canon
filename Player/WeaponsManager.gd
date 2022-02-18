@@ -1,5 +1,7 @@
 extends Spatial
 
+export(NodePath) var ray_path
+
 var all_weapons = {}
 
 var weapons = {}
@@ -17,7 +19,7 @@ var weapon_index : int = 0
 func _ready():
 	
 	hud = owner.get_node("HUD")
-	get_parent().get_node("Camera/RayCast").add_exception(owner)
+	get_node(ray_path).add_exception(owner)
 	
 	all_weapons = {
 		"Unarmed" : preload("res://Weapons/Unarmed/Unarmed.tscn"),
@@ -42,7 +44,7 @@ func _ready():
 func weapon_setup(w):
 	w.weapon_manager = self
 	w.player = owner
-	w.ray = get_parent().get_node("Camera/RayCast")
+	w.ray = get_node(ray_path)
 	w.visible = false
 		
 

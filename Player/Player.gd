@@ -1,10 +1,42 @@
 extends KinematicBody
 
+export(NodePath) var head_path
+export(NodePath) var camera_path
+export(NodePath) var weapon_manager_path
+
+export(NodePath) var ray_climb_path
+export(NodePath) var ray_top_path
+export(NodePath) var ray_top_point_path
+export(NodePath) var ray_empty_path
+
+export(NodePath) var timer_can_jump_path
+export(NodePath) var timer_can_wall_run_path
+export(NodePath) var timer_slide_path
+export(NodePath) var timer_can_slide_path
+
+export(NodePath) var animation_player_path
+
+onready var head = get_node(head_path)
+onready var camera = get_node(camera_path)
+onready var weapon_manager = get_node(weapon_manager_path)
+
+onready var rayClimb = get_node(ray_climb_path)
+onready var rayTop = get_node(ray_top_path)
+onready var rayTopPoint = get_node(ray_top_point_path)
+onready var rayEmpty = get_node(ray_empty_path)
+
+onready var timerCanJump = get_node(timer_can_jump_path)
+onready var timerCanWallRun = get_node(timer_can_wall_run_path)
+onready var timerSlide = get_node(timer_slide_path)
+onready var timerCanSlide = get_node(timer_can_slide_path)
+
+onready var animation_player = get_node(animation_player_path)
+
+onready var defTransform = transform
+
 const ACCEL : float = 10.0
 const ACCEL_AIR  : float= 5.0
-const LEFT : int = 0
-const RIGHT : int = 1
-const CENTER : int = -1
+enum { LEFT, RIGHT, CENTER = -1}
 const SPEED_N : float = 20.0
 const SPEED_W : float = 25.0
 const SPEED_S : float = 100.0
@@ -19,10 +51,12 @@ var isceil_tek : bool = true
 var isfloor_tek : bool = true
 var iswall_tek : bool = true
 
+var dop_velocity : Vector3 = Vector3.ZERO
 var velocityXY : Vector3 = Vector3.ZERO
 var velocity : Vector3 = Vector3.ZERO
 var direction : Vector3 = Vector3.ZERO
 var snap : Vector3 = Vector3.ZERO
+var wall_normal : KinematicCollision = null
 
 var not_on_moving_platform : bool = true
 
@@ -46,31 +80,12 @@ var climbPoint : Vector3 = Vector3.ZERO
 var rotateTo : Vector3 = Vector3.ZERO
 ####################################################################
 
-var isWallJumping : bool = false
-var wall_jump_dir : Vector3 = Vector3.ZERO
 var wall_jump_horizontal_power : float = 5.0
 var wall_jump_vertical_power : float = 0.7
 var wall_jump_factor : float = 0.4
+var coun_wall_jump : int = 3
 
 var interactable_items_count : int = 0
-
-onready var head = $Head
-onready var camera = $Head/Camera
-onready var weapon_manager = $Head/Weapons
-onready var rayClimb = $ClimbRays/RayClimb
-onready var rayTop = $ClimbRays/RayTop
-onready var rayTopPoint = $ClimbRays/RayTopPoint
-onready var rayEmpty = $ClimbRays/RayEmpty
-
-onready var timerWallJump = $Timers/WallJump
-onready var timerCanJump = $Timers/CanJump
-onready var timerCanWallRun = $Timers/CanWallRun
-onready var timerSlide = $Timers/Slide
-onready var timerCanSlide = $Timers/CanSlide
-
-onready var animation_player = $AnimationPlayer
-
-onready var defTransform = transform
 
 func init() -> void:
 		velocityXY = Vector3.ZERO
@@ -117,8 +132,8 @@ func primary_setup(delta) -> void:
 		if timerCanJump.is_stopped() and canJump:
 			timerCanJump.start()
 	else:
+		coun_wall_jump = 3
 		timerCanWallRun.stop()
-		timerWallJump.stop()
 		if isSliding:
 			velocity.y = 0
 		else:
@@ -126,7 +141,6 @@ func primary_setup(delta) -> void:
 		rayClimb.enabled = false
 		canJump = true
 		isWallRunning = false
-		isWallJumping = false
 		canWallRun = true
 		accel = ACCEL
 
@@ -165,8 +179,7 @@ func get_side(point) -> int:
 	else:
 		return CENTER
 
-func wall_run_and_jump() -> void:
-	var wall_normal : KinematicCollision
+func wall_run() -> void:
 	if canWallRun and Input.is_action_pressed("shift") and Input.is_action_pressed("move_forward") and (velocity.y < (jump_power / 2)) and iswall_tek and not isfloor_tek:
 		for n in get_slide_count() :
 			wall_normal = get_slide_collision(n)
@@ -176,6 +189,9 @@ func wall_run_and_jump() -> void:
 					var wallrun_dir_old : Vector3 = wallrun_dir
 					# Нормаль к плоскости стены
 					var normal : Vector3 = wall_normal.normal
+					
+					if normal.angle_to(Vector3.UP) > 1.58:
+						return
 					# Рассчитываем направление вдоль стены
 					wallrun_dir = Vector3.UP.cross(normal)
 					# Считываем вектор3 направления камеры
@@ -225,8 +241,6 @@ func wall_run_and_jump() -> void:
 					wallrun_dir += -normal * 0.05
 					velocity.y = 0
 					isWallRunning = true
-					# Сбрасываем признак
-					isWallJumping = false
 				# Сохраняем номер последней стены, по которой бежали
 				wall_id = wall_normal.collider_id;
 				# Расчитываем сторону, противоположную от стены
@@ -234,43 +248,45 @@ func wall_run_and_jump() -> void:
 				# Переопределяем глобальный вектор направления.
 				# Ввод пользователя клавишами влево\вправо\назад будет проигнорирован.
 				direction = wallrun_dir
-			else:
-				isWallRunning = false
-			break
+				break
 	else:
 		isWallRunning = false
 
-	if Input.is_action_just_released("shift") and not isWallRunning and not isWallJumping:
+	if Input.is_action_just_released("shift") and not isWallRunning:
 		canWallRun = false
 		timerCanWallRun.start()
 		
+func wall_jump() -> void:
 	if isWallRunning:
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3.ZERO
 			isWallRunning = false
 			timerCanWallRun.start()
 			velocityXY = Vector3.ZERO
-			isWallJumping = true
-			timerWallJump.start()
 			velocity.y = jump_power * wall_jump_vertical_power
 			var normal : Vector3 = wall_normal.normal
-			wall_jump_dir = normal * wall_jump_horizontal_power
-			wall_jump_dir *= wall_jump_factor
-	elif iswall_tek and not isfloor_tek:
+			dop_velocity = normal * wall_jump_horizontal_power * wall_jump_factor
+			coun_wall_jump = 3
+	elif iswall_tek and not isfloor_tek and coun_wall_jump > 0:
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3.ZERO
 			isWallRunning = false
 			velocityXY = Vector3.ZERO
-			isWallJumping = true
-			timerWallJump.start()
 			velocity.y = jump_power * wall_jump_vertical_power
-			wall_normal = get_slide_collision(0)
-			var normal : Vector3 = wall_normal.normal
-			wall_jump_dir = normal * wall_jump_horizontal_power
-			wall_jump_dir *= wall_jump_factor
-						
-	if isWallJumping:
-		direction += wall_jump_dir
+			for n in get_slide_count() :
+				wall_normal = get_slide_collision(n)
+				var isWall : bool = wall_normal.collider.is_in_group("Wall")
+				if (isWall):
+					wall_normal = get_slide_collision(0)
+					var normal : Vector3 = wall_normal.normal
+					dop_velocity = normal * wall_jump_horizontal_power * wall_jump_factor
+					coun_wall_jump -= 1
+					break
+	
+
+func wall_run_and_jump() -> void:
+	wall_run()
+	wall_jump()
 		
 func edge_climb(delta) -> void:
 	if not isClimbing:
@@ -306,7 +322,6 @@ func edge_climb(delta) -> void:
 							climbPoint = (rayClimb.get_collision_point())
 							isClimbing = true
 							isWallRunning = false
-							isWallJumping = false
 							timerSlide.stop()
 							finSlide()
 							direction = normal * 0.5
@@ -339,17 +354,17 @@ func finalize_velocity(delta) -> void:
 		speed = SPEED_N
 		
 	direction = direction.normalized()
-	velocityXY = velocityXY.linear_interpolate(direction * speed, accel * delta)
-	
+	velocityXY = velocityXY.linear_interpolate(direction * speed, accel * delta) + dop_velocity
+	dop_velocity = dop_velocity.linear_interpolate(Vector3.ZERO, accel * delta)
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	
 	var vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	
-	if vel_info.length() > 3.0 and canJump and not isClimbing and not isWallJumping and not isWallRunning and not isSliding:
-		animation_player.play("HeadBop", 0.1, 1.5)
-	else:
+	if vel_info.length() < 3.0 or not isfloor_tek or isSliding or isClimbing:
 		animation_player.play("RESET", 0.1, 1.0)
+	else:
+		animation_player.play("HeadBop", 0.1, 1.5)
 		
 	
 func camera_transform(delta) -> void:
@@ -370,7 +385,7 @@ func camera_transform(delta) -> void:
 	
 	camera.rotation_degrees = Vector3(0, 0, 1) * wallrun_current_angle
 
-func process_weapons() -> void:
+func process_weapons(delta) -> void:
 	if Input.is_action_just_pressed("empty"):
 		weapon_manager.change_weapon("Empty")
 	if Input.is_action_just_pressed("primary"):
@@ -394,8 +409,17 @@ func process_weapons() -> void:
 		weapon_manager.drop_weapon()
 	if interactable_items_count > 0:
 		weapon_manager.process_weapon_pickup()
+	if weapon_manager.current_weapon.name != "Unarmed":
+		weapon_manager.current_weapon.sway(delta)
+		
+	if Input.is_action_pressed("ads"):
+		weapon_manager.current_weapon.aim_down_sights(true, delta)
+	else:
+		weapon_manager.current_weapon.aim_down_sights(false, delta)
+		
 	
 func _ready():
+	set_disable_scale(true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	set_process(true)
 	set_physics_process(true)
@@ -437,12 +461,9 @@ func _physics_process(delta):
 	sliding()
 	camera_transform(delta)
 	finalize_velocity(delta)
-	process_weapons()
+	process_weapons(delta)
 
 ################################## Таймеры ##################################
-func _on_WallJump_timeout():
-	wall_jump_dir = Vector3.ZERO
-	isWallJumping = false
 
 func _on_CanJump_timeout():
 	if canJump:

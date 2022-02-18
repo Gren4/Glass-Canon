@@ -31,10 +31,22 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 2, 4.1, 7, 10 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 1.1, 2, 3.2, 4.1, 5.2, 7, 10 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 54.8686, 11.3345, -48.7524 ), Vector3( 7.82635, 11.3345, -48.7524 ), Vector3( 20.1749, 11.3345, -83.4685 ), Vector3( 66.9878, 11.3345, -77.8371 ), Vector3( 54.8686, 11.3345, -48.7524 ) ]
+"values": [ Vector3( 54.8686, 11.3345, -48.7524 ), Vector3( 28.9954, 4.6698, -48.7524 ), Vector3( 7.82635, 11.3345, -48.7524 ), Vector3( 14.8827, 21.6543, -68.5902 ), Vector3( 20.1749, 11.3345, -83.4685 ), Vector3( 37.9315, 18.0249, -81.3325 ), Vector3( 66.9878, 11.3345, -77.8371 ), Vector3( 54.8686, 11.3345, -48.7524 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 45, 0 ), Vector3( 0, 90, 0 ) ]
 }
 
 [sub_resource type="Animation" id=11]
@@ -50,6 +62,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 54.8686, 11.3345, -48.7524 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="BoxShape" id=5]
@@ -130,7 +154,7 @@ shape = SubResource( 9 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Map/MoovingPlatform"]
 autoplay = "Float"
 playback_process_mode = 0
-playback_speed = 0.3
+playback_speed = 0.5
 anims/Float = SubResource( 10 )
 anims/RESET = SubResource( 11 )
 
@@ -179,7 +203,7 @@ mesh = SubResource( 6 )
 material/0 = ExtResource( 2 )
 
 [node name="Wall3" type="StaticBody" parent="Map" groups=["Wall", "World"]]
-transform = Transform( 12.714, 0, 0.771935, 0, 10, 0, -15.4387, 0, 0.635701, 86.3046, 10.9438, -9.06185 )
+transform = Transform( 12.3615, 2.33836, 0.750534, -0.54126, 9.60499, -0.276965, -15.713, 1.50874, 0.59999, 86.3046, 10.9438, -9.06185 )
 collision_mask = 3
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall3"]
