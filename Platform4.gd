@@ -2,8 +2,7 @@ extends KinematicBody
 
 var old_coord : Vector3 = Vector3.ZERO
 var velocity : Vector3 = Vector3.ZERO
-#func _physics_process(delta):
-	#move_and_collide(Vector3.LEFT*delta)
+
 func _ready():
 	set_physics_process(false)
 

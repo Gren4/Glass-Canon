@@ -4,10 +4,11 @@ class_name WeaponMain
 var weapon_manager = null
 var player = null
 var ray = null
+var default_fov : int = 90
 
 var is_equipped : bool = false
 
-export var weapon_name = "Weapon"
+export(String) var weapon_name : String = "Weapon"
 export(Texture) var weapon_image = null
 
 func is_weapon_automatic():

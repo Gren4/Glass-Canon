@@ -2,14 +2,18 @@ extends Spatial
 
 export(NodePath) var ray_path
 
-var all_weapons = {}
+export(NodePath) var camera_path
 
-var weapons = {}
+var all_weapons : Dictionary = {}
+
+var weapons : Dictionary = {}
 
 var hud 
 
+var camera
+
 var current_weapon
-var current_weapon_slot = "Empty"
+var current_weapon_slot : String = "Empty"
 
 var changing_weapon : bool = false
 var unequipped_weapon : bool = false
@@ -20,6 +24,7 @@ func _ready():
 	
 	hud = owner.get_node("HUD")
 	get_node(ray_path).add_exception(owner)
+	camera = get_node(camera_path)
 	
 	all_weapons = {
 		"Unarmed" : preload("res://Weapons/Unarmed/Unarmed.tscn"),
@@ -44,6 +49,7 @@ func _ready():
 func weapon_setup(w):
 	w.weapon_manager = self
 	w.player = owner
+	w.default_fov = camera.fov
 	w.ray = get_node(ray_path)
 	w.visible = false
 		
@@ -205,15 +211,15 @@ func hide_interaction_promt():
 	hud.hide_interaction_promt()
 
 func process_weapon_pickup():
-	var from = global_transform.origin
-	var to = global_transform.origin - global_transform.basis.z.normalized() * 3.0
-	var space_state = get_world().direct_space_state
+	var from : Vector3 = global_transform.origin
+	var to : Vector3 = global_transform.origin - global_transform.basis.z.normalized() * 3.0
+	var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 	var collision = space_state.intersect_ray(from,to,[owner],1)
 	
 	if collision:
 		var body = collision["collider"]
 		if body.has_method("get_weapon_pickup_data"):
-			var weapon_data = body.get_weapon_pickup_data()
+			var weapon_data : Dictionary = body.get_weapon_pickup_data()
 			show_interaction_promt(weapon_data["Name"])
 			if Input.is_action_just_pressed("interact"):
 				switch_weapon(weapon_data)

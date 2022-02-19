@@ -1,52 +1,25 @@
 extends Node
 
-export var min_load_amount = 50
+const MAX_INSTANCES_AT_A_TIME : int = 5
+export(int) var min_load_amount : int = 50 # Должен быть кратен 10
 var object_pool : Dictionary = {}
 var previous_object_taken : Dictionary = {}
 
-# При использовании время выполнения скриптов увеличилось с ~0.17 до 0.43 мс. 
-# Думаю нет смысла использовать данный подход
-#func _process(delta):
-#	for type in object_pool:
-#		for i in min_load_amount:
-#			if "cur_transparency" in object_pool[type][i]:
-#				if object_pool[type][i].cur_transparency > 0.0:
-#					var color : Color = Color(1.0,1.0,1.0,object_pool[type][i].cur_transparency)
-#					object_pool[type][i].process_material.set_color(color)
-#					object_pool[type][i].cur_transparency -= object_pool[type][i].lifetime_delta*delta
-#				else:
-#					object_pool[type][i].emitting = false
-#				#print("GOOD")
-#			#print(object_pool[type][i])
-
 func instantiate_node(packed_scene, pos = null, normal = null, parent = null):
-	var clone = packed_scene.instance()
-	clone.set_disable_scale(true)
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
-	if parent == null:
-		parent = root
-		
-	parent.add_child(clone)
-	
-	if pos != null:
-		clone.global_transform.origin = pos
-		if normal != null:
-			if normal.is_equal_approx(Vector3.UP):
-				clone.rotation_degrees.x = 90
-			elif normal.is_equal_approx(Vector3.DOWN):
-				clone.rotation_degrees.x = -90
-			else:
-				clone.look_at_from_position(pos, pos + normal, Vector3.UP)
-	
-	return clone
+	var clone = packed_scene.instance()
+	return place_node(root, clone, pos, normal, parent)
 	
 func spawn_node_from_pool(packed_scene, pos = null, normal = null, parent = null):
-	var clone = take_node_from_pool(packed_scene)
-	clone.set_disable_scale(true)
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
+	var clone = take_node_from_pool(root, packed_scene)
+	return place_node(root, clone, pos, normal, parent)
+	
+func place_node(root, clone, pos = null, normal = null, parent = null):
 	if parent == null:
 		parent = root
 		
+	clone.set_disable_scale(true)
 	parent.add_child(clone)
 	
 	if pos != null:
@@ -58,19 +31,21 @@ func spawn_node_from_pool(packed_scene, pos = null, normal = null, parent = null
 				clone.rotation_degrees.x = -90
 			else:
 				clone.look_at_from_position(pos, pos + normal, Vector3.UP)
-	
 	return clone
 	
-func take_node_from_pool(packed_scene):
+func take_node_from_pool(root, packed_scene):
 	var object
 	var scene_path : String = packed_scene.get_path()
-	if not scene_path in object_pool:
-		load_node_in_pool(packed_scene)
-	var index : int = previous_object_taken[scene_path]
+	var index : int
+	if previous_object_taken.has(scene_path):
+		index = previous_object_taken[scene_path] 
+	else:
+		 index = -1
 	if index + 1 > min_load_amount - 1:
 		index = 0
 	else:
 		index += 1
+	check_nodes(root, packed_scene, scene_path, index)
 	object = object_pool[scene_path][index]
 	var parent = object.get_parent()
 	if is_instance_valid(parent):
@@ -79,15 +54,24 @@ func take_node_from_pool(packed_scene):
 	previous_object_taken[scene_path] = index
 	return object
 
-func load_node_in_pool(packed_scene):
-	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
-	var scene_path : String = packed_scene.get_path()
-	for _i in min_load_amount:
-		var object = packed_scene.instance()
-		object.visible = false
-		if scene_path in object_pool:
-			object_pool[scene_path].append(object)
-		else:
-			object_pool[scene_path] = [object]
-		root.add_child(object)
-	previous_object_taken[scene_path] = -1
+func check_nodes(root, packed_scene, scene_path, index):
+	if not scene_path in object_pool:
+		load_node_in_pool(root, packed_scene, scene_path)
+		previous_object_taken[scene_path] = 0
+	else:
+		var size : int = object_pool[scene_path].size()
+		if size < min_load_amount and index >= size:
+			for i in range(size, size + (min_load_amount / MAX_INSTANCES_AT_A_TIME)):
+				if object_pool[scene_path].size() == min_load_amount:
+					return
+				else:
+					load_node_in_pool(root, packed_scene, scene_path)
+
+func load_node_in_pool(root, packed_scene, scene_path):
+	var object = packed_scene.instance()
+	object.visible = false
+	if scene_path in object_pool:
+		object_pool[scene_path].append(object)
+	else:
+		object_pool[scene_path] = [object]
+	root.add_child(object)

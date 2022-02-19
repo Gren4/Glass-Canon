@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -8,6 +8,9 @@
 [ext_resource path="res://Weapons/Armed/Gun/Gun_pickup.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Platform4.gd" type="Script" id=7]
 [ext_resource path="res://Weapons/Pickup/AmmoPickup.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Weapons/Armed/Smoke/Smoke.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=11]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -84,6 +87,12 @@ tracks/1/keys = {
 
 [sub_resource type="BoxShape" id=8]
 
+[sub_resource type="ParticlesMaterial" id=12]
+resource_local_to_scene = true
+direction = Vector3( 0, 0, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+
 [node name="World" type="Spatial"]
 script = ExtResource( 5 )
 
@@ -101,11 +110,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8005, 1.51433, 0 )
 weapon_name = "Gun"
 
 [node name="GunPickUp" parent="Pickups" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.102757, 14.8805, -5.64778 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017118, 14.8805, -3.34875 )
 extra_ammo = 100
 
 [node name="GunPickUp2" parent="Pickups" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.0139, 1.90787, -33.6518 )
+extra_ammo = 200
 
 [node name="Map" type="Spatial" parent="."]
 
@@ -255,6 +265,15 @@ material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Stairs"]
 shape = SubResource( 8 )
+
+[node name="Particles" type="Node" parent="."]
+
+[node name="GunBulletHole" parent="Particles" instance=ExtResource( 10 )]
+process_material = SubResource( 12 )
+
+[node name="Smoke" parent="Particles" instance=ExtResource( 9 )]
+
+[node name="MuzzleFlash" parent="Particles" instance=ExtResource( 11 )]
 
 [connection signal="body_entered" from="Map/MoovingPlatform/Area" to="Map/MoovingPlatform" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Map/MoovingPlatform/Area" to="Map/MoovingPlatform" method="_on_Area_body_exited"]

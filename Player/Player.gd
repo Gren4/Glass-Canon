@@ -44,8 +44,18 @@ const SPEED_S : float = 100.0
 var speed : float = SPEED_N
 var accel : float = ACCEL
 var gravity : float = 40.0
+
+const SLIDE_JUMP_MULTIPLIER : float = 1.25
+
+onready var player_height : float = $CollisionShape.get_shape().height
+const PLAYER_HEIGHT_DEVIATION : float = 0.1
+
 var jump_power : float = 20.0
 var mouseSensivity : float = 0.3
+
+const RAD_ANGLE_HEAD_ROTATION_CLAMP : float = 1.54
+const RAD_ANGLE_AXIS_XY_LIMITATION : float = 1.58
+const DEG_ANGLE_AXIS_Z_LIMITATION : int = 75
 
 var isceil_tek : bool = true
 var isfloor_tek : bool = true
@@ -67,6 +77,10 @@ var canSlide : bool = true
 
 var canWallRun : bool = true
 
+const DEG_ANGLE_AXIS_XY_LIMITATION : int = 15
+const WALLRUN_ANGLE_DELTA_COEFF : int = 70
+const NO_WALLRUN_ANGLE_DELTA_COEFF : int = 40
+
 var wall_id : int
 var wallrun_dir : Vector3 = Vector3.ZERO
 var dot_old : float
@@ -80,19 +94,20 @@ var climbPoint : Vector3 = Vector3.ZERO
 var rotateTo : Vector3 = Vector3.ZERO
 ####################################################################
 
+const MAX_WALL_JUMP : int = 3
 var wall_jump_horizontal_power : float = 5.0
 var wall_jump_vertical_power : float = 0.7
 var wall_jump_factor : float = 0.4
-var coun_wall_jump : int = 3
+var coun_wall_jump : int = MAX_WALL_JUMP
 
 var interactable_items_count : int = 0
 
 func init() -> void:
-		velocityXY = Vector3.ZERO
-		velocity = Vector3.ZERO
-		direction = Vector3.ZERO
-		wallrun_dir = Vector3.ZERO
-		snap = Vector3.ZERO
+	velocityXY = Vector3.ZERO
+	velocity = Vector3.ZERO
+	direction = Vector3.ZERO
+	wallrun_dir = Vector3.ZERO
+	snap = Vector3.ZERO
 
 func initSlide() -> void:
 	isSliding = true
@@ -111,7 +126,7 @@ func primary_setup(delta) -> void:
 	
 	
 	if (isceil_tek):
-		velocity.y -= 9.8
+		velocity.y -= gravity / 4
 	if (not isfloor_tek):
 		if not isClimbing:
 			if isSliding:
@@ -132,7 +147,7 @@ func primary_setup(delta) -> void:
 		if timerCanJump.is_stopped() and canJump:
 			timerCanJump.start()
 	else:
-		coun_wall_jump = 3
+		coun_wall_jump = MAX_WALL_JUMP
 		timerCanWallRun.stop()
 		if isSliding:
 			velocity.y = 0
@@ -150,7 +165,7 @@ func floor_jump() -> void:
 		if isSliding:
 			timerSlide.stop()
 			finSlide()
-			velocity.y = 1.25 * jump_power
+			velocity.y = SLIDE_JUMP_MULTIPLIER * jump_power
 		else:
 			velocity.y = jump_power
 		snap = Vector3.ZERO
@@ -190,7 +205,7 @@ func wall_run() -> void:
 					# Нормаль к плоскости стены
 					var normal : Vector3 = wall_normal.normal
 					
-					if normal.angle_to(Vector3.UP) > 1.58:
+					if normal.angle_to(Vector3.UP) > RAD_ANGLE_AXIS_XY_LIMITATION:
 						return
 					# Рассчитываем направление вдоль стены
 					wallrun_dir = Vector3.UP.cross(normal)
@@ -218,7 +233,7 @@ func wall_run() -> void:
 						angle = rad2deg(angle)
 						if dot < 0:
 							angle = -angle
-						if angle < -75:
+						if angle < -DEG_ANGLE_AXIS_Z_LIMITATION:
 							isWallRunning = false
 							return
 					else:
@@ -231,7 +246,7 @@ func wall_run() -> void:
 						angle = rad2deg(angle)
 						if dot < 0:
 							angle = -angle
-						if angle < -75:
+						if angle < -DEG_ANGLE_AXIS_Z_LIMITATION:
 							isWallRunning = false
 							canWallRun = false
 							timerCanWallRun.start()
@@ -266,7 +281,7 @@ func wall_jump() -> void:
 			velocity.y = jump_power * wall_jump_vertical_power
 			var normal : Vector3 = wall_normal.normal
 			dop_velocity = normal * wall_jump_horizontal_power * wall_jump_factor
-			coun_wall_jump = 3
+			coun_wall_jump = MAX_WALL_JUMP
 	elif iswall_tek and not isfloor_tek and coun_wall_jump > 0:
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3.ZERO
@@ -303,7 +318,7 @@ func edge_climb(delta) -> void:
 						var view_dir_2d : Vector2 = Vector2(player_view_dir.x, player_view_dir.z)
 						# Угол между вектором2 стены и вектором2 направлением камеры игрока
 						var angleClimb : float = rad2deg(normal_2d.angle_to(view_dir_2d))
-						rayEmpty.translation.y = ClimbPoint.y + 0.1
+						rayEmpty.translation.y = ClimbPoint.y + PLAYER_HEIGHT_DEVIATION
 						rayEmpty.rotation_degrees.y = angleClimb
 						rayTopPoint.translation.y = ClimbPoint.y
 						rayEmpty.force_raycast_update()
@@ -311,17 +326,18 @@ func edge_climb(delta) -> void:
 							rayTop.force_raycast_update()
 							if rayTop.is_colliding():
 								var TopPoint : Vector3 = to_local(rayTop.get_collision_point())
-								if TopPoint.y - ClimbPoint.y < 1.3:
+								if TopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
 									return
 							rayTopPoint.force_raycast_update()
 							if rayTopPoint.is_colliding():
 								var ClimbTopPoint : Vector3 = to_local(rayTopPoint.get_collision_point())
-								if ClimbTopPoint.y - ClimbPoint.y < 1.3:
+								if ClimbTopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
 									return
 							rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
 							climbPoint = (rayClimb.get_collision_point())
 							isClimbing = true
 							isWallRunning = false
+							dop_velocity = Vector3.ZERO
 							timerSlide.stop()
 							finSlide()
 							direction = normal * 0.5
@@ -331,8 +347,7 @@ func edge_climb(delta) -> void:
 	if isClimbing:
 		snap = Vector3.ZERO
 		self.rotation_degrees = self.rotation_degrees.linear_interpolate(rotateTo, delta * 10)
-		if transform.origin.y > climbPoint.y + 1.25:
-			velocity = Vector3(0,-gravity/4,0)
+		if transform.origin.y > climbPoint.y + player_height or isfloor_tek:
 			direction = Vector3.ZERO
 			velocity = Vector3.ZERO
 			isClimbing = false
@@ -341,7 +356,7 @@ func sliding() -> void:
 	if canSlide and not isWallRunning:
 		if Input.is_action_just_pressed("shift"):
 			if not isSliding:
-				if direction == Vector3.ZERO or isWallRunning:
+				if direction == Vector3.ZERO:
 					direction -= self.get_global_transform().basis.z
 				initSlide()
 
@@ -360,27 +375,27 @@ func finalize_velocity(delta) -> void:
 	velocity.z = velocityXY.z
 	
 	var vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	
-	if vel_info.length() < 3.0 or not isfloor_tek or isSliding or isClimbing:
+	var cur_speed : float = vel_info.length()
+	if cur_speed < 3.0 or not isfloor_tek or isSliding or isClimbing:
 		animation_player.play("RESET", 0.1, 1.0)
 	else:
-		animation_player.play("HeadBop", 0.1, 1.5)
+		animation_player.play("HeadBop", 0.1, 1.5 * cur_speed / speed)
 		
 	
 func camera_transform(delta) -> void:
 	if isWallRunning:
 		if sideW == LEFT:
-			wallrun_current_angle += delta * 70
-			wallrun_current_angle = clamp(wallrun_current_angle, -15, 15)
+			wallrun_current_angle += delta * WALLRUN_ANGLE_DELTA_COEFF
+			wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
 		elif sideW == RIGHT:
-			wallrun_current_angle -= delta * 70
-			wallrun_current_angle = clamp(wallrun_current_angle, -15, 15)
+			wallrun_current_angle -= delta * WALLRUN_ANGLE_DELTA_COEFF
+			wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
 	else:
 		if wallrun_current_angle > 0:
-			wallrun_current_angle -= delta * 40
+			wallrun_current_angle -= delta * NO_WALLRUN_ANGLE_DELTA_COEFF
 			wallrun_current_angle = max(0, wallrun_current_angle)
 		elif wallrun_current_angle < 0:
-			wallrun_current_angle += delta * 40
+			wallrun_current_angle += delta * NO_WALLRUN_ANGLE_DELTA_COEFF
 			wallrun_current_angle = min(wallrun_current_angle, 0)
 	
 	camera.rotation_degrees = Vector3(0, 0, 1) * wallrun_current_angle
@@ -412,11 +427,10 @@ func process_weapons(delta) -> void:
 	if weapon_manager.current_weapon.name != "Unarmed":
 		weapon_manager.current_weapon.sway(delta)
 		
-	if Input.is_action_pressed("ads"):
+	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
 		weapon_manager.current_weapon.aim_down_sights(true, delta)
 	else:
 		weapon_manager.current_weapon.aim_down_sights(false, delta)
-		
 	
 func _ready():
 	set_disable_scale(true)
@@ -429,7 +443,7 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseMotion:
 		head.rotate_x(deg2rad(-event.relative.y * mouseSensivity))
-		head.rotation.x = clamp(head.rotation.x, -1.54, 1.54)
+		head.rotation.x = clamp(head.rotation.x, -RAD_ANGLE_HEAD_ROTATION_CLAMP, RAD_ANGLE_HEAD_ROTATION_CLAMP)
 		if not isClimbing:
 			self.rotate_y(deg2rad(-event.relative.x * mouseSensivity))
 		

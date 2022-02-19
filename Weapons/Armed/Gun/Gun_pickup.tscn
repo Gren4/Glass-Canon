@@ -9,7 +9,7 @@ extents = Vector3( 4, 4, 3 )
 [sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 0.041021, 0.227871, 0.403959 )
+extents = Vector3( 0.0648308, 0.283131, 0.403959 )
 
 [node name="GunPickUp" type="RigidBody"]
 mass = 20.0
