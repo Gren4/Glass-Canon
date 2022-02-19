@@ -23,6 +23,9 @@ func hide_loading_screen():
 	$LoadingScreen.visible = false
 	$Background.visible = true
 	hide_interaction_promt()
+	
+func update_health(hp):
+	health_ui.text = "Health: " + String(hp)
 
 func update_weapon_ui(weapon_data, weapon_slot):
 	slot_ui.text = weapon_slot
@@ -34,6 +37,7 @@ func update_weapon_ui(weapon_data, weapon_slot):
 func show_interaction_promt(description = "Interact"):
 	$InteractionPrompt.visible = true
 	$InteractionPrompt/Description.text = description
+	$InteractionPrompt/Key.text = OS.get_scancode_string(InputMap.get_action_list("interact")[0].scancode)
 	$Crosshair.visible = false
 
 func hide_interaction_promt():

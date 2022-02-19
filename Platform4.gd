@@ -11,13 +11,13 @@ func _physics_process(delta):
 	old_coord = translation
 
 func _on_Area_body_entered(body):
-	if body.get_name() == "Player":
+	if body.is_in_group("Player") or body.is_in_group("Enemy"):
 		body.not_on_moving_platform = false
 		set_physics_process(true)
 
 
 func _on_Area_body_exited(body):
-	if body.get_name() == "Player":
+	if body.is_in_group("Player") or body.is_in_group("Enemy"):
 		body.not_on_moving_platform = true
 		body.dop_velocity = velocity / 8
 		set_physics_process(false)

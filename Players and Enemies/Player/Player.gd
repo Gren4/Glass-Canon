@@ -1,6 +1,7 @@
-extends KinematicBody
+extends Players_and_Enemies
 
 export(NodePath) var head_path
+export(NodePath) var wall_run_path
 export(NodePath) var camera_path
 export(NodePath) var weapon_manager_path
 
@@ -15,8 +16,10 @@ export(NodePath) var timer_slide_path
 export(NodePath) var timer_can_slide_path
 
 export(NodePath) var animation_player_path
+export(NodePath) var hud_path
 
 onready var head = get_node(head_path)
+onready var wall_run_camera = get_node(wall_run_path)
 onready var camera = get_node(camera_path)
 onready var weapon_manager = get_node(weapon_manager_path)
 
@@ -31,27 +34,22 @@ onready var timerSlide = get_node(timer_slide_path)
 onready var timerCanSlide = get_node(timer_can_slide_path)
 
 onready var animation_player = get_node(animation_player_path)
+onready var hud = get_node(hud_path)
 
-onready var defTransform = transform
-
-const ACCEL : float = 10.0
-const ACCEL_AIR  : float= 5.0
-enum { LEFT, RIGHT, CENTER = -1}
-const SPEED_N : float = 20.0
-const SPEED_W : float = 25.0
-const SPEED_S : float = 100.0
-
-var speed : float = SPEED_N
-var accel : float = ACCEL
-var gravity : float = 40.0
+onready var defTransform = global_transform
 
 const SLIDE_JUMP_MULTIPLIER : float = 1.25
 
 onready var player_height : float = $CollisionShape.get_shape().height
 const PLAYER_HEIGHT_DEVIATION : float = 0.1
 
+const ADS_SENSIVITY : float = 0.1
+const NORMAL_SENSIVITY : float = 0.3
+const ADS_FINE : float =  10.0
+var isADS : bool = false
+
 var jump_power : float = 20.0
-var mouseSensivity : float = 0.3
+var mouseSensivity : float = NORMAL_SENSIVITY
 
 const RAD_ANGLE_HEAD_ROTATION_CLAMP : float = 1.54
 const RAD_ANGLE_AXIS_XY_LIMITATION : float = 1.58
@@ -61,14 +59,7 @@ var isceil_tek : bool = true
 var isfloor_tek : bool = true
 var iswall_tek : bool = true
 
-var dop_velocity : Vector3 = Vector3.ZERO
-var velocityXY : Vector3 = Vector3.ZERO
-var velocity : Vector3 = Vector3.ZERO
-var direction : Vector3 = Vector3.ZERO
-var snap : Vector3 = Vector3.ZERO
 var wall_normal : KinematicCollision = null
-
-var not_on_moving_platform : bool = true
 
 var canJump : bool = true
 
@@ -101,6 +92,55 @@ var wall_jump_factor : float = 0.4
 var coun_wall_jump : int = MAX_WALL_JUMP
 
 var interactable_items_count : int = 0
+	
+func _ready():
+	update_health()
+	set_disable_scale(true)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	set_process(true)
+	set_physics_process(true)
+	set_process_input(true)
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		if isADS:
+			mouseSensivity = ADS_SENSIVITY
+		else:
+			mouseSensivity = NORMAL_SENSIVITY
+		head.rotate_x(deg2rad(-event.relative.y * mouseSensivity))
+		head.rotation.x = clamp(head.rotation.x, -RAD_ANGLE_HEAD_ROTATION_CLAMP, RAD_ANGLE_HEAD_ROTATION_CLAMP)
+		if not isClimbing:
+			self.rotate_y(deg2rad(-event.relative.x * mouseSensivity))
+		
+	if event is InputEventMouseButton:
+		if event.pressed:
+			match event.button_index:
+				BUTTON_WHEEL_UP:
+					weapon_manager.next_weapon()
+				BUTTON_WHEEL_DOWN:
+					weapon_manager.previous_weapon()
+
+func _process(_delta):
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		get_tree().quit()
+	if global_transform.origin.y < -50:
+		set_physics_process(false)
+		init()
+		global_transform = defTransform
+		set_physics_process(true)
+	
+func _physics_process(delta):
+	primary_setup(delta)
+	floor_jump()
+	edge_climb(delta)
+	if not isClimbing and not isSliding:
+		movement_inputs()
+		wall_run_and_jump()
+	sliding()
+	camera_transform(delta)
+	finalize_velocity(delta)
+	process_weapons(delta)
 
 func init() -> void:
 	velocityXY = Vector3.ZERO
@@ -135,7 +175,7 @@ func primary_setup(delta) -> void:
 				if isWallRunning:
 					velocity.y -= gravity / 30 * delta
 				elif iswall_tek and velocity.y <= 0:
-					velocity.y -= gravity / 4 * delta
+					velocity.y -= gravity / 2 * delta
 				else:
 					velocity.y -= gravity * delta
 			if not isWallRunning and iswall_tek:
@@ -363,10 +403,13 @@ func sliding() -> void:
 func finalize_velocity(delta) -> void:
 	if isSliding:
 		speed = SPEED_S
-	elif isWallRunning:
-		speed = SPEED_W
 	else:
-		speed = SPEED_N
+		if isWallRunning:
+			speed = SPEED_W
+		else:
+			speed = SPEED_N
+		if isADS:
+			speed -= ADS_FINE
 		
 	direction = direction.normalized()
 	velocityXY = velocityXY.linear_interpolate(direction * speed, accel * delta) + dop_velocity
@@ -377,9 +420,9 @@ func finalize_velocity(delta) -> void:
 	var vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	var cur_speed : float = vel_info.length()
 	if cur_speed < 3.0 or not isfloor_tek or isSliding or isClimbing:
-		animation_player.play("RESET", 0.1, 1.0)
+		animation_player.play("RESET", -1, 1.0)
 	else:
-		animation_player.play("HeadBop", 0.1, 1.5 * cur_speed / speed)
+		animation_player.play("HeadBop", 0.1, 1.5 * cur_speed / SPEED_N)
 		
 	
 func camera_transform(delta) -> void:
@@ -398,7 +441,7 @@ func camera_transform(delta) -> void:
 			wallrun_current_angle += delta * NO_WALLRUN_ANGLE_DELTA_COEFF
 			wallrun_current_angle = min(wallrun_current_angle, 0)
 	
-	camera.rotation_degrees = Vector3(0, 0, 1) * wallrun_current_angle
+	wall_run_camera.rotation_degrees.z =  wallrun_current_angle
 
 func process_weapons(delta) -> void:
 	if Input.is_action_just_pressed("empty"):
@@ -428,55 +471,14 @@ func process_weapons(delta) -> void:
 		weapon_manager.current_weapon.sway(delta)
 		
 	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
+		isADS = true
 		weapon_manager.current_weapon.aim_down_sights(true, delta)
 	else:
+		isADS = false
 		weapon_manager.current_weapon.aim_down_sights(false, delta)
-	
-func _ready():
-	set_disable_scale(true)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	set_process(true)
-	set_physics_process(true)
-	set_process_input(true)
-	
 
-func _input(event):
-	if event is InputEventMouseMotion:
-		head.rotate_x(deg2rad(-event.relative.y * mouseSensivity))
-		head.rotation.x = clamp(head.rotation.x, -RAD_ANGLE_HEAD_ROTATION_CLAMP, RAD_ANGLE_HEAD_ROTATION_CLAMP)
-		if not isClimbing:
-			self.rotate_y(deg2rad(-event.relative.x * mouseSensivity))
-		
-	if event is InputEventMouseButton:
-		if event.pressed:
-			match event.button_index:
-				BUTTON_WHEEL_UP:
-					weapon_manager.next_weapon()
-				BUTTON_WHEEL_DOWN:
-					weapon_manager.previous_weapon()
-
-func _process(_delta):
-	if Input.is_action_just_pressed("ui_cancel"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		get_tree().quit()
-	if transform.origin.y < -50:
-		set_physics_process(false)
-		init()
-		transform = defTransform
-		set_physics_process(true)
-	
-func _physics_process(delta):
-	primary_setup(delta)
-	floor_jump()
-	edge_climb(delta)
-	if not isClimbing and not isSliding:
-		movement_inputs()
-		wall_run_and_jump()
-	sliding()
-	camera_transform(delta)
-	finalize_velocity(delta)
-	process_weapons(delta)
-
+func update_health():
+	hud.update_health(current_health)
 ################################## Таймеры ##################################
 
 func _on_CanJump_timeout():

@@ -75,3 +75,18 @@ func load_node_in_pool(root, packed_scene, scene_path):
 	else:
 		object_pool[scene_path] = [object]
 	root.add_child(object)
+	
+	
+###############################
+
+func look_face(_self, target, rotationSpeed, delta):
+	var global_pos = _self.global_transform.origin
+	var wtransform = _self.global_transform.looking_at(target,Vector3.UP)
+	var wrotation = Quat(_self.global_transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
+	_self.global_transform = Transform(Basis(wrotation), _self.global_transform.origin)
+
+func turn_face(_self, target, rotationSpeed, delta):
+	var global_pos = _self.global_transform.origin
+	var wtransform = _self.global_transform.looking_at(Vector3(target.x,global_pos.y,target.z),Vector3.UP)
+	var wrotation = Quat(_self.global_transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
+	_self.global_transform = Transform(Basis(wrotation), _self.global_transform.origin)

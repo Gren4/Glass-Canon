@@ -65,31 +65,39 @@ func fire_stop():
 	is_firing = false
 	if is_automatic:
 		animation_player.get_animation("Fire").loop = false
+		muzzle_flash.one_shot = true
 	
 func fire_bullet():
+	if is_automatic:
+		muzzle_flash.one_shot = false
 	muzzle_flash.emitting = true
 	update_ammo("consume")
 	
 	ray.force_raycast_update()
 	
 	if ray.is_colliding():
+		var obj : Object = ray.get_collider()
 		var ray_point : Vector3 = ray.get_collision_point()
+		var ray_normal : Vector3 = ray.get_collision_normal()
 		var impact = Global.spawn_node_from_pool(impact_effect, ray_point)
 		impact.emitting = true
-		var obj : Object = ray.get_collider()
 		if (obj.is_in_group("World")):
-			var ray_normal : Vector3 = ray.get_collision_normal()
 			var hole = Global.spawn_node_from_pool(hole_effect, ray_point, -ray_normal, obj)
-			hole.emitting = true
+			hole.visible = true
 			hole.cur_transparency = 1.0
 			var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
 			smoke.emitting = true
+		elif (obj.is_in_group("Enemy")):
+			obj.update_hp(damage)
+			
 			
 func reload():
 	if ammo_in_mag < mag_size and extra_ammo > 0:
 		is_firing = false
 		animation_player.play("Reload", -1.0, reload_speed)
 		is_reloading = true
+		if is_automatic:
+			muzzle_flash.one_shot = true
 
 func equip() -> void:
 	animation_player.play("Equip", -1.0, equip_speed)

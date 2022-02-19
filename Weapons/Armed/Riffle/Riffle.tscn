@@ -1,13 +1,14 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://Weapons/Armed/Gun/Gun.gd" type="Script" id=1]
-[ext_resource path="res://Materials/Shader/Gun_shadermaterial.tres" type="Material" id=2]
-[ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Weapons/Armed/Gun/Gun_pickup.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Materials/Shader/Gun_shadermaterial.tres" type="Material" id=1]
+[ext_resource path="res://Weapons/Armed/Riffle/Riffle.gd" type="Script" id=2]
+[ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Weapons/Armed/Riffle/Riffle_pickup.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Weapons/Armed/Smoke/Smoke.tscn" type="PackedScene" id=6]
 
 [sub_resource type="CubeMesh" id=1]
+size = Vector3( 3.446, 2, 3.5 )
 
 [sub_resource type="ParticlesMaterial" id=8]
 resource_local_to_scene = true
@@ -62,7 +63,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=6]
 resource_name = "Fire"
-length = 0.5
+length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Root/Anchor:rotation_degrees")
 tracks/0/interp = 1
@@ -70,10 +71,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 0.210224, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 0.210224, 0.120742, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 25, 0, 0 ), Vector3( -5, 0, 0 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 5, 0, 0 ), Vector3( -1, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath(".")
@@ -162,20 +163,19 @@ tracks/1/keys = {
 } ]
 }
 
-[node name="Gun" type="Spatial"]
-script = ExtResource( 1 )
-weapon_name = "Gun"
+[node name="Riffle" type="Spatial"]
+script = ExtResource( 2 )
 weapon_pickup = ExtResource( 5 )
-ammo_in_mag = 20
-extra_ammo = 1500
-equip_pos = Vector3( 0.735, -0.222, -0.589 )
-impact_effect = ExtResource( 3 )
-hole_effect = ExtResource( 4 )
+ammo_in_mag = 60
+extra_ammo = 120
+is_automatic = true
+fire_rate = 3.0
+equip_pos = Vector3( 0.745, -0.351, -0.335 )
+impact_effect = ExtResource( 4 )
+hole_effect = ExtResource( 3 )
 smoke_effect = ExtResource( 6 )
 muzzle_flash_path = NodePath("Root/Anchor/MuzzleFlash")
-equip_speed = 2.0
-unequip_speed = 2.0
-ads_pos = Vector3( 0, -0.4, -0.7 )
+ads_pos = Vector3( 0, -0.305, -0.181 )
 
 [node name="Root" type="Spatial" parent="."]
 
@@ -190,18 +190,14 @@ transform = Transform( 0.04, 0, 0, 0, 0.103, 0, 0, 0, 0.3, 0, 0, -0.3 )
 layers = 2
 mesh = SubResource( 1 )
 skeleton = NodePath("../../../..")
-material/0 = ExtResource( 2 )
+material/0 = ExtResource( 1 )
 
-[node name="Down" type="MeshInstance" parent="Root/Anchor/Body"]
-transform = Transform( 0.04, 0, 0, 0, 0.0307831, -0.157602, 0, 0.0394005, 0.123132, 0, -0.148299, 0.0265774 )
+[node name="MuzzleFlash" parent="Root/Anchor" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.50238 )
 layers = 2
-mesh = SubResource( 1 )
-skeleton = NodePath("../../../..")
-material/0 = ExtResource( 2 )
-
-[node name="MuzzleFlash" parent="Root/Anchor" instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.28109 )
-layers = 2
+amount = 2
+lifetime = 0.3
+one_shot = false
 process_material = SubResource( 8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

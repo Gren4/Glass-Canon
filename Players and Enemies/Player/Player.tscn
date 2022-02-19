@@ -1,12 +1,12 @@
 [gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://Player/Player.gd" type="Script" id=1]
-[ext_resource path="res://Player/HUD/HUD.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Weapons/Unarmed/Unarmed.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Player/ViewportSettings.gd" type="Script" id=5]
-[ext_resource path="res://Player/WeaponCamera.gd" type="Script" id=6]
-[ext_resource path="res://Player/WeaponsManager.gd" type="Script" id=7]
-[ext_resource path="res://Assets/ShaderPrecompiler/ShaderPrecompiler.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Players and Enemies/Player/ViewportSettings.gd" type="Script" id=1]
+[ext_resource path="res://Players and Enemies/Player/WeaponCamera.gd" type="Script" id=2]
+[ext_resource path="res://Players and Enemies/Player/WeaponsManager.gd" type="Script" id=3]
+[ext_resource path="res://Players and Enemies/Player/Player.gd" type="Script" id=4]
+[ext_resource path="res://Assets/ShaderPrecompiler/ShaderPrecompiler.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Players and Enemies/Player/HUD/HUD.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Weapons/Unarmed/Unarmed.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.75
@@ -21,7 +21,7 @@ resource_name = "HeadBop"
 length = 0.7
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head/HeadBop:translation")
+tracks/0/path = NodePath("Head/WallRun/HeadBop:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -36,7 +36,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head/HeadBop:translation")
+tracks/0/path = NodePath("Head/WallRun/HeadBop:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -49,10 +49,12 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="KinematicBody"]
-script = ExtResource( 1 )
+collision_layer = 5
+script = ExtResource( 4 )
 head_path = NodePath("Head")
-camera_path = NodePath("Head/HeadBop/Camera")
-weapon_manager_path = NodePath("Head/Weapons")
+wall_run_path = NodePath("Head/WallRun")
+camera_path = NodePath("Head/WallRun/HeadBop/Camera")
+weapon_manager_path = NodePath("Head/WallRun/Weapons")
 ray_climb_path = NodePath("ClimbRays/RayClimb")
 ray_top_path = NodePath("ClimbRays/RayTop")
 ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
@@ -62,6 +64,7 @@ timer_can_wall_run_path = NodePath("Timers/CanWallRun")
 timer_slide_path = NodePath("Timers/Slide")
 timer_can_slide_path = NodePath("Timers/CanSlide")
 animation_player_path = NodePath("AnimationPlayer")
+hud_path = NodePath("HUD")
 
 [node name="ClimbRays" type="Spatial" parent="."]
 
@@ -90,11 +93,12 @@ __meta__ = {
 }
 
 [node name="Viewport" type="Viewport" parent="WeaponNoClipping"]
-size = Vector2( 1024, 600 )
+size = Vector2( 1920, 1080 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 3
-script = ExtResource( 5 )
+shadow_atlas_size = 1
+script = ExtResource( 1 )
 
 [node name="WeaponCamera" type="Camera" parent="WeaponNoClipping/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.818, 0 )
@@ -102,38 +106,40 @@ cull_mask = 2
 fov = 90.0
 near = 0.01
 far = 7.0
-script = ExtResource( 6 )
-main_cam_path = NodePath("../../../Head/HeadBop/Camera")
+script = ExtResource( 2 )
+main_cam_path = NodePath("../../../Head/WallRun/HeadBop/Camera")
 
-[node name="ShaderPrecompiler" parent="WeaponNoClipping/Viewport/WeaponCamera" instance=ExtResource( 9 )]
+[node name="ShaderPrecompiler" parent="WeaponNoClipping/Viewport/WeaponCamera" instance=ExtResource( 6 )]
 
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.818, 0 )
 
-[node name="HeadBop" type="Spatial" parent="Head"]
+[node name="WallRun" type="Spatial" parent="Head"]
+
+[node name="HeadBop" type="Spatial" parent="Head/WallRun"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
 
-[node name="Camera" type="Camera" parent="Head/HeadBop"]
+[node name="Camera" type="Camera" parent="Head/WallRun/HeadBop"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0 )
 cull_mask = 1048573
 current = true
 fov = 90.0
 far = 250.0
 
-[node name="RayCast" type="RayCast" parent="Head/HeadBop/Camera"]
+[node name="RayCast" type="RayCast" parent="Head/WallRun/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )
 
-[node name="ShaderPrecompiler" parent="Head/HeadBop/Camera" instance=ExtResource( 9 )]
+[node name="ShaderPrecompiler" parent="Head/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
 
-[node name="Weapons" type="Spatial" parent="Head"]
-script = ExtResource( 7 )
+[node name="Weapons" type="Spatial" parent="Head/WallRun"]
+script = ExtResource( 3 )
 ray_path = NodePath("../HeadBop/Camera/RayCast")
 camera_path = NodePath("../HeadBop/Camera")
 
-[node name="Unarmed" parent="Head/Weapons" instance=ExtResource( 4 )]
+[node name="Unarmed" parent="Head/WallRun/Weapons" instance=ExtResource( 9 )]
 visible = false
 
-[node name="Timers" type="Spatial" parent="."]
+[node name="Timers" type="Node" parent="."]
 
 [node name="CanWallRun" type="Timer" parent="Timers"]
 wait_time = 0.5
@@ -150,7 +156,7 @@ wait_time = 0.5
 wait_time = 0.08
 one_shot = true
 
-[node name="HUD" parent="." instance=ExtResource( 3 )]
+[node name="HUD" parent="." instance=ExtResource( 8 )]
 pause_mode = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

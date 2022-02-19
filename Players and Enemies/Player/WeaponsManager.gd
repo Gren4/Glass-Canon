@@ -28,7 +28,8 @@ func _ready():
 	
 	all_weapons = {
 		"Unarmed" : preload("res://Weapons/Unarmed/Unarmed.tscn"),
-		"Gun" : preload("res://Weapons/Armed/Gun/Gun.tscn")
+		"Gun" : preload("res://Weapons/Armed/Gun/Gun.tscn"),
+		"Riffle" : preload("res://Weapons/Armed/Riffle/Riffle.tscn")
 	}
 	
 	weapons = {
@@ -214,7 +215,7 @@ func process_weapon_pickup():
 	var from : Vector3 = global_transform.origin
 	var to : Vector3 = global_transform.origin - global_transform.basis.z.normalized() * 3.0
 	var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
-	var collision = space_state.intersect_ray(from,to,[owner],1)
+	var collision = space_state.intersect_ray(from,to,[owner],128)
 	
 	if collision:
 		var body = collision["collider"]
