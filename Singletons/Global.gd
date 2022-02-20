@@ -16,11 +16,17 @@ func spawn_node_from_pool(packed_scene, pos = null, normal = null, parent = null
 	return place_node(root, clone, pos, normal, parent)
 	
 func place_node(root, clone, pos = null, normal = null, parent = null):
+	clone.set_disable_scale(true)
 	if parent == null:
 		parent = root
-		
-	clone.set_disable_scale(true)
-	parent.add_child(clone)
+		parent.add_child(clone)
+	else:
+		if parent.is_in_group("Enemy"):
+			var place_holder : Spatial = parent.get_node("GlobalParticles")
+			place_holder.set_disable_scale(true)
+			place_holder.add_child(clone)
+		else:
+			parent.add_child(clone)
 	
 	if pos != null:
 		clone.global_transform.origin = pos

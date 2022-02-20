@@ -38,6 +38,18 @@ onready var hud = get_node(hud_path)
 
 onready var defTransform = global_transform
 
+const ACCEL : float = 10.0
+const ACCEL_AIR  : float= 5.0
+enum { LEFT, RIGHT, CENTER = -1}
+const SPEED_N : float = 20.0
+const SPEED_W : float = 25.0
+const SPEED_S : float = 100.0
+
+var current_health : int = 100
+
+var speed : float = SPEED_N
+var accel : float = ACCEL
+
 const SLIDE_JUMP_MULTIPLIER : float = 1.25
 
 onready var player_height : float = $CollisionShape.get_shape().height
@@ -88,7 +100,7 @@ var rotateTo : Vector3 = Vector3.ZERO
 const MAX_WALL_JUMP : int = 3
 var wall_jump_horizontal_power : float = 5.0
 var wall_jump_vertical_power : float = 0.7
-var wall_jump_factor : float = 0.4
+var wall_jump_factor : float = 0.2
 var coun_wall_jump : int = MAX_WALL_JUMP
 
 var interactable_items_count : int = 0
@@ -477,7 +489,8 @@ func process_weapons(delta) -> void:
 		isADS = false
 		weapon_manager.current_weapon.aim_down_sights(false, delta)
 
-func update_health():
+func update_health(value = 0):
+	current_health += value
 	hud.update_health(current_health)
 ################################## Таймеры ##################################
 

@@ -14,7 +14,7 @@
 [ext_resource path="res://Weapons/Armed/Smoke/SmokeGradient.tres" type="Gradient" id=12]
 [ext_resource path="res://Weapons/Armed/Riffle/Riffle_pickup.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=14]
-[ext_resource path="res://Players and Enemies/Enemies/Enemy.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Players and Enemies/Enemies/Enemy/Enemy.tscn" type="PackedScene" id=15]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -141,11 +141,7 @@ scale = 0.18
 script = ExtResource( 5 )
 
 [node name="Enemy" parent="." instance=ExtResource( 15 )]
-transform = Transform( 0.733149, 0, -0.680069, 0, 1, 0, 0.680069, 0, 0.733149, -0.733149, 3.60268, -30.049 )
-player_path = NodePath("../Player")
-
-[node name="Enemy2" parent="." instance=ExtResource( 15 )]
-transform = Transform( -0.408187, 0, 0.912898, 0, 1, 0, -0.912898, 0, -0.408187, 41.231, 3.89519, -60.22 )
+transform = Transform( 0.733149, 0, -0.680069, 0, 1, 0, 0.680069, 0, 0.733149, -0.733149, 3.60268, -21.4587 )
 player_path = NodePath("../Player")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource( 1 )]
@@ -162,7 +158,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8005, 1.51433, 0 )
 weapon_name = "Gun"
 
 [node name="GunPickUp" parent="Pickups" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017118, 14.8805, -3.34875 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017118, 7.80027, -3.34875 )
 extra_ammo = 100
 
 [node name="GunPickUp2" parent="Pickups" instance=ExtResource( 6 )]
@@ -170,7 +166,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.0139, 1.90787, -33.6518 )
 extra_ammo = 200
 
 [node name="RifflePickUp" parent="Pickups" instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.73972, 8.42868, -3.0162 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.73972, 7.78158, -3.0162 )
 extra_ammo = 20000
 
 [node name="Map" type="Spatial" parent="."]
@@ -184,6 +180,9 @@ shape = SubResource( 1 )
 [node name="MeshInstance" type="MeshInstance" parent="Map/Ground"]
 mesh = SubResource( 2 )
 material/0 = ExtResource( 4 )
+__meta__ = {
+"apply_volumetrics": false
+}
 
 [node name="Platform" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 0, 3.97002, 0 )
@@ -256,6 +255,9 @@ shape = SubResource( 5 )
 [node name="MeshInstance" type="MeshInstance" parent="Map/Wall"]
 mesh = SubResource( 6 )
 material/0 = ExtResource( 2 )
+__meta__ = {
+"apply_volumetrics": false
+}
 
 [node name="Wall2" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 20, 0, 0, 0, 10, 0, 0, 0, 1, 56.1736, 10.9438, 5.82087 )

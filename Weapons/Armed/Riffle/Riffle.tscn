@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Materials/Shader/Gun_shadermaterial.tres" type="Material" id=1]
 [ext_resource path="res://Weapons/Armed/Riffle/Riffle.gd" type="Script" id=2]
@@ -9,6 +9,9 @@
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 3.446, 2, 3.5 )
+
+[sub_resource type="CylinderMesh" id=9]
+radial_segments = 6
 
 [sub_resource type="ParticlesMaterial" id=8]
 resource_local_to_scene = true
@@ -190,6 +193,12 @@ transform = Transform( 0.04, 0, 0, 0, 0.103, 0, 0, 0, 0.3, 0, 0, -0.3 )
 layers = 2
 mesh = SubResource( 1 )
 skeleton = NodePath("../../../..")
+material/0 = ExtResource( 1 )
+
+[node name="Bottom" type="MeshInstance" parent="Root/Anchor/Body"]
+transform = Transform( 0.2, 0, 0, 0, -8.74228e-09, 0.2, 0, -0.2, -8.74228e-09, 0, -0.139924, -0.626885 )
+layers = 2
+mesh = SubResource( 9 )
 material/0 = ExtResource( 1 )
 
 [node name="MuzzleFlash" parent="Root/Anchor" instance=ExtResource( 4 )]

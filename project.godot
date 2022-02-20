@@ -14,6 +14,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Weapons/Armed/Armed.gd"
 }, {
+"base": "Reference",
+"class": "FrustumAABBIntersection",
+"language": "GDScript",
+"path": "res://addons/silicon.vfx.volumetrics/utilities/frustum_aabb_intersection.gd"
+}, {
+"base": "Reference",
+"class": "Halton",
+"language": "GDScript",
+"path": "res://addons/silicon.vfx.volumetrics/utilities/halton.gd"
+}, {
+"base": "Reference",
+"class": "Matrix4",
+"language": "GDScript",
+"path": "res://addons/silicon.vfx.volumetrics/utilities/matrix4.gd"
+}, {
 "base": "Particles",
 "class": "ParticleHandle",
 "language": "GDScript",
@@ -22,7 +37,22 @@ _global_script_classes=[ {
 "base": "KinematicBody",
 "class": "Players_and_Enemies",
 "language": "GDScript",
-"path": "res://Players_and_Enemies.gd"
+"path": "res://Players and Enemies/Players_and_Enemies.gd"
+}, {
+"base": "Node",
+"class": "SceneBounds",
+"language": "GDScript",
+"path": "res://addons/silicon.vfx.volumetrics/utilities/scene_bounds.gd"
+}, {
+"base": "ShaderMaterial",
+"class": "TransparentVolumeOverlay",
+"language": "GDScript",
+"path": "res://addons/silicon.vfx.volumetrics/material/transparent_volume_overlayer.gd"
+}, {
+"base": "Resource",
+"class": "VolumetricMaterial",
+"language": "GDScript",
+"path": "res://addons/silicon.vfx.volumetrics/material/volumetric_material.gd"
 }, {
 "base": "Spatial",
 "class": "WeaponMain",
@@ -31,8 +61,14 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Armed": "",
+"FrustumAABBIntersection": "",
+"Halton": "",
+"Matrix4": "",
 "ParticleHandle": "",
 "Players_and_Enemies": "",
+"SceneBounds": "",
+"TransparentVolumeOverlay": "",
+"VolumetricMaterial": "res://addons/silicon.vfx.volumetrics/material/volumetric_material.svg",
 "WeaponMain": ""
 }
 
