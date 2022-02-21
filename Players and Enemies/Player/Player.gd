@@ -45,7 +45,7 @@ const SPEED_N : float = 20.0
 const SPEED_W : float = 25.0
 const SPEED_S : float = 100.0
 
-var current_health : int = 100
+var current_health : float = 100.0
 
 var speed : float = SPEED_N
 var accel : float = ACCEL
@@ -60,7 +60,7 @@ const NORMAL_SENSIVITY : float = 0.3
 const ADS_FINE : float =  10.0
 var isADS : bool = false
 
-var jump_power : float = 20.0
+const jump_power : float = 20.0
 var mouseSensivity : float = NORMAL_SENSIVITY
 
 const RAD_ANGLE_HEAD_ROTATION_CLAMP : float = 1.54
@@ -104,6 +104,8 @@ var wall_jump_factor : float = 0.2
 var coun_wall_jump : int = MAX_WALL_JUMP
 
 var interactable_items_count : int = 0
+
+export(float) var hp_recovery_timer : float = 4.0
 	
 func _ready():
 	update_health()
@@ -176,6 +178,13 @@ func primary_setup(delta) -> void:
 	iswall_tek = is_on_wall()
 	isceil_tek = is_on_ceiling()
 	
+	if hp_recovery_timer > 0.0:
+		hp_recovery_timer -= delta
+	else:
+		if current_health < 100.0:
+			current_health += 5 * delta
+			current_health = clamp(current_health,0,100)
+			update_health()
 	
 	if (isceil_tek):
 		velocity.y -= gravity / 4
@@ -256,7 +265,6 @@ func wall_run() -> void:
 					var wallrun_dir_old : Vector3 = wallrun_dir
 					# Нормаль к плоскости стены
 					var normal : Vector3 = wall_normal.normal
-					
 					if normal.angle_to(Vector3.UP) > RAD_ANGLE_AXIS_XY_LIMITATION:
 						return
 					# Рассчитываем направление вдоль стены
@@ -490,8 +498,10 @@ func process_weapons(delta) -> void:
 		weapon_manager.current_weapon.aim_down_sights(false, delta)
 
 func update_health(value = 0):
+	if value < 0:
+		hp_recovery_timer = 4.0
 	current_health += value
-	hud.update_health(current_health)
+	hud.update_health(int(current_health))
 ################################## Таймеры ##################################
 
 func _on_CanJump_timeout():

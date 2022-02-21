@@ -217,7 +217,6 @@ gravity = -32.0
 shape = SubResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Map/MoovingPlatform"]
-autoplay = "Float"
 playback_process_mode = 0
 playback_speed = 0.5
 anims/Float = SubResource( 10 )

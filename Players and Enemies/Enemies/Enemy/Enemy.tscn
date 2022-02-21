@@ -67,8 +67,9 @@ tracks/0/keys = {
 script = ExtResource( 1 )
 mesh_inst1_path = NodePath("Body/MeshInstance")
 mesh_inst2_path = NodePath("Body/MeshInstance/MeshInstance2")
-hitbox_path = NodePath("Body/HitBox")
+hitbox_path = NodePath("Body/MeshInstance/MeshInstance2/HitBox")
 animation_player_path = NodePath("AnimationPlayer")
+area_detection_path = NodePath("Area")
 
 [node name="Body" type="Spatial" parent="."]
 
@@ -84,14 +85,14 @@ mesh = SubResource( 3 )
 skeleton = NodePath("../../..")
 material/0 = null
 
-[node name="HitBox" type="Area" parent="Body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.779073, -1.97973 )
+[node name="HitBox" type="Area" parent="Body/MeshInstance/MeshInstance2"]
+transform = Transform( 1, 2.98023e-08, 0, 2.23517e-08, 1, -2.98023e-08, -1.49012e-08, 0, 1, 0, -0.0449269, -1.64787 )
 collision_layer = 4
 collision_mask = 4
 input_ray_pickable = false
 monitorable = false
 
-[node name="CollisionShape" type="CollisionShape" parent="Body/HitBox"]
+[node name="CollisionShape" type="CollisionShape" parent="Body/MeshInstance/MeshInstance2/HitBox"]
 shape = SubResource( 8 )
 
 [node name="Area" type="Area" parent="."]
