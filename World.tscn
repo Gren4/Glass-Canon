@@ -141,7 +141,7 @@ scale = 0.18
 script = ExtResource( 5 )
 
 [node name="Enemy" parent="." instance=ExtResource( 15 )]
-transform = Transform( 0.733149, 0, -0.680069, 0, 1, 0, 0.680069, 0, 0.733149, -0.733149, 3.60268, -21.4587 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.7883, 2.83226, -15.0444 )
 player_path = NodePath("../Player")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource( 1 )]
@@ -173,6 +173,8 @@ extra_ammo = 20000
 
 [node name="Ground" type="StaticBody" parent="Map" groups=["World"]]
 transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0 )
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Ground"]
 shape = SubResource( 1 )
@@ -186,7 +188,8 @@ __meta__ = {
 
 [node name="Platform" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 0, 3.97002, 0 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="MeshInstance" type="MeshInstance" parent="Map/Platform"]
 mesh = SubResource( 3 )
@@ -197,7 +200,8 @@ shape = SubResource( 4 )
 
 [node name="MoovingPlatform" type="KinematicBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 54.8686, 11.3345, -48.7524 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 script = ExtResource( 7 )
 
 [node name="MeshInstance" type="MeshInstance" parent="Map/MoovingPlatform"]
@@ -224,7 +228,8 @@ anims/RESET = SubResource( 11 )
 
 [node name="Platform2" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 37.2323, 3.97002, 0 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="MeshInstance" type="MeshInstance" parent="Map/Platform2"]
 mesh = SubResource( 3 )
@@ -235,7 +240,8 @@ shape = SubResource( 4 )
 
 [node name="Platform3" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 41.3022, 9.84936, 0 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="MeshInstance" type="MeshInstance" parent="Map/Platform3"]
 mesh = SubResource( 3 )
@@ -246,7 +252,8 @@ shape = SubResource( 4 )
 
 [node name="Wall" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 20, 0, 0, 0, 10, 0, 0, 0, 1, 19.1302, 10.9438, 5.82087 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall"]
 shape = SubResource( 5 )
@@ -260,7 +267,8 @@ __meta__ = {
 
 [node name="Wall2" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 20, 0, 0, 0, 10, 0, 0, 0, 1, 56.1736, 10.9438, 5.82087 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall2"]
 shape = SubResource( 5 )
@@ -271,7 +279,8 @@ material/0 = ExtResource( 2 )
 
 [node name="Wall3" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 12.3615, 2.33836, 0.750534, -0.54126, 9.60499, -0.276965, -15.713, 1.50874, 0.59999, 86.3046, 10.9438, -9.06185 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall3"]
 shape = SubResource( 5 )
@@ -282,7 +291,8 @@ material/0 = ExtResource( 2 )
 
 [node name="Wall4" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( 4.20978, 0, 0.977596, 0, 10, 0, -19.5519, 0, 0.210489, 102.113, 10.9438, -41.7881 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall4"]
 shape = SubResource( 5 )
@@ -293,7 +303,8 @@ material/0 = ExtResource( 2 )
 
 [node name="Wall5" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( -7.63335, 0, 0.9243, 0, 10, 0, -18.486, 0, -0.381667, 98.8822, 10.9438, -78.9632 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall5"]
 shape = SubResource( 5 )
@@ -304,7 +315,8 @@ material/0 = ExtResource( 2 )
 
 [node name="Wall6" type="StaticBody" parent="Map" groups=["Wall", "World"]]
 transform = Transform( -16.9116, 0, 0.533851, 0, 10, 0, -10.677, 0, -0.845579, 75.6051, 10.9438, -107.409 )
-collision_mask = 3
+collision_layer = 2
+collision_mask = 13
 
 [node name="CollisionShape" type="CollisionShape" parent="Map/Wall6"]
 shape = SubResource( 5 )
@@ -315,6 +327,8 @@ material/0 = ExtResource( 2 )
 
 [node name="Stairs" type="StaticBody" parent="Map" groups=["World"]]
 transform = Transform( 5, 0, 0, 0, 6.32093, -0.948744, 0, 18.9749, 0.316047, 41.2144, 5.5142, -23.6647 )
+collision_layer = 2
+collision_mask = 13
 
 [node name="MeshInstance" type="MeshInstance" parent="Map/Stairs"]
 mesh = SubResource( 7 )

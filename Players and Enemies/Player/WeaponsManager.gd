@@ -215,7 +215,7 @@ func process_weapon_pickup():
 	var from : Vector3 = global_transform.origin
 	var to : Vector3 = global_transform.origin - global_transform.basis.z.normalized() * 3.0
 	var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
-	var collision = space_state.intersect_ray(from,to,[owner],128)
+	var collision = space_state.intersect_ray(from,to,[owner],4)
 	
 	if collision:
 		var body = collision["collider"]

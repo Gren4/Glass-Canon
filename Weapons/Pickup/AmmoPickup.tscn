@@ -66,6 +66,7 @@ tracks/1/keys = {
 }
 
 [node name="AmmoPickup" type="Area"]
+collision_layer = 0
 monitorable = false
 gravity_vec = Vector3( 0, 0, 0 )
 gravity = 0.0

@@ -1,7 +1,7 @@
 extends Node
 
 const MAX_INSTANCES_AT_A_TIME : int = 5
-export(int) var min_load_amount : int = 50 # Должен быть кратен 10
+export(int) var min_load_amount : int = 20 # Должен быть кратен 10
 var object_pool : Dictionary = {}
 var previous_object_taken : Dictionary = {}
 

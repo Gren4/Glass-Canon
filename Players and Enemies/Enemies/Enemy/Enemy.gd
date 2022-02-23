@@ -23,7 +23,7 @@ const ACCEL : float = 5.0
 const ACCEL_AIR  : float= 3.0
 const ACCEL_DASH : float = 10.0
 enum { LEFT, RIGHT, CENTER = -1}
-const SPEED_N : float = 30.0
+const SPEED_N : float = 25.0
 const SPEED_W : float = 18.0
 const SPEED_E : float = 3.0
 
@@ -31,11 +31,13 @@ const jump_power : float = 20.0
 
 var dop_speed : float = 0.0
 
-var current_health : int = 520
+export var current_health : int = 520
 export var attack_damage : int = 15
 
 var speed : float = SPEED_N
 var accel : float = ACCEL
+
+var gravity : float = 40.0
 
 var is_on_floor : bool = false
 
@@ -68,10 +70,12 @@ const ATTACK_CD_TIMER : float = 0.5
 
 var _timer : float = 0.0
 var _dop_timer : float = 0.0
-var EVADE_TIMER_CD : float = 2.5
+var _attack_timer : float = 0.0
 var _evade_timer : float = 0.0
+var EVADE_TIMER_CD : float = 2.5
 var side : int = 1
 
+var no_collision_between : bool = false
 
 var point_of_interest : Vector3 = Vector3.ZERO
 
@@ -99,10 +103,12 @@ func state_machine(delta):
 		ATTACK:
 			move_to_target(delta,ATTACK)
 		EVADE:
-			dop_velocity = dop_velocity.linear_interpolate(Vector3.ZERO, ACCEL_DASH * delta)
-			if (dop_velocity).is_equal_approx(Vector3.ZERO):
+			if _dop_timer >= 0.1:
+				dop_speed = 0.0
+				direction = -dist
 				set_state(ALLERTED_AND_KNOWS_LOC)
-				return
+			else:
+				_dop_timer += delta
 			move_to_target(delta,EVADE)
 		ALLERTED_AND_DOESNT_KNOW_LOC:
 			look_for_player(delta)
@@ -171,11 +177,11 @@ func attack():
 	var targets = hitbox.get_overlapping_bodies()
 	if player in targets:
 		player.update_health(-attack_damage)
-		player.dop_velocity = -3 * dist.normalized()
 
 func on_animation_finish(anim_name):
 	match anim_name:
 		"Attack":
+			_attack_timer = 0.0
 			set_state(ALLERTED_AND_KNOWS_LOC)
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
@@ -226,42 +232,42 @@ func look_for_player(delta):
 	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
 	
 func analyze_and_prepare_attack(delta):
-#	if _dop_timer >= 0.25:
-#		_dop_timer = 0.0
-#		var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,target.global_transform.origin,[self],5)
-#		if result:
-#			if result.collider.is_in_group("Player"):
-#				_timer = 0.0
-#	else:
-#		_dop_timer += delta
-#	if _timer_update(delta, ALLERTED_AND_KNOWS_LOC_TIMER, ALLERTED_AND_DOESNT_KNOW_LOC):
-#		return
-	if _dop_timer >= ATTACK_CD_TIMER:
-		if dist_length <= 6.0:
-			var height_dif : float = (player.global_transform.origin.y- self.global_transform.origin.y)
-			if (abs(Global.observation_angle(self,player)) <= 0.175):
-				if height_dif > 0.5:
-					if is_on_floor:
+	if _dop_timer >= 0.5:
+		_dop_timer = 0.0
+		var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,target.global_transform.origin,[self],5)
+		if result:
+			if result.collider.is_in_group("Player"):
+				no_collision_between = true
+			else:
+				no_collision_between = false
+	else:
+		_dop_timer += delta
+		
+	if _attack_timer >= ATTACK_CD_TIMER:
+		if no_collision_between:
+			if dist_length <= 6.0:
+				var height_dif : float = -dist.y
+				if (abs(Global.observation_angle(self,player)) <= 0.175):
+					if height_dif > 0.5:
+						if is_on_floor:
+							dop_velocity = Vector3.ZERO
+							velocity.y = jump_power
+							snap = Vector3.ZERO
+							dop_speed = 30.0
+							set_state(ATTACK)
+							animation_player.play("Attack",-1.0,3)
+							return
+					elif abs(height_dif) <= 0.5:
 						dop_velocity = Vector3.ZERO
-						velocity.y = jump_power
-						snap = Vector3.ZERO
 						dop_speed = 30.0
 						set_state(ATTACK)
 						animation_player.play("Attack",-1.0,3)
-						_dop_timer = 0.0
 						return
-				elif abs(height_dif) <= 0.5:
-					dop_velocity = Vector3.ZERO
-					dop_speed = 30.0
-					set_state(ATTACK)
-					animation_player.play("Attack",-1.0,3)
-					_dop_timer = 0.0
-					return
 	else:
-		_dop_timer += delta
+		_attack_timer += delta
 
-	evade_maneuver(delta, dist)		
 	move_to_target(delta, ALLERTED_AND_KNOWS_LOC)
+	evade_maneuver(delta, dist)		
 	
 func evade_maneuver(delta, dist_V):
 	if _evade_timer >= EVADE_TIMER_CD:
@@ -272,8 +278,9 @@ func evade_maneuver(delta, dist_V):
 					side = -1
 				-1:
 					side = 1
-			dop_velocity = 100 * side * Vector3.UP.cross(dist_V).normalized()
-			EVADE_TIMER_CD = 2.5 * randf()
+			direction = side * Vector3.UP.cross(dist_V).normalized()
+			dop_speed = 70.0
+			EVADE_TIMER_CD = 1 + randf()
 			set_state(EVADE)
 	else:
 		_evade_timer += delta	
@@ -285,22 +292,13 @@ func move_to_target(delta, state):
 	match state:
 		ATTACK:
 			direction = -dist
-		ALLERTED_AND_KNOWS_LOC, EVADE:
+		ALLERTED_AND_KNOWS_LOC:#, EVADE:
 			if dist_length < 5.0:
 				direction = direction.linear_interpolate(dist, delta)
 			elif dist_length > 6.0:
 				direction = -dist
 			else:
 				direction = Vector3.ZERO
-#	if _dist == null:
-#		direction = -dist
-#	else:
-#		if _dist > 5.0:
-#			direction = -dist
-#		elif _dist < 4.5:
-#			direction = direction.linear_interpolate(dist, delta)
-#		else:
-#			direction = Vector3.ZERO
 
 func look_at_allert(delta):
 	Global.look_face(mesh_inst2, point_of_interest, 5 ,delta)

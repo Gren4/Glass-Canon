@@ -49,7 +49,7 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="KinematicBody"]
-collision_layer = 5
+collision_mask = 10
 script = ExtResource( 4 )
 head_path = NodePath("Head")
 wall_run_path = NodePath("Head/WallRun")
@@ -59,10 +59,6 @@ ray_climb_path = NodePath("ClimbRays/RayClimb")
 ray_top_path = NodePath("ClimbRays/RayTop")
 ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
 ray_empty_path = NodePath("ClimbRays/RayEmpty")
-timer_can_jump_path = NodePath("Timers/CanJump")
-timer_can_wall_run_path = NodePath("Timers/CanWallRun")
-timer_slide_path = NodePath("Timers/Slide")
-timer_can_slide_path = NodePath("Timers/CanSlide")
 animation_player_path = NodePath("AnimationPlayer")
 hud_path = NodePath("HUD")
 
@@ -71,18 +67,22 @@ hud_path = NodePath("HUD")
 [node name="RayClimb" type="RayCast" parent="ClimbRays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.04739, -0.982 )
 cast_to = Vector3( 0, -3.5, 0 )
+collision_mask = 2
 
 [node name="RayTop" type="RayCast" parent="ClimbRays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39606, 0 )
 cast_to = Vector3( 0, 10, 0 )
+collision_mask = 2
 
 [node name="RayEmpty" type="RayCast" parent="ClimbRays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.01297, 0.489888 )
 cast_to = Vector3( 0, 0, -1.85 )
+collision_mask = 2
 
 [node name="RayTopPoint" type="RayCast" parent="ClimbRays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.449, -0.982 )
 cast_to = Vector3( 0, 2, 0 )
+collision_mask = 2
 
 [node name="WeaponNoClipping" type="ViewportContainer" parent="."]
 anchor_right = 1.0
@@ -128,6 +128,7 @@ far = 250.0
 
 [node name="RayCast" type="RayCast" parent="Head/WallRun/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )
+collision_mask = 10
 
 [node name="ShaderPrecompiler" parent="Head/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
 
@@ -138,23 +139,6 @@ camera_path = NodePath("../HeadBop/Camera")
 
 [node name="Unarmed" parent="Head/WallRun/Weapons" instance=ExtResource( 9 )]
 visible = false
-
-[node name="Timers" type="Node" parent="."]
-
-[node name="CanWallRun" type="Timer" parent="Timers"]
-wait_time = 0.5
-one_shot = true
-
-[node name="CanJump" type="Timer" parent="Timers"]
-wait_time = 0.5
-one_shot = true
-
-[node name="CanSlide" type="Timer" parent="Timers"]
-wait_time = 0.5
-
-[node name="Slide" type="Timer" parent="Timers"]
-wait_time = 0.08
-one_shot = true
 
 [node name="HUD" parent="." instance=ExtResource( 8 )]
 pause_mode = 2
@@ -171,8 +155,3 @@ material/0 = null
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/HeadBop = SubResource( 3 )
 anims/RESET = SubResource( 4 )
-
-[connection signal="timeout" from="Timers/CanWallRun" to="." method="_on_CanWallRun_timeout"]
-[connection signal="timeout" from="Timers/CanJump" to="." method="_on_CanJump_timeout"]
-[connection signal="timeout" from="Timers/CanSlide" to="." method="_on_canSlide_timeout"]
-[connection signal="timeout" from="Timers/Slide" to="." method="_on_Slide_timeout"]

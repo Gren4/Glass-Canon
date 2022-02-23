@@ -175,16 +175,14 @@ func create_sway_pivot():
 func sway(delta):
 	global_transform.origin = sway_pivot.global_transform.origin
 	
-	var self_quat : Quat = global_transform.basis.get_rotation_quat()
 	var pivot_quat : Quat = sway_pivot.global_transform.basis.get_rotation_quat()
-	
-	var cth : float = self_quat.angle_to(pivot_quat)
 	var new_quat : Quat = Quat()
-	
-	if is_ads == false:
-		new_quat = self_quat.slerp(pivot_quat, 30 * (1 + cth) * delta)
-	else:
+	if is_ads:
 		new_quat = pivot_quat
+	else:
+		var self_quat : Quat = global_transform.basis.get_rotation_quat()
+		var cth : float = self_quat.angle_to(pivot_quat)
+		new_quat = self_quat.slerp(pivot_quat, 20 * (1 + cth) * delta)
 	
 	global_transform.basis = Basis(new_quat)
 
