@@ -5,6 +5,7 @@ var health_ui
 var display_ui
 var slot_ui
 var loading_screen
+var hit_confirm
 
 func _enter_tree():
 	loading_screen = $LoadingScreen
@@ -12,12 +13,16 @@ func _enter_tree():
 	health_ui = $Background/HealthUI
 	display_ui = $Background/Weapon/TextureRect
 	slot_ui = $Background/Weapon/WeaponSlot
+	hit_confirm = $Crosshair/TextureRect
 	
 func _ready():
 	$LoadingScreen.visible = true
 	$Background.visible = false
 	$Crosshair.visible = false
 	$InteractionPrompt.visible = false
+	
+func _process(delta):
+	hit_confirm.visible = false
 
 func hide_loading_screen():
 	$LoadingScreen.visible = false

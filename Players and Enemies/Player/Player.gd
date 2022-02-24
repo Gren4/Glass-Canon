@@ -88,6 +88,7 @@ var State : int = WALKING
 # Здоровье
 var hp_recovery_timer : float = 0.0
 var current_health : float = 100.0
+var imunity : bool = false
 # Оружие
 var isADS : bool = false
 # Управление мышью
@@ -131,7 +132,7 @@ func _ready() -> void:
 	set_process_input(true)
 
 func update_health(value = 0) -> void:
-	if value < 0:
+	if value < 0 and not imunity:
 		hp_recovery_timer = HP_RECOVERY_CD
 	current_health += value
 	hud.update_health(int(current_health))
@@ -209,6 +210,7 @@ func set_state(state) -> void:
 	State = state
 	match state:
 		WALKING:
+			imunity = false
 			timer_not_on_ground = 0.0
 			if isADS:
 				speed = ADS_WALKING_SPEED
@@ -220,6 +222,7 @@ func set_state(state) -> void:
 			rayClimb.enabled = false
 			coun_wall_jump = MAX_WALL_JUMP
 		IN_AIR:
+			imunity = false
 			if isADS:
 				speed = ADS_WALKING_SPEED
 			else:
@@ -228,6 +231,7 @@ func set_state(state) -> void:
 			gravity = IN_AIR_GRAVITY
 			rayClimb.enabled = true
 		CLIMBING:
+			imunity = false
 			speed = WALKING_SPEED
 			accel = ACCEL_GROUND
 			dop_velocity = Vector3.ZERO
@@ -235,6 +239,7 @@ func set_state(state) -> void:
 			snap = Vector3.ZERO
 			rayClimb.enabled = false
 		WALLRUNNING:
+			imunity = false
 			speed = WALLRUNNING_SPEED
 			accel = ACCEL_GROUND
 			dop_velocity = Vector3.ZERO
@@ -242,6 +247,7 @@ func set_state(state) -> void:
 			rayClimb.enabled = true
 			coun_wall_jump = MAX_WALL_JUMP
 		DASHING:
+			imunity = true
 			speed = DASHING_SPEED	
 			dop_velocity = Vector3.ZERO
 			timer_dashing = 0.0
@@ -286,8 +292,7 @@ func primary_setup(delta) -> void:
 		WALLRUNNING:
 			velocity.y -= WALL_RUNNING_GRAVITY * delta
 			rayClimb.enabled = true
-	
-	if cur_speed >= speed / 2:
+	if cur_speed >= ADS_WALKING_SPEED:
 		if hp_recovery_timer > 0.0:
 			hp_recovery_timer -= delta
 	else:
@@ -302,7 +307,7 @@ func start_dashing(delta) -> bool:
 	if timer_dashing <= 0.0:
 		if Input.is_action_just_pressed("shift"):
 			if direction == Vector3.ZERO:
-				direction -= self.get_global_transform().basis.z
+				direction -= self.global_transform.basis.z
 			velocity.y = 0
 			set_state(DASHING)
 			return false
@@ -376,6 +381,8 @@ func wall_run() -> bool:
 		if Input.is_action_pressed("shift") and Input.is_action_pressed("move_forward") and (velocity.y < (JUMP_POWER / 2)) and iswall_tek:
 			for n in get_slide_count() :
 				wall_normal = get_slide_collision(n)
+				# Расчитываем сторону, противоположную от стены
+				sideW = get_side(wall_normal.position)
 				if wall_id != wall_normal.collider_id:
 					var isWall : bool = wall_normal.collider.is_in_group("Wall")
 					if (isWall):
@@ -408,8 +415,6 @@ func wall_run() -> bool:
 						velocity.y = 0
 						# Сохраняем номер последней стены, по которой бежали
 						wall_id = wall_normal.collider_id;
-						# Расчитываем сторону, противоположную от стены
-						sideW = get_side(wall_normal.position)
 						# Переопределяем глобальный вектор направления.
 						# Ввод пользователя клавишами влево\вправо\назад будет проигнорирован.
 						direction = wallrun_dir
@@ -438,11 +443,9 @@ func camera_transform(delta) -> void:
 				wallrun_current_angle += delta * NO_WALLRUN_ANGLE_DELTA_COEFF
 				wallrun_current_angle = min(wallrun_current_angle, 0)
 			wall_run_camera.rotation_degrees.z =  wallrun_current_angle
-	
 
 func get_side(point) -> int:
 	point = to_local(point)
-	
 	if point.x > 0:
 		return LEFT
 	elif point.x < 0:
@@ -453,14 +456,14 @@ func get_side(point) -> int:
 func movement_inputs() -> void:
 	direction = Vector3.ZERO
 	if Input.is_action_pressed("move_forward"):
-		direction -= self.get_global_transform().basis.z
+		direction -= self.global_transform.basis.z
 	elif Input.is_action_pressed("move_backwards"):
-		direction += self.get_global_transform().basis.z
+		direction += self.global_transform.basis.z
 				
 	if Input.is_action_pressed("move_right"):
-		direction += self.get_global_transform().basis.x
+		direction += self.global_transform.basis.x
 	elif Input.is_action_pressed("move_left"):
-		direction -= self.get_global_transform().basis.x
+		direction -= self.global_transform.basis.x
 
 func jump(factor) -> bool:
 	if Input.is_action_just_pressed("jump"):
@@ -487,7 +490,7 @@ func wall_jump_air() -> bool:
 					coun_wall_jump -= 1
 					return false
 	return true
-	
+
 func wall_jump_wallrun() -> bool:
 	if iswall_tek and coun_wall_jump > 0:
 		if Input.is_action_just_pressed("jump"):
@@ -545,11 +548,11 @@ func edge_climb(delta) -> bool:
 		set_state(WALKING)
 		return false
 	return true
-	
+
 func process_weapons(delta) -> void:
 	if interactable_items_count > 0:
 		weapon_manager.process_weapon_pickup()
-		
+
 	if Input.is_action_just_pressed("empty"):
 		weapon_manager.change_weapon("Empty")
 	if Input.is_action_just_pressed("primary"):
@@ -568,7 +571,7 @@ func process_weapons(delta) -> void:
 		
 	if Input.is_action_just_pressed("reload"):
 		weapon_manager.reload()
-	
+
 	if Input.is_action_just_pressed("drop"):
 		weapon_manager.drop_weapon()
 		
@@ -586,15 +589,15 @@ func finalize_velocity(delta) -> void:
 	dop_velocity = dop_velocity.linear_interpolate(Vector3.ZERO, ACCEL_DOP * delta)
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
-	
+
 	vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	
+
 func animations_handler() -> void:
 	if State == WALKING:
-		if cur_speed > 0.0 and isfloor_tek:
-			animation_player.play("HeadBop", -1, 1.5 * vel_info.length_squared() / pow(WALKING_SPEED,2))
+		if cur_speed > ADS_WALKING_SPEED and isfloor_tek:
+			animation_player.play("HeadBop", 0.1, 1.5 * vel_info.length_squared() / pow(WALKING_SPEED,2))
 		else:
-			animation_player.play("RESET", -1, 1.0)
+			animation_player.play("RESET", 0.5, 1.0)
 	else:
 		animation_player.play("RESET", 0.1, 1.0)	
 

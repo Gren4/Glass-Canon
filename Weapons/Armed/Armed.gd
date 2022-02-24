@@ -89,6 +89,7 @@ func fire_bullet():
 			smoke.emitting = true
 		elif (obj.is_in_group("Enemy")):
 			obj.update_hp(damage)
+			weapon_manager.hud.hit_confirm.visible = true
 			
 			
 func reload():
