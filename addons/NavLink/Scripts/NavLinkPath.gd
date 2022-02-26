@@ -205,5 +205,3 @@ func _add_line_draw_node_if_not_exist(name:String, color:Color) -> Spatial:
 
 
 
-
-

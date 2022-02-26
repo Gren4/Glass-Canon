@@ -14,51 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Weapons/Armed/Armed.gd"
 }, {
-"base": "Reference",
-"class": "FrustumAABBIntersection",
-"language": "GDScript",
-"path": "res://addons/silicon.vfx.volumetrics/utilities/frustum_aabb_intersection.gd"
-}, {
-"base": "Reference",
-"class": "Halton",
-"language": "GDScript",
-"path": "res://addons/silicon.vfx.volumetrics/utilities/halton.gd"
-}, {
-"base": "Spatial",
-"class": "JumpLink",
-"language": "GDScript",
-"path": "res://addons/navigation_jump_links/scripts/JumpLink.gd"
-}, {
-"base": "Spatial",
-"class": "JumpLinkAgent",
-"language": "GDScript",
-"path": "res://addons/navigation_jump_links/scripts/JumpLinkAgent.gd"
-}, {
-"base": "Navigation",
-"class": "JumpLinkNavigation",
-"language": "GDScript",
-"path": "res://addons/navigation_jump_links/scripts/JumpLinkNavigation.gd"
-}, {
-"base": "Area",
-"class": "JumpLinkObject",
-"language": "GDScript",
-"path": "res://addons/navigation_jump_links/scripts/JumpLinkObject.gd"
-}, {
-"base": "Path",
-"class": "JumpLinkPath",
-"language": "GDScript",
-"path": "res://addons/navigation_jump_links/scripts/JumpLinkPath.gd"
-}, {
-"base": "Position3D",
-"class": "JumpLinkPosition",
-"language": "GDScript",
-"path": "res://addons/navigation_jump_links/scripts/JumpLinkPosition.gd"
-}, {
-"base": "Reference",
-"class": "Matrix4",
-"language": "GDScript",
-"path": "res://addons/silicon.vfx.volumetrics/utilities/matrix4.gd"
-}, {
 "base": "EditorPlugin",
 "class": "NavLink",
 "language": "GDScript",
@@ -89,21 +44,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Players and Enemies/Players_and_Enemies.gd"
 }, {
-"base": "Node",
-"class": "SceneBounds",
-"language": "GDScript",
-"path": "res://addons/silicon.vfx.volumetrics/utilities/scene_bounds.gd"
-}, {
-"base": "ShaderMaterial",
-"class": "TransparentVolumeOverlay",
-"language": "GDScript",
-"path": "res://addons/silicon.vfx.volumetrics/material/transparent_volume_overlayer.gd"
-}, {
-"base": "Resource",
-"class": "VolumetricMaterial",
-"language": "GDScript",
-"path": "res://addons/silicon.vfx.volumetrics/material/volumetric_material.gd"
-}, {
 "base": "Spatial",
 "class": "WeaponMain",
 "language": "GDScript",
@@ -111,24 +51,12 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Armed": "",
-"FrustumAABBIntersection": "",
-"Halton": "",
-"JumpLink": "res://addons/navigation_jump_links/icons/JumpLink.png",
-"JumpLinkAgent": "res://addons/navigation_jump_links/icons/JumpLinkAgent.png",
-"JumpLinkNavigation": "res://addons/navigation_jump_links/icons/JumpLinkNavigation.png",
-"JumpLinkObject": "res://addons/navigation_jump_links/icons/JumpLinkObject.png",
-"JumpLinkPath": "res://addons/navigation_jump_links/icons/JumpLinkPath.png",
-"JumpLinkPosition": "res://addons/navigation_jump_links/icons/JumpLinkPosition.png",
-"Matrix4": "",
 "NavLink": "",
 "NavLinkAgent": "",
 "NavLinkNavigation": "",
 "NavLinkPath": "",
 "ParticleHandle": "",
 "Players_and_Enemies": "",
-"SceneBounds": "",
-"TransparentVolumeOverlay": "",
-"VolumetricMaterial": "res://addons/silicon.vfx.volumetrics/material/volumetric_material.svg",
 "WeaponMain": ""
 }
 
@@ -180,7 +108,7 @@ window/stretch/aspect="keep_height"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NavLink/plugin.cfg", "res://addons/navigation_jump_links/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NavLink/plugin.cfg" )
 
 [input]
 

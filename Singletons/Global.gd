@@ -101,3 +101,10 @@ func observation_angle(_self,target) -> float:
 	var self_2d : Vector2 = Vector2(-_self.global_transform.basis.z.x, -_self.global_transform.basis.z.z)
 	var player_2d : Vector2 = Vector2(target.global_transform.origin.x - _self.global_transform.origin.x, target.global_transform.origin.z - _self.global_transform.origin.z)
 	return self_2d.angle_to(player_2d)
+
+func quadratic_bezier(p0: Vector3, p1: Vector3, p2: Vector3, t: float) -> Vector3:
+	#p2 + (p2 - p0) / 2 + Vector3(0,1*max(p0.y,p2.y),0)
+	var q0 = p0.linear_interpolate(p1, t)
+	var q1 = p1.linear_interpolate(p2, t)
+	var r = q0.linear_interpolate(q1, t)
+	return r
