@@ -24,10 +24,60 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/silicon.vfx.volumetrics/utilities/halton.gd"
 }, {
+"base": "Spatial",
+"class": "JumpLink",
+"language": "GDScript",
+"path": "res://addons/navigation_jump_links/scripts/JumpLink.gd"
+}, {
+"base": "Spatial",
+"class": "JumpLinkAgent",
+"language": "GDScript",
+"path": "res://addons/navigation_jump_links/scripts/JumpLinkAgent.gd"
+}, {
+"base": "Navigation",
+"class": "JumpLinkNavigation",
+"language": "GDScript",
+"path": "res://addons/navigation_jump_links/scripts/JumpLinkNavigation.gd"
+}, {
+"base": "Area",
+"class": "JumpLinkObject",
+"language": "GDScript",
+"path": "res://addons/navigation_jump_links/scripts/JumpLinkObject.gd"
+}, {
+"base": "Path",
+"class": "JumpLinkPath",
+"language": "GDScript",
+"path": "res://addons/navigation_jump_links/scripts/JumpLinkPath.gd"
+}, {
+"base": "Position3D",
+"class": "JumpLinkPosition",
+"language": "GDScript",
+"path": "res://addons/navigation_jump_links/scripts/JumpLinkPosition.gd"
+}, {
 "base": "Reference",
 "class": "Matrix4",
 "language": "GDScript",
 "path": "res://addons/silicon.vfx.volumetrics/utilities/matrix4.gd"
+}, {
+"base": "EditorPlugin",
+"class": "NavLink",
+"language": "GDScript",
+"path": "res://addons/NavLink/NavLink.gd"
+}, {
+"base": "Spatial",
+"class": "NavLinkAgent",
+"language": "GDScript",
+"path": "res://addons/NavLink/Scripts/NavLinkAgent.gd"
+}, {
+"base": "Navigation",
+"class": "NavLinkNavigation",
+"language": "GDScript",
+"path": "res://addons/NavLink/Scripts/NavLinkNavigation.gd"
+}, {
+"base": "Spatial",
+"class": "NavLinkPath",
+"language": "GDScript",
+"path": "res://addons/NavLink/Scripts/NavLinkPath.gd"
 }, {
 "base": "Particles",
 "class": "ParticleHandle",
@@ -63,7 +113,17 @@ _global_script_class_icons={
 "Armed": "",
 "FrustumAABBIntersection": "",
 "Halton": "",
+"JumpLink": "res://addons/navigation_jump_links/icons/JumpLink.png",
+"JumpLinkAgent": "res://addons/navigation_jump_links/icons/JumpLinkAgent.png",
+"JumpLinkNavigation": "res://addons/navigation_jump_links/icons/JumpLinkNavigation.png",
+"JumpLinkObject": "res://addons/navigation_jump_links/icons/JumpLinkObject.png",
+"JumpLinkPath": "res://addons/navigation_jump_links/icons/JumpLinkPath.png",
+"JumpLinkPosition": "res://addons/navigation_jump_links/icons/JumpLinkPosition.png",
 "Matrix4": "",
+"NavLink": "",
+"NavLinkAgent": "",
+"NavLinkNavigation": "",
+"NavLinkPath": "",
 "ParticleHandle": "",
 "Players_and_Enemies": "",
 "SceneBounds": "",
@@ -117,6 +177,10 @@ window/size/fullscreen=true
 window/vsync/vsync_via_compositor=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep_height"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/NavLink/plugin.cfg", "res://addons/navigation_jump_links/plugin.cfg" )
 
 [input]
 

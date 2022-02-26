@@ -219,7 +219,6 @@ func set_state(state) -> void:
 			accel = ACCEL_GROUND
 			gravity = IN_AIR_GRAVITY
 			snap = Vector3.DOWN
-			rayClimb.enabled = false
 			coun_wall_jump = MAX_WALL_JUMP
 		IN_AIR:
 			imunity = false
@@ -229,13 +228,13 @@ func set_state(state) -> void:
 				speed = WALKING_SPEED
 			accel = ACCEL_AIR
 			gravity = IN_AIR_GRAVITY
-			rayClimb.enabled = true
 		CLIMBING:
 			imunity = false
 			speed = WALKING_SPEED
 			accel = ACCEL_GROUND
 			dop_velocity = Vector3.ZERO
 			velocity = Vector3(0,JUMP_POWER,0)
+			velocityXY = Vector3.ZERO
 			snap = Vector3.ZERO
 			rayClimb.enabled = false
 		WALLRUNNING:
@@ -279,19 +278,30 @@ func primary_setup(delta) -> void:
 					set_state(IN_AIR)
 				else:
 					timer_not_on_ground += delta
-				rayClimb.enabled = true
+				if iswall_tek:
+					rayClimb.enabled = true
+				else:
+					rayClimb.enabled = false
 		IN_AIR:
+			if isceil_tek:
+				velocity.y -= IN_AIR_GRAVITY * delta
 			if isfloor_tek:
 				velocity.y = GROUND_GRAVITATION
 				set_state(WALKING)
 			else:
-				if iswall_tek and velocity.y <= 0.0:
-					velocity.y -= NEAR_WALL_GRAVITY * delta
+				if iswall_tek:
+					rayClimb.enabled = true
+					if velocity.y <= 0.0:
+						velocity.y -= NEAR_WALL_GRAVITY * delta
+					else:
+						velocity.y -= IN_AIR_GRAVITY * delta
 				else:
+					rayClimb.enabled = false
 					velocity.y -= IN_AIR_GRAVITY * delta
 		WALLRUNNING:
 			velocity.y -= WALL_RUNNING_GRAVITY * delta
 			rayClimb.enabled = true
+			
 	if cur_speed >= ADS_WALKING_SPEED:
 		if hp_recovery_timer > 0.0:
 			hp_recovery_timer -= delta
