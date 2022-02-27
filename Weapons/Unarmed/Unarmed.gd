@@ -13,13 +13,16 @@ func fire_stop():
 func reload():
 	pass
 
-func aim_down_sights(value, delta):
+func weapon_regime(value, delta) -> int:
 	is_ads = value
 	
 	if  is_ads == false and player.camera.fov == default_fov:
-		return
+		return BASE
 	
 	if is_ads:
 		player.camera.fov = lerp(player.camera.fov, default_fov / 2, ads_speed * delta)
+		return ADS
 	else:
 		player.camera.fov = lerp(player.camera.fov, default_fov, ads_speed * delta)
+		return BASE
+	

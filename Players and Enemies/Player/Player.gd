@@ -43,6 +43,11 @@ enum {
 	CENTER = -1
 	}
 	
+enum { 
+	BASE, 
+	ALT,
+	ADS
+	}
 ### Константы ###
 # Передвижение
 const WALKING_SPEED : float = 20.0
@@ -90,7 +95,7 @@ var hp_recovery_timer : float = 0.0
 var current_health : float = 100.0
 var imunity : bool = false
 # Оружие
-var isADS : bool = false
+var weapon_regime : int = BASE
 # Управление мышью
 const ADS_SENSIVITY : float = 0.1
 const NORMAL_SENSIVITY : float = 0.3
@@ -139,7 +144,7 @@ func update_health(value = 0) -> void:
 
 func _input(event) -> void:
 	if event is InputEventMouseMotion:
-		if isADS:
+		if weapon_regime == ADS:
 			mouseSensivity = ADS_SENSIVITY
 		else:
 			mouseSensivity = NORMAL_SENSIVITY
@@ -212,7 +217,7 @@ func set_state(state) -> void:
 		WALKING:
 			imunity = false
 			timer_not_on_ground = 0.0
-			if isADS:
+			if weapon_regime == ADS:
 				speed = ADS_WALKING_SPEED
 			else:
 				speed = WALKING_SPEED
@@ -222,7 +227,7 @@ func set_state(state) -> void:
 			coun_wall_jump = MAX_WALL_JUMP
 		IN_AIR:
 			imunity = false
-			if isADS:
+			if weapon_regime == ADS:
 				speed = ADS_WALKING_SPEED
 			else:
 				speed = WALKING_SPEED
@@ -236,22 +241,18 @@ func set_state(state) -> void:
 			velocity = Vector3(0,JUMP_POWER,0)
 			velocityXY = Vector3.ZERO
 			snap = Vector3.ZERO
-			rayClimb.enabled = false
 		WALLRUNNING:
 			imunity = false
 			speed = WALLRUNNING_SPEED
 			accel = ACCEL_GROUND
 			dop_velocity = Vector3.ZERO
 			gravity = WALL_RUNNING_GRAVITY
-			rayClimb.enabled = true
 			coun_wall_jump = MAX_WALL_JUMP
 		DASHING:
 			imunity = true
 			speed = DASHING_SPEED	
 			dop_velocity = Vector3.ZERO
 			timer_dashing = 0.0
-			if not isfloor_tek:
-				rayClimb.enabled = true
 
 func primary_setup(delta) -> void:
 	cur_speed = vel_info.length()
@@ -264,8 +265,7 @@ func primary_setup(delta) -> void:
 			if isfloor_tek:
 				velocity.y = GROUND_GRAVITATION
 				timer_not_on_ground = 0.0
-				rayClimb.enabled = false
-				if isADS:
+				if weapon_regime == ADS:
 					speed = ADS_WALKING_SPEED
 				else:
 					speed = WALKING_SPEED
@@ -278,10 +278,6 @@ func primary_setup(delta) -> void:
 					set_state(IN_AIR)
 				else:
 					timer_not_on_ground += delta
-				if iswall_tek:
-					rayClimb.enabled = true
-				else:
-					rayClimb.enabled = false
 		IN_AIR:
 			if isceil_tek:
 				velocity.y -= IN_AIR_GRAVITY * delta
@@ -290,17 +286,14 @@ func primary_setup(delta) -> void:
 				set_state(WALKING)
 			else:
 				if iswall_tek:
-					rayClimb.enabled = true
 					if velocity.y <= 0.0:
 						velocity.y -= NEAR_WALL_GRAVITY * delta
 					else:
 						velocity.y -= IN_AIR_GRAVITY * delta
 				else:
-					rayClimb.enabled = false
 					velocity.y -= IN_AIR_GRAVITY * delta
 		WALLRUNNING:
 			velocity.y -= WALL_RUNNING_GRAVITY * delta
-			rayClimb.enabled = true
 			
 	if cur_speed >= ADS_WALKING_SPEED:
 		if hp_recovery_timer > 0.0:
@@ -513,41 +506,41 @@ func wall_jump_wallrun() -> bool:
 	return true
 
 func check_edge_climb() -> bool:
-	if rayClimb.enabled:
-		if iswall_tek and Input.is_action_pressed("move_forward"):
-				for n in get_slide_count() :
-					if rayClimb.is_colliding():
-						if (rayClimb.get_collider() == get_slide_collision(n).collider):
-							var ClimbPoint : Vector3 = to_local(rayClimb.get_collision_point())
-							var normal : Vector3 = -get_slide_collision(n).normal
-							var normal_2d : Vector2 = Vector2(normal.x, normal.z)
-							# Считываем вектор3 направления камеры
-							var player_view_dir : Vector3 = -head.global_transform.basis.z
-							# Двумерный вектор2 направления камеры игрока
-							var view_dir_2d : Vector2 = Vector2(player_view_dir.x, player_view_dir.z)
-							# Угол между вектором2 стены и вектором2 направлением камеры игрока
-							var angleClimb : float = rad2deg(normal_2d.angle_to(view_dir_2d))
-							rayEmpty.translation.y = ClimbPoint.y + PLAYER_HEIGHT_DEVIATION
-							rayEmpty.rotation_degrees.y = angleClimb
-							rayTopPoint.translation.y = ClimbPoint.y
-							rayEmpty.force_raycast_update()
-							if not rayEmpty.is_colliding():
-								rayTop.force_raycast_update()
-								if rayTop.is_colliding():
-									var TopPoint : Vector3 = to_local(rayTop.get_collision_point())
-									if TopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
-										return true
-								rayTopPoint.force_raycast_update()
-								if rayTopPoint.is_colliding():
-									var ClimbTopPoint : Vector3 = to_local(rayTopPoint.get_collision_point())
-									if ClimbTopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
-										return true
-								rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
-								climbPoint = (rayClimb.get_collision_point())
-								direction = normal * 0.5
-								set_state(CLIMBING)
-								return false
-							break
+	if iswall_tek and not isfloor_tek and Input.is_action_pressed("move_forward"):
+		rayClimb.force_raycast_update()
+		for n in get_slide_count() :
+			if rayClimb.is_colliding():
+				if (rayClimb.get_collider() == get_slide_collision(n).collider):
+					var ClimbPoint : Vector3 = to_local(rayClimb.get_collision_point())
+					var normal : Vector3 = -get_slide_collision(n).normal
+					var normal_2d : Vector2 = Vector2(normal.x, normal.z)
+					# Считываем вектор3 направления камеры
+					var player_view_dir : Vector3 = -head.global_transform.basis.z
+					# Двумерный вектор2 направления камеры игрока
+					var view_dir_2d : Vector2 = Vector2(player_view_dir.x, player_view_dir.z)
+					# Угол между вектором2 стены и вектором2 направлением камеры игрока
+					var angleClimb : float = rad2deg(normal_2d.angle_to(view_dir_2d))
+					rayEmpty.translation.y = ClimbPoint.y + PLAYER_HEIGHT_DEVIATION
+					rayEmpty.rotation_degrees.y = angleClimb
+					rayTopPoint.translation.y = ClimbPoint.y
+					rayEmpty.force_raycast_update()
+					if not rayEmpty.is_colliding():
+						rayTop.force_raycast_update()
+						if rayTop.is_colliding():
+							var TopPoint : Vector3 = to_local(rayTop.get_collision_point())
+							if TopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
+								return true
+						rayTopPoint.force_raycast_update()
+						if rayTopPoint.is_colliding():
+							var ClimbTopPoint : Vector3 = to_local(rayTopPoint.get_collision_point())
+							if ClimbTopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
+								return true
+						rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
+						climbPoint = (rayClimb.get_collision_point())
+						direction = normal * 0.5
+						set_state(CLIMBING)
+						return false
+					break
 	return true
 
 func edge_climb(delta) -> bool:
@@ -570,27 +563,28 @@ func process_weapons(delta) -> void:
 	if Input.is_action_just_pressed("secondary"):
 		weapon_manager.change_weapon("Secondary")
 
-	if weapon_manager.is_weapon_automatic():
-		if Input.is_action_pressed("fire"):
-			weapon_manager.fire()
-		if Input.is_action_just_released("fire"):
-			weapon_manager.fire_stop()
-	else:
-		if Input.is_action_just_pressed("fire"):
-			weapon_manager.fire()
+	if not weapon_manager.is_switching_active():
+		if weapon_manager.is_weapon_automatic():
+			if Input.is_action_pressed("fire"):
+				weapon_manager.fire()
+			if Input.is_action_just_released("fire"):
+				weapon_manager.fire_stop()
+		else:
+			if Input.is_action_just_pressed("fire"):
+				weapon_manager.fire()
 		
 	if Input.is_action_just_pressed("reload"):
 		weapon_manager.reload()
+		
+	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
+		weapon_regime = weapon_manager.current_weapon.weapon_regime(true, delta)
+	else:
+		weapon_regime = weapon_manager.current_weapon.weapon_regime(false, delta)
+		
 
 	if Input.is_action_just_pressed("drop"):
 		weapon_manager.drop_weapon()
 		
-	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
-		isADS = true
-		weapon_manager.current_weapon.aim_down_sights(true, delta)
-	else:
-		isADS = false
-		weapon_manager.current_weapon.aim_down_sights(false, delta)
 
 func finalize_velocity(delta) -> void:
 		

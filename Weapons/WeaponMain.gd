@@ -5,6 +5,11 @@ var weapon_manager = null
 var player = null
 var ray = null
 var default_fov : int = 90
+enum { 
+	BASE, 
+	ALT,
+	ADS
+	}
 
 var is_equipped : bool = false
 
@@ -12,6 +17,9 @@ export(String) var weapon_name : String = "Weapon"
 export(Texture) var weapon_image = null
 
 func is_weapon_automatic():
+	pass
+	
+func is_switching_active():
 	pass
 
 func equip() -> void:

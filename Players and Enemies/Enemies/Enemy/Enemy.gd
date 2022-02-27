@@ -81,7 +81,7 @@ const ATTACK_CD_TIMER : float = 0.5
 var _timer : float = 0.0
 var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
-var _evade_timer : int = 1 + randi() % 10
+var _evade_timer : int = 1 + randi() % 5
 var side : int = 1
 
 var no_collision_between : bool = false
@@ -114,7 +114,7 @@ func ai(delta):
 		finalize_velocity(delta)
 
 func allert_everyone():
-	if _state < LOOK_AT_ALLERT:
+	if _state < ALLERTED_AND_KNOWS_LOC:
 		target = player
 		set_state(ALLERTED_AND_KNOWS_LOC)
 	
@@ -275,18 +275,18 @@ func analyze_and_prepare_attack(delta):
 				if result:
 					if result.collider.is_in_group("Player"):
 						if (abs(Global.observation_angle(self,player)) <= 0.175):
-							if height_dif > 1.0:
-								if is_on_floor:
-									velocity.y = jump_power
-									snap = Vector3.ZERO
-									dop_speed = SPEED_DOP_ATTACK
-									set_state(ATTACK)
-									animation_player.play("Attack",-1.0,3)
-									return
-							elif abs(height_dif) <= 0.5:
+							if abs(height_dif) <= 0.5:
 								dop_speed = SPEED_DOP_ATTACK
 								set_state(ATTACK)
 								animation_player.play("Attack",-1.0,3)
+#							if height_dif > 1.0:
+#								if is_on_floor:
+#									velocity.y = jump_power
+#									snap = Vector3.ZERO
+#									dop_speed = SPEED_DOP_ATTACK
+#									set_state(ATTACK)
+#									animation_player.play("Attack",-1.0,3)
+#									return
 				_attack_timer = 0.0
 	if my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
@@ -306,34 +306,13 @@ func analyze_and_prepare_attack(delta):
 				my_path.remove(0)
 			else:
 				move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC)
-		evade_maneuver(delta, dist)
 	else:
-		move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
-#	else:	
-#		if _attack_timer >= ATTACK_CD_TIMER:
-#			if no_collision_between:
-#				if dist_length <= 4.5:
-#					if (abs(Global.observation_angle(self,player)) <= 0.175):
-#						if height_dif > 0.5:
-#							if is_on_floor:
-#								velocity.y = jump_power
-#								snap = Vector3.ZERO
-#								dop_speed = SPEED_DOP_ATTACK
-#								set_state(ATTACK)
-#								animation_player.play("Attack",-1.0,3)
-#								return
-#						elif abs(height_dif) <= 0.5:
-#							dop_speed = SPEED_DOP_ATTACK
-#							set_state(ATTACK)
-#							animation_player.play("Attack",-1.0,3)
-#							return
-#
-#		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
-#		evade_maneuver(delta, dist)		
+		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+	evade_maneuver(delta, dist)
 	
 func evade_maneuver(delta, dist_V):
 	if _evade_timer <= 0:
-		_evade_timer = 1 + randi() % 10
+		_evade_timer = 1 + randi() % 5
 		if is_on_floor:
 			match side:
 				1: # right

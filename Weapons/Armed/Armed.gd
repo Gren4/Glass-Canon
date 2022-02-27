@@ -7,6 +7,7 @@ var animation_player
 
 var is_firing : bool = false
 var is_reloading : bool = false
+var is_switching_active : bool = false
 
 export(int) var ammo_in_mag : int = 15
 export(int) var extra_ammo : int = 30
@@ -41,6 +42,9 @@ func _ready():
 
 func is_weapon_automatic() -> bool:
 	return is_automatic
+	
+func is_switching_active() -> bool:
+	return is_switching_active
 	
 func fire():
 	if not is_reloading:
@@ -93,12 +97,17 @@ func fire_bullet():
 			
 			
 func reload():
-	if ammo_in_mag < mag_size and extra_ammo > 0:
-		is_firing = false
-		animation_player.play("Reload", -1.0, reload_speed)
-		is_reloading = true
-		if is_automatic:
-			muzzle_flash.one_shot = true
+	if not is_reloading:
+		if ammo_in_mag < mag_size and extra_ammo > 0:
+			is_firing = false
+			animation_player.stop()
+			if is_switching_active:
+				animation_player.queue("Reload")
+			else:
+				animation_player.play("Reload", -1.0, reload_speed)
+			is_reloading = true
+			if is_automatic:
+				muzzle_flash.one_shot = true
 
 func equip() -> void:
 	animation_player.play("Equip", -1.0, equip_speed)
@@ -135,10 +144,10 @@ func on_animation_finish(anim_name):
 			is_reloading = false
 			update_ammo("reload")
 			
-func update_ammo(action = "Refresh", additional_ammo = 0, update = true):
+func update_ammo(action = "Refresh", additional_ammo = 0, ammo_fired = 1, update = true):
 	match action:
 		"consume":
-			ammo_in_mag -= 1
+			ammo_in_mag -= ammo_fired
 		"reload":
 			var ammo_needed = mag_size - ammo_in_mag
 			if extra_ammo > ammo_needed:
@@ -187,18 +196,21 @@ func sway(delta):
 	
 	global_transform.basis = Basis(new_quat)
 
-func aim_down_sights(value, delta):
+func weapon_regime(value, delta) -> int:
 	is_ads = value
 	
 	if  is_ads == false and player.camera.fov == default_fov:
-		return
+		return BASE
 	
 	if is_ads:
 		sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(ads_pos,ads_speed * delta)
 		player.camera.fov = lerp(player.camera.fov, default_fov / 2, ads_speed * delta)
+		return ADS
 	else:
 		sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(equip_pos,ads_speed * delta)
 		player.camera.fov = lerp(player.camera.fov, default_fov, ads_speed * delta)
+		return BASE
+		
 		
 func _exit_tree():
 	sway_pivot.queue_free()

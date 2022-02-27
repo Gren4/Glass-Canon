@@ -168,6 +168,7 @@ tracks/1/keys = {
 
 [node name="Riffle" type="Spatial"]
 script = ExtResource( 2 )
+weapon_name = "Riffle"
 weapon_pickup = ExtResource( 5 )
 ammo_in_mag = 60
 extra_ammo = 120

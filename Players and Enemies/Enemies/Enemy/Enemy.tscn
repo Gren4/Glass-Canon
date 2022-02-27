@@ -101,7 +101,7 @@ collision_mask = 2
 [node name="Body" type="Spatial" parent="."]
 
 [node name="MeshInstance" type="MeshInstance" parent="Body"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.00186181, 0.026759, 0.00545073 )
 mesh = SubResource( 1 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 2 )
@@ -128,7 +128,7 @@ input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionPolygon" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.921154, 0.778661, -4.0265e-08 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.782578, 0.556056, -0.257453 )
 shape = SubResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -29,7 +29,8 @@ func _ready():
 	all_weapons = {
 		"Unarmed" : preload("res://Weapons/Unarmed/Unarmed.tscn"),
 		"Gun" : preload("res://Weapons/Armed/Gun/Gun.tscn"),
-		"Riffle" : preload("res://Weapons/Armed/Riffle/Riffle.tscn")
+		"Riffle" : preload("res://Weapons/Armed/Riffle/Riffle.tscn"),
+		"RiffleShotgun" : preload("res://Weapons/Armed/Riffle/RiffleShotgun.tscn")
 	}
 	
 	weapons = {
@@ -130,18 +131,21 @@ func reload():
 
 func is_weapon_automatic():
 	return current_weapon.is_weapon_automatic()
+	
+func is_switching_active():
+	return current_weapon.is_switching_active()
 		
 func add_ammo(weapon_name, amount, weapon_instance = null) -> bool:
 	if weapon_instance != null:
 		var updateNeeded : bool = true if current_weapon == weapon_instance else false
-		weapon_instance.update_ammo("add", amount, updateNeeded)
+		weapon_instance.update_ammo("add", amount, 1, updateNeeded)
 		return true
 	else:
 		for i in weapons:
 			if is_instance_valid(weapons[i]):
 				if weapons[i].weapon_name == weapon_name:
 					var updateNeeded : bool = true if current_weapon == weapons[i] else false
-					weapons[i].update_ammo("add", amount, updateNeeded)
+					weapons[i].update_ammo("add", amount, 1, updateNeeded)
 					return true
 	return false
 
