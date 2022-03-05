@@ -32,7 +32,8 @@ onready var hud = get_node(hud_path)
 enum {
 	WALKING,
 	IN_AIR,
-	DASHING, 
+	DASHING,
+	DASHING_AIR
 	WALLRUNNING, 
 	CLIMBING
 	}
@@ -52,6 +53,7 @@ enum {
 # Передвижение
 const WALKING_SPEED : float = 20.0
 const ADS_WALKING_SPEED : float = 10.0
+const WALL_SPEED : float = 5.0
 const WALLRUNNING_SPEED : float = 25.0
 const DASHING_SPEED : float = 200.0
 const MAX_WALL_JUMP : int = 3
@@ -123,6 +125,7 @@ var rotateTo : Vector3 = Vector3.ZERO
 var wall_id : int
 var wallrun_dir_old : Vector3 = Vector3.ZERO
 var sideW : int = -1
+var sideD : int = -1
 var wallrun_current_angle : float
 var wall_normal : KinematicCollision = null
 
@@ -181,14 +184,14 @@ func state_machine(delta) -> void:
 		WALKING:
 			movement_inputs()
 			if jump(1):
-				if start_dashing(delta):
+				if start_dashing(delta,DASHING):
 					if check_edge_climb():
 						if check_wall_run():
 							pass
 		IN_AIR:
 			movement_inputs()
 			if check_edge_climb():
-				if start_dashing(delta):
+				if start_dashing(delta,DASHING_AIR):
 					if wall_jump_air():
 						if check_wall_run():
 							pass
@@ -203,13 +206,14 @@ func state_machine(delta) -> void:
 		DASHING:
 			if check_edge_climb():
 				if check_wall_run():
-					if isfloor_tek:
-						if jump(SLIDE_JUMP_MULTIPLIER):
-							if dashing(delta):
-								pass
-					else:
-							if dashing(delta):
-								pass
+					if jump(SLIDE_JUMP_MULTIPLIER):
+						if dashing(delta):
+							pass
+		DASHING_AIR:
+			if check_edge_climb():
+				if check_wall_run():
+						if dashing(delta):
+							pass
 	
 func set_state(state) -> void:
 	State = state
@@ -248,7 +252,7 @@ func set_state(state) -> void:
 			dop_velocity = Vector3.ZERO
 			gravity = WALL_RUNNING_GRAVITY
 			coun_wall_jump = MAX_WALL_JUMP
-		DASHING:
+		DASHING, DASHING_AIR:
 			imunity = true
 			speed = DASHING_SPEED	
 			dop_velocity = Vector3.ZERO
@@ -272,15 +276,17 @@ func primary_setup(delta) -> void:
 			else:
 				if iswall_tek:
 					velocity.y -= NEAR_WALL_GRAVITY * delta
+					speed = WALL_SPEED
 				else:
 					velocity.y -= IN_AIR_GRAVITY * delta
+					speed = WALKING_SPEED
 				if timer_not_on_ground >= ABLILTY_TO_JUMP_TIME:
 					set_state(IN_AIR)
 				else:
 					timer_not_on_ground += delta
 		IN_AIR:
 			if isceil_tek:
-				velocity.y -= IN_AIR_GRAVITY * delta
+				velocity.y -= WALL_RUNNING_GRAVITY
 			if isfloor_tek:
 				velocity.y = GROUND_GRAVITATION
 				set_state(WALKING)
@@ -306,13 +312,13 @@ func primary_setup(delta) -> void:
 			current_health = clamp(current_health,0,100)
 			update_health()
 
-func start_dashing(delta) -> bool:
+func start_dashing(delta,state_) -> bool:
 	if timer_dashing <= 0.0:
 		if Input.is_action_just_pressed("shift"):
 			if direction == Vector3.ZERO:
 				direction -= self.global_transform.basis.z
 			velocity.y = 0
-			set_state(DASHING)
+			set_state(state_)
 			return false
 	else:
 		timer_dashing -= delta
@@ -429,23 +435,31 @@ func wall_run() -> bool:
 	return true
 		
 func camera_transform(delta) -> void:
-	if State == WALLRUNNING:
-		if sideW == LEFT:
-			wallrun_current_angle += delta * WALLRUN_ANGLE_DELTA_COEFF
-			wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
-		elif sideW == RIGHT:
-			wallrun_current_angle -= delta * WALLRUN_ANGLE_DELTA_COEFF
-			wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
-		wall_run_camera.rotation_degrees.z =  wallrun_current_angle
-	else:
-		if wallrun_current_angle != 0:
-			if wallrun_current_angle > 0:
-				wallrun_current_angle -= delta * NO_WALLRUN_ANGLE_DELTA_COEFF
-				wallrun_current_angle = max(0, wallrun_current_angle)
-			elif wallrun_current_angle < 0:
-				wallrun_current_angle += delta * NO_WALLRUN_ANGLE_DELTA_COEFF
-				wallrun_current_angle = min(wallrun_current_angle, 0)
+	match State:
+		WALLRUNNING:
+			if sideW == LEFT:
+				wallrun_current_angle += delta * WALLRUN_ANGLE_DELTA_COEFF
+				wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
+			elif sideW == RIGHT:
+				wallrun_current_angle -= delta * WALLRUN_ANGLE_DELTA_COEFF
+				wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
 			wall_run_camera.rotation_degrees.z =  wallrun_current_angle
+#		DASHING, DASHING_AIR:
+#			if (sideD == 0):
+#				wallrun_current_angle += delta * NO_WALLRUN_ANGLE_DELTA_COEFF
+#				wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
+#			elif (sideD == 1):
+#				wallrun_current_angle -= delta * NO_WALLRUN_ANGLE_DELTA_COEFF
+#				wallrun_current_angle = clamp(wallrun_current_angle, -DEG_ANGLE_AXIS_XY_LIMITATION, DEG_ANGLE_AXIS_XY_LIMITATION)
+		_:
+			if wallrun_current_angle != 0:
+				if wallrun_current_angle > 0:
+					wallrun_current_angle -= delta * NO_WALLRUN_ANGLE_DELTA_COEFF
+					wallrun_current_angle = max(0, wallrun_current_angle)
+				elif wallrun_current_angle < 0:
+					wallrun_current_angle += delta * NO_WALLRUN_ANGLE_DELTA_COEFF
+					wallrun_current_angle = min(wallrun_current_angle, 0)
+				wall_run_camera.rotation_degrees.z =  wallrun_current_angle
 
 func get_side(point) -> int:
 	point = to_local(point)
@@ -458,14 +472,17 @@ func get_side(point) -> int:
 
 func movement_inputs() -> void:
 	direction = Vector3.ZERO
+	sideD = -1
 	if Input.is_action_pressed("move_forward"):
 		direction -= self.global_transform.basis.z
 	elif Input.is_action_pressed("move_backwards"):
 		direction += self.global_transform.basis.z
 				
 	if Input.is_action_pressed("move_right"):
+		sideD = 1
 		direction += self.global_transform.basis.x
 	elif Input.is_action_pressed("move_left"):
+		sideD = 0
 		direction -= self.global_transform.basis.x
 
 func jump(factor) -> bool:
@@ -572,14 +589,15 @@ func process_weapons(delta) -> void:
 		else:
 			if Input.is_action_just_pressed("fire"):
 				weapon_manager.fire()
-		
-	if Input.is_action_just_pressed("reload"):
-		weapon_manager.reload()
-		
+				
 	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(true, delta)
 	else:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(false, delta)
+		
+	if Input.is_action_just_pressed("reload"):
+		weapon_manager.reload()
+		
 		
 
 	if Input.is_action_just_pressed("drop"):

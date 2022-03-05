@@ -1,6 +1,6 @@
 extends MeshInstance
 
-onready var lifetime: float = 1.0
+onready var lifetime: float = 5.0
 onready var lifetime_delta: float = 1.0 / lifetime
 var cur_transparency: float = 1.0
 

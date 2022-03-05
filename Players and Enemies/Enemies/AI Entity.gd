@@ -1,6 +1,7 @@
 extends Node
 ########################
-onready var Enemy_instance = preload("res://Players and Enemies/Enemies/Enemy/Enemy.tscn")
+onready var Enemy_Melee_instance = preload("res://Players and Enemies/Enemies/EnemyMelee/EnemyMelee.tscn")
+onready var Enemy_Range_instance = preload("res://Players and Enemies/Enemies/EnemyRange/EnemyRange.tscn")
 ########################
 onready var forces : Array = []
 
@@ -35,7 +36,7 @@ func _ready():
 		else:
 			pl_sides_it += 1
 		timer.append(t)
-		t += 0.05
+		t += 0.025
 		if t >= 0.5:
 			t = 0
 
@@ -61,7 +62,7 @@ func _physics_process(delta):
 func move_to(target):
 	var path = []
 	var dist_to_player = player.global_transform.origin - target.global_transform.origin
-	if dist_to_player.length() > 15 and col_enem > 1:
+	if dist_to_player.length() > 15 and col_enem > 1 and not target.is_in_group("Range"):
 		var plV3 : Vector3 = player.global_transform.origin + pl_sides[target.attack_side]
 		var closest_p : Vector3 = nav.get_closest_point(plV3)
 		var dist_to_pl = (plV3 - closest_p).length()

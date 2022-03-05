@@ -1,0 +1,65 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.gd" type="Script" id=1]
+
+[sub_resource type="SphereShape" id=10]
+radius = 0.687174
+
+[sub_resource type="Curve" id=12]
+_data = [ Vector2( 0, 0.202273 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+trail_divisor = 3
+trail_size_modifier = SubResource( 13 )
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 0.5
+scale = 0.5
+
+[sub_resource type="OpenSimplexNoise" id=8]
+seed = 22
+period = 150.0
+lacunarity = 3.5
+
+[sub_resource type="NoiseTexture" id=9]
+bump_strength = 2.5
+noise = SubResource( 8 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_color = Color( 0, 1, 0.333333, 1 )
+albedo_texture = SubResource( 9 )
+
+[sub_resource type="SphereMesh" id=7]
+material = SubResource( 6 )
+radial_segments = 16
+rings = 8
+
+[sub_resource type="BoxShape" id=11]
+extents = Vector3( 0.316577, 0.31218, 0.36934 )
+
+[node name="EnemyProjectile" type="RigidBody"]
+can_sleep = false
+script = ExtResource( 1 )
+
+[node name="Area" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 11
+monitorable = false
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+shape = SubResource( 10 )
+
+[node name="Effect" type="Particles" parent="."]
+amount = 5
+lifetime = 0.2
+process_material = SubResource( 5 )
+draw_pass_1 = SubResource( 7 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 11 )
+disabled = true
+
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]

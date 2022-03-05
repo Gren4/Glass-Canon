@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=57 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -14,13 +14,15 @@
 [ext_resource path="res://Weapons/Armed/Smoke/SmokeGradient.tres" type="Gradient" id=12]
 [ext_resource path="res://Weapons/Armed/Riffle/Riffle_pickup.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=14]
-[ext_resource path="res://Players and Enemies/Enemies/Enemy/Enemy.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Players and Enemies/Enemies/EnemyMelee/EnemyMelee.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkNavigation.gd" type="Script" id=17]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkPath.gd" type="Script" id=18]
 [ext_resource path="res://addons/NavLink/Scenes/NavLinkPathEnd.tscn" type="PackedScene" id=19]
 [ext_resource path="res://addons/NavLink/Scenes/NavLinkPathStart.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Weapons/Armed/Riffle/RiffleShotgun_pickup.tscn" type="PackedScene" id=21]
+[ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyRange.tscn" type="PackedScene" id=22]
+[ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.tscn" type="PackedScene" id=23]
 
 [sub_resource type="SpatialMaterial" id=18]
 resource_local_to_scene = true
@@ -116,6 +118,7 @@ points = PoolVector3Array( -2.38419e-07, 1, 1, 2.8565, -1, 1, -2.38419e-07, 1, -
 [sub_resource type="CubeMesh" id=21]
 
 [sub_resource type="BoxShape" id=8]
+extents = Vector3( 1, 1, 1.04315 )
 
 [sub_resource type="CubeMesh" id=22]
 size = Vector3( 2, 4, 8 )
@@ -181,20 +184,23 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.453, 15.23, 0.297857 )
 
 [node name="Enemies" type="Node" parent="."]
 
-[node name="Enemy2" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 25.9456, -67.2967 )
+[node name="EnemyRange" parent="Enemies" instance=ExtResource( 22 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.6787, -56.1448 )
 
-[node name="Enemy3" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 22.3268, -40.6838 )
+[node name="EnemyMelee" parent="Enemies" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.1727, -78.7152 )
 
-[node name="Enemy4" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.4866, 18.3287 )
+[node name="EnemyMelee2" parent="Enemies" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.6553, -122.604 )
 
-[node name="Enemy5" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 107.291, 13.8162, 0 )
+[node name="EnemyMelee3" parent="Enemies" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5865, 16.7406, -50.7688 )
 
-[node name="Enemy" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.1791, 35.8383, -106.829 )
+[node name="EnemyMelee4" parent="Enemies" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.95983, 10.4639 )
+
+[node name="EnemyMelee5" parent="Enemies" instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 118.228, 3.44263, -56.1358 )
 
 [node name="Pickups" type="Spatial" parent="."]
 
@@ -234,6 +240,8 @@ process_material = SubResource( 16 )
 
 [node name="MuzzleFlash" parent="Particles" instance=ExtResource( 11 )]
 process_material = SubResource( 17 )
+
+[node name="EnemyProjectile" parent="Particles" instance=ExtResource( 23 )]
 
 [node name="NavLinkNavigation" type="Navigation" parent="."]
 script = ExtResource( 17 )
@@ -552,7 +560,7 @@ mesh = SubResource( 21 )
 material/0 = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs"]
-transform = Transform( 1, 0, 0, 0, 1, 2.79397e-09, 0, 0, 1, 0, -0.00611305, 0.36703 )
+transform = Transform( 1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 1, 0, -0.00722086, 0.433548 )
 shape = SubResource( 8 )
 
 [node name="StaticBody" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]

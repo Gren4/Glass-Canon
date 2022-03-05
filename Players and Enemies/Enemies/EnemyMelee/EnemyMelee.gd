@@ -59,7 +59,7 @@ enum {
 		LOOK_AT_ALLERT,
 		ALLERTED_AND_DOESNT_KNOW_LOC, 
 		ALLERTED_AND_KNOWS_LOC,
-		ATTACK,
+		ATTACK_MELEE,
 		EVADE,
 		JUMP,
 		DEATH
@@ -127,13 +127,12 @@ func state_machine(delta):
 				set_state(IDLE)
 		ALLERTED_AND_KNOWS_LOC:
 			analyze_and_prepare_attack(delta)
-		ATTACK:
-			move_to_target(delta,-dist,ATTACK)
+		ATTACK_MELEE:
+			move_to_target(delta,-dist,ATTACK_MELEE)
 		EVADE:
 			evading(delta)
 		JUMP:
-			Global.look_face(mesh_inst2,link_to + offset, 20, delta)
-			Global.turn_face(self,link_to + offset, 30, delta)
+			face_threat(20,30,delta,offset)
 			if jump_time < 1.0:
 				jump_time += delta
 				self.global_transform.origin = Global.quadratic_bezier(start_jump_pos,p1,link_to,jump_time)
@@ -171,13 +170,14 @@ func set_state(state):
 		IDLE_TURN:
 			set_color_green()
 		LOOK_AT_ALLERT:
-			set_color_blue()
+			set_color_green()
 		ALLERTED_AND_DOESNT_KNOW_LOC:
 			set_deferred("area_detection.monitoring", true)
-			set_color_orange()
+			set_color_green()
 		ALLERTED_AND_KNOWS_LOC:
-			set_color_red()
-		ATTACK:
+			set_color_green()
+			pass
+		ATTACK_MELEE:
 			set_color_violate()
 		EVADE:
 			pass
@@ -264,6 +264,10 @@ func look_for_player(delta):
 	else:
 		_dop_timer += delta
 	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
+
+func face_threat(d1,d2,delta,offset_ = Vector3.ZERO):
+	Global.look_face(mesh_inst2, player.global_transform.origin + offset_, d1, delta)
+	Global.turn_face(self,target.global_transform.origin + offset_, d2, delta)
 	
 func analyze_and_prepare_attack(delta):
 	var height_dif : float = -dist.y
@@ -271,22 +275,14 @@ func analyze_and_prepare_attack(delta):
 		_attack_timer += delta
 	if _attack_timer >= ATTACK_CD_TIMER:
 			if dist_length <= 5.0:
-				var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,target.global_transform.origin,[self],5)
+				var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,target.global_transform.origin,[self],7)
 				if result:
 					if result.collider.is_in_group("Player"):
 						if (abs(Global.observation_angle(self,player)) <= 0.175):
 							if abs(height_dif) <= 0.5:
 								dop_speed = SPEED_DOP_ATTACK
-								set_state(ATTACK)
+								set_state(ATTACK_MELEE)
 								animation_player.play("Attack",-1.0,3)
-#							if height_dif > 1.0:
-#								if is_on_floor:
-#									velocity.y = jump_power
-#									snap = Vector3.ZERO
-#									dop_speed = SPEED_DOP_ATTACK
-#									set_state(ATTACK)
-#									animation_player.play("Attack",-1.0,3)
-#									return
 				_attack_timer = 0.0
 	if my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
@@ -376,10 +372,9 @@ func evading(delta):
 	
 func move_to_target(delta, dir, state):
 	match state:
-		ATTACK:
+		ATTACK_MELEE:
 			direction = dir
-			Global.look_face(mesh_inst2,target.global_transform.origin, 15, delta)
-			Global.turn_face(self,target.global_transform.origin, 20, delta)
+			face_threat(15,20,delta)
 		ALLERTED_AND_KNOWS_LOC:#, EVADE:
 			if dist_length < 2.5:
 				direction = direction.linear_interpolate(-dir, delta)
@@ -387,12 +382,10 @@ func move_to_target(delta, dir, state):
 				direction = Vector3.ZERO
 			else:
 				direction = dir
-			Global.look_face(mesh_inst2,target.global_transform.origin, 20, delta)
-			Global.turn_face(self,target.global_transform.origin, 30, delta)
+			face_threat(20,30,delta)
 
 func look_at_allert(delta):
-	Global.look_face(mesh_inst2, player.global_transform.origin, 5 ,delta)
-	Global.turn_face(self,target.global_transform.origin, 10, delta)
+	face_threat(5,10,delta)
 	_timer_update(delta, LOOK_AT_ALLERT_TIMER, ALLERTED_AND_DOESNT_KNOW_LOC)
 
 func update_hp(damage):

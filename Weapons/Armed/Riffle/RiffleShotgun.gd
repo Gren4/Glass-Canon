@@ -1,9 +1,14 @@
 extends Armed
 
-var spread : float = 10.0
-export(float) var alt_fire_rate : float = 1.0
+#var spread : float = 10.0
+export(float) var alt_fire_rate : float = 1.5
 export(int) var  alt_damage : int = 5
 var is_alt_active : bool = false
+var spread_array : Array = [
+	[0,0],[0,0],[5,0],[-5,0],[0,5],[0,-5],
+	[3,3],[-3,3],[3,-3],[-3,-3]
+]
+
 
 func _ready():
 	animation_player = $AnimationPlayer
@@ -28,7 +33,7 @@ func weapon_regime(value, delta) -> int:
 	
 	if is_ads:
 		if not is_alt_active and not is_reloading:
-			animation_player.play("AltEquip",-1.0, 2.0)
+			animation_player.play("AltEquip",-1.0, 4.0)
 			is_alt_active = true
 			is_switching_active = true
 			is_firing = false
@@ -36,11 +41,11 @@ func weapon_regime(value, delta) -> int:
 		return ALT
 	else:
 		if is_alt_active and not is_reloading:
-			animation_player.play("AltUnequip",-1.0, 2.0)
+			animation_player.play("AltUnequip",-1.0, 4.0)
 			is_alt_active = false
 			is_switching_active = true
 			is_firing = false
-			muzzle_flash.one_shot = false
+			muzzle_flash.one_shot = true
 			ray.cast_to.x = 0
 			ray.cast_to.y = 0
 		return BASE
@@ -86,8 +91,8 @@ func fire_spray():
 	update_ammo("consume",0, bullets)
 	
 	for i in bullets:
-		ray.cast_to.x = rand_range(spread,-spread)
-		ray.cast_to.y = rand_range(spread,-spread)
+		ray.cast_to.x = (spread_array[i][0] + rand_range(1,-1))
+		ray.cast_to.y = (spread_array[i][1] + rand_range(1,-1))
 		ray.force_raycast_update()
 		
 		if ray.is_colliding():

@@ -97,14 +97,11 @@ func fire_bullet():
 			
 			
 func reload():
-	if not is_reloading:
+	if not is_reloading and not is_switching_active:
 		if ammo_in_mag < mag_size and extra_ammo > 0:
 			is_firing = false
 			animation_player.stop()
-			if is_switching_active:
-				animation_player.queue("Reload")
-			else:
-				animation_player.play("Reload", -1.0, reload_speed)
+			animation_player.play("Reload", -1.0, reload_speed)
 			is_reloading = true
 			if is_automatic:
 				muzzle_flash.one_shot = true
