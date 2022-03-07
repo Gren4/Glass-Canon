@@ -35,7 +35,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 90, 0, 0 ), Vector3( -10, 0, 0 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( -15, 0, 0 ), Vector3( -10, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath(".")
@@ -149,7 +149,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( -10, 0, 0 ), Vector3( 90, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( -10, 0, 0 ), Vector3( -15, 0, 0 ) ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath(".")
@@ -170,6 +170,7 @@ tracks/1/keys = {
 script = ExtResource( 2 )
 weapon_name = "Riffle"
 weapon_pickup = ExtResource( 5 )
+slow_fire_rate = false
 ammo_in_mag = 60
 extra_ammo = 120
 is_automatic = true

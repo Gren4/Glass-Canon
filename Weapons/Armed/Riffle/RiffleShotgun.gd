@@ -3,10 +3,14 @@ extends Armed
 #var spread : float = 10.0
 export(float) var alt_fire_rate : float = 1.5
 export(int) var  alt_damage : int = 5
+export(int) var spread_alt : int = 7
 var is_alt_active : bool = false
-var spread_array : Array = [
-	[0,0],[0,0],[5,0],[-5,0],[0,5],[0,-5],
-	[3,3],[-3,3],[3,-3],[-3,-3]
+
+
+onready var alt_spread_array : Array = [
+	[0,0],[0,0],[spread_alt,0],[-spread_alt,0],[0,spread_alt],[0,-spread_alt],
+	[spread_alt*0.65,spread_alt*0.65],[-spread_alt*0.65,spread_alt*0.65],
+	[spread_alt*0.65,-spread_alt*0.65],[-spread_alt*0.65,-spread_alt*0.65]
 ]
 
 
@@ -18,6 +22,8 @@ func on_animation_finish(anim_name):
 	match anim_name:
 		"Unequip":
 			is_equipped = false
+			is_switching_active = false
+			is_alt_active = false
 		"Equip":
 			is_equipped = true
 		"Reload":
@@ -29,27 +35,40 @@ func on_animation_finish(anim_name):
 
 
 func weapon_regime(value, delta) -> int:
-	is_ads = value
+	if is_equipped and not is_unequip_active:
+		is_ads = value
+		if is_ads:
+			if not is_alt_active and not is_reloading:
+				animation_player.play("AltEquip",-1.0, 4.0)
+				is_alt_active = true
+				is_switching_active = true
+				is_firing = false
+				muzzle_flash.one_shot = true
+			return ALT
+		else:
+			if is_alt_active and not is_reloading:
+				animation_player.play("AltUnequip",-1.0, 4.0)
+				is_alt_active = false
+				is_switching_active = true
+				is_firing = false
+				muzzle_flash.one_shot = true
+			return BASE
+	return BASE		
 	
-	if is_ads:
-		if not is_alt_active and not is_reloading:
-			animation_player.play("AltEquip",-1.0, 4.0)
-			is_alt_active = true
-			is_switching_active = true
-			is_firing = false
-			muzzle_flash.one_shot = true
-		return ALT
-	else:
-		if is_alt_active and not is_reloading:
-			animation_player.play("AltUnequip",-1.0, 4.0)
-			is_alt_active = false
-			is_switching_active = true
-			is_firing = false
-			muzzle_flash.one_shot = true
-			ray.cast_to.x = 0
-			ray.cast_to.y = 0
-		return BASE
-			
+
+func equip() -> void:
+	is_unequip_active = false
+	animation_player.play("Equip", -1.0, equip_speed)
+	is_reloading = false
+	sway_pivot.transform.origin = equip_pos
+	player.camera.fov = default_fov
+	
+func unequip() -> void:
+	is_unequip_active = true
+	animation_player.stop()
+	animation_player.play("Unequip", -1.0, unequip_speed)
+	muzzle_flash.one_shot = true
+	is_firing = false
 	
 func fire():
 	if not is_reloading:
@@ -91,8 +110,8 @@ func fire_spray():
 	update_ammo("consume",0, bullets)
 	
 	for i in bullets:
-		ray.cast_to.x = (spread_array[i][0] + rand_range(1,-1))
-		ray.cast_to.y = (spread_array[i][1] + rand_range(1,-1))
+		ray.cast_to.x = (alt_spread_array[i][0] + rand_range(1,-1))
+		ray.cast_to.y = (alt_spread_array[i][1] + rand_range(1,-1))
 		ray.force_raycast_update()
 		
 		if ray.is_colliding():

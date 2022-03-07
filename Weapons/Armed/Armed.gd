@@ -9,6 +9,8 @@ var is_firing : bool = false
 var is_reloading : bool = false
 var is_switching_active : bool = false
 
+export(bool) var slow_fire_rate = true
+export(int) var spread : int = 3
 export(int) var ammo_in_mag : int = 15
 export(int) var extra_ammo : int = 30
 onready var mag_size : int = ammo_in_mag
@@ -35,6 +37,7 @@ var sway_pivot = null
 export(Vector3) var ads_pos : Vector3 = Vector3.ZERO
 var ads_speed : int = 10
 var is_ads : bool = false
+var is_unequip_active : bool = false
 
 func _ready():
 	set_as_toplevel(true)
@@ -72,13 +75,17 @@ func fire_stop():
 		muzzle_flash.one_shot = true
 	
 func fire_bullet():
-	if is_automatic:
+	if is_automatic and not slow_fire_rate:
 		muzzle_flash.one_shot = false
+	else:
+		muzzle_flash.one_shot = true
 	muzzle_flash.emitting = true
 	update_ammo("consume")
 	
+	ray.cast_to.x = (rand_range(spread,-spread))
+	ray.cast_to.y = (rand_range(spread,-spread))
 	ray.force_raycast_update()
-	
+		
 	if ray.is_colliding():
 		var obj : Object = ray.get_collider()
 		var ray_point : Vector3 = ray.get_collision_point()
@@ -107,11 +114,18 @@ func reload():
 				muzzle_flash.one_shot = true
 
 func equip() -> void:
+	is_unequip_active = false
 	animation_player.play("Equip", -1.0, equip_speed)
 	is_reloading = false
+	sway_pivot.transform.origin = equip_pos
+	player.camera.fov = default_fov
 	
 func unequip() -> void:
+	is_unequip_active = true
+	animation_player.stop()
 	animation_player.play("Unequip", -1.0, unequip_speed)
+	muzzle_flash.one_shot = true
+	is_firing = false
 	
 func is_equip_finished() -> bool:
 	if is_equipped:
@@ -194,20 +208,21 @@ func sway(delta):
 	global_transform.basis = Basis(new_quat)
 
 func weapon_regime(value, delta) -> int:
-	is_ads = value
-	
-	if  is_ads == false and player.camera.fov == default_fov:
-		return BASE
-	
-	if is_ads:
-		sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(ads_pos,ads_speed * delta)
-		player.camera.fov = lerp(player.camera.fov, default_fov / 2, ads_speed * delta)
-		return ADS
-	else:
-		sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(equip_pos,ads_speed * delta)
-		player.camera.fov = lerp(player.camera.fov, default_fov, ads_speed * delta)
-		return BASE
+	if is_equipped:
+		is_ads = value
 		
+		if  is_ads == false and player.camera.fov == default_fov:
+			return BASE
+		
+		if is_ads:
+			sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(ads_pos,ads_speed * delta)
+			player.camera.fov = lerp(player.camera.fov, default_fov / 2, ads_speed * delta)
+			return ADS
+		else:
+			sway_pivot.transform.origin = sway_pivot.transform.origin.linear_interpolate(equip_pos,ads_speed * delta)
+			player.camera.fov = lerp(player.camera.fov, default_fov, ads_speed * delta)
+			return BASE
+	return BASE	
 		
 func _exit_tree():
 	sway_pivot.queue_free()

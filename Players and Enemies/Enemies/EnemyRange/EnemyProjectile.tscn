@@ -3,7 +3,7 @@
 [ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.gd" type="Script" id=1]
 
 [sub_resource type="SphereShape" id=10]
-radius = 0.687174
+radius = 0.359393
 
 [sub_resource type="Curve" id=12]
 _data = [ Vector2( 0, 0.202273 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
@@ -34,13 +34,16 @@ albedo_texture = SubResource( 9 )
 
 [sub_resource type="SphereMesh" id=7]
 material = SubResource( 6 )
+radius = 0.5
+height = 1.0
 radial_segments = 16
 rings = 8
 
 [sub_resource type="BoxShape" id=11]
-extents = Vector3( 0.316577, 0.31218, 0.36934 )
+extents = Vector3( 0.113876, 0.11513, 0.171033 )
 
 [node name="EnemyProjectile" type="RigidBody"]
+gravity_scale = 0.0
 can_sleep = false
 script = ExtResource( 1 )
 

@@ -207,6 +207,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Root/Anchor/Body/Bottom:transform")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Transform( 0.2, 0, 0, 0, 0, 0.2, 0, -0.2, 0, 0, -0.139924, -0.626885 ) ]
+}
 
 [sub_resource type="Animation" id=6]
 resource_name = "Fire"
@@ -377,6 +389,7 @@ tracks/1/keys = {
 script = ExtResource( 2 )
 weapon_name = "RiffleShotgun"
 weapon_pickup = ExtResource( 1 )
+slow_fire_rate = false
 ammo_in_mag = 60
 extra_ammo = 3000
 is_automatic = true

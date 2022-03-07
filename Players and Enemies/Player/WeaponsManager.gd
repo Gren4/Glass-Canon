@@ -12,6 +12,8 @@ var hud
 
 var camera
 
+var def_fov
+
 var current_weapon
 var current_weapon_slot : String = "Empty"
 
@@ -32,7 +34,7 @@ func _ready():
 		"Riffle" : preload("res://Weapons/Armed/Riffle/Riffle.tscn"),
 		"RiffleShotgun" : preload("res://Weapons/Armed/Riffle/RiffleShotgun.tscn")
 	}
-	
+	def_fov = camera.fov
 	weapons = {
 		"Empty" : $Unarmed,
 		"Primary" : null,
@@ -51,7 +53,7 @@ func _ready():
 func weapon_setup(w):
 	w.weapon_manager = self
 	w.player = owner
-	w.default_fov = camera.fov
+	w.default_fov = def_fov
 	w.ray = get_node(ray_path)
 	w.visible = false
 		

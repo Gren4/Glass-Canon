@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -12,7 +12,6 @@
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Weapons/Armed/Smoke/SmokeGradient.tres" type="Gradient" id=12]
-[ext_resource path="res://Weapons/Armed/Riffle/Riffle_pickup.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=14]
 [ext_resource path="res://Players and Enemies/Enemies/EnemyMelee/EnemyMelee.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
@@ -188,19 +187,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.453, 15.23, 0.297857 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.6787, -56.1448 )
 
 [node name="EnemyMelee" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17.1727, -78.7152 )
-
-[node name="EnemyMelee2" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 18.6553, -122.604 )
-
-[node name="EnemyMelee3" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5865, 16.7406, -50.7688 )
-
-[node name="EnemyMelee4" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.95983, 10.4639 )
-
-[node name="EnemyMelee5" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 118.228, 3.44263, -56.1358 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9057, 15.2503, -57.458 )
 
 [node name="Pickups" type="Spatial" parent="."]
 
@@ -213,18 +200,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8005, 1.51433, 0 )
 weapon_name = "Gun"
 
 [node name="GunPickUp" parent="Pickups" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.017118, 7.80027, -3.34875 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.1356, 13.6093, -0.327365 )
 ammo_in_mag = 6
 extra_ammo = 100
-
-[node name="GunPickUp2" parent="Pickups" instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.0139, 1.90787, -33.6518 )
-ammo_in_mag = 6
-extra_ammo = 200
-
-[node name="RifflePickUp" parent="Pickups" instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.595, 14.1007, 0.0744572 )
-extra_ammo = 20000
 
 [node name="RiffleShotgunPickUp" parent="Pickups" instance=ExtResource( 21 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.8579, 13.5833, -0.483275 )

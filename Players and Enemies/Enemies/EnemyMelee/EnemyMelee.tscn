@@ -71,10 +71,16 @@ mesh_inst2_path = NodePath("Body/MeshInstance/MeshInstance2")
 hitbox_path = NodePath("Body/MeshInstance/MeshInstance2/HitBox")
 animation_player_path = NodePath("AnimationPlayer")
 area_detection_path = NodePath("Area")
+front_ray_path = NodePath("FrontRayCast")
 right_ray_path = NodePath("RightRayCast")
 left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
+
+[node name="FrontRayCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+cast_to = Vector3( 0, -1.55, 0 )
+collision_mask = 2
 
 [node name="RightRayCast" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0 )

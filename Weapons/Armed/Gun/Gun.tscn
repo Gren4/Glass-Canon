@@ -62,7 +62,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id=6]
 resource_name = "Fire"
-length = 0.5
+length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("Root/Anchor:rotation_degrees")
 tracks/0/interp = 1
@@ -70,10 +70,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.4, 0.5 ),
-"transitions": PoolRealArray( 1, 0.210224, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 0.210224, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 25, 0, 0 ), Vector3( -5, 0, 0 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 25, 0, 0 ), Vector3( -5, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, -17.611, -26.709 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "method"
 tracks/1/path = NodePath(".")
@@ -129,7 +129,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.9 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 27.1613, 6.69588, 7.54939 ), Vector3( 43.2833, 36.3705, 31.2614 ), Vector3( 43.2833, 36.3705, 31.2614 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 27.161, -6.696, -7.549 ), Vector3( 43.283, -36.37, -31.261 ), Vector3( 43.283, -36.37, -31.261 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -166,10 +166,12 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 weapon_name = "Gun"
 weapon_pickup = ExtResource( 5 )
+spread = 0
 ammo_in_mag = 6
 extra_ammo = 1500
-damage = 35
-equip_pos = Vector3( 0.735, -0.222, -0.589 )
+damage = 75
+is_automatic = true
+equip_pos = Vector3( -0.735, -0.222, -0.589 )
 impact_effect = ExtResource( 3 )
 hole_effect = ExtResource( 4 )
 smoke_effect = ExtResource( 6 )
