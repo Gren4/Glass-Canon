@@ -129,6 +129,7 @@ far = 250.0
 [node name="RayCast" type="RayCast" parent="Head/WallRun/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 10
+collide_with_areas = true
 
 [node name="ShaderPrecompiler" parent="Head/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
 

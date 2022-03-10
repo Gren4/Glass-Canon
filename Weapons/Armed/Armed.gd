@@ -25,6 +25,7 @@ export(Vector3) var equip_pos : Vector3 = Vector3.ZERO
 export(PackedScene) var impact_effect
 export(PackedScene) var hole_effect
 export(PackedScene) var smoke_effect
+export(PackedScene) var trace_effect
 export(NodePath) var muzzle_flash_path
 onready var muzzle_flash = get_node(muzzle_flash_path)
 
@@ -91,17 +92,21 @@ func fire_bullet():
 		var ray_point : Vector3 = ray.get_collision_point()
 		var ray_normal : Vector3 = ray.get_collision_normal()
 		var impact = Global.spawn_node_from_pool(impact_effect, ray_point, -ray_normal, obj)
+		var trace = Global.spawn_node_simple_mesh(trace_effect)
+		trace.draw_start(muzzle_flash.global_transform.origin,ray_point)	
 		impact.emitting = true
 		if (obj.is_in_group("World")):
 			var hole = Global.spawn_node_from_pool(hole_effect, ray_point, -ray_normal, obj)
 			hole.visible = true
 			hole.cur_transparency = 1.0
-			var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
-			smoke.emitting = true
+			#var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
+			#smoke.emitting = true
 		elif (obj.is_in_group("Enemy")):
 			obj.update_hp(damage)
 			weapon_manager.hud.hit_confirm.visible = true
-			
+	else:
+		var trace = Global.spawn_node_simple_mesh(trace_effect)
+		trace.draw_start(muzzle_flash.global_transform.origin,to_global(ray.cast_to))			
 			
 func reload():
 	if not is_reloading and not is_switching_active:

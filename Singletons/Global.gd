@@ -15,9 +15,24 @@ func spawn_node_from_pool(packed_scene, pos = null, normal = null, parent = null
 	var clone = take_node_from_pool(root, packed_scene)
 	return place_node(root, clone, pos, normal, parent)
 	
+func spawn_node_from_pool_and_look_at(packed_scene, pos_start = null, pos_end = null):
+	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
+	var clone = take_node_from_pool(root, packed_scene)
+	clone.set_disable_scale(true)
+	root.add_child(clone)
+	clone.global_transform.origin = pos_start
+	clone.look_at(pos_end, Vector3.UP)
+	return clone
+	
+func spawn_node_simple_mesh(packed_scene):
+	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
+	var clone = take_node_from_pool(root, packed_scene)
+	clone.set_disable_scale(true)
+	root.add_child(clone)
+	return clone
+
 func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, target = null):
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
-	#var clone = take_node_from_pool(root, packed_scene)
 	var clone = packed_scene.instance()
 	clone.parent = parent
 	root.add_child(clone)

@@ -118,17 +118,22 @@ func fire_spray():
 			var obj : Object = ray.get_collider()
 			var ray_point : Vector3 = ray.get_collision_point()
 			var ray_normal : Vector3 = ray.get_collision_normal()
+			var trace = Global.spawn_node_simple_mesh(trace_effect)
+			trace.draw_start(muzzle_flash.global_transform.origin,ray_point)
 			var impact = Global.spawn_node_from_pool(impact_effect, ray_point, -ray_normal, obj)
 			impact.emitting = true
 			if (obj.is_in_group("World")):
 				var hole = Global.spawn_node_from_pool(hole_effect, ray_point, -ray_normal, obj)
 				hole.visible = true
 				hole.cur_transparency = 1.0
-				var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
-				smoke.emitting = true
+				#var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
+				#smoke.emitting = true
 			elif (obj.is_in_group("Enemy")):
 				obj.update_hp(alt_damage)
 				weapon_manager.hud.hit_confirm.visible = true
+		else:
+			var trace = Global.spawn_node_simple_mesh(trace_effect)
+			trace.draw_start(muzzle_flash.global_transform.origin,to_global(ray.cast_to))			
 		
 func sway(delta):
 	global_transform.origin = sway_pivot.global_transform.origin
