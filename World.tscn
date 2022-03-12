@@ -12,6 +12,7 @@
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Weapons/Armed/Smoke/SmokeGradient.tres" type="Gradient" id=12]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=14]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkNavigation.gd" type="Script" id=17]
@@ -22,7 +23,6 @@
 [ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.tscn" type="PackedScene" id=23]
 [ext_resource path="res://Weapons/Armed/Impact.tscn" type="PackedScene" id=24]
 [ext_resource path="res://Weapons/Armed/BulletTrace.tscn" type="PackedScene" id=25]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3.tscn" type="PackedScene" id=26]
 
 [sub_resource type="SpatialMaterial" id=18]
 resource_local_to_scene = true
@@ -219,8 +219,8 @@ transform = Transform( 0.00836001, 0, 0.999965, 0, 1, 0, -0.999965, 0, 0.0083600
 
 [node name="Enemies" type="Node" parent="."]
 
-[node name="MeleeGrunt3" parent="Enemies" instance=ExtResource( 26 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.8348, 15.4618, 0 )
+[node name="MeleeGrunt4" parent="Enemies" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.7569, 14.6624, 0 )
 
 [node name="Pickups" type="Spatial" parent="."]
 

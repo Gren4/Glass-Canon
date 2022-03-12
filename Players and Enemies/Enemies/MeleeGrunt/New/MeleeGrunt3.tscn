@@ -1,9 +1,10 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube000.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube001.mesh" type="ArrayMesh" id=2]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube002.mesh" type="ArrayMesh" id=3]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3.gd" type="Script" id=4]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/Alert.anim" type="Animation" id=5]
 
 [sub_resource type="Skin" id=1]
 resource_name = "Skin"
@@ -2319,115 +2320,115 @@ input_1/auto_advance = false
 input_2/name = "JumpEnd"
 input_2/auto_advance = false
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=79]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeAnimation" id=21]
+[sub_resource type="AnimationNodeAnimation" id=80]
 animation = "WalkForward"
 
-[sub_resource type="AnimationNodeAnimation" id=31]
+[sub_resource type="AnimationNodeAnimation" id=81]
 animation = "RunForward"
 
-[sub_resource type="AnimationNodeAnimation" id=32]
+[sub_resource type="AnimationNodeAnimation" id=82]
 animation = "RunBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=33]
+[sub_resource type="AnimationNodeAnimation" id=83]
 animation = "RunBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=34]
+[sub_resource type="AnimationNodeAnimation" id=84]
 animation = "WalkBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=35]
+[sub_resource type="AnimationNodeAnimation" id=85]
 animation = "WalkBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=36]
+[sub_resource type="AnimationNodeAnimation" id=86]
 animation = "WalkForward"
 
-[sub_resource type="AnimationNodeAnimation" id=37]
+[sub_resource type="AnimationNodeAnimation" id=87]
 animation = "WalkForward"
 
-[sub_resource type="AnimationNodeAnimation" id=39]
+[sub_resource type="AnimationNodeAnimation" id=88]
 animation = "RunLeft"
 
-[sub_resource type="AnimationNodeAnimation" id=40]
+[sub_resource type="AnimationNodeAnimation" id=89]
 animation = "RunLeft"
 
-[sub_resource type="AnimationNodeAnimation" id=41]
+[sub_resource type="AnimationNodeAnimation" id=90]
 animation = "RunRight"
 
-[sub_resource type="AnimationNodeAnimation" id=22]
+[sub_resource type="AnimationNodeAnimation" id=91]
 animation = "RunForward"
 
-[sub_resource type="AnimationNodeAnimation" id=42]
+[sub_resource type="AnimationNodeAnimation" id=92]
 animation = "RunRight"
 
-[sub_resource type="AnimationNodeAnimation" id=23]
+[sub_resource type="AnimationNodeAnimation" id=93]
 animation = "WalkLeft"
 
-[sub_resource type="AnimationNodeAnimation" id=24]
+[sub_resource type="AnimationNodeAnimation" id=94]
 animation = "RunLeft"
 
-[sub_resource type="AnimationNodeAnimation" id=25]
+[sub_resource type="AnimationNodeAnimation" id=95]
 animation = "WalkRight"
 
-[sub_resource type="AnimationNodeAnimation" id=26]
+[sub_resource type="AnimationNodeAnimation" id=96]
 animation = "RunRight"
 
-[sub_resource type="AnimationNodeAnimation" id=27]
+[sub_resource type="AnimationNodeAnimation" id=97]
 animation = "WalkBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=28]
+[sub_resource type="AnimationNodeAnimation" id=98]
 animation = "RunBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=38]
+[sub_resource type="AnimationNodeAnimation" id=99]
 animation = "RunForward"
 
 [sub_resource type="AnimationNodeBlendSpace2D" id=29]
-blend_point_0/node = SubResource( 20 )
+blend_point_0/node = SubResource( 79 )
 blend_point_0/pos = Vector2( 0, 0 )
-blend_point_1/node = SubResource( 21 )
+blend_point_1/node = SubResource( 80 )
 blend_point_1/pos = Vector2( 0, -0.3 )
-blend_point_2/node = SubResource( 22 )
+blend_point_2/node = SubResource( 91 )
 blend_point_2/pos = Vector2( 0, -0.8 )
-blend_point_3/node = SubResource( 23 )
+blend_point_3/node = SubResource( 93 )
 blend_point_3/pos = Vector2( -0.3, 0 )
-blend_point_4/node = SubResource( 24 )
+blend_point_4/node = SubResource( 94 )
 blend_point_4/pos = Vector2( -0.8, 0 )
-blend_point_5/node = SubResource( 25 )
+blend_point_5/node = SubResource( 95 )
 blend_point_5/pos = Vector2( 0.3, 0 )
-blend_point_6/node = SubResource( 26 )
+blend_point_6/node = SubResource( 96 )
 blend_point_6/pos = Vector2( 0.8, 0 )
-blend_point_7/node = SubResource( 27 )
+blend_point_7/node = SubResource( 97 )
 blend_point_7/pos = Vector2( 0, 0.3 )
-blend_point_8/node = SubResource( 28 )
+blend_point_8/node = SubResource( 98 )
 blend_point_8/pos = Vector2( 0, 0.8 )
-blend_point_9/node = SubResource( 38 )
+blend_point_9/node = SubResource( 99 )
 blend_point_9/pos = Vector2( -0.2, -0.6 )
-blend_point_10/node = SubResource( 31 )
+blend_point_10/node = SubResource( 81 )
 blend_point_10/pos = Vector2( 0.2, -0.6 )
-blend_point_11/node = SubResource( 32 )
+blend_point_11/node = SubResource( 82 )
 blend_point_11/pos = Vector2( -0.2, 0.6 )
-blend_point_12/node = SubResource( 33 )
+blend_point_12/node = SubResource( 83 )
 blend_point_12/pos = Vector2( 0.2, 0.6 )
-blend_point_13/node = SubResource( 34 )
+blend_point_13/node = SubResource( 84 )
 blend_point_13/pos = Vector2( -0.3, 0.2 )
-blend_point_14/node = SubResource( 35 )
+blend_point_14/node = SubResource( 85 )
 blend_point_14/pos = Vector2( 0.3, 0.2 )
-blend_point_15/node = SubResource( 36 )
+blend_point_15/node = SubResource( 86 )
 blend_point_15/pos = Vector2( 0.3, -0.2 )
-blend_point_16/node = SubResource( 37 )
+blend_point_16/node = SubResource( 87 )
 blend_point_16/pos = Vector2( -0.3, -0.2 )
-blend_point_17/node = SubResource( 39 )
+blend_point_17/node = SubResource( 88 )
 blend_point_17/pos = Vector2( -0.6, 0.4 )
-blend_point_18/node = SubResource( 40 )
+blend_point_18/node = SubResource( 89 )
 blend_point_18/pos = Vector2( -0.6, -0.4 )
-blend_point_19/node = SubResource( 41 )
+blend_point_19/node = SubResource( 90 )
 blend_point_19/pos = Vector2( 0.6, 0.4 )
-blend_point_20/node = SubResource( 42 )
+blend_point_20/node = SubResource( 92 )
 blend_point_20/pos = Vector2( 0.6, -0.4 )
 
 [sub_resource type="AnimationNodeBlendTree" id=30]
-graph_offset = Vector2( -596.422, -118.238 )
+graph_offset = Vector2( -433.88, -185.661 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -745.72, 228.24 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -2453,7 +2454,7 @@ nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 29 )
 nodes/Movement/position = Vector2( -504.32, 20.48 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack" ]
+node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
 
 [sub_resource type="CapsuleShape" id=17]
 
@@ -2648,6 +2649,7 @@ cast_to = Vector3( 0, -1.55, 0 )
 collision_mask = 2
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Alert = ExtResource( 5 )
 anims/AttackLeft = SubResource( 2 )
 anims/AttackRight = SubResource( 3 )
 anims/Idle = SubResource( 4 )

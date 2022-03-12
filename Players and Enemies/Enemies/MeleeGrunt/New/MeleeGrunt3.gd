@@ -33,10 +33,7 @@ onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_sta
 var isAlive : bool = true
 
 const ACCEL : float = 10.0
-#const ACCEL_AIR  : float= 5.0
-#const ACCEL_DASH : float = 10.0
-enum { LEFT, RIGHT, CENTER = -1}
-const SPEED_NORMAL : float = 25.0
+const SPEED_NORMAL : float = 22.0
 const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
@@ -64,6 +61,7 @@ enum {
 		ALLERTED_AND_KNOWS_LOC,
 		ATTACK_MELEE,
 		EVADE,
+		AIR,
 		JUMP,
 		JUMP_END,
 		DEATH
@@ -95,7 +93,6 @@ var no_collision_between : bool = false
 var my_path = []
 var link_from : PoolVector3Array = []
 var link_to : PoolVector3Array = []
-#var need_to_jump : bool = false
 var start_jump_pos : Vector3 = Vector3.ZERO
 var jump_time : float = 0.0
 var p1 : Vector3 = Vector3.ZERO
@@ -105,8 +102,6 @@ var attack_side : int = 0
 
 func _ready():
 	animation_tree.active = true
-	#animation_player.play("AttackLeft",-1.0,1)
-	#animation_player.connect("animation_finished", self, "on_animation_finish")
 	pass
 
 func _process(delta):
@@ -135,6 +130,9 @@ func state_machine(delta):
 			if reset_self(delta):
 				set_state(IDLE)
 		ALLERTED_AND_KNOWS_LOC:
+			if not is_on_floor:
+				set_state(AIR)
+				return
 			analyze_and_prepare_attack(delta)
 			if _dir_timer >= DIR_CD_TIMER:
 				if attack_side + 1 >= 8:
@@ -158,8 +156,12 @@ func state_machine(delta):
 				link_to.remove(0)
 				link_from.remove(0)
 				jump_time = 0.0
-				#need_to_jump = false
 				set_state(JUMP_END)
+		AIR:
+			if is_on_floor:
+				animation_tree.set("parameters/JumpTransition/current","JumpEnd")
+				set_state(JUMP_END)
+				
 		JUMP_END:
 			if _timer >= 0.25:
 				animation_tree.set("parameters/JumpBlend/blend_amount",0)
@@ -192,31 +194,18 @@ func set_state(state):
 	match _state:
 		RESET:
 			set_deferred("area_detection.monitoring", true)
-			set_color_green()
-		IDLE:
-			set_color_green()
-		IDLE_TURN:
-			set_color_green()
-		LOOK_AT_ALLERT:
-			set_color_green()
 		ALLERTED_AND_DOESNT_KNOW_LOC:
 			set_deferred("area_detection.monitoring", true)
-			set_color_green()
 		ALLERTED_AND_KNOWS_LOC:
 			animation_tree.set("parameters/IdleMovementBlend/blend_amount",1)
 			set_deferred("area_detection.monitoring", false)
-			set_color_green()
-			pass
-		ATTACK_MELEE:
-			set_color_violate()
-		EVADE:
-			pass
-		JUMP:
+		JUMP,AIR:
 			animation_tree.set("parameters/JumpBlend/blend_amount",1)
 			animation_tree.set("parameters/JumpTransition/current","JumpStart")
 		JUMP_END:
 			direction = Vector3.ZERO
 			velocity = Vector3.ZERO
+			
 
 func tact_init(delta):
 	dist = self.global_transform.origin - player.global_transform.origin
@@ -470,26 +459,6 @@ func get_nav_path(path):
 				var to = path["nav_link_from_last"][0]
 				if to in my_path:
 					link_to.append(to)
-	
-func set_color_red():
-	#mesh_inst1.get_surface_material(0).set_albedo(Color(1,0,0))
-	pass
-
-func set_color_green():
-	#mesh_inst1.get_surface_material(0).set_albedo(Color(0,1,0))
-	pass
-	
-func set_color_orange():
-	#mesh_inst1.get_surface_material(0).set_albedo(Color(1,0.43,0))
-	pass
-	
-func set_color_blue():
-	#mesh_inst1.get_surface_material(0).set_albedo(Color(0,0,1))
-	pass
-	
-func set_color_violate():
-	#mesh_inst1.get_surface_material(0).set_albedo(Color(0.5,0,0.5))
-	pass
 
 
 func _on_Area_body_entered(body):
@@ -513,16 +482,16 @@ func face_threat(d1,d2,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	torso.rotation.y = clamp(torso.rotation.y, -1.5, 1.5)
 	pass
 
-func turn_face(_self, target, rotationSpeed, delta):
-	var target_position = to_local(target)
+func turn_face(_self, _target, rotationSpeed, delta):
+	var target_position = to_local(_target)
 	var global_pos = _self.transform.origin
 	var wtransform = _self.transform.looking_at(Vector3(target_position.x,global_pos.y,target_position.z),Vector3.UP)
 	var wrotation = Quat(_self.transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
 	_self.transform = Transform(Basis(wrotation), _self.transform.origin)
 	
 
-func look_face(_self, target, rotationSpeed, delta):
-	var target_position = to_local(target) + Vector3(0,4,0)
+func look_face(_self, _target, rotationSpeed, delta):
+	var target_position = to_local(_target) + Vector3(0,4,0)
 	var wtransform = _self.transform.looking_at(target_position,Vector3.UP)
 	var wrotation = Quat(_self.transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
 	_self.transform = Transform(Basis(wrotation), _self.transform.origin)
