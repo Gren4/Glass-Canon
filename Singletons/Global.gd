@@ -123,7 +123,7 @@ func turn_face(_self, target, rotationSpeed, delta):
 	var wtransform = _self.global_transform.looking_at(Vector3(target.x,global_pos.y,target.z),Vector3.UP)
 	var wrotation = Quat(_self.global_transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
 	_self.global_transform = Transform(Basis(wrotation), _self.global_transform.origin)
-
+	pass
 func observation_angle(_self,target) -> float:
 	var self_2d : Vector2 = Vector2(-_self.global_transform.basis.z.x, -_self.global_transform.basis.z.z)
 	var player_2d : Vector2 = Vector2(target.global_transform.origin.x - _self.global_transform.origin.x, target.global_transform.origin.z - _self.global_transform.origin.z)

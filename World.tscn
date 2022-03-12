@@ -1,4 +1,4 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=62 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -12,19 +12,17 @@
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Weapons/Armed/MuzzleFlash.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Weapons/Armed/Smoke/SmokeGradient.tres" type="Gradient" id=12]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGrunt.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Weapons/Armed/Gun/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=14]
-[ext_resource path="res://Players and Enemies/Enemies/EnemyMelee/EnemyMelee.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkNavigation.gd" type="Script" id=17]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkPath.gd" type="Script" id=18]
 [ext_resource path="res://addons/NavLink/Scenes/NavLinkPathEnd.tscn" type="PackedScene" id=19]
 [ext_resource path="res://addons/NavLink/Scenes/NavLinkPathStart.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Weapons/Armed/Riffle/RiffleShotgun_pickup.tscn" type="PackedScene" id=21]
-[ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyRange.tscn" type="PackedScene" id=22]
 [ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.tscn" type="PackedScene" id=23]
 [ext_resource path="res://Weapons/Armed/Impact.tscn" type="PackedScene" id=24]
 [ext_resource path="res://Weapons/Armed/BulletTrace.tscn" type="PackedScene" id=25]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3.tscn" type="PackedScene" id=26]
 
 [sub_resource type="SpatialMaterial" id=18]
 resource_local_to_scene = true
@@ -221,14 +219,8 @@ transform = Transform( 0.00836001, 0, 0.999965, 0, 1, 0, -0.999965, 0, 0.0083600
 
 [node name="Enemies" type="Node" parent="."]
 
-[node name="EnemyRange" parent="Enemies" instance=ExtResource( 22 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16.6787, -56.1448 )
-
-[node name="EnemyMelee" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9057, 15.2503, -57.458 )
-
-[node name="MeleeGrunt" parent="Enemies" instance=ExtResource( 13 )]
-transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 32.514, 14.8713, 0 )
+[node name="MeleeGrunt3" parent="Enemies" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22.8348, 15.4618, 0 )
 
 [node name="Pickups" type="Spatial" parent="."]
 
