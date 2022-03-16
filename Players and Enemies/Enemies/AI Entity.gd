@@ -14,6 +14,17 @@ var pl_sides_it : int = 0
 var it : int = 0
 var col_enem
 
+var pl_sides = {
+	0 : Vector3(0,0,0),
+	1 : Vector3(-3,0,0),
+	2 : Vector3(1.75,0,-1.75),
+	3 : Vector3(3,0,0),
+	4 : Vector3(-1.75,0,1.75),
+	5 : Vector3(1.75,0,1.75),
+	6 : Vector3(0,0,3),
+	7 : Vector3(0,0,-3)
+}
+
 var pl_sides_melee = {
 	0 : Vector3(0,0,0),
 	1 : Vector3(-12,0,0),
@@ -40,6 +51,7 @@ func _ready():
 	var t = 0
 	forces = get_tree().get_nodes_in_group("Enemy")
 	for i in forces:
+		i.add_to_entity()
 		i.player = player
 		i.attack_side = pl_sides_it
 		if pl_sides_it + 1 >= 8:
@@ -94,6 +106,7 @@ func move_to(target):
 				if path.has("complete_path"):
 					target.get_nav_path(path)
 		else:
+			var plV3 : Vector3 = player.global_transform.origin + pl_sides[target.attack_side]
 			var closest_p : Vector3 = nav.get_closest_point(player.global_transform.origin)
 			var dist_to_pl = (player.global_transform.origin - closest_p).length()
 			if dist_to_pl < 1.0:

@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/MeleeGrunt3.glb-1aede74c21cc9b4ca78416c84be3f655.scn"
+path="res://.import/RiffleShotgun.glb-bc7e3ef00ae44270070a2501d0798cb8.scn"
 
 [deps]
 
-source_file="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3.glb"
-dest_files=[ "res://.import/MeleeGrunt3.glb-1aede74c21cc9b4ca78416c84be3f655.scn" ]
+source_file="res://Weapons/Armed/New Folder/RiffleShotgun.glb"
+dest_files=[ "res://.import/RiffleShotgun.glb-bc7e3ef00ae44270070a2501d0798cb8.scn" ]
 
 [params]
 
@@ -16,14 +16,14 @@ nodes/root_name="Scene Root"
 nodes/root_scale=1.0
 nodes/custom_script=""
 nodes/storage=0
-nodes/use_legacy_names=true
+nodes/use_legacy_names=false
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true
 meshes/octahedral_compression=true
 meshes/compress=4286
 meshes/ensure_tangents=true
-meshes/storage=1
+meshes/storage=0
 meshes/light_baking=0
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
@@ -31,8 +31,8 @@ external_files/store_in_subdir=false
 animation/import=true
 animation/fps=15
 animation/filter_script=""
-animation/storage=true
-animation/keep_custom_tracks=true
+animation/storage=false
+animation/keep_custom_tracks=false
 animation/optimizer/enabled=true
 animation/optimizer/max_linear_error=0.05
 animation/optimizer/max_angular_error=0.01

@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube000.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube001.mesh" type="ArrayMesh" id=2]
@@ -18,7 +18,8 @@
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/Jump.anim" type="Animation" id=16]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/WalkForward.anim" type="Animation" id=17]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/Idle.anim" type="Animation" id=18]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3.gd" type="Script" id=19]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt.gd" type="Script" id=19]
+[ext_resource path="res://Materials/RiffleShotgun.tres" type="Material" id=20]
 
 [sub_resource type="Skin" id=76]
 resource_name = "Skin"
@@ -240,7 +241,7 @@ blend_point_20/node = SubResource( 92 )
 blend_point_20/pos = Vector2( 0.6, -0.4 )
 
 [sub_resource type="AnimationNodeBlendTree" id=100]
-graph_offset = Vector2( -620.753, -147.073 )
+graph_offset = Vector2( -258, -71.75 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -745.72, 228.24 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -266,7 +267,7 @@ nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 29 )
 nodes/Movement/position = Vector2( -504.32, 20.48 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Movement", "Attack", 1, "AttackTransition" ]
+node_connections = [ "output", 0, "JumpBlend", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition" ]
 
 [sub_resource type="CapsuleShape" id=101]
 
@@ -283,6 +284,7 @@ right_ray_path = NodePath("RightRayCast")
 left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
+StartTimer_path = NodePath("Start")
 
 [node name="Armature" type="Spatial" parent="."]
 transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -1.726, 0 )
@@ -390,6 +392,7 @@ bones/19/enabled = true
 bones/19/bound_children = [  ]
 
 [node name="Cube000" type="MeshInstance" parent="Armature/Skeleton"]
+material_override = ExtResource( 20 )
 mesh = ExtResource( 1 )
 skin = SubResource( 76 )
 material/0 = null
@@ -409,6 +412,7 @@ shape = SubResource( 77 )
 
 [node name="Cube001" type="MeshInstance" parent="Armature/Skeleton/Cube000/torso"]
 transform = Transform( 1, 0, -2.38418e-07, 0, 1, 0, 2.38418e-07, 0, 1, -1.12418e-07, -5.30504, -0.951863 )
+material_override = ExtResource( 20 )
 mesh = ExtResource( 2 )
 skin = SubResource( 76 )
 skeleton = NodePath("../../..")
@@ -419,6 +423,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.69624e-07, 0.789502, -1.739
 
 [node name="Cube002" type="MeshInstance" parent="Armature/Skeleton/Cube000/torso/head"]
 transform = Transform( 1, 3.55271e-14, -2.38418e-07, 1.77636e-14, 1, 0, 2.38418e-07, 0, 1, 1.57206e-07, -6.09454, 0.787705 )
+material_override = ExtResource( 20 )
 mesh = ExtResource( 3 )
 skin = SubResource( 76 )
 skeleton = NodePath("../../../..")
@@ -481,7 +486,7 @@ tree_root = SubResource( 100 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Attack/active = false
-parameters/AttackTransition/current = 1
+parameters/AttackTransition/current = 0
 parameters/IdleMovementBlend/blend_amount = 0.0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
@@ -492,3 +497,8 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.1
 shape = SubResource( 101 )
 
 [node name="GlobalParticles" type="Spatial" parent="."]
+
+[node name="Start" type="Timer" parent="."]
+
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="timeout" from="Start" to="." method="_on_Start_timeout"]

@@ -33,7 +33,7 @@ onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_sta
 var isAlive : bool = true
 
 const ACCEL : float = 10.0
-const SPEED_NORMAL : float = 22.0
+const SPEED_NORMAL : float = 25.0
 const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
@@ -68,7 +68,9 @@ enum {
 	}
 	
 var dist : Vector3 = Vector3.ZERO
+var dist2D : Vector2 = Vector2.ZERO
 var dist_length : float = 0.0
+var dist2D_length : float = 0.0
 
 onready var _state : int = IDLE
 
@@ -78,8 +80,11 @@ const ALLERTED_AND_KNOWS_LOC_TIMER: float = 20.0
 const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
 const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
-const ATTACK_CD_TIMER : float = 0.5
+const ATTACK_CD_TIMER : float = 1.5
 const DIR_CD_TIMER : float = 3.0
+
+export(NodePath) var StartTimer_path = null
+onready var StartTimer : Timer = get_node(StartTimer_path)
 
 var _timer : float = 0.0
 var _dop_timer : float = 0.0
@@ -101,8 +106,16 @@ var offset : Vector3 = Vector3.ZERO
 var attack_side : int = 0
 
 func _ready():
-	animation_tree.active = true
+	set_process(false)
+	set_physics_process(false)
 	pass
+	
+func add_to_entity():
+	set_process(true)
+	set_physics_process(true)
+	StartTimer.wait_time = randf()/2.0
+	StartTimer.start()
+	
 
 func _process(delta):
 	if global_transform.origin.y < -50:
@@ -204,13 +217,15 @@ func set_state(state):
 			animation_tree.set("parameters/JumpTransition/current","JumpStart")
 		JUMP_END:
 			direction = Vector3.ZERO
-			velocity = Vector3.ZERO
+			velocity.x = 0
+			velocity.z = 0
 			
 
 func tact_init(delta):
 	dist = self.global_transform.origin - player.global_transform.origin
+	dist2D = Vector2(dist.x,dist.z)
 	dist_length = dist.length()
-	
+	dist2D_length = dist2D.length()
 	is_on_floor = is_on_floor()
 	if is_on_floor:
 		speed = SPEED_NORMAL
@@ -495,3 +510,7 @@ func look_face(_self, _target, rotationSpeed, delta):
 	var wtransform = _self.transform.looking_at(target_position,Vector3.UP)
 	var wrotation = Quat(_self.transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
 	_self.transform = Transform(Basis(wrotation), _self.transform.origin)
+
+
+func _on_Start_timeout():
+	animation_tree.active = true
