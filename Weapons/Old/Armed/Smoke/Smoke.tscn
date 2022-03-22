@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Weapons/Old/Armed/Smoke/SmokeGradient.tres" type="Gradient" id=1]
+[ext_resource path="res://Weapons/Old/Armed/Smoke/Smoke30Frames.png" type="Texture" id=2]
+
+[sub_resource type="GradientTexture" id=13]
+gradient = ExtResource( 1 )
+
+[sub_resource type="Curve" id=14]
+_data = [ Vector2( 0, 0.0420455 ), 0.0, -0.188088, 0, 0, Vector2( 0.25, 0.260227 ), -9.45455, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=15]
+curve = SubResource( 14 )
+
+[sub_resource type="ParticlesMaterial" id=12]
+resource_local_to_scene = true
+emission_shape = 1
+emission_sphere_radius = 0.02
+direction = Vector3( 0, 1, 0 )
+spread = 0.5
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 0.2
+initial_velocity_random = 0.05
+angular_velocity = 4.0
+angular_velocity_random = 1.0
+linear_accel = 0.1
+linear_accel_random = 0.1
+angle = 360.0
+angle_random = 1.0
+scale = 0.2
+scale_curve = SubResource( 15 )
+color_ramp = SubResource( 13 )
+anim_speed = 0.1
+anim_offset = 0.1
+anim_offset_random = 0.1
+
+[sub_resource type="SpatialMaterial" id=8]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 6
+particles_anim_v_frames = 5
+particles_anim_loop = true
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="QuadMesh" id=16]
+material = SubResource( 8 )
+
+[node name="Smoke" type="Particles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00372303, 0.0116166 )
+emitting = false
+amount = 15
+one_shot = true
+local_coords = false
+process_material = SubResource( 12 )
+draw_pass_1 = SubResource( 16 )

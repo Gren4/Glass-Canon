@@ -113,7 +113,10 @@ func _ready():
 func add_to_entity():
 	set_process(true)
 	set_physics_process(true)
-	StartTimer.wait_time = randf()/2.0
+	call_deferred("init_timer_set")
+	
+func init_timer_set():
+	StartTimer.wait_time = 1.0 + randf()/2.0
 	StartTimer.start()
 	
 
@@ -333,7 +336,7 @@ func analyze_and_prepare_attack(delta):
 				velocityXY = Vector3.ZERO
 				start_jump_pos = self.global_transform.origin
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
-				offset = (link_to[0] - start_jump_pos).normalized()
+				offset = (1.0001*link_to[0] - start_jump_pos).normalized()
 				offset.y = 0
 				set_state(JUMP)
 				pass

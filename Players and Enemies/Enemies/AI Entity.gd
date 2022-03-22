@@ -93,7 +93,7 @@ func move_to(target):
 	var path = []
 	var dist_to_player = player.global_transform.origin - target.global_transform.origin
 	if target.is_in_group("Melee"):
-		if dist_to_player.length() > 15 and col_enem > 1:
+		if dist_to_player.length() > 15:
 			var plV3 : Vector3 = player.global_transform.origin + pl_sides_melee[target.attack_side]
 			var closest_p : Vector3 = nav.get_closest_point(plV3)
 			var dist_to_pl = (plV3 - closest_p).length()

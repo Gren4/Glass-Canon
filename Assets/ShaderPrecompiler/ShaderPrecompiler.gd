@@ -1,6 +1,6 @@
 extends Spatial
 
-export(int) var numFrames: int = 5  # The number of frames to display all materials
+export(int) var numFrames: int = 10  # The number of frames to display all materials
 export(int) var layers_to_process: int = 5
 
 signal allShadersCompiled  # This signal is emitted when the node frees itself (i.e., all materials are compiled)
@@ -127,6 +127,9 @@ func _add_particle(particle: Particles) -> void:
 	proc_mat.global_transform.origin.x += randf() - 0.5
 	proc_mat.global_transform.origin.x += randf() / 2 - 0.25
 	proc_mat.global_transform.origin.z += randf() - 0.5
+	proc_mat.emitting = true
+	proc_mat.one_shot = false
+	proc_mat.lifetime = 1.0
 
 
 func _rotate_children() -> void:

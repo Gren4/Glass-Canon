@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "WeaponMain",
 "class": "Armed",
 "language": "GDScript",
-"path": "res://Weapons/Armed/Armed.gd"
+"path": "res://Weapons/Old/Armed/Armed.gd"
 }, {
 "base": "EditorPlugin",
 "class": "NavLink",
@@ -37,7 +37,7 @@ _global_script_classes=[ {
 "base": "Particles",
 "class": "ParticleHandle",
 "language": "GDScript",
-"path": "res://Weapons/Armed/ParticleHandle.gd"
+"path": "res://Weapons/Old/Armed/ParticleHandle.gd"
 }, {
 "base": "KinematicBody",
 "class": "Players_and_Enemies",
@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "WeaponMain",
 "language": "GDScript",
-"path": "res://Weapons/WeaponMain.gd"
+"path": "res://Weapons/New/WeaponMain.gd"
 } ]
 _global_script_class_icons={
 "Armed": "",

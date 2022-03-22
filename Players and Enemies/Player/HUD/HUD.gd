@@ -37,7 +37,7 @@ func update_weapon_ui(weapon_data, weapon_slot):
 	if weapon_data["Name"] == "Unarmed":
 		weapon_ui.text = weapon_data["Name"]
 		return
-	weapon_ui.text = weapon_data["Name"] + ":" + weapon_data["Ammo"] + "/" + weapon_data["ExtraAmmo"]
+	weapon_ui.text = weapon_data["Name"] + ":" + weapon_data["Ammo"]# + "/" + weapon_data["ExtraAmmo"]
 
 func show_interaction_promt(description = "Interact"):
 	$InteractionPrompt.visible = true

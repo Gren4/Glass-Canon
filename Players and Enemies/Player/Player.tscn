@@ -2,11 +2,11 @@
 
 [ext_resource path="res://Players and Enemies/Player/ViewportSettings.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Player/WeaponCamera.gd" type="Script" id=2]
-[ext_resource path="res://Players and Enemies/Player/WeaponsManager.gd" type="Script" id=3]
+[ext_resource path="res://Weapons/New/WeaponsManager.gd" type="Script" id=3]
 [ext_resource path="res://Players and Enemies/Player/Player.gd" type="Script" id=4]
 [ext_resource path="res://Assets/ShaderPrecompiler/ShaderPrecompiler.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Players and Enemies/Player/HUD/HUD.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Weapons/Unarmed/Unarmed.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Weapons/New/Unarmed/Unarmed.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.75
@@ -136,7 +136,7 @@ collide_with_areas = true
 [node name="Weapons" type="Spatial" parent="Head/WallRun"]
 script = ExtResource( 3 )
 ray_path = NodePath("../HeadBop/Camera/RayCast")
-camera_path = NodePath("../HeadBop/Camera")
+camera_path = NodePath("../../../WeaponNoClipping/Viewport/WeaponCamera")
 
 [node name="Unarmed" parent="Head/WallRun/Weapons" instance=ExtResource( 9 )]
 visible = false

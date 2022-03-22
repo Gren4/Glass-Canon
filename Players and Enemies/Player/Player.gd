@@ -102,6 +102,7 @@ var weapon_regime : int = BASE
 const ADS_SENSIVITY : float = 0.1
 const NORMAL_SENSIVITY : float = 0.3
 var mouseSensivity : float = NORMAL_SENSIVITY
+var mouse_input : Vector2
 # Состояния коллизий
 var isceil_tek : bool = true
 var isfloor_tek : bool = true
@@ -134,10 +135,10 @@ func _ready() -> void:
 	set_state(WALKING)
 	update_health()
 	set_disable_scale(true)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	set_process(true)
 	set_physics_process(true)
 	set_process_input(true)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func update_health(value = 0) -> void:
 	if value < 0 and not imunity:
@@ -153,8 +154,10 @@ func _input(event) -> void:
 			mouseSensivity = NORMAL_SENSIVITY
 		head.rotate_x(deg2rad(-event.relative.y * mouseSensivity))
 		head.rotation.x = clamp(head.rotation.x, -RAD_ANGLE_HEAD_ROTATION_CLAMP, RAD_ANGLE_HEAD_ROTATION_CLAMP)
+		mouse_input.y = event.relative.y
 		if State != CLIMBING:
 			self.rotate_y(deg2rad(-event.relative.x * mouseSensivity))
+			mouse_input.x = event.relative.x
 		
 	if event is InputEventMouseButton:
 		if event.pressed:
@@ -165,8 +168,8 @@ func _input(event) -> void:
 					weapon_manager.previous_weapon()
 					
 func _process(delta) -> void:
-	if weapon_manager.current_weapon.name != "Unarmed":
-		weapon_manager.current_weapon.sway(delta)
+	weapon_manager.current_weapon.sway(mouse_input,delta)
+	mouse_input = Vector2.ZERO
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().quit()
@@ -570,38 +573,33 @@ func edge_climb(delta) -> bool:
 	return true
 
 func process_weapons(delta) -> void:
+	pass
 	if interactable_items_count > 0:
 		weapon_manager.process_weapon_pickup()
+#
+#	if Input.is_action_just_pressed("empty"):
+#		weapon_manager.change_weapon("Empty")
+#	if Input.is_action_just_pressed("primary"):
+#		weapon_manager.change_weapon("Primary")
+#	if Input.is_action_just_pressed("secondary"):
+#		weapon_manager.change_weapon("Secondary")
 
-	if Input.is_action_just_pressed("empty"):
-		weapon_manager.change_weapon("Empty")
-	if Input.is_action_just_pressed("primary"):
-		weapon_manager.change_weapon("Primary")
-	if Input.is_action_just_pressed("secondary"):
-		weapon_manager.change_weapon("Secondary")
-
-	if not weapon_manager.is_switching_active():
-		if weapon_manager.is_weapon_automatic():
-			if Input.is_action_pressed("fire"):
-				weapon_manager.fire()
-			if Input.is_action_just_released("fire"):
-				weapon_manager.fire_stop()
-		else:
-			if Input.is_action_just_pressed("fire"):
-				weapon_manager.fire()
-				
 	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(true, delta)
 	else:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(false, delta)
-		
-	if Input.is_action_just_pressed("reload"):
-		weapon_manager.reload()
-		
-		
-
-	if Input.is_action_just_pressed("drop"):
-		weapon_manager.drop_weapon()
+#
+	if not weapon_manager.is_switching_active():
+		if Input.is_action_pressed("fire"):
+			weapon_manager.fire()
+#
+#	if Input.is_action_just_pressed("reload"):
+#		weapon_manager.reload()
+#
+#
+#
+#	if Input.is_action_just_pressed("drop"):
+#		weapon_manager.drop_weapon()
 		
 
 func finalize_velocity(delta) -> void:
