@@ -7,7 +7,7 @@
 [ext_resource path="res://Weapons/Old/Armed/Smoke/Smoke.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Weapons/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Weapons/BulletTrace.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Weapons/Old/Armed/Riffle/RiffleShotgun_pickup.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Weapons/New/Armed/RiffleShotgun/RiffleShotgun_pickup.tscn" type="PackedScene" id=8]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 3.446, 2, 3.5 )

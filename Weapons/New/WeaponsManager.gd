@@ -128,16 +128,16 @@ func is_switching_active():
 	return current_weapon.is_switching_active()
 		
 func add_weapon(weapon_data):
-	if not weapon_data["Name"] in all_weapons:
+	if not weapon_data in all_weapons:
 		return
-	match weapon_data["Name"]:
+	match weapon_data:
 		"RiffleShotgun":
 			if not is_instance_valid(weapons["Primary"]) or weapons["Primary"].weapon_name == "Unarmed":
 				add_manage(weapon_data,"Primary")
 				return
 	
 func add_manage(weapon_data, slot):
-	var weapon = Global.instantiate_node(all_weapons[weapon_data["Name"]], Vector3.ZERO, null, self)
+	var weapon = Global.instantiate_node(all_weapons[weapon_data], Vector3.ZERO, null, self)
 	weapon_setup(weapon)
 #	weapon.ammo_in_mag = weapon_data["Ammo"]
 #	weapon.extra_ammo = weapon_data["ExtraAmmo"]
@@ -171,8 +171,8 @@ func process_weapon_pickup():
 	if collision:
 		var body = collision["collider"]
 		if body.has_method("get_weapon_pickup_data"):
-			var weapon_data : Dictionary = body.get_weapon_pickup_data()
-			if (show_interaction_promt(weapon_data["Name"])):
+			var weapon_data : String = body.get_weapon_pickup_data()
+			if (show_interaction_promt(weapon_data)):
 				if Input.is_action_just_pressed("interact"):
 					add_weapon(weapon_data)
 					body.queue_free()

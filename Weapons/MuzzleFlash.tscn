@@ -1,17 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://addons/kenney_particle_pack/muzzle_01.png" type="Texture" id=1]
-
-[sub_resource type="SpatialMaterial" id=2]
-flags_transparent = true
-flags_unshaded = true
-vertex_color_use_as_albedo = true
-params_blend_mode = 1
-params_billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-albedo_texture = ExtResource( 1 )
+[ext_resource path="res://Materials/MuzzleFlash.tres" type="Material" id=1]
 
 [sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0.0214286, 0.407143, 0.871429 )
@@ -44,7 +33,7 @@ color_ramp = SubResource( 5 )
 center_offset = Vector3( 0, 0.4, 0 )
 
 [node name="MuzzleFlash" type="Particles"]
-material_override = SubResource( 2 )
+material_override = ExtResource( 1 )
 emitting = false
 amount = 40
 one_shot = true

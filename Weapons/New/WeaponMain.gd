@@ -31,7 +31,7 @@ func is_equip_finished() -> bool:
 func is_unequip_finished() -> bool:
 	return true
 			
-func update_info(action = "Refresh"):
+func update_info():
 	var weapon_data = {
 		"Name" : weapon_name,
 		"Image" : weapon_image

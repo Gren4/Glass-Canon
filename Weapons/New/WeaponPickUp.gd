@@ -1,20 +1,12 @@
 extends RigidBody
 
 export(String) var weapon_name : String = "Weapon"
-export(int) var ammo_in_mag : int = 5
-export(int) var extra_ammo : int = 10
-onready var mag_size : int = ammo_in_mag
 
 func _ready():
 	connect("sleeping_state_changed", self, "on_sleeping")
 
 func get_weapon_pickup_data():
-	return {
-		"Name" : weapon_name,
-		"Ammo" : ammo_in_mag,
-		"ExtraAmmo" : extra_ammo,
-		"MagSize" : mag_size
-	}
+	return weapon_name
 
 func on_sleeping():
 	mode = MODE_STATIC

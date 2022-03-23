@@ -1,7 +1,7 @@
 extends Spatial
 
 export(int) var numFrames: int = 10  # The number of frames to display all materials
-export(int) var layers_to_process: int = 5
+export(int) var layers_to_process: int = 2
 
 signal allShadersCompiled  # This signal is emitted when the node frees itself (i.e., all materials are compiled)
 
@@ -31,7 +31,7 @@ func _process(_delta: float) -> void:
 			return
 		if _counter == -1:
 			_visible_layer = iter
-			curr_layer = Node.new()
+			curr_layer = Spatial.new()
 			self.add_child(curr_layer)
 			if not _foundMaterials.has(_visible_layer):
 				_foundMaterials[_visible_layer] = []

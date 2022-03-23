@@ -1,6 +1,5 @@
 extends WeaponMain
 
-export(PackedScene) var weapon_pickup
 export(PackedScene) var impact_effect
 export(PackedScene) var hole_effect
 export(PackedScene) var smoke_effect
@@ -205,27 +204,11 @@ func on_animation_finish(anim_name):
 			animation_tree.set("parameters/CoolOff/blend_amount",0)	
 			is_reloading = false
 			
-func update_info(action = "Refresh", additional_ammo = 0, ammo_fired = 1, update = true):
-#	match action:
-#		"consume":
-#			ammo_in_mag -= ammo_fired
-#		"reload":
-#			var ammo_needed = mag_size - ammo_in_mag
-#			if extra_ammo > ammo_needed:
-#				ammo_in_mag = mag_size
-#				extra_ammo -= ammo_needed
-#			else:
-#				ammo_in_mag += extra_ammo	
-#				extra_ammo = 0
-#		"add":
-#			extra_ammo += additional_ammo	
-	
-	if update:			
+func update_info():
 		var weapon_data = {
 			"Name" : weapon_name,
 			"Image" : weapon_image,
-			"Ammo" : str(int(heat)),
-#			"ExtraAmmo" : str(extra_ammo)
+			"Ammo" : str(int(heat))
 		}
 		
 		weapon_manager.update_hud(weapon_data)
