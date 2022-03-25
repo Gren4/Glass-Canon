@@ -143,7 +143,7 @@ func _process(delta):
 			update_info()
 			animation_tree.set("parameters/SetCool/current",2)
 		else:
-			heat -= 20 * delta
+			heat -= 33 * delta
 			update_info()
 	else:
 		if heat <= 0.0:

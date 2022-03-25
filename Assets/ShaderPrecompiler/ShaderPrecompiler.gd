@@ -127,9 +127,6 @@ func _add_particle(particle: Particles) -> void:
 	proc_mat.global_transform.origin.x += randf() - 0.5
 	proc_mat.global_transform.origin.x += randf() / 2 - 0.25
 	proc_mat.global_transform.origin.z += randf() - 0.5
-	proc_mat.emitting = true
-	proc_mat.one_shot = false
-	proc_mat.lifetime = 1.0
 
 
 func _rotate_children() -> void:

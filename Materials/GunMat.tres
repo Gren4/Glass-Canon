@@ -2,5 +2,7 @@
 
 [resource]
 albedo_color = Color( 0, 0, 0, 1 )
+metallic_specular = 0.0
+roughness = 0.2
 uv1_scale = Vector3( 0.005, 0.005, 0.005 )
 uv1_offset = Vector3( 0.415, 0.595, 0 )

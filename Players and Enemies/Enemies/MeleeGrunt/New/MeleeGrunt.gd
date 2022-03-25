@@ -345,9 +345,12 @@ func analyze_and_prepare_attack(delta):
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
-		front_ray.force_raycast_update()
-		if front_ray.is_colliding():
-			move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+		if dist_length <= 10.0:
+			front_ray.force_raycast_update()
+			if front_ray.is_colliding():
+				move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+		else:
+			move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
 	evade_maneuver(delta, dist)
 	
 func evade_maneuver(delta, dist_V):

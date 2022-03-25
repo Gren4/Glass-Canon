@@ -36,7 +36,7 @@ void fragment() {
 
 [resource]
 shader = SubResource( 16 )
-shader_param/albedo = Color( 1, 1, 0, 1 )
+shader_param/albedo = Color( 0.964706, 0.870588, 0.615686, 1 )
 shader_param/specular = 1.0
 shader_param/metallic = 0.0
 shader_param/roughness = 1.0

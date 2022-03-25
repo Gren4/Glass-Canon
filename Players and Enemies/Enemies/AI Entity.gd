@@ -96,15 +96,33 @@ func move_to(target):
 		if dist_to_player.length() > 15:
 			var plV3 : Vector3 = player.global_transform.origin + pl_sides_melee[target.attack_side]
 			var closest_p : Vector3 = nav.get_closest_point(plV3)
-			var dist_to_pl = (plV3 - closest_p).length()
-			if dist_to_pl < 1.0:
-				path = nav.get_nav_link_path(target.global_transform.origin, plV3)
-				if path.has("complete_path"):
-					target.get_nav_path(path)
+			var closest_pp : Vector3 = nav.get_closest_point(player.global_transform.origin)
+			var temp_path_sides = nav.get_nav_link_path(closest_p, closest_pp)
+			var temp_path = nav.get_nav_link_path(target.global_transform.origin, closest_pp)
+			
+			if (temp_path_sides.size() != 0 ):
+				if (temp_path.size() != 0):
+					if (temp_path_sides.complete_path.size() <= temp_path.complete_path.size()):
+						path = nav.get_nav_link_path(target.global_transform.origin, closest_p)
+						if path.has("complete_path"):
+							target.get_nav_path(path)
+				else:
+					path = nav.get_nav_link_path(target.global_transform.origin, closest_p)
+					if path.has("complete_path"):
+						target.get_nav_path(path)
 			else:
-				path = nav.get_nav_link_path(target.global_transform.origin, closest_p)
+				path = temp_path
 				if path.has("complete_path"):
 					target.get_nav_path(path)
+#			var dist_to_pl = (plV3 - closest_p).length()
+#			if dist_to_pl < 1.0:
+#				path = nav.get_nav_link_path(target.global_transform.origin, plV3)
+#				if path.has("complete_path"):
+#					target.get_nav_path(path)
+#			else:
+#				path = nav.get_nav_link_path(target.global_transform.origin, closest_p)
+#				if path.has("complete_path"):
+#					target.get_nav_path(path)
 		else:
 			var plV3 : Vector3 = player.global_transform.origin + pl_sides[target.attack_side]
 			var closest_p : Vector3 = nav.get_closest_point(player.global_transform.origin)
