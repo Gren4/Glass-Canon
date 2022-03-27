@@ -60,9 +60,6 @@ ray_top_path = NodePath("ClimbRays/RayTop")
 ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
 ray_empty_path = NodePath("ClimbRays/RayEmpty")
 ray_forward_path = NodePath("OffsetForNPC/Forward")
-ray_back_path = NodePath("OffsetForNPC/Back")
-ray_right_path = NodePath("OffsetForNPC/Right")
-ray_left_path = NodePath("OffsetForNPC/Left")
 animation_player_path = NodePath("AnimationPlayer")
 hud_path = NodePath("HUD")
 
@@ -70,18 +67,6 @@ hud_path = NodePath("HUD")
 
 [node name="Forward" type="RayCast" parent="OffsetForNPC"]
 cast_to = Vector3( 0, 0, -15 )
-collision_mask = 2
-
-[node name="Back" type="RayCast" parent="OffsetForNPC"]
-cast_to = Vector3( 0, 0, 15 )
-collision_mask = 2
-
-[node name="Right" type="RayCast" parent="OffsetForNPC"]
-cast_to = Vector3( 15, 0, 0 )
-collision_mask = 2
-
-[node name="Left" type="RayCast" parent="OffsetForNPC"]
-cast_to = Vector3( -15, 0, 0 )
 collision_mask = 2
 
 [node name="ClimbRays" type="Spatial" parent="."]

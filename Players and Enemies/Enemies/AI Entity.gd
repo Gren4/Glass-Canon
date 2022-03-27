@@ -5,14 +5,13 @@ onready var Enemy_Range_instance = preload("res://Players and Enemies/Enemies/En
 onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt.tscn")
 ########################
 onready var forces : Array = []
-onready var timer : int = 0
+onready var timer : Array = []
 onready var spawn_points : Array = []
 
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-
-const max_enem : int = 5
+const max_enem : int = 10
 
 var phy_timer : int = 0
 var spawn_timer : float = 0.0
@@ -61,7 +60,6 @@ func _ready():
 		init_target(i)
 
 func init_target(target):
-	target.add_to_entity()
 	target.player = player
 	target.attack_side = pl_sides_it
 	if target.is_in_group("Melee"):
@@ -69,11 +67,13 @@ func init_target(target):
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
+		timer.append(randi()%5)
 	elif target.is_in_group("Range"):
 		if pl_sides_it + 1 >= 8:
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
+		timer.append(randi()%31)
 
 func set_target(target,point):
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
@@ -89,7 +89,12 @@ func _physics_process(delta):
 		var col_spawn = spawn_points.size()
 		if col_spawn > 0:
 			if spawn_timer > 1.0:
-				var new_t = MeleeGrunt.instance()
+				var en_type = randi()%100
+				var new_t
+				if en_type <= 50:
+					new_t = MeleeGrunt.instance()
+				else:
+					new_t = Enemy_Range_instance.instance()			
 				set_target(new_t,spawn_it)
 				new_t.set_state(new_t.ALLERTED_AND_KNOWS_LOC)
 				if spawn_it+1 >= col_spawn:
@@ -101,45 +106,59 @@ func _physics_process(delta):
 				spawn_timer += delta
 		pass
 		
-	if col_enem > 0:
-		if is_instance_valid(forces[it]):
-			var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
-			var dist_l = dist_to_player.length()
-			if forces[it].is_in_group("Melee"):
-				if timer%4 == 0:
-					if phy_timer >= 1:
+	if phy_timer >= 2:
+		if col_enem > 0:
+			if is_instance_valid(forces[it]):
+				if (timer[it] < 100):
+					timer[it] += 1
+				else:
+					timer[it] = 0
+				var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
+				var dist_l = dist_to_player.length()
+				if forces[it].is_in_group("Melee"):
+					if timer[it]%4 == 0:
 						move_to(forces[it],dist_l)
-						phy_timer = 0
-			elif forces[it].is_in_group("Range"):
-				if timer%40 == 0:
-					if phy_timer >= 1:
+				elif forces[it].is_in_group("Range"):
+					if timer[it]%40 == 0:
 						move_to(forces[it],dist_l)
-						phy_timer = 0
-		else:
-			forces.remove(it)
-			col_enem -= 1
-		
-		if (phy_timer < 1):
-			phy_timer += 1
-		if (timer < 100):
-			timer += 1
-		else:
-			timer = 0
+			else:
+				forces.remove(it)
+				timer.remove(it)
+				col_enem -= 1
 		
 		if it+1 >= col_enem:
 			it = 0
 		else:
 			it += 1
+		phy_timer = 0
+	else:
+		phy_timer += 1
 
 func move_to(target,dist_l):
 	var path = []
 	if target.is_in_group("Melee"):
 			var plV3 : Vector3 = Vector3.ZERO
-			plV3 = player.get_point_for_npc(max(2.0,dist_l/2), target.attack_side)
+			if dist_l > 20:
+				plV3 = player.get_point_for_npc(15.0, target.attack_side)
+			else:
+				plV3 = player.get_point_for_npc(2.5, target.attack_side)
 			var closest_p : Vector3 = nav.get_closest_point(plV3)
 			path = nav.get_nav_link_path(target.global_transform.origin, closest_p)
 			if path.has("complete_path"):
 				target.get_nav_path(path)
+#				var j : int = 0
+#				for i in forces:
+#					if i == target:
+#						continue
+#					if is_instance_valid(i):
+#						if i.is_in_group("Melee"):
+#							if i.attack_side == target.attack_side:
+#								var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
+#								if (dt.length() <= 5.0):
+#									timer[j] = 0
+#									i.get_nav_path(path)
+#									pass
+#					j += 1
 	elif target.is_in_group("Range"):
 		var plV3 : Vector3 = player.global_transform.origin + pl_sides_range[target.attack_side]
 		var closest_p : Vector3 = nav.get_closest_point(plV3)

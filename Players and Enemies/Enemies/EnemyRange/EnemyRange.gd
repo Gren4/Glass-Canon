@@ -26,7 +26,6 @@ onready var  left_ray = get_node(left_ray_path)
 onready var  right_down_ray = get_node(right_down_ray_path)
 onready var  left_down_ray = get_node(left_down_ray_path)
 
-var target
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 
 var isAlive : bool = true
@@ -123,7 +122,6 @@ func ai(delta):
 
 func allert_everyone():
 	if _state < ALLERTED_AND_KNOWS_LOC:
-		target = player
 		set_state(ALLERTED_AND_KNOWS_LOC)
 	
 func state_machine(delta):
@@ -225,7 +223,7 @@ func attack():
 		player.update_health(-attack_damage)
 
 func shoot():
-	Global.spawn_projectile_node_from_pool(projectile,self,hitbox.global_transform.origin, player.transform.origin + Vector3(0,1,0))
+	Global.spawn_projectile_node_from_pool(projectile,self,hitbox.global_transform.origin, (player.transform.origin + player.vel_info*dist_length/(65*1.2)) + Vector3(0,1,0))
 	pass
 
 func on_animation_finish(anim_name):
@@ -246,7 +244,6 @@ func idle(delta):
 		_dop_timer = 0.0
 		if is_player_in_sight():
 			set_state(ALLERTED_AND_DOESNT_KNOW_LOC)
-			target = player
 	else:
 		_dop_timer += delta
 
@@ -273,21 +270,20 @@ func reset_self(delta) -> bool:
 func look_for_player(delta):
 	if _dop_timer >= 0.1:
 		_dop_timer = 0.0
-		if target == player:
-			if is_player_in_sight():
-				var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,target.global_transform.origin + Vector3(0,1,0),[self],11)
-				if result:
-					if result.collider.is_in_group("Player"):
-						set_state(ALLERTED_AND_KNOWS_LOC)
-						set_deferred("area_detection.monitoring", false)
-						get_tree().call_group("Enemy", "allert_everyone")
-						return
+		if is_player_in_sight():
+			var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
+			if result:
+				if result.collider.is_in_group("Player"):
+					set_state(ALLERTED_AND_KNOWS_LOC)
+					set_deferred("area_detection.monitoring", false)
+					get_tree().call_group("Enemy", "allert_everyone")
+					return
 	else:
 		_dop_timer += delta
 	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
 	
 func analyze_and_prepare_attack(delta):
-	var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,target.global_transform.origin,[self],11)
+	var result = space_state.intersect_ray(mesh_inst2.global_transform.origin,player.global_transform.origin,[self],11)
 	if result:
 		if result.collider.is_in_group("Player"):			
 			if dist_length <= 5.0:
@@ -453,7 +449,6 @@ func face_threat(d1,d2,delta,offset_ = Vector3.ZERO):
 
 func update_hp(damage):
 	if _state < LOOK_AT_ALLERT:
-		target = player
 		set_state(LOOK_AT_ALLERT)
 		
 	current_health -= damage
@@ -485,11 +480,12 @@ func get_nav_path(path):
 				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
 				if from in my_path:
 					link_from.append(from)
-				for p in path["nav_link_path_inbetween"][0].size():
-					if path["nav_link_path_inbetween"][0][p][0] in my_path:
-						link_to.append(path["nav_link_path_inbetween"][0][p][0])
-					if path["nav_link_path_inbetween"][0][p][path["nav_link_path_inbetween"][0][p].size()-1] in my_path:
-						link_from.append(path["nav_link_path_inbetween"][0][p][path["nav_link_path_inbetween"][0][p].size()-1])
+				for pp in path["nav_link_path_inbetween"].size():
+					for p in path["nav_link_path_inbetween"][pp].size():
+						if path["nav_link_path_inbetween"][pp][p][0] in my_path:
+							link_to.append(path["nav_link_path_inbetween"][pp][p][0])
+						if path["nav_link_path_inbetween"][pp][p][path["nav_link_path_inbetween"][pp][p].size()-1] in my_path:
+							link_from.append(path["nav_link_path_inbetween"][pp][p][path["nav_link_path_inbetween"][pp][p].size()-1])
 				var to = path["nav_link_from_last"][0]
 				if to in my_path:
 					link_to.append(to)
@@ -512,7 +508,6 @@ func set_color_violate():
 
 func _on_Area_body_entered(body):
 	if _state == IDLE:
-		target = player
 		set_state(LOOK_AT_ALLERT)
 		set_deferred("area_detection.monitoring", false)
 

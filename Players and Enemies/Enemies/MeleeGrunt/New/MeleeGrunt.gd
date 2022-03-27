@@ -30,27 +30,26 @@ onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_sta
 
 var isAlive : bool = true
 
-const ACCEL : float = 10.0
-const SPEED_NORMAL : float = 25.0
+const ACCEL : float = 15.0
 const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
 
-var jump_time_coeff : float = 1.0
+const SPEED_NORMAL : float = 18.0# + 2*randf()
+var speed : float = SPEED_NORMAL
+
+var jump_time_coeff : float = 0.7
 
 var dop_speed : float = 0.0
 
 export var current_health : int = 250
 export var attack_damage : int = 5
 
-var speed : float = SPEED_NORMAL
 var accel : float = ACCEL
 
 var gravity : float = 40.0
 
 var is_on_floor : bool = false
-
-#var dop_direction : Vector3 = Vector3.ZERO
 
 enum {
 		RESET,
@@ -81,7 +80,7 @@ const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
 const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
 const ATTACK_CD_TIMER : float = 1.5
-const DIR_CD_TIMER : float = 3.0
+const DIR_CD_TIMER : float = 5.0
 
 export(NodePath) var StartTimer_path = null
 onready var StartTimer : Timer = get_node(StartTimer_path)
@@ -107,14 +106,10 @@ var offset : Vector3 = Vector3.ZERO
 var attack_side : int = 0
 
 func _ready():
-	set_process(false)
-	set_physics_process(false)
-	pass
-	
-func add_to_entity():
 	set_process(true)
 	set_physics_process(true)
 	call_deferred("init_timer_set")
+	pass
 	
 func init_timer_set():
 	StartTimer.wait_time = 1.0 + randf()/2.0
@@ -151,7 +146,7 @@ func state_machine(delta):
 				return
 			analyze_and_prepare_attack(delta)
 			if _dir_timer >= DIR_CD_TIMER:
-				if attack_side + 1 >= 8:
+				if attack_side + 1 >= 4:
 					attack_side = 0
 				else:
 					attack_side += 1
@@ -235,16 +230,8 @@ func tact_init(delta):
 	dist2D_length = dist2D.length()
 	is_on_floor = is_on_floor()
 	
-#	dop_direction = Vector3.ZERO
-#	for n in get_slide_count() :
-#			var col_p = get_slide_collision(n)
-#			if is_instance_valid(col_p.collider):
-#				if  col_p.collider.is_in_group("Enemy"):
-#					dop_direction = col_p.normal
-#					break
-	
 	if is_on_floor:
-		speed = SPEED_NORMAL
+		speed = SPEED_NORMAL - (2.0*SPEED_NORMAL/(dist_length*dist_length))
 	else:
 		speed = SPEED_AIR
 	
@@ -260,7 +247,7 @@ func finalize_velocity(delta):
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	var loc_v : Vector3 = (vel_inf/speed).rotated(Vector3.UP,-self.rotation.y)
+	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
 	if loc_v.length() < 0.1:
 		animation_tree.set("parameters/Movement/blend_position", Vector2(0,0))
 	else:
@@ -324,7 +311,10 @@ func analyze_and_prepare_attack(delta):
 						set_state(ATTACK_MELEE)
 						animation_tree.set("parameters/Attack/active",true)
 				_attack_timer = 0.0
-	if my_path.size() > 0:
+	if dist_length <= 8.0 and link_from.size() == 0:
+		my_path.resize(0)
+		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+	elif my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
 		if link_from.size() > 0 and link_to.size() > 0:
 			var dtp_l = (my_path[0] - link_from[0])
@@ -427,11 +417,14 @@ func move_to_target(delta, dir, state, turn_to = null):
 				direction = dir
 			face_threat(15,20,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:#, EVADE:
-			if dist_length <= 3.0:
-				direction = Vector3.ZERO
+#			if dist_length <= 3.0:
+#				direction = Vector3.ZERO
+#			else:
+			if dist_length < 3.0:
+				direction = direction.linear_interpolate(-dir, delta)
 			else:
 				direction = dir
-			if (turn_to != null):
+			if (turn_to != null and dist_length > 5.0):
 				face_threat(5,30,delta,player.global_transform.origin,turn_to)
 			else: 
 				face_threat(5,30,delta,player.global_transform.origin,player.global_transform.origin)

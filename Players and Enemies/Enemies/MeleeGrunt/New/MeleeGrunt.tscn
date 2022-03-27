@@ -204,11 +204,11 @@ blend_point_1/pos = Vector2( 0, -0.3 )
 blend_point_2/node = SubResource( 91 )
 blend_point_2/pos = Vector2( 0, -0.8 )
 blend_point_3/node = SubResource( 93 )
-blend_point_3/pos = Vector2( -0.3, 0 )
+blend_point_3/pos = Vector2( -0.2, 0 )
 blend_point_4/node = SubResource( 94 )
 blend_point_4/pos = Vector2( -0.8, 0 )
 blend_point_5/node = SubResource( 95 )
-blend_point_5/pos = Vector2( 0.3, 0 )
+blend_point_5/pos = Vector2( 0.2, 0 )
 blend_point_6/node = SubResource( 96 )
 blend_point_6/pos = Vector2( 0.8, 0 )
 blend_point_7/node = SubResource( 97 )
@@ -216,21 +216,21 @@ blend_point_7/pos = Vector2( 0, 0.3 )
 blend_point_8/node = SubResource( 98 )
 blend_point_8/pos = Vector2( 0, 0.8 )
 blend_point_9/node = SubResource( 99 )
-blend_point_9/pos = Vector2( -0.2, -0.6 )
+blend_point_9/pos = Vector2( -0.1, -0.6 )
 blend_point_10/node = SubResource( 81 )
-blend_point_10/pos = Vector2( 0.2, -0.6 )
+blend_point_10/pos = Vector2( 0.1, -0.6 )
 blend_point_11/node = SubResource( 82 )
-blend_point_11/pos = Vector2( -0.2, 0.6 )
+blend_point_11/pos = Vector2( -0.1, 0.6 )
 blend_point_12/node = SubResource( 83 )
-blend_point_12/pos = Vector2( 0.2, 0.6 )
+blend_point_12/pos = Vector2( 0.1, 0.6 )
 blend_point_13/node = SubResource( 84 )
-blend_point_13/pos = Vector2( -0.3, 0.2 )
+blend_point_13/pos = Vector2( -0.2, 0.2 )
 blend_point_14/node = SubResource( 85 )
-blend_point_14/pos = Vector2( 0.3, 0.2 )
+blend_point_14/pos = Vector2( 0.2, 0.2 )
 blend_point_15/node = SubResource( 86 )
-blend_point_15/pos = Vector2( 0.3, -0.2 )
+blend_point_15/pos = Vector2( 0.2, -0.2 )
 blend_point_16/node = SubResource( 87 )
-blend_point_16/pos = Vector2( -0.3, -0.2 )
+blend_point_16/pos = Vector2( -0.2, -0.2 )
 blend_point_17/node = SubResource( 88 )
 blend_point_17/pos = Vector2( -0.6, 0.4 )
 blend_point_18/node = SubResource( 89 )
@@ -243,7 +243,7 @@ blend_point_20/pos = Vector2( 0.6, -0.4 )
 [sub_resource type="AnimationNodeTimeSeek" id=102]
 
 [sub_resource type="AnimationNodeBlendTree" id=100]
-graph_offset = Vector2( -536.722, 6.30557 )
+graph_offset = Vector2( -869, 82 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -745.72, 228.24 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -271,7 +271,7 @@ nodes/Movement/position = Vector2( -504.32, 20.48 )
 nodes/Seek/node = SubResource( 102 )
 nodes/Seek/position = Vector2( -160, -180 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "Seek", 0, "Animation 3", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "IdleMovementBlend", 0, "Seek", "IdleMovementBlend", 1, "Attack", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
+node_connections = [ "output", 0, "JumpBlend", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "Seek", 0, "Animation 3", "IdleMovementBlend", 0, "Seek", "IdleMovementBlend", 1, "Attack" ]
 
 [sub_resource type="CapsuleShape" id=101]
 
@@ -288,7 +288,7 @@ right_ray_path = NodePath("RightRayCast")
 left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
-current_health = 45
+current_health = 90
 StartTimer_path = NodePath("Start")
 
 [node name="Armature" type="Spatial" parent="."]
@@ -495,7 +495,7 @@ parameters/AttackTransition/current = 0
 parameters/IdleMovementBlend/blend_amount = 0.0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
-parameters/Movement/blend_position = Vector2( 0, 0 )
+parameters/Movement/blend_position = Vector2( -0.301904, 0.00862074 )
 parameters/Seek/seek_position = -1.0
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

@@ -12,9 +12,6 @@ export(NodePath) var ray_top_point_path
 export(NodePath) var ray_empty_path
 
 export(NodePath) var ray_forward_path
-export(NodePath) var ray_back_path
-export(NodePath) var ray_right_path
-export(NodePath) var ray_left_path
 
 export(NodePath) var animation_player_path
 export(NodePath) var hud_path
@@ -30,9 +27,6 @@ onready var rayTopPoint = get_node(ray_top_point_path)
 onready var rayEmpty = get_node(ray_empty_path)
 
 onready var rayForward = get_node(ray_forward_path)
-onready var rayBack = get_node(ray_back_path)
-onready var rayRight = get_node(ray_right_path)
-onready var rayLeft = get_node(ray_left_path)
 
 onready var animation_player = get_node(animation_player_path)
 onready var hud = get_node(hud_path)
@@ -61,7 +55,7 @@ enum {
 	}
 ### Константы ###
 # Передвижение
-const WALKING_SPEED : float = 20.0
+const WALKING_SPEED : float = 18.0
 const ADS_WALKING_SPEED : float = 10.0
 const WALL_SPEED : float = 5.0
 const WALLRUNNING_SPEED : float = 25.0
@@ -179,38 +173,70 @@ func _input(event) -> void:
 
 func get_point_for_npc(dist,side) -> Vector3:
 	var result : Vector3 = Vector3.ZERO
+	var origin = self.global_transform.origin
 	match side:
 		0:
-			rayForward.set_cast_to(Vector3(0,0,-dist))
+			result = Vector3(origin.x,origin.y,origin.z-dist)
+			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
-			else:
-				result = to_global(rayForward.cast_to)
 		1:
-			rayRight.set_cast_to(Vector3(dist,0,0))
-			rayRight.force_raycast_update()
-			if rayRight.is_colliding():
-				result = rayRight.get_collision_point()
-			else:
-				result = to_global(rayRight.cast_to)
+			result = Vector3(origin.x+dist,origin.y,origin.z)
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
 		2:
-			rayBack.set_cast_to(Vector3(0,0,dist))
-			rayBack.force_raycast_update()
-			if rayBack.is_colliding():
-				result = rayBack.get_collision_point()
-			else:
-				result = to_global(rayBack.cast_to)
+			result = Vector3(origin.x,origin.y,origin.z+dist)
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
 		3:
-			rayLeft.set_cast_to(Vector3(-dist,0,0))
-			rayLeft.force_raycast_update()
-			if rayLeft.is_colliding():
-				result = rayLeft.get_collision_point()
-			else:
-				result = to_global(rayLeft.cast_to)
+			result = Vector3(origin.x-dist,origin.y,origin.z)
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
 	
 	return result
 
+
+#func get_point_for_npc_local(dist,side) -> Vector3:
+#	var result : Vector3 = Vector3.ZERO
+#	match side:
+#		0:
+#			rayForward.set_cast_to(Vector3(0,0,-dist))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#		1:
+#			rayForward.set_cast_to(Vector3(dist,0,0))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#		2:
+#			rayForward.set_cast_to(Vector3(0,0,dist))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#		3:
+#			rayForward.set_cast_to(Vector3(-dist,0,0))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#
+#	return result
+	
 func _process(delta) -> void:
 	weapon_manager.current_weapon.sway(mouse_input,delta)
 	mouse_input = Vector2.ZERO
@@ -656,9 +682,8 @@ func finalize_velocity(delta) -> void:
 	dop_velocity = dop_velocity.linear_interpolate(Vector3.ZERO, ACCEL_DOP * delta)
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
-
 	vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-
+	
 func animations_handler() -> void:
 	if State == WALKING:
 		if cur_speed > ADS_WALKING_SPEED and isfloor_tek:

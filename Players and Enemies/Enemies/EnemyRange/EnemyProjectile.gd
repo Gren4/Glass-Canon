@@ -9,7 +9,8 @@ func _ready():
 	set_as_toplevel(true)
 	
 func _physics_process(delta):
-	apply_impulse(transform.basis.z, -speed_coef*transform.basis.z)
+	set_linear_velocity(-speed_coef*transform.basis.z)
+	
 	if timer <= 0:
 		queue_free()
 	else:

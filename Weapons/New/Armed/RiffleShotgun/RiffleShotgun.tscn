@@ -147,7 +147,7 @@ tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/keys = PoolRealArray( 0, 1, 0.306393, 0.363395, 0, 0.304714, -0.263497, 0.288757, 0.868527, 1, 1, 1 )
+tracks/8/keys = PoolRealArray( -0.01, 1, 0.306, 0.363, 0, 0.304714, -0.263497, 0.288757, 0.868527, 1, 1, 1 )
 
 [sub_resource type="Animation" id=16]
 length = 0.5
@@ -987,7 +987,7 @@ nodes/TimeScale/position = Vector2( -1120, -40 )
 nodes/Unequip/node = SubResource( 32 )
 nodes/Unequip/position = Vector2( 400, -20 )
 nodes/output/position = Vector2( 840, -20 )
-node_connections = [ "output", 0, "Unequip", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "TimeScale 2", 0, "Animation 8", "TimeScale 3", 0, "Animation 6", "TimeScale 4", 0, "Animation 5", "TimeScale", 0, "Animation 7" ]
+node_connections = [ "output", 0, "Unequip", "TimeScale 3", 0, "Animation 6", "TimeScale", 0, "Animation 7", "TimeScale 2", 0, "Animation 8", "TimeScale 4", 0, "Animation 5", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3" ]
 
 [sub_resource type="SpatialMaterial" id=59]
 params_line_width = 128.0
