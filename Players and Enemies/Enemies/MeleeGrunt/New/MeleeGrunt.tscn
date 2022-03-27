@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube000.mesh" type="ArrayMesh" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt3_Cube001.mesh" type="ArrayMesh" id=2]
@@ -240,14 +240,16 @@ blend_point_19/pos = Vector2( 0.6, 0.4 )
 blend_point_20/node = SubResource( 92 )
 blend_point_20/pos = Vector2( 0.6, -0.4 )
 
+[sub_resource type="AnimationNodeTimeSeek" id=102]
+
 [sub_resource type="AnimationNodeBlendTree" id=100]
-graph_offset = Vector2( -258, -71.75 )
+graph_offset = Vector2( -536.722, 6.30557 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -745.72, 228.24 )
 "nodes/Animation 2/node" = SubResource( 66 )
 "nodes/Animation 2/position" = Vector2( -756.308, 337.36 )
 "nodes/Animation 3/node" = SubResource( 70 )
-"nodes/Animation 3/position" = Vector2( -216.068, -132.08 )
+"nodes/Animation 3/position" = Vector2( -340, -160 )
 "nodes/Animation 4/node" = SubResource( 71 )
 "nodes/Animation 4/position" = Vector2( -138.308, 348.88 )
 "nodes/Animation 5/node" = SubResource( 72 )
@@ -266,8 +268,10 @@ nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 29 )
 nodes/Movement/position = Vector2( -504.32, 20.48 )
+nodes/Seek/node = SubResource( 102 )
+nodes/Seek/position = Vector2( -160, -180 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition" ]
+node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleMovementBlend", 0, "Seek", "IdleMovementBlend", 1, "Attack", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "Seek", 0, "Animation 3" ]
 
 [sub_resource type="CapsuleShape" id=101]
 
@@ -284,7 +288,7 @@ right_ray_path = NodePath("RightRayCast")
 left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
-current_health = 90
+current_health = 45
 StartTimer_path = NodePath("Start")
 
 [node name="Armature" type="Spatial" parent="."]
@@ -492,6 +496,7 @@ parameters/IdleMovementBlend/blend_amount = 0.0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
 parameters/Movement/blend_position = Vector2( 0, 0 )
+parameters/Seek/seek_position = -1.0
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.138241, 0 )

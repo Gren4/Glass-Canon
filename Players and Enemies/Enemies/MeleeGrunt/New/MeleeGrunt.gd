@@ -27,7 +27,6 @@ onready var  left_ray = get_node(left_ray_path)
 onready var  right_down_ray = get_node(right_down_ray_path)
 onready var  left_down_ray = get_node(left_down_ray_path)
 
-var target
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 
 var isAlive : bool = true
@@ -38,7 +37,7 @@ const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
 
-const jump_power : float = 20.0
+var jump_time_coeff : float = 1.0
 
 var dop_speed : float = 0.0
 
@@ -135,7 +134,6 @@ func ai(delta):
 
 func allert_everyone():
 	if _state < ALLERTED_AND_KNOWS_LOC:
-		target = player
 		set_state(ALLERTED_AND_KNOWS_LOC)
 	
 func state_machine(delta):
@@ -164,15 +162,39 @@ func state_machine(delta):
 		JUMP:
 			face_threat(20,30,delta,link_to[0] + offset,link_to[0] + offset)
 			if jump_time < 1.0:
-				jump_time += delta
+				jump_time += delta / jump_time_coeff
 				self.global_transform.origin = Global.quadratic_bezier(start_jump_pos,p1,link_to[0],jump_time)
 				if jump_time >= 0.95:
 					animation_tree.set("parameters/JumpTransition/current","JumpEnd")
-			else:
+#				var dir_to_path = (my_path[0] - self.global_transform.origin)
+#				while(dir_to_path.length() < 1.4):
+#					my_path.remove(0)
+#					dir_to_path = (my_path[0] - self.global_transform.origin)
+			else: 
+#				if link_from.size() > 1:
+#					if ((link_from[1] - link_to[0]).length() >= 1.4):
+#						while((my_path[0] - link_to[0]).length() < 1.4 and my_path.size() > 1):
+#							my_path.remove(0)
+#				else:
+#					while((my_path[0] - link_to[0]).length() < 1.4 and my_path.size() > 1):
+#						my_path.remove(0)
+					
 				link_to.remove(0)
 				link_from.remove(0)
 				jump_time = 0.0
+#				var dir_to_path = (my_path[0] - self.global_transform.origin)
+#				while(dir_to_path.length() < 1.4):
+#					my_path.remove(0)
+#					dir_to_path = (my_path[0] - self.global_transform.origin)
 				set_state(JUMP_END)
+			if (my_path.size() > 0):
+				if link_from.size() > 1:
+					if (my_path[0] != link_from[1] and (my_path[0] - self.global_transform.origin).length() < 1.4):
+						my_path.remove(0)
+				else:
+					if (my_path[0] - self.global_transform.origin).length() < 1.4:
+						my_path.remove(0)
+				
 		AIR:
 			if is_on_floor:
 				animation_tree.set("parameters/JumpTransition/current","JumpEnd")
@@ -271,7 +293,6 @@ func idle(delta):
 		_dop_timer = 0.0
 		if is_player_in_sight():
 			set_state(ALLERTED_AND_DOESNT_KNOW_LOC)
-			target = player
 	else:
 		_dop_timer += delta
 
@@ -298,14 +319,13 @@ func reset_self(delta) -> bool:
 func look_for_player(delta):
 	if _dop_timer >= 0.1:
 		_dop_timer = 0.0
-		if target == player:
-			if is_player_in_sight():
-				var result = space_state.intersect_ray(head.global_transform.origin,target.global_transform.origin + Vector3(0,1,0),[self],11)
-				if result:
-					if result.collider.is_in_group("Player"):
-						set_state(ALLERTED_AND_KNOWS_LOC)
-						get_tree().call_group("Enemy", "allert_everyone")
-						return
+		if is_player_in_sight():
+			var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
+			if result:
+				if result.collider.is_in_group("Player"):
+					set_state(ALLERTED_AND_KNOWS_LOC)
+					get_tree().call_group("Enemy", "allert_everyone")
+					return
 	else:
 		_dop_timer += delta
 	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
@@ -316,7 +336,7 @@ func analyze_and_prepare_attack(delta):
 		_attack_timer += delta
 	if _attack_timer >= ATTACK_CD_TIMER:
 			if dist_length <= 5.0:
-				var result = space_state.intersect_ray(head.global_transform.origin,target.global_transform.origin,[self],11)
+				var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin,[self],11)
 				if result:
 					if result.collider.is_in_group("Player"):
 						#if (abs(Global.observation_angle(self,player)) <= 0.175):
@@ -336,8 +356,28 @@ func analyze_and_prepare_attack(delta):
 				velocityXY = Vector3.ZERO
 				start_jump_pos = self.global_transform.origin
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
-				offset = (1.0001*link_to[0] - start_jump_pos).normalized()
+				var jdist = (link_to[0] - start_jump_pos)
+				jump_time_coeff = jdist.length() / speed
+				jump_time_coeff = clamp(jump_time_coeff,0.6,1.0)
+				offset = jdist.normalized()
 				offset.y = 0
+#				while (!Vector3(stepify(my_path[0].x,1.0),stepify(my_path[0].y,1.0),stepify(my_path[0].z,1.0)).is_equal_approx(Vector3(stepify(link_to[0].x,1.0),stepify(link_to[0].y,1.0),stepify(link_to[0].z,1.0))) and my_path.size() > 1):
+#					my_path.remove(0)
+				while (my_path[0] != link_to[0] and my_path.size() > 1):
+					my_path.remove(0)
+#				if (my_path.size() > 1):
+#					if (my_path[0] == link_to[0]):
+#						my_path.remove(0)
+#				print("link_to",link_to[0])
+#				print("my_path",my_path)
+#				print()
+#				if link_from.size() > 1:
+#					if ((link_from[1] - link_from[0]).length() >= 1.4):
+#						while((my_path[0] - link_from[0]).length() < 1.4 and my_path.size() > 1):
+#							my_path.remove(0)
+#				else:
+#					while((my_path[0] - link_from[0]).length() < 1.4 and my_path.size() > 1):
+#							my_path.remove(0)
 				set_state(JUMP)
 				pass
 		if dir_to_path.length() < 1.4:
@@ -345,7 +385,7 @@ func analyze_and_prepare_attack(delta):
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
-		if dist_length <= 10.0:
+		if dist_length <= 6.0:
 			front_ray.force_raycast_update()
 			if front_ray.is_colliding():
 				move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
@@ -440,7 +480,6 @@ func look_at_allert(delta):
 
 func update_hp(damage):
 	if _state < LOOK_AT_ALLERT:
-		target = player
 		set_state(LOOK_AT_ALLERT)
 		
 	current_health -= damage
@@ -456,27 +495,28 @@ func is_player_in_sight() -> bool:
 	
 func get_nav_path(path):
 	my_path = path["complete_path"]
-	if _state != JUMP:
+	if _state != JUMP and _state != JUMP_END:
 		link_from.resize(0)
 		link_to.resize(0)
 	if not path["nav_link_to_first"].empty():
 		if path["nav_link_path_inbetween"].empty():
-			if _state != JUMP:
+			if _state != JUMP and _state != JUMP_END:
 				var to = path["nav_link_from_last"][0]
 				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
 				if to in my_path and from in my_path:
 					link_from.append(from)
 					link_to.append(to)
 		else:
-			if _state != JUMP:
+			if _state != JUMP and _state != JUMP_END:
 				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
 				if from in my_path:
 					link_from.append(from)
-				for p in path["nav_link_path_inbetween"][0].size():
-					if path["nav_link_path_inbetween"][0][p][0] in my_path:
-						link_to.append(path["nav_link_path_inbetween"][0][p][0])
-					if path["nav_link_path_inbetween"][0][p][path["nav_link_path_inbetween"][0][p].size()-1] in my_path:
-						link_from.append(path["nav_link_path_inbetween"][0][p][path["nav_link_path_inbetween"][0][p].size()-1])
+				for pp in path["nav_link_path_inbetween"].size():
+					for p in path["nav_link_path_inbetween"][pp].size():
+						if path["nav_link_path_inbetween"][pp][p][0] in my_path:
+							link_to.append(path["nav_link_path_inbetween"][pp][p][0])
+						if path["nav_link_path_inbetween"][pp][p][path["nav_link_path_inbetween"][pp][p].size()-1] in my_path:
+							link_from.append(path["nav_link_path_inbetween"][pp][p][path["nav_link_path_inbetween"][pp][p].size()-1])
 				var to = path["nav_link_from_last"][0]
 				if to in my_path:
 					link_to.append(to)
@@ -484,7 +524,6 @@ func get_nav_path(path):
 
 func _on_Area_body_entered(body):
 	if _state == IDLE:
-		target = player
 		set_state(LOOK_AT_ALLERT)
 		set_deferred("area_detection.monitoring", false)
 

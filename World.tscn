@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -13,7 +13,6 @@
 [ext_resource path="res://Weapons/MuzzleFlash.tscn" type="PackedScene" id=11]
 [ext_resource path="res://Weapons/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=12]
 [ext_resource path="res://Weapons/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=13]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt.tscn" type="PackedScene" id=15]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkNavigation.gd" type="Script" id=17]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkPath.gd" type="Script" id=18]
@@ -186,33 +185,6 @@ script = ExtResource( 5 )
 transform = Transform( 0.999989, 0, 0.00455469, 0, 1, 0, -0.00455469, 0, 0.999989, 21.0841, 2.24278, 18.8957 )
 
 [node name="Enemies" type="Node" parent="."]
-
-[node name="MeleeGrunt" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15.0234, -13.4927 )
-
-[node name="MeleeGrunt2" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.14593, 15.0234, -13.4927 )
-
-[node name="MeleeGrunt3" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.14593, 15.0234, -19.2521 )
-
-[node name="MeleeGrunt4" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.741436, 15.0234, -19.2521 )
-
-[node name="MeleeGrunt5" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.98891, 23.7017, -103.358 )
-
-[node name="MeleeGrunt6" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.98891, 23.7017, -98.2739 )
-
-[node name="MeleeGrunt7" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8672, 23.7017, -98.2739 )
-
-[node name="MeleeGrunt8" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8672, 23.7017, -104.146 )
-
-[node name="MeleeGrunt9" parent="Enemies" instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8672, 23.7017, -104.146 )
 
 [node name="Pickups" type="Node" parent="."]
 
@@ -624,7 +596,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.9848, 13.0313, -48.9561 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.1432, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.205, 0, 0 )
 mesh = SubResource( 28 )
 material/0 = SubResource( 29 )
 
@@ -632,6 +604,20 @@ material/0 = SubResource( 29 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8473, -5.4876, 0 )
 mesh = SubResource( 30 )
 material/0 = SubResource( 31 )
+
+[node name="NavLinkPath2" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.8842, 14.6424, -48.9507 )
+script = ExtResource( 18 )
+
+[node name="Start" parent="NavLinkPaths/NavLinkPath2" instance=ExtResource( 20 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9461, -6.95543, 0 )
+mesh = SubResource( 32 )
+material/0 = SubResource( 33 )
+
+[node name="End" parent="NavLinkPaths/NavLinkPath2" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1062, -1.58503, 0 )
+mesh = SubResource( 34 )
+material/0 = SubResource( 35 )
 
 [node name="NavLinkPath43" type="Spatial" parent="NavLinkPaths"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32.8622, 7.86136, -12.1522 )
@@ -662,7 +648,7 @@ mesh = SubResource( 30 )
 material/0 = SubResource( 31 )
 
 [node name="NavLinkPath45" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.771261, 7.86136, -12.1522 )
+transform = Transform( -0.00760958, 0, 0.999971, 0, 1, 0, -0.999971, 0, -0.00760958, -10.9061, 7.86136, -0.471482 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath45" instance=ExtResource( 20 )]
@@ -676,7 +662,7 @@ mesh = SubResource( 30 )
 material/0 = SubResource( 31 )
 
 [node name="NavLinkPath46" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.771261, 7.86136, -12.1522 )
+transform = Transform( -0.00760958, 0, 0.999971, 0, 1, 0, -0.999971, 0, -0.00760958, -10.9061, 7.86136, -0.471482 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath46" instance=ExtResource( 20 )]
@@ -689,19 +675,33 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0528603, 0.212199, 11.5217 
 mesh = SubResource( 30 )
 material/0 = SubResource( 31 )
 
-[node name="NavLinkPath2" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.8842, 14.6424, -48.9507 )
+[node name="NavLinkPath47" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.0119727, 0, 0.999928, 0, 1, 0, -0.999928, 0, -0.0119727, 0.771261, 14.3047, -1.1898 )
 script = ExtResource( 18 )
 
-[node name="Start" parent="NavLinkPaths/NavLinkPath2" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.9461, -6.95543, 0 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
+[node name="Start" parent="NavLinkPaths/NavLinkPath47" instance=ExtResource( 20 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0414391, 0.143195, 11.6228 )
+mesh = SubResource( 28 )
+material/0 = SubResource( 29 )
 
-[node name="End" parent="NavLinkPaths/NavLinkPath2" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16.0747, -1.58503, 0 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
+[node name="End" parent="NavLinkPaths/NavLinkPath47" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.617249, -6.40721, 0 )
+mesh = SubResource( 30 )
+material/0 = SubResource( 31 )
+
+[node name="NavLinkPath48" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.0119727, 0, 0.999928, 0, 1, 0, -0.999928, 0, -0.0119727, 0.771261, 14.3047, -1.1898 )
+script = ExtResource( 18 )
+
+[node name="Start" parent="NavLinkPaths/NavLinkPath48" instance=ExtResource( 20 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.664406, -6.38344, -0.0312948 )
+mesh = SubResource( 28 )
+material/0 = SubResource( 29 )
+
+[node name="End" parent="NavLinkPaths/NavLinkPath48" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0528603, 0.212199, 11.5217 )
+mesh = SubResource( 30 )
+material/0 = SubResource( 31 )
 
 [node name="NavLinkPath3" type="Spatial" parent="NavLinkPaths"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 67.5049, 10.5561, -48.9415 )
@@ -785,7 +785,7 @@ mesh = SubResource( 32 )
 material/0 = SubResource( 33 )
 
 [node name="End" parent="NavLinkPaths/NavLinkPath9" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.6732, 0.297899, -0.127411 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9828, 0.297899, -0.127411 )
 mesh = SubResource( 34 )
 material/0 = SubResource( 35 )
 
@@ -794,7 +794,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.4764, 12.7611, -86.3707 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath10" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.673, 0.298, -0.127 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9414, 0.298, -0.126999 )
 mesh = SubResource( 32 )
 material/0 = SubResource( 33 )
 
@@ -1250,6 +1250,20 @@ material/0 = SubResource( 33 )
 transform = Transform( 1, 0, 0, 0, 1, -6.27021e-16, 0, 1.17636e-17, 1, -1.25132, -3.06153, -4.37181 )
 mesh = SubResource( 34 )
 material/0 = SubResource( 35 )
+
+[node name="SpawnPoints" type="Node" parent="."]
+
+[node name="Spawn1" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.6085, 17.7533, -55.8745 )
+
+[node name="Spawn2" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.3921, 21.4567, -77.6386 )
+
+[node name="Spawn4" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 87.4611, 21.4567, -77.6386 )
+
+[node name="Spawn3" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 75.9553, 21.4567, -68.619 )
 
 [connection signal="body_entered" from="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform/Area" to="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform" method="_on_Area_body_entered"]
 [connection signal="body_exited" from="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform/Area" to="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform" method="_on_Area_body_exited"]

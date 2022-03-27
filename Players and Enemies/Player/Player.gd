@@ -173,6 +173,8 @@ func _process(delta) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().quit()
+	if global_transform.origin.y < -50:
+		global_transform.origin = Vector3(0,20,0)
 		
 func _physics_process(delta) -> void:
 	primary_setup(delta)
