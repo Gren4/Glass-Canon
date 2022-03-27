@@ -1,7 +1,6 @@
 extends Players_and_Enemies
 
-#export(NodePath) var player_path = null
-onready var player# = get_node(player_path)
+onready var player
 onready var torso = $Armature/Skeleton/Cube000/torso
 onready var head = $Armature/Skeleton/Cube000/torso/head
 
@@ -51,6 +50,8 @@ var gravity : float = 40.0
 
 var is_on_floor : bool = false
 
+#var dop_direction : Vector3 = Vector3.ZERO
+
 enum {
 		RESET,
 		IDLE, 
@@ -90,6 +91,7 @@ var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
 var _evade_timer : int = 1 + randi() % 5
 var _dir_timer : float = 0.0
+var _stop_timer : float = 0.0
 var side : int = 1
 
 var no_collision_between : bool = false
@@ -166,34 +168,11 @@ func state_machine(delta):
 				self.global_transform.origin = Global.quadratic_bezier(start_jump_pos,p1,link_to[0],jump_time)
 				if jump_time >= 0.95:
 					animation_tree.set("parameters/JumpTransition/current","JumpEnd")
-#				var dir_to_path = (my_path[0] - self.global_transform.origin)
-#				while(dir_to_path.length() < 1.4):
-#					my_path.remove(0)
-#					dir_to_path = (my_path[0] - self.global_transform.origin)
 			else: 
-#				if link_from.size() > 1:
-#					if ((link_from[1] - link_to[0]).length() >= 1.4):
-#						while((my_path[0] - link_to[0]).length() < 1.4 and my_path.size() > 1):
-#							my_path.remove(0)
-#				else:
-#					while((my_path[0] - link_to[0]).length() < 1.4 and my_path.size() > 1):
-#						my_path.remove(0)
-					
 				link_to.remove(0)
 				link_from.remove(0)
 				jump_time = 0.0
-#				var dir_to_path = (my_path[0] - self.global_transform.origin)
-#				while(dir_to_path.length() < 1.4):
-#					my_path.remove(0)
-#					dir_to_path = (my_path[0] - self.global_transform.origin)
 				set_state(JUMP_END)
-			if (my_path.size() > 0):
-				if link_from.size() > 1:
-					if (my_path[0] != link_from[1] and (my_path[0] - self.global_transform.origin).length() < 1.4):
-						my_path.remove(0)
-				else:
-					if (my_path[0] - self.global_transform.origin).length() < 1.4:
-						my_path.remove(0)
 				
 		AIR:
 			if is_on_floor:
@@ -240,6 +219,9 @@ func set_state(state):
 		JUMP,AIR:
 			animation_tree.set("parameters/JumpBlend/blend_amount",1)
 			animation_tree.set("parameters/JumpTransition/current","JumpStart")
+			direction = Vector3.ZERO
+			velocity.x = 0
+			velocity.z = 0
 		JUMP_END:
 			direction = Vector3.ZERO
 			velocity.x = 0
@@ -252,6 +234,15 @@ func tact_init(delta):
 	dist_length = dist.length()
 	dist2D_length = dist2D.length()
 	is_on_floor = is_on_floor()
+	
+#	dop_direction = Vector3.ZERO
+#	for n in get_slide_count() :
+#			var col_p = get_slide_collision(n)
+#			if is_instance_valid(col_p.collider):
+#				if  col_p.collider.is_in_group("Enemy"):
+#					dop_direction = col_p.normal
+#					break
+	
 	if is_on_floor:
 		speed = SPEED_NORMAL
 	else:
@@ -268,10 +259,12 @@ func finalize_velocity(delta):
 	velocityXY = velocityXY.linear_interpolate(direction * (speed + dop_speed), (accel) * delta)
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
-	var loc_v : Vector3 = (velocity/speed).rotated(Vector3.UP,-self.rotation.y)
-	animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
-	move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	
+	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
+	var loc_v : Vector3 = (vel_inf/speed).rotated(Vector3.UP,-self.rotation.y)
+	if loc_v.length() < 0.1:
+		animation_tree.set("parameters/Movement/blend_position", Vector2(0,0))
+	else:
+		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack():
 	var targets = hitbox.get_overlapping_bodies()
@@ -283,6 +276,9 @@ func on_animation_finish(anim_name):
 	match anim_name:
 		"AttackLeft", "AttackRight":
 			_attack_timer = 0.0
+			my_path.resize(0)
+			link_from.resize(0)
+			link_to.resize(0)
 			set_state(ALLERTED_AND_KNOWS_LOC)
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
@@ -299,20 +295,6 @@ func idle(delta):
 func reset_self(delta) -> bool:
 	var result : bool = true
 	direction = Vector3.ZERO
-#	if mesh_inst2.rotation.x != 0:
-#		result = false
-#		if mesh_inst2.rotation.x > 0:
-#			mesh_inst2.rotation.x -= 4 * delta
-#		else:
-#			mesh_inst2.rotation.x += 4 * delta
-#		mesh_inst2.rotation.x = max(0,mesh_inst2.rotation.x)
-#	if mesh_inst2.rotation.z != 0:
-#		result = false
-#		if mesh_inst2.rotation.z > 0:
-#			mesh_inst2.rotation.z -= 4 * delta
-#		else:
-#			mesh_inst2.rotation.z += 4 * delta
-#		mesh_inst2.rotation.z = max(0,mesh_inst2.rotation.z)
 	return result
 	
 # Проверяем, видит ли противник игрока
@@ -331,7 +313,6 @@ func look_for_player(delta):
 	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
 	
 func analyze_and_prepare_attack(delta):
-	#var height_dif : float = -dist.y
 	if _attack_timer < ATTACK_CD_TIMER:
 		_attack_timer += delta
 	if _attack_timer >= ATTACK_CD_TIMER:
@@ -339,18 +320,15 @@ func analyze_and_prepare_attack(delta):
 				var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin,[self],11)
 				if result:
 					if result.collider.is_in_group("Player"):
-						#if (abs(Global.observation_angle(self,player)) <= 0.175):
-							#if abs(height_dif) <= 0.5:
-								dop_speed = SPEED_DOP_ATTACK
-								set_state(ATTACK_MELEE)
-								#animation_player.play("AttackLeft",-1.0,1)
-								animation_tree.set("parameters/Attack/active",true)
+						dop_speed = SPEED_DOP_ATTACK
+						set_state(ATTACK_MELEE)
+						animation_tree.set("parameters/Attack/active",true)
 				_attack_timer = 0.0
 	if my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
 		if link_from.size() > 0 and link_to.size() > 0:
 			var dtp_l = (my_path[0] - link_from[0])
-			if dtp_l.length() < 1.4:
+			if dtp_l.length() < 1.5 and dir_to_path.length() < 1.4:
 				direction = Vector3.ZERO
 				velocity = Vector3.ZERO
 				velocityXY = Vector3.ZERO
@@ -358,39 +336,22 @@ func analyze_and_prepare_attack(delta):
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
 				var jdist = (link_to[0] - start_jump_pos)
 				jump_time_coeff = jdist.length() / speed
-				jump_time_coeff = clamp(jump_time_coeff,0.6,1.0)
+				jump_time_coeff = clamp(jump_time_coeff,0.4,0.7)
 				offset = jdist.normalized()
 				offset.y = 0
-#				while (!Vector3(stepify(my_path[0].x,1.0),stepify(my_path[0].y,1.0),stepify(my_path[0].z,1.0)).is_equal_approx(Vector3(stepify(link_to[0].x,1.0),stepify(link_to[0].y,1.0),stepify(link_to[0].z,1.0))) and my_path.size() > 1):
-#					my_path.remove(0)
-				while (my_path[0] != link_to[0] and my_path.size() > 1):
+				while (link_to[0] in my_path):
 					my_path.remove(0)
-#				if (my_path.size() > 1):
-#					if (my_path[0] == link_to[0]):
-#						my_path.remove(0)
-#				print("link_to",link_to[0])
-#				print("my_path",my_path)
-#				print()
-#				if link_from.size() > 1:
-#					if ((link_from[1] - link_from[0]).length() >= 1.4):
-#						while((my_path[0] - link_from[0]).length() < 1.4 and my_path.size() > 1):
-#							my_path.remove(0)
-#				else:
-#					while((my_path[0] - link_from[0]).length() < 1.4 and my_path.size() > 1):
-#							my_path.remove(0)
 				set_state(JUMP)
+				return
 				pass
 		if dir_to_path.length() < 1.4:
 			my_path.remove(0)
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
-		if dist_length <= 6.0:
-			front_ray.force_raycast_update()
-			if front_ray.is_colliding():
-				move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
-		else:
-			move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
+#		front_ray.force_raycast_update()
+#		if front_ray.is_colliding():
+		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
 	evade_maneuver(delta, dist)
 	
 func evade_maneuver(delta, dist_V):
@@ -460,12 +421,13 @@ func evading(delta):
 func move_to_target(delta, dir, state, turn_to = null):
 	match state:
 		ATTACK_MELEE:
-			direction = dir
+			if dist_length <= 2.5:
+				direction = Vector3.ZERO
+			else:
+				direction = dir
 			face_threat(15,20,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:#, EVADE:
-			if dist_length < 3.0:
-				direction = direction.linear_interpolate(-dir, delta)
-			elif dist_length >= 2.5 and dist_length <= 3.5:
+			if dist_length <= 3.0:
 				direction = Vector3.ZERO
 			else:
 				direction = dir

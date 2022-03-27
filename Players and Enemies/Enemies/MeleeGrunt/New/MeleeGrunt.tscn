@@ -271,7 +271,7 @@ nodes/Movement/position = Vector2( -504.32, 20.48 )
 nodes/Seek/node = SubResource( 102 )
 nodes/Seek/position = Vector2( -160, -180 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleMovementBlend", 0, "Seek", "IdleMovementBlend", 1, "Attack", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "Seek", 0, "Animation 3" ]
+node_connections = [ "output", 0, "JumpBlend", "AttackTransition", 0, "Animation", "AttackTransition", 1, "Animation 2", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "Seek", 0, "Animation 3", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "IdleMovementBlend", 0, "Seek", "IdleMovementBlend", 1, "Attack", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
 
 [sub_resource type="CapsuleShape" id=101]
 

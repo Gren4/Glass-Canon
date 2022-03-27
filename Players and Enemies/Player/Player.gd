@@ -11,6 +11,11 @@ export(NodePath) var ray_top_path
 export(NodePath) var ray_top_point_path
 export(NodePath) var ray_empty_path
 
+export(NodePath) var ray_forward_path
+export(NodePath) var ray_back_path
+export(NodePath) var ray_right_path
+export(NodePath) var ray_left_path
+
 export(NodePath) var animation_player_path
 export(NodePath) var hud_path
 
@@ -23,6 +28,11 @@ onready var rayClimb = get_node(ray_climb_path)
 onready var rayTop = get_node(ray_top_path)
 onready var rayTopPoint = get_node(ray_top_point_path)
 onready var rayEmpty = get_node(ray_empty_path)
+
+onready var rayForward = get_node(ray_forward_path)
+onready var rayBack = get_node(ray_back_path)
+onready var rayRight = get_node(ray_right_path)
+onready var rayLeft = get_node(ray_left_path)
 
 onready var animation_player = get_node(animation_player_path)
 onready var hud = get_node(hud_path)
@@ -166,7 +176,41 @@ func _input(event) -> void:
 					weapon_manager.next_weapon()
 				BUTTON_WHEEL_DOWN:
 					weapon_manager.previous_weapon()
-					
+
+func get_point_for_npc(dist,side) -> Vector3:
+	var result : Vector3 = Vector3.ZERO
+	match side:
+		0:
+			rayForward.set_cast_to(Vector3(0,0,-dist))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
+			else:
+				result = to_global(rayForward.cast_to)
+		1:
+			rayRight.set_cast_to(Vector3(dist,0,0))
+			rayRight.force_raycast_update()
+			if rayRight.is_colliding():
+				result = rayRight.get_collision_point()
+			else:
+				result = to_global(rayRight.cast_to)
+		2:
+			rayBack.set_cast_to(Vector3(0,0,dist))
+			rayBack.force_raycast_update()
+			if rayBack.is_colliding():
+				result = rayBack.get_collision_point()
+			else:
+				result = to_global(rayBack.cast_to)
+		3:
+			rayLeft.set_cast_to(Vector3(-dist,0,0))
+			rayLeft.force_raycast_update()
+			if rayLeft.is_colliding():
+				result = rayLeft.get_collision_point()
+			else:
+				result = to_global(rayLeft.cast_to)
+	
+	return result
+
 func _process(delta) -> void:
 	weapon_manager.current_weapon.sway(mouse_input,delta)
 	mouse_input = Vector2.ZERO
@@ -183,6 +227,7 @@ func _physics_process(delta) -> void:
 	process_weapons(delta)
 	finalize_velocity(delta)
 	animations_handler()
+	
 	
 func state_machine(delta) -> void:
 	match State:
