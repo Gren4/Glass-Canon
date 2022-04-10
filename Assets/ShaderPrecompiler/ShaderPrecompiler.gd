@@ -121,6 +121,7 @@ func _add_particle(particle: Particles) -> void:
 	proc_mat.set_draw_passes(num_passes)
 	for i in num_passes:
 		proc_mat.set_draw_pass_mesh(i,particle.get_draw_pass_mesh(i))
+	proc_mat.set_material_override(particle.get_material_override())
 	curr_layer.add_child(proc_mat)
 	proc_mat.set_owner(curr_layer)
 	

@@ -1,11 +1,9 @@
 extends Players_and_Enemies
 
 onready var player
-onready var torso = $Armature/Skeleton/Cube000/torso
-onready var head = $Armature/Skeleton/Cube000/torso/head
 
-export(NodePath) var hitbox_path = null
-export(NodePath) var animation_player_path = null
+export(NodePath) var hitboxl_path = null
+export(NodePath) var hitboxr_path = null
 export(NodePath) var animation_tree_path = null
 export(NodePath) var area_detection_path = null
 
@@ -15,8 +13,8 @@ export(NodePath) var left_ray_path = null
 export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
 
-onready var hitbox = get_node(hitbox_path)
-onready var animation_player = get_node(animation_player_path)
+onready var hitboxl = get_node(hitboxl_path)
+onready var hitboxr = get_node(hitboxr_path)
 onready var animation_tree = get_node(animation_tree_path)
 onready var area_detection = get_node(area_detection_path)
 
@@ -35,7 +33,7 @@ const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
 
-const SPEED_NORMAL : float = 18.0# + 2*randf()
+const SPEED_NORMAL : float = 20.0# + 2*randf()
 var speed : float = SPEED_NORMAL
 
 var jump_time_coeff : float = 0.7
@@ -109,6 +107,7 @@ func _ready():
 	set_process(true)
 	set_physics_process(true)
 	call_deferred("init_timer_set")
+	$Body.scale.y = (0.8 + 0.2*randf())
 	pass
 	
 func init_timer_set():
@@ -248,18 +247,20 @@ func finalize_velocity(delta):
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
-	if loc_v.length() < 0.1:
-		animation_tree.set("parameters/Movement/blend_position", Vector2(0,0))
-	else:
-		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
+	animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
-func attack():
-	var targets = hitbox.get_overlapping_bodies()
+func attack(side:String):
+	var targets
+	match side:
+		"left":
+			targets = hitboxl.get_overlapping_bodies()
+		"right":
+			targets = hitboxr.get_overlapping_bodies()
 	if player in targets:
 		player.update_health(-attack_damage)
 	pass
 
-func on_animation_finish(anim_name):
+func on_animation_finish(anim_name:String):
 	match anim_name:
 		"AttackLeft", "AttackRight":
 			_attack_timer = 0.0
@@ -289,7 +290,8 @@ func look_for_player(delta):
 	if _dop_timer >= 0.1:
 		_dop_timer = 0.0
 		if is_player_in_sight():
-			var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
+			#var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
+			var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
 			if result:
 				if result.collider.is_in_group("Player"):
 					set_state(ALLERTED_AND_KNOWS_LOC)
@@ -304,17 +306,14 @@ func analyze_and_prepare_attack(delta):
 		_attack_timer += delta
 	if _attack_timer >= ATTACK_CD_TIMER:
 			if dist_length <= 5.0:
-				var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin,[self],11)
+				var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin,[self],11)
 				if result:
 					if result.collider.is_in_group("Player"):
 						dop_speed = SPEED_DOP_ATTACK
 						set_state(ATTACK_MELEE)
 						animation_tree.set("parameters/Attack/active",true)
 				_attack_timer = 0.0
-	if dist_length <= 8.0 and link_from.size() == 0:
-		my_path.resize(0)
-		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
-	elif my_path.size() > 0:
+	if my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
 		if link_from.size() > 0 and link_to.size() > 0:
 			var dtp_l = (my_path[0] - link_from[0])
@@ -338,10 +337,12 @@ func analyze_and_prepare_attack(delta):
 			my_path.remove(0)
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
+			pass
 	else:
 #		front_ray.force_raycast_update()
 #		if front_ray.is_colliding():
 		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+		pass
 	evade_maneuver(delta, dist)
 	
 func evade_maneuver(delta, dist_V):
@@ -411,26 +412,28 @@ func evading(delta):
 func move_to_target(delta, dir, state, turn_to = null):
 	match state:
 		ATTACK_MELEE:
-			if dist_length <= 2.5:
+			if dist_length > 3.5:
+				direction = dir
+			elif dist_length < 3.5 and dist_length > 2.0:
 				direction = Vector3.ZERO
 			else:
-				direction = dir
+				direction = direction.linear_interpolate(dist, 10*delta)
 			face_threat(15,20,delta,player.global_transform.origin,player.global_transform.origin)
-		ALLERTED_AND_KNOWS_LOC:#, EVADE:
-#			if dist_length <= 3.0:
-#				direction = Vector3.ZERO
-#			else:
-			if dist_length < 3.0:
-				direction = direction.linear_interpolate(-dir, delta)
-			else:
+		ALLERTED_AND_KNOWS_LOC:
+			if dist_length > 3.5:
 				direction = dir
+			else:
+				direction = direction.linear_interpolate(dist, 10*delta)
 			if (turn_to != null and dist_length > 5.0):
-				face_threat(5,30,delta,player.global_transform.origin,turn_to)
+				if (is_player_in_sight()):
+					face_threat(10,30,delta,player.global_transform.origin,turn_to)
+				else:
+					face_threat(10,30,delta,turn_to,turn_to)
 			else: 
-				face_threat(5,30,delta,player.global_transform.origin,player.global_transform.origin)
+				face_threat(10,30,delta,player.global_transform.origin,player.global_transform.origin)
 
 func look_at_allert(delta):
-	face_threat(5,10,delta,player.global_transform.origin,player.global_transform.origin)
+	face_threat(10,10,delta,player.global_transform.origin,player.global_transform.origin)
 	_timer_update(delta, LOOK_AT_ALLERT_TIMER, ALLERTED_AND_DOESNT_KNOW_LOC)
 
 func update_hp(damage):
@@ -493,23 +496,9 @@ func death():
 
 func face_threat(d1,d2,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	Global.turn_face(self,turn,d1,delta)
-	look_face(torso,look + Vector3(0,2,0),d2,delta)
-	torso.rotation.y = clamp(torso.rotation.y, -1.5, 1.5)
+	$Body/Target.global_transform.origin = look
 	pass
 
-func turn_face(_self, _target, rotationSpeed, delta):
-	var target_position = to_local(_target)
-	var global_pos = _self.transform.origin
-	var wtransform = _self.transform.looking_at(Vector3(target_position.x,global_pos.y,target_position.z),Vector3.UP)
-	var wrotation = Quat(_self.transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
-	_self.transform = Transform(Basis(wrotation), _self.transform.origin)
-	
-
-func look_face(_self, _target, rotationSpeed, delta):
-	var target_position = to_local(_target) + Vector3(0,4,0)
-	var wtransform = _self.transform.looking_at(target_position,Vector3.UP)
-	var wrotation = Quat(_self.transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
-	_self.transform = Transform(Basis(wrotation), _self.transform.origin)
 
 
 func _on_Start_timeout():

@@ -4,6 +4,8 @@
 [ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CapsuleMesh" id=1]
+radial_segments = 6
+rings = 4
 
 [sub_resource type="SpatialMaterial" id=2]
 resource_local_to_scene = true
@@ -107,7 +109,7 @@ left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
 projectile = ExtResource( 2 )
-current_health = 45
+current_health = 30
 
 [node name="RightRayCast" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0 )

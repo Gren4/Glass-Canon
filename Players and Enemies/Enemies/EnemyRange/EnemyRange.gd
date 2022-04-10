@@ -223,7 +223,7 @@ func attack():
 		player.update_health(-attack_damage)
 
 func shoot():
-	Global.spawn_projectile_node_from_pool(projectile,self,hitbox.global_transform.origin, (player.transform.origin + player.vel_info*dist_length/(65*1.2)) + Vector3(0,1,0))
+	Global.spawn_projectile_node_from_pool(projectile,self,hitbox.global_transform.origin, (player.transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0))
 	pass
 
 func on_animation_finish(anim_name):

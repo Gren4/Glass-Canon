@@ -114,7 +114,6 @@ var iswall_tek : bool = true
 # Передвижение
 var speed : float = WALKING_SPEED
 var accel : float = ACCEL_GROUND
-var gravity : float = IN_AIR_GRAVITY
 var coun_wall_jump : int = MAX_WALL_JUMP
 var vel_info : Vector3 = Vector3.ZERO
 var cur_speed : float = 0.0
@@ -302,7 +301,6 @@ func set_state(state) -> void:
 			else:
 				speed = WALKING_SPEED
 			accel = ACCEL_GROUND
-			gravity = IN_AIR_GRAVITY
 			snap = Vector3.DOWN
 			coun_wall_jump = MAX_WALL_JUMP
 		IN_AIR:
@@ -312,7 +310,6 @@ func set_state(state) -> void:
 			else:
 				speed = WALKING_SPEED
 			accel = ACCEL_AIR
-			gravity = IN_AIR_GRAVITY
 		CLIMBING:
 			imunity = false
 			speed = WALKING_SPEED
@@ -326,7 +323,6 @@ func set_state(state) -> void:
 			speed = WALLRUNNING_SPEED
 			accel = ACCEL_GROUND
 			dop_velocity = Vector3.ZERO
-			gravity = WALL_RUNNING_GRAVITY
 			coun_wall_jump = MAX_WALL_JUMP
 		DASHING, DASHING_AIR:
 			imunity = true
@@ -638,7 +634,7 @@ func check_edge_climb() -> bool:
 
 func edge_climb(delta) -> bool:
 	self.rotation_degrees = self.rotation_degrees.linear_interpolate(rotateTo, delta * 10)
-	if transform.origin.y > climbPoint.y + player_height or isfloor_tek:
+	if transform.origin.y > climbPoint.y + player_height or isfloor_tek or isceil_tek:
 		direction = Vector3.ZERO
 		velocity = Vector3.ZERO
 		set_state(WALKING)

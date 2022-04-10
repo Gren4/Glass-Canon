@@ -2,7 +2,7 @@ extends Node
 ########################
 onready var Enemy_Melee_instance = preload("res://Players and Enemies/Enemies/EnemyMelee/EnemyMelee.tscn")
 onready var Enemy_Range_instance = preload("res://Players and Enemies/Enemies/EnemyRange/EnemyRange.tscn")
-onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/New/MeleeGrunt.tscn")
+onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
 ########################
 onready var forces : Array = []
 onready var timer : Array = []
@@ -11,9 +11,12 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 10
+const max_enem : int = 20
+
+var col_enem_to_spawn = 30
 
 var phy_timer : int = 0
+var link_timer : int = 0
 var spawn_timer : float = 0.0
 var pl_sides_it : int = 0
 var it : int = 0
@@ -73,7 +76,7 @@ func init_target(target):
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
-		timer.append(randi()%31)
+		timer.append(randi()%41)
 
 func set_target(target,point):
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
@@ -84,8 +87,8 @@ func set_target(target,point):
 	
 func _physics_process(delta):
 	col_enem = forces.size()
-	
-	if col_enem < max_enem:
+		
+	if col_enem < max_enem and col_enem_to_spawn > 0:
 		var col_spawn = spawn_points.size()
 		if col_spawn > 0:
 			if spawn_timer > 1.0:
@@ -97,6 +100,7 @@ func _physics_process(delta):
 					new_t = Enemy_Range_instance.instance()			
 				set_target(new_t,spawn_it)
 				new_t.set_state(new_t.ALLERTED_AND_KNOWS_LOC)
+				col_enem_to_spawn = col_enem_to_spawn - 1
 				if spawn_it+1 >= col_spawn:
 					spawn_it = 0
 				else:
@@ -108,63 +112,93 @@ func _physics_process(delta):
 		
 	if phy_timer >= 2:
 		if col_enem > 0:
-			if is_instance_valid(forces[it]):
-				if (timer[it] < 100):
-					timer[it] += 1
+				if is_instance_valid(forces[it]):
+					if (timer[it] < 100):
+						timer[it] += 1
+					else:
+						timer[it] = 0
+					var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
+					var dist_l = dist_to_player.length()
+					if forces[it].is_in_group("Melee"):
+						if timer[it]%4 == 0:
+							move_to(forces[it],dist_l)
+					elif forces[it].is_in_group("Range"):
+						if timer[it]%40 == 0:
+							move_to(forces[it],dist_l)
 				else:
-					timer[it] = 0
-				var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
-				var dist_l = dist_to_player.length()
-				if forces[it].is_in_group("Melee"):
-					if timer[it]%4 == 0:
-						move_to(forces[it],dist_l)
-				elif forces[it].is_in_group("Range"):
-					if timer[it]%40 == 0:
-						move_to(forces[it],dist_l)
-			else:
-				forces.remove(it)
-				timer.remove(it)
-				col_enem -= 1
-		
-		if it+1 >= col_enem:
-			it = 0
-		else:
-			it += 1
+					forces.remove(it)
+					timer.remove(it)
+					col_enem -= 1
+
+				if it+1 >= col_enem:
+					it = 0
+				else:
+					it += 1
 		phy_timer = 0
+		if link_timer > 0:
+			link_timer = link_timer - 1
 	else:
 		phy_timer += 1
 
 func move_to(target,dist_l):
-	var path = []
+	var path = {}
 	if target.is_in_group("Melee"):
 			var plV3 : Vector3 = Vector3.ZERO
 			if dist_l > 20:
 				plV3 = player.get_point_for_npc(15.0, target.attack_side)
+			elif dist_l > 10:
+				plV3 = player.get_point_for_npc(8, target.attack_side)
 			else:
-				plV3 = player.get_point_for_npc(2.5, target.attack_side)
+				plV3 = player.get_point_for_npc(4.5, target.attack_side)
+			var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
 			var closest_p : Vector3 = nav.get_closest_point(plV3)
-			path = nav.get_nav_link_path(target.global_transform.origin, closest_p)
+			if (link_timer == 0 ):
+				link_timer = 4
+				path = nav.get_nav_link_path(closest_t, closest_p)
+				if path.has("complete_path"):
+					target.get_nav_path(path)
+					if path["nav_link_to_first"].size() > 0:
+						var j : int = 0
+						for i in forces:
+							if i == target:
+								continue
+							if is_instance_valid(i):
+								if i.is_in_group("Melee") and i.my_path.size() == 0:
+									var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
+									if (dt.length() <= 5.0):
+										timer[j] = 0
+										i.get_nav_path(path)
+										pass
+							j += 1
+			else:
+				var temp_path = nav.get_simple_path(closest_t, closest_p)
+				if (temp_path.size()>0):
+					path = {
+								"complete_path": temp_path,
+								"nav_link_to_first": [],
+								"nav_link_from_last": [],
+								"nav_link_path_inbetween": []
+							}
+					target.get_nav_path(path)
+	elif target.is_in_group("Range"):
+		var plV3 : Vector3 = player.get_point_for_npc(45.0, target.attack_side)
+		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
+		var closest_p : Vector3 = nav.get_closest_point(plV3)
+		if (link_timer == 0):
+			link_timer = 4
+			path = nav.get_nav_link_path(closest_t, closest_p)
 			if path.has("complete_path"):
 				target.get_nav_path(path)
-#				var j : int = 0
-#				for i in forces:
-#					if i == target:
-#						continue
-#					if is_instance_valid(i):
-#						if i.is_in_group("Melee"):
-#							if i.attack_side == target.attack_side:
-#								var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
-#								if (dt.length() <= 5.0):
-#									timer[j] = 0
-#									i.get_nav_path(path)
-#									pass
-#					j += 1
-	elif target.is_in_group("Range"):
-		var plV3 : Vector3 = player.global_transform.origin + pl_sides_range[target.attack_side]
-		var closest_p : Vector3 = nav.get_closest_point(plV3)
-		path = nav.get_nav_link_path(target.global_transform.origin, plV3)
-		if path.has("complete_path"):
-			target.get_nav_path(path)
+		else:
+			var temp_path = nav.get_simple_path(closest_t, closest_p)
+			if (temp_path.size()>0):
+				path = {
+							"complete_path": temp_path,
+							"nav_link_to_first": [],
+							"nav_link_from_last": [],
+							"nav_link_path_inbetween": []
+						}
+				target.get_nav_path(path)
 		if target.attack_side + 1 >= 8:
 			target.attack_side = 0
 		else:

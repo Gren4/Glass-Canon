@@ -40,6 +40,8 @@ func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, ta
 		clone.global_transform.origin = pos
 	if target != null:
 		clone.look_at(target, Vector3.UP)
+	
+	clone.set_linear_velocity(-clone.speed_coef*clone.transform.basis.z)
 	pass
 	
 func place_node(root, clone, pos = null, normal = null, parent = null):
@@ -113,7 +115,6 @@ func load_node_in_pool(root, packed_scene, scene_path):
 ###############################
 
 func look_face(_self, target, rotationSpeed, delta):
-	var global_pos = _self.global_transform.origin
 	var wtransform = _self.global_transform.looking_at(target,Vector3.UP)
 	var wrotation = Quat(_self.global_transform.basis).slerp(Quat(wtransform.basis), rotationSpeed * delta)
 	_self.global_transform = Transform(Basis(wrotation), _self.global_transform.origin)

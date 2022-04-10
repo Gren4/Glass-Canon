@@ -45,6 +45,8 @@ func _ready():
 	initial_weapon("Primary")
 	
 	set_process(false)
+	add_manage("RiffleShotgun",current_weapon_slot)
+	
 	
 func weapon_setup(w):
 	w.weapon_manager = self
@@ -53,6 +55,11 @@ func weapon_setup(w):
 	w.ray = get_node(ray_path)
 	w.visible = false
 		
+func init_spawn(weapon_name):
+	var weapon = Global.instantiate_node(all_weapons[weapon_name], Vector3.ZERO, null, self)
+	weapon.transform.origin = weapon.equip_pos
+	return weapon
+
 func initial_weapon(weapon_slot):
 	current_weapon_slot = weapon_slot
 	current_weapon = weapons[current_weapon_slot]
@@ -137,12 +144,13 @@ func add_weapon(weapon_data):
 				return
 	
 func add_manage(weapon_data, slot):
-	var weapon = Global.instantiate_node(all_weapons[weapon_data], Vector3.ZERO, null, self)
+	var weapon = init_spawn(weapon_data)
+	#var weapon = Global.instantiate_node(all_weapons[weapon_data], Vector3.ZERO, null, self)
 	weapon_setup(weapon)
 #	weapon.ammo_in_mag = weapon_data["Ammo"]
 #	weapon.extra_ammo = weapon_data["ExtraAmmo"]
 #	weapon.mag_size = weapon_data["MagSize"]
-	weapon.transform.origin = weapon.equip_pos
+	#weapon.transform.origin = weapon.equip_pos
 	weapons[slot] = weapon
 	initial_weapon(slot)
 	set_process(true)
