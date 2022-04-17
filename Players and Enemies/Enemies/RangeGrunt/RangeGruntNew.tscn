@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=2]
+[gd_scene load_steps=74 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Material_001.material" type="Material" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=2]
@@ -3265,7 +3265,6 @@ tracks/28/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, 0, 0
 
 [sub_resource type="Animation" id=440]
 resource_name = "Shoot"
-length = 0.85
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -5999,6 +5998,9 @@ animation = "JumpEnd"
 [sub_resource type="AnimationNodeAnimation" id=407]
 animation = "Shoot"
 
+[sub_resource type="AnimationNodeAnimation" id=458]
+animation = "Alert"
+
 [sub_resource type="AnimationNodeAnimation" id=49]
 animation = "AttackLeft"
 
@@ -6013,7 +6015,14 @@ input_0/auto_advance = true
 input_1/name = "RightAttack"
 input_1/auto_advance = true
 
-[sub_resource type="AnimationNodeBlend2" id=74]
+[sub_resource type="AnimationNodeTransition" id=457]
+input_count = 3
+input_0/name = "Idle"
+input_0/auto_advance = false
+input_1/name = "Alert"
+input_1/auto_advance = true
+input_2/name = "Move"
+input_2/auto_advance = false
 
 [sub_resource type="AnimationNodeBlend2" id=75]
 
@@ -6115,20 +6124,20 @@ blend_point_16/pos = Vector2( -0.2, 0 )
 
 [sub_resource type="AnimationNodeOneShot" id=409]
 filter_enabled = true
-filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton:Abdomen1", "Body/Skeleton:Abdomen2", "Body/Skeleton:Abdomen3", "Body/Skeleton:Abdomen4", "Body/Skeleton:BigF.L", "Body/Skeleton:BigF.R", "Body/Skeleton:DownArm.L", "Body/Skeleton:DownArm.R", "Body/Skeleton:Head", "Body/Skeleton:MandibleEnd.L", "Body/Skeleton:MandibleEnd.R", "Body/Skeleton:MandibleStart.L", "Body/Skeleton:MandibleStart.R", "Body/Skeleton:MidleTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpArm.L", "Body/Skeleton:UpArm.R", "Body/Skeleton:UpTorso" ]
+filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton:Abdomen1", "Body/Skeleton:Abdomen2", "Body/Skeleton:Abdomen3", "Body/Skeleton:Abdomen4", "Body/Skeleton:BigF.L", "Body/Skeleton:BigF.R", "Body/Skeleton:DownArm.L", "Body/Skeleton:DownArm.R", "Body/Skeleton:DownLeg.L", "Body/Skeleton:DownLeg.R", "Body/Skeleton:Head", "Body/Skeleton:Hip", "Body/Skeleton:MandibleEnd.L", "Body/Skeleton:MandibleEnd.R", "Body/Skeleton:MandibleStart.L", "Body/Skeleton:MandibleStart.R", "Body/Skeleton:MidLeg.L", "Body/Skeleton:MidLeg.R", "Body/Skeleton:MidleTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpArm.L", "Body/Skeleton:UpArm.R", "Body/Skeleton:UpLeg.L", "Body/Skeleton:UpLeg.R", "Body/Skeleton:UpTorso" ]
 
 [sub_resource type="AnimationNodeTimeScale" id=346]
 
 [sub_resource type="AnimationNodeTimeScale" id=347]
 
 [sub_resource type="AnimationNodeBlendTree" id=406]
-graph_offset = Vector2( -756.069, -65.534 )
+graph_offset = Vector2( -596.069, -129.321 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -1260, 300 )
 "nodes/Animation 2/node" = SubResource( 66 )
 "nodes/Animation 2/position" = Vector2( -1260, 460 )
 "nodes/Animation 3/node" = SubResource( 70 )
-"nodes/Animation 3/position" = Vector2( -340, -160 )
+"nodes/Animation 3/position" = Vector2( -500, -320 )
 "nodes/Animation 4/node" = SubResource( 71 )
 "nodes/Animation 4/position" = Vector2( -138.308, 348.88 )
 "nodes/Animation 5/node" = SubResource( 72 )
@@ -6137,26 +6146,28 @@ nodes/Animation/position = Vector2( -1260, 300 )
 "nodes/Animation 6/position" = Vector2( -144.068, 574.96 )
 "nodes/Animation 7/node" = SubResource( 407 )
 "nodes/Animation 7/position" = Vector2( -600, 300 )
+"nodes/Animation 8/node" = SubResource( 458 )
+"nodes/Animation 8/position" = Vector2( -400, -140 )
 nodes/Attack/node = SubResource( 48 )
 nodes/Attack/position = Vector2( -660, 20 )
 nodes/AttackTransition/node = SubResource( 67 )
 nodes/AttackTransition/position = Vector2( -880, 300 )
-nodes/IdleMovementBlend/node = SubResource( 74 )
-nodes/IdleMovementBlend/position = Vector2( 40, -60 )
+nodes/IdleAlert/node = SubResource( 457 )
+nodes/IdleAlert/position = Vector2( 420, -160 )
 nodes/JumpBlend/node = SubResource( 75 )
-nodes/JumpBlend/position = Vector2( 449.212, 106.96 )
+nodes/JumpBlend/position = Vector2( 60, 100 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 408 )
 nodes/Movement/position = Vector2( -1000, -100 )
 nodes/Shoot/node = SubResource( 409 )
-nodes/Shoot/position = Vector2( -300, 120 )
+nodes/Shoot/position = Vector2( -340, 40 )
 nodes/TimeScale/node = SubResource( 347 )
 nodes/TimeScale/position = Vector2( -1060, 420 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -1060, 280 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Shoot", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -6183,12 +6194,13 @@ current_health = 40
 StartTimer_path = NodePath("Start")
 
 [node name="Target" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.728 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.871 )
 
 [node name="LookAt" type="Spatial" parent="Target"]
 script = ExtResource( 2 )
 skeleton_path = NodePath("../../Body/Skeleton")
 bone_name = "MidleTorso"
+update_mode = 1
 additional_rotation = Vector3( -45, 180, 0 )
 
 [node name="Body" type="Spatial" parent="."]
@@ -6234,7 +6246,7 @@ bones/7/name = "Head"
 bones/7/parent = 6
 bones/7/rest = Transform( 1, 4.73691e-07, -1.85377e-06, -1.5148e-08, 0.970799, 0.239895, 1.91328e-06, -0.239895, 0.970799, -3.56102e-14, 0.234504, 2.90119e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("Head") ]
+bones/7/bound_children = [  ]
 bones/8/name = "MandibleStart.L"
 bones/8/parent = 7
 bones/8/rest = Transform( 0.381262, -0.345715, 0.857392, -0.140769, 0.894919, 0.423443, -0.913687, -0.282137, 0.292533, -0.0934621, 0.119377, -0.110246 )
@@ -6348,7 +6360,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, 1.33105e-05, 3.89508e-06, -2.21462e-09, -0.2807, 0.959795, 1.38687e-05, -0.959796, -0.2807, -4.90594e-05, 0.286141, -0.928839 )
+transform = Transform( 1, 2.52065e-08, 2.39011e-08, -1.13364e-08, -0.413385, 0.910555, 3.28327e-08, -0.910556, -0.413385, 1.04786e-08, 0.404521, -0.903643 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -6401,7 +6413,7 @@ active = true
 process_mode = 0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
-parameters/IdleMovementBlend/blend_amount = 1.0
+parameters/IdleAlert/current = 0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 0
 parameters/Movement/blend_position = Vector2( 0, 0 )

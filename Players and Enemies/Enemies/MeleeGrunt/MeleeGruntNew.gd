@@ -33,7 +33,7 @@ const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
 
-const SPEED_NORMAL : float = 20.0# + 2*randf()
+const SPEED_NORMAL : float = 19.0
 var speed : float = SPEED_NORMAL
 
 var jump_time_coeff : float = 0.7
@@ -184,7 +184,6 @@ func state_machine(delta):
 		IDLE_TURN:
 			pass
 		LOOK_AT_ALLERT:
-			animation_tree.set("parameters/IdleMovementBlend/blend_amount",(1.0/LOOK_AT_ALLERT_TIMER)*_timer)
 			look_at_allert(delta)
 		DEATH:
 			death()
@@ -204,21 +203,22 @@ func set_state(state):
 	match _state:
 		RESET:
 			set_deferred("area_detection.monitoring", true)
+		LOOK_AT_ALLERT:
+			animation_tree.set("parameters/IdleAlert/current",1)
 		ALLERTED_AND_DOESNT_KNOW_LOC:
+			animation_tree.set("parameters/IdleAlert/current",2)
 			set_deferred("area_detection.monitoring", true)
 		ALLERTED_AND_KNOWS_LOC:
-			animation_tree.set("parameters/IdleMovementBlend/blend_amount",1)
+			animation_tree.set("parameters/IdleAlert/current",2)
 			set_deferred("area_detection.monitoring", false)
 		JUMP,AIR:
 			animation_tree.set("parameters/JumpBlend/blend_amount",1)
 			animation_tree.set("parameters/JumpTransition/current","JumpStart")
 			direction = Vector3.ZERO
-			velocity.x = 0
-			velocity.z = 0
+			velocityXY = Vector3.ZERO
 		JUMP_END:
 			direction = Vector3.ZERO
-			velocity.x = 0
-			velocity.z = 0
+			velocityXY = Vector3.ZERO
 			
 
 func tact_init(delta):
@@ -241,7 +241,7 @@ func tact_init(delta):
 	
 func finalize_velocity(delta):
 	direction = direction.normalized()
-	velocityXY = velocityXY.linear_interpolate(direction * (speed + dop_speed), (accel) * delta)
+	velocityXY = velocityXY.linear_interpolate(direction * (speed + dop_speed), accel * delta)
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
@@ -322,7 +322,6 @@ func move_along_path(delta) -> bool:
 			var dtp_l = (my_path[0] - link_from[0])
 			if dtp_l.length() < 1.5 and dir_to_path.length() < 1.4:
 				direction = Vector3.ZERO
-				velocity = Vector3.ZERO
 				velocityXY = Vector3.ZERO
 				start_jump_pos = self.global_transform.origin
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
@@ -422,7 +421,7 @@ func move_to_target(delta, dir, state, turn_to = null):
 				direction = dir
 			else:
 				direction = direction.linear_interpolate(dist, 10*delta)
-			if (turn_to != null and dist_length > 5.0):
+			if (turn_to != null and dist_length > 10.0):
 				if (is_player_in_sight()):
 					face_threat(10,30,delta,player.global_transform.origin,turn_to)
 				else:

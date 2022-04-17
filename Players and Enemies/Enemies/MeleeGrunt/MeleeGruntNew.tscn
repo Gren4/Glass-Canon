@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=69 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=3]
@@ -1702,7 +1702,7 @@ tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/keys = PoolRealArray( 0, 1, 2.79408e-09, 5.86733e-08, 0, -0.314569, -1.95285e-07, 1.03134e-06, 0.949235, 1, 1, 1, 0.5, 1, 2.79408e-09, 5.86733e-08, 0, -0.314569, -1.95285e-07, 1.03134e-06, 0.949235, 1, 1, 1 )
+tracks/8/keys = PoolRealArray( 0, 1, 2.79408e-09, 5.86733e-08, 0, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, 2.79408e-09, 5.86733e-08, 0, 0, 0, 0, 1, 1, 1, 1 )
 tracks/9/type = "transform"
 tracks/9/path = NodePath("Body/Skeleton:MidTorso")
 tracks/9/interp = 1
@@ -1854,7 +1854,7 @@ tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/keys = PoolRealArray( 0, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, -0.31457, -1.95765e-07, 1.03135e-06, 0.949235, 1, 1, 1, 0.5, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, -0.31457, -1.95765e-07, 1.03135e-06, 0.949235, 1, 1, 1 )
+tracks/8/keys = PoolRealArray( 0, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, 0, 0, 0, 1, 1, 1, 1 )
 tracks/9/type = "transform"
 tracks/9/path = NodePath("Body/Skeleton:MidTorso")
 tracks/9/interp = 1
@@ -2006,7 +2006,7 @@ tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/keys = PoolRealArray( 0, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, -0.31457, -1.95765e-07, 1.03135e-06, 0.949235, 1, 1, 1, 0.5, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, -0.31457, -1.95765e-07, 1.03135e-06, 0.949235, 1, 1, 1 )
+tracks/8/keys = PoolRealArray( 0, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, -9.31323e-10, -4.1211e-08, -2.38419e-07, 0, 0, 0, 1, 1, 1, 1 )
 tracks/9/type = "transform"
 tracks/9/path = NodePath("Body/Skeleton:MidTorso")
 tracks/9/interp = 1
@@ -4233,6 +4233,9 @@ animation = "Jump"
 [sub_resource type="AnimationNodeAnimation" id=73]
 animation = "JumpEnd"
 
+[sub_resource type="AnimationNodeAnimation" id=411]
+animation = "Alert"
+
 [sub_resource type="AnimationNodeAnimation" id=49]
 animation = "AttackLeft"
 
@@ -4247,7 +4250,14 @@ input_0/auto_advance = true
 input_1/name = "RightAttack"
 input_1/auto_advance = true
 
-[sub_resource type="AnimationNodeBlend2" id=74]
+[sub_resource type="AnimationNodeTransition" id=412]
+input_count = 3
+input_0/name = "Idle"
+input_0/auto_advance = false
+input_1/name = "Alert"
+input_1/auto_advance = true
+input_2/name = "Move"
+input_2/auto_advance = false
 
 [sub_resource type="AnimationNodeBlend2" id=75]
 
@@ -4352,7 +4362,7 @@ blend_point_16/pos = Vector2( 0.5, 0 )
 [sub_resource type="AnimationNodeTimeScale" id=347]
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -584.963, -50.25 )
+graph_offset = Vector2( -240, -10 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -4365,14 +4375,16 @@ nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 5/position" = Vector2( -144.068, 465.52 )
 "nodes/Animation 6/node" = SubResource( 73 )
 "nodes/Animation 6/position" = Vector2( -144.068, 574.96 )
+"nodes/Animation 7/node" = SubResource( 411 )
+"nodes/Animation 7/position" = Vector2( -78.7199, -2.592 )
 nodes/Attack/node = SubResource( 48 )
 nodes/Attack/position = Vector2( -226.8, 147.44 )
 nodes/AttackTransition/node = SubResource( 67 )
 nodes/AttackTransition/position = Vector2( -500, 220 )
-nodes/IdleMovementBlend/node = SubResource( 74 )
-nodes/IdleMovementBlend/position = Vector2( 100, -80 )
+nodes/IdleAlert/node = SubResource( 412 )
+nodes/IdleAlert/position = Vector2( 468.711, -79.3152 )
 nodes/JumpBlend/node = SubResource( 75 )
-nodes/JumpBlend/position = Vector2( 449.212, 106.96 )
+nodes/JumpBlend/position = Vector2( 160, 80 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 410 )
@@ -4382,7 +4394,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -720, 200 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation" ]
+node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -4414,6 +4426,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.846 )
 script = ExtResource( 1 )
 skeleton_path = NodePath("../../Body/Skeleton")
 bone_name = "MidTorso"
+update_mode = 1
 additional_rotation = Vector3( 10, 180, 0 )
 
 [node name="Body" type="Spatial" parent="."]
@@ -4533,7 +4546,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.973744, -0.173408, 0.14749, 0.150018, -0.00149098, 0.988681, -0.171226, 0.984849, 0.027466, -0.559547, 1.34636, -0.834869 )
+transform = Transform( -0.667943, -0.195789, -0.717998, -0.0901266, -0.93639, 0.339187, -0.738735, 0.291268, 0.60781, -0.324005, 2.11374, -1.1883 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4547,7 +4560,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.973249, 0.176237, -0.14741, -0.150018, -0.00149104, 0.988683, 0.174023, 0.984347, 0.0278897, 0.557297, 1.34636, -0.836475 )
+transform = Transform( -0.681662, 0.159687, 0.714029, 0.138115, -0.930264, 0.339902, 0.718514, 0.330316, 0.612071, 0.309912, 2.11374, -1.18792 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4559,6 +4572,13 @@ monitorable = false
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Right"]
 transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0.00892669, 0.861218, 0.10278 )
 shape = SubResource( 392 )
+
+[node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -1, -2.13869e-05, 0.000598922, -1.04774e-09, 0.999363, 0.0356849, -0.000599304, 0.0356849, -0.999363, -0.00211096, 2.15914, -0.324157 )
+bone_name = "MidTorso"
+
+[node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]
+transform = Transform( 1, 0, 0, 0, 0.707106, -0.707107, 0, 0.707106, 0.707107, 0, 0, -7.45058e-09 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Alert = SubResource( 350 )
@@ -4596,10 +4616,10 @@ active = true
 process_mode = 0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
-parameters/IdleMovementBlend/blend_amount = 0.0
+parameters/IdleAlert/current = 2
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
-parameters/Movement/blend_position = Vector2( 0, 0 )
+parameters/Movement/blend_position = Vector2( 0, -0.768 )
 parameters/TimeScale/scale = 0.8
 "parameters/TimeScale 2/scale" = 0.8
 

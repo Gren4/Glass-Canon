@@ -83,7 +83,7 @@ const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
 const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
 const ATTACK_CD_TIMER : float = 1.5
-const SHOOT_CD_TIMER : float = 1.0
+var SHOOT_CD_TIMER : float = 1.0
 #const DIR_CD_TIMER : float = 5.0
 
 export(NodePath) var StartTimer_path = null
@@ -152,16 +152,10 @@ func state_machine(delta):
 				set_state(AIR)
 				return
 			analyze_and_prepare_attack(delta)
-#			if _dir_timer >= DIR_CD_TIMER:
-#				if attack_side + 1 >= 4:
-#					attack_side = 0
-#				else:
-#					attack_side += 1
-#			else:
-#				_dir_timer += delta
 		ATTACK_MELEE:
 			move_to_target(delta,-dist,ATTACK_MELEE)
 		SHOOT:
+			velocityXY = velocityXY.linear_interpolate(Vector3.ZERO, delta)
 			speed = SPEED_SIDE_STEP
 			face_threat(20,30,delta,player.global_transform.origin,player.global_transform.origin)
 		EVADE:
@@ -196,7 +190,6 @@ func state_machine(delta):
 		IDLE_TURN:
 			pass
 		LOOK_AT_ALLERT:
-			animation_tree.set("parameters/IdleMovementBlend/blend_amount",(1.0/LOOK_AT_ALLERT_TIMER)*_timer)
 			look_at_allert(delta)
 		DEATH:
 			death()
@@ -216,22 +209,24 @@ func set_state(state):
 	match _state:
 		RESET:
 			set_deferred("area_detection.monitoring", true)
+		LOOK_AT_ALLERT:
+			animation_tree.set("parameters/IdleAlert/current",1)
 		ALLERTED_AND_DOESNT_KNOW_LOC:
 			set_deferred("area_detection.monitoring", true)
+			animation_tree.set("parameters/IdleAlert/current",2)
 		ALLERTED_AND_KNOWS_LOC:
-			animation_tree.set("parameters/IdleMovementBlend/blend_amount",1)
+			animation_tree.set("parameters/IdleAlert/current",2)
 			set_deferred("area_detection.monitoring", false)
 		JUMP,AIR:
 			animation_tree.set("parameters/JumpBlend/blend_amount",1)
 			animation_tree.set("parameters/JumpTransition/current","JumpStart")
 			direction = Vector3.ZERO
-			velocity.x = 0
-			velocity.z = 0
+			velocityXY = Vector3.ZERO
 		JUMP_END:
 			direction = Vector3.ZERO
-			velocity.x = 0
-			velocity.z = 0
-			
+			velocityXY = Vector3.ZERO
+		SHOOT:
+			direction = Vector3.ZERO
 
 func tact_init(delta):
 	dist = self.global_transform.origin - player.global_transform.origin
@@ -253,11 +248,11 @@ func tact_init(delta):
 	
 func finalize_velocity(delta):
 	direction = direction.normalized()
-	velocityXY = velocityXY.linear_interpolate(direction * (speed + dop_speed), (accel) * delta)
+	velocityXY = velocityXY.linear_interpolate(direction * (speed + dop_speed), accel * delta)
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	var loc_v : Vector3 = (velocity/14).rotated(Vector3.UP,-self.rotation.y)
+	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
 	animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack():
@@ -332,6 +327,8 @@ func analyze_and_prepare_attack(delta):
 					set_state(SHOOT)
 					animation_tree.set("parameters/Shoot/active",true)
 					_shoot_timer = 0.0
+					SHOOT_CD_TIMER = 1.0+ randf()*0.5
+					return
 			if _change_dir_timer <= 0.0:
 				_change_dir_timer = 2 * randf()
 				side = -side
@@ -369,7 +366,6 @@ func move_along_path(delta) -> bool:
 			var dtp_l = (my_path[0] - link_from[0])
 			if dtp_l.length() < 1.5 and dir_to_path.length() < 1.4:
 				direction = Vector3.ZERO
-				velocity = Vector3.ZERO
 				velocityXY = Vector3.ZERO
 				start_jump_pos = self.global_transform.origin
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
@@ -549,8 +545,6 @@ func _on_Area_body_entered(body):
 	if _state == IDLE:
 		set_state(LOOK_AT_ALLERT)
 		set_deferred("area_detection.monitoring", false)
-
-
 
 func _on_Start_timeout():
 	animation_tree.active = true

@@ -22,6 +22,8 @@ var _editor_indicator: Spatial = null
 
 var target : Vector3 = Vector3.ZERO
 
+var old_transform : Transform
+
 func _ready():
 	set_process(false)
 	set_physics_process(false)
@@ -72,167 +74,51 @@ func update_skeleton(delta):
 			print(name, " - IK_LookAt: No bone in skeleton found with name [", bone_name, "]!")
 		return
 
-#	# get the bone's global transform pose.
-#	#var rest = skeleton_to_use.get_bone_custom_pose(bone)
-#	var rest = skeleton_to_use.get_bone_custom_pose(bone)
-#	var target_pos = skeleton_to_use.global_transform.xform_inv(global_transform.origin)
-#	target_pos.y *= -1
-#	#rest = rest.looking_at(target_pos, Vector3.UP)
-#	var global_pos = rest.origin
-#	var wtransform =rest.looking_at(target_pos,Vector3.UP)
-#	var wrotation = Quat(rest.basis).slerp(Quat(wtransform.basis), 10 * delta)
-#	rest = Transform(Basis(wrotation), rest.origin)
-#
-
 	#var rest = skeleton_to_use.get_bone_custom_pose(bone)
 	var inverse_rest = skeleton_to_use.get_bone_rest(bone).affine_inverse()
 	var global_pose = skeleton_to_use.get_bone_global_pose(bone)
-#	var global_pose_original = global_pose
-	#var custom = skeleton_to_use.get_bone_custom_pose(bone)#.affine_inverse()
-	var parent = skeleton_to_use.get_bone_parent(bone)
-	var inverse_parent_global = skeleton_to_use.get_bone_global_pose(parent).affine_inverse()
-	var inverse_pose = skeleton_to_use.get_bone_pose(bone).affine_inverse()
 	
-	var target_pos = skeleton_to_use.global_transform.xform_inv(global_transform.origin)
-	target = lerp(target,target_pos,0.2)
-	#var target_pos = global_transform.origin
-	#target_pos.y *= -1
-	global_pose = global_pose.looking_at(target, Vector3.UP)
-#	var wtransform = custom.looking_at(target_pos,Vector3.UP)
-#	var wrotation = Quat(custom.basis).slerp(Quat(wtransform.basis), 15 * delta)
-#	custom = Transform(Basis(wrotation), custom.origin)
-#	var m11 = global_pose.basis.x[0]*global_pose_original.basis.x[0] + global_pose.basis.x[1]*global_pose_original.basis.y[0] + global_pose.basis.x[2]*global_pose_original.basis.z[0]
-#	var m12 = global_pose.basis.x[0]*global_pose_original.basis.x[1] + global_pose.basis.x[1]*global_pose_original.basis.y[1] + global_pose.basis.x[2]*global_pose_original.basis.z[1]
-#	var m13 = global_pose.basis.x[0]*global_pose_original.basis.x[2] + global_pose.basis.x[1]*global_pose_original.basis.y[2] + global_pose.basis.x[2]*global_pose_original.basis.z[2]
-#
-#	var m21 = global_pose.basis.y[0]*global_pose_original.basis.x[0] + global_pose.basis.y[1]*global_pose_original.basis.y[0] + global_pose.basis.y[2]*global_pose_original.basis.z[0]
-#	var m22 = global_pose.basis.y[0]*global_pose_original.basis.x[1] + global_pose.basis.y[1]*global_pose_original.basis.y[1] + global_pose.basis.y[2]*global_pose_original.basis.z[1]
-#	var m23 = global_pose.basis.y[0]*global_pose_original.basis.x[2] + global_pose.basis.y[1]*global_pose_original.basis.y[2] + global_pose.basis.y[2]*global_pose_original.basis.z[2]
-#
-#	var m31 = global_pose.basis.z[0]*global_pose_original.basis.x[0] + global_pose.basis.z[1]*global_pose_original.basis.y[0] + global_pose.basis.z[2]*global_pose_original.basis.z[0]
-#	var m32 = global_pose.basis.z[0]*global_pose_original.basis.x[1] + global_pose.basis.z[1]*global_pose_original.basis.y[1] + global_pose.basis.z[2]*global_pose_original.basis.z[1]
-#	var m33 = global_pose.basis.z[0]*global_pose_original.basis.x[2] + global_pose.basis.z[1]*global_pose_original.basis.y[2] + global_pose.basis.z[2]*global_pose_original.basis.z[2]
-#
-#	global_pose.basis = Basis(Vector3(m11,m12,m13),Vector3(m21,m22,m23),Vector3(m31,m32,m33))
-
+	if (old_transform != global_pose):
+		#var global_pose_original = global_pose
+		#var custom = skeleton_to_use.get_bone_custom_pose(bone)#.affine_inverse()
+		var parent = skeleton_to_use.get_bone_parent(bone)
+		var inverse_parent_global = skeleton_to_use.get_bone_global_pose(parent).affine_inverse()
+		var inverse_pose = skeleton_to_use.get_bone_pose(bone).affine_inverse()
+		
+		var target_pos = skeleton_to_use.global_transform.xform_inv(global_transform.origin)
+		target = lerp(target,target_pos,0.2)
+		#var target_pos = global_transform.origin
+		#target_pos.y *= -1
+		global_pose = global_pose.looking_at(target, Vector3.UP)
+	#	var wtransform = custom.looking_at(target_pos,Vector3.UP)
+	#	var wrotation = Quat(custom.basis).slerp(Quat(wtransform.basis), 15 * delta)
+	#	custom = Transform(Basis(wrotation), custom.origin)
+	#	var m11 = global_pose.basis.x[0]*global_pose_original.basis.x[0] + global_pose.basis.x[1]*global_pose_original.basis.y[0] + global_pose.basis.x[2]*global_pose_original.basis.z[0]
+	#	var m12 = global_pose.basis.x[0]*global_pose_original.basis.x[1] + global_pose.basis.x[1]*global_pose_original.basis.y[1] + global_pose.basis.x[2]*global_pose_original.basis.z[1]
+	#	var m13 = global_pose.basis.x[0]*global_pose_original.basis.x[2] + global_pose.basis.x[1]*global_pose_original.basis.y[2] + global_pose.basis.x[2]*global_pose_original.basis.z[2]
 	#
-	#var rest_euler = global_pose.basis.get_euler()
-	#global_pose.basis = Basis(rest_euler)	
-	if additional_rotation != Vector3.ZERO:
-		global_pose.basis = global_pose.basis.rotated(global_pose.basis.x, deg2rad(additional_rotation.x))
-		global_pose.basis = global_pose.basis.rotated(global_pose.basis.y, deg2rad(additional_rotation.y))
-		global_pose.basis = global_pose.basis.rotated(global_pose.basis.z, deg2rad(additional_rotation.z))
-	var x = inverse_rest * inverse_parent_global * global_pose * inverse_pose
-#	custom = custom.looking_at(target_pos, Vector3.UP)
-	
-	skeleton_to_use.set_bone_custom_pose(bone, x)
+	#	var m21 = global_pose.basis.y[0]*global_pose_original.basis.x[0] + global_pose.basis.y[1]*global_pose_original.basis.y[0] + global_pose.basis.y[2]*global_pose_original.basis.z[0]
+	#	var m22 = global_pose.basis.y[0]*global_pose_original.basis.x[1] + global_pose.basis.y[1]*global_pose_original.basis.y[1] + global_pose.basis.y[2]*global_pose_original.basis.z[1]
+	#	var m23 = global_pose.basis.y[0]*global_pose_original.basis.x[2] + global_pose.basis.y[1]*global_pose_original.basis.y[2] + global_pose.basis.y[2]*global_pose_original.basis.z[2]
+	#
+	#	var m31 = global_pose.basis.z[0]*global_pose_original.basis.x[0] + global_pose.basis.z[1]*global_pose_original.basis.y[0] + global_pose.basis.z[2]*global_pose_original.basis.z[0]
+	#	var m32 = global_pose.basis.z[0]*global_pose_original.basis.x[1] + global_pose.basis.z[1]*global_pose_original.basis.y[1] + global_pose.basis.z[2]*global_pose_original.basis.z[1]
+	#	var m33 = global_pose.basis.z[0]*global_pose_original.basis.x[2] + global_pose.basis.z[1]*global_pose_original.basis.y[2] + global_pose.basis.z[2]*global_pose_original.basis.z[2]
+	#
+	#	global_pose.basis = Basis(Vector3(m11,m12,m13),Vector3(m21,m22,m23),Vector3(m31,m32,m33))
 
-	
-#	var rest_euler = rest.basis.get_euler()
-#	var self_euler = global_transform.basis.orthonormalized().get_euler()
-#
-#	# Flip the rotation euler if using negative rotation.
-#	if use_negative_our_rot:
-#		self_euler = -self_euler
-#
-#	# Apply this node's rotation euler on each axis, if wanted/required.
-#	if use_our_rotation_x:
-#		rest_euler.x = self_euler.x
-#	if use_our_rotation_y:
-#		rest_euler.y = self_euler.y
-#	if use_our_rotation_z:
-#		rest_euler.z = self_euler.z
-#
-#	rest.basis = Basis(rest_euler)	
-#	if additional_rotation != Vector3.ZERO:
-#		rest.basis = rest.basis.rotated(rest.basis.x, deg2rad(additional_rotation.x))
-#		rest.basis = rest.basis.rotated(rest.basis.y, deg2rad(additional_rotation.y))
-#		rest.basis = rest.basis.rotated(rest.basis.z, deg2rad(additional_rotation.z))
-
-#	if position_using_additional_bone:
-#		var additional_bone_id = skeleton_to_use.find_bone(additional_bone_name)
-#		var additional_bone_pos = skeleton_to_use.get_bone_custom_pose(additional_bone_id)
-#		rest.origin = additional_bone_pos.origin - additional_bone_pos.basis.z.normalized() * additional_bone_length
-
-
-	
-	
-#	#print(rest)
-#	# Convert our position relative to the skeleton's transform.
-#	var target_pos = skeleton_to_use.global_transform.xform_inv(global_transform.origin)
-#
-#	# Call helper's look_at function with the chosen up axis.
-#	if look_at_axis == 0:
-#		rest = rest.looking_at(target_pos, Vector3.RIGHT)
-#	elif look_at_axis == 1:
-#		rest = rest.looking_at(target_pos, Vector3.UP)
-#	elif look_at_axis == 2:
-#		rest = rest.looking_at(target_pos, Vector3.FORWARD)
-#	else:
-#		rest = rest.looking_at(target_pos, Vector3.UP)
-#		if debug_messages:
-#			print(name, " - IK_LookAt: Unknown look_at_axis value!")
-#
-#	# Get the rotation euler of the bone and of this node.
-#	var rest_euler = rest.basis.get_euler()
-#	var self_euler = global_transform.basis.orthonormalized().get_euler()
-#
-#	# Flip the rotation euler if using negative rotation.
-#	if use_negative_our_rot:
-#		self_euler = -self_euler
-#
-#	# Apply this node's rotation euler on each axis, if wanted/required.
-#	if use_our_rotation_x:
-#		rest_euler.x = self_euler.x
-#	if use_our_rotation_y:
-#		rest_euler.y = self_euler.y
-#	if use_our_rotation_z:
-#		rest_euler.z = self_euler.z
-#
-#	# Make a new basis with the, potentially, changed euler angles.
-#	rest.basis = Basis(rest_euler)
-#
-#	# Apply additional rotation stored in additional_rotation to the bone.
-#	if additional_rotation != Vector3.ZERO:
-#		rest.basis = rest.basis.rotated(rest.basis.x, deg2rad(additional_rotation.x))
-#		rest.basis = rest.basis.rotated(rest.basis.y, deg2rad(additional_rotation.y))
-#		rest.basis = rest.basis.rotated(rest.basis.z, deg2rad(additional_rotation.z))
-#
-#	# If the position is set using an additional bone, then set the origin
-#	# based on that bone and its length.
-#	if position_using_additional_bone:
-#		var additional_bone_id = skeleton_to_use.find_bone(additional_bone_name)
-#		var additional_bone_pos = skeleton_to_use.get_bone_global_pose(additional_bone_id)
-#		rest.origin = additional_bone_pos.origin - additional_bone_pos.basis.z.normalized() * additional_bone_length
-#
-#	# Finally, apply the new rotation to the bone in the skeleton.
-#	#skeleton_to_use.set_bone_global_pose_override(bone, rest, interpolation, true)
-#	skeleton_to_use.set_bone_pose(bone, rest)
-
-#func _setup_for_editor():
-#	# To see the target in the editor, let's create a MeshInstance,
-#	# add it as a child of this node, and name it.
-#	_editor_indicator = MeshInstance.new()
-#	add_child(_editor_indicator)
-#	_editor_indicator.name = "(EditorOnly) Visual indicator"
-#
-#	# Make a sphere mesh for the MeshInstance
-#	var indicator_mesh = SphereMesh.new()
-#	indicator_mesh.radius = 0.1
-#	indicator_mesh.height = 0.2
-#	indicator_mesh.radial_segments = 8
-#	indicator_mesh.rings = 4
-#
-#	# Create a new SpatialMaterial for the sphere and give it the editor
-#	# gizmo texture so it is textured.
-#	var indicator_material = SpatialMaterial.new()
-#	indicator_material.flags_unshaded = true
-#	indicator_material.albedo_texture = preload("editor_gizmo_texture.png")
-#	indicator_material.albedo_color = Color(1, 0.5, 0, 1)
-#
-#	# Assign the material and mesh to the MeshInstance.
-#	indicator_mesh.material = indicator_material
-#	_editor_indicator.mesh = indicator_mesh
+		#
+		#var rest_euler = global_pose.basis.get_euler()
+		#global_pose.basis = Basis(rest_euler)	
+		if additional_rotation != Vector3.ZERO:
+			global_pose.basis = global_pose.basis.rotated(global_pose.basis.x, deg2rad(additional_rotation.x))
+			global_pose.basis = global_pose.basis.rotated(global_pose.basis.y, deg2rad(additional_rotation.y))
+			global_pose.basis = global_pose.basis.rotated(global_pose.basis.z, deg2rad(additional_rotation.z))
+		var x = inverse_rest * inverse_parent_global * global_pose * inverse_pose
+		
+		skeleton_to_use.set_bone_custom_pose(bone, x)
+		
+		old_transform = x
 
 
 func _set_update(new_value):
