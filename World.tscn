@@ -256,6 +256,18 @@ material/0 = ExtResource( 3 )
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform"]
 shape = SubResource( 41 )
 
+[node name="Platform13" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -49.7116, 3.97002, -19.6306 )
+collision_layer = 2
+collision_mask = 13
+
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform13"]
+mesh = SubResource( 3 )
+material/0 = ExtResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform13"]
+shape = SubResource( 41 )
+
 [node name="Platform4" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 0, 3.97002, -25.4565 )
 collision_layer = 2

@@ -1,6 +1,6 @@
-[gd_scene load_steps=64 format=2]
+[gd_scene load_steps=68 format=2]
 
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/LookAt.gd" type="Script" id=1]
+[ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=3]
 [ext_resource path="res://Materials/RiffleShotgun.tres" type="Material" id=4]
 
@@ -4238,7 +4238,7 @@ animation = "AttackLeft"
 
 [sub_resource type="AnimationNodeOneShot" id=48]
 filter_enabled = true
-filters = [ ".", "Armature/Skeleton:bottom_arm_l", "Armature/Skeleton:bottom_arm_r", "Armature/Skeleton:claw_l", "Armature/Skeleton:claw_r", "Armature/Skeleton:head", "Armature/Skeleton:neck", "Armature/Skeleton:torso", "Armature/Skeleton:upper_arm_l", "Armature/Skeleton:upper_arm_r", "Armature001/Skeleton:BottomArm.L", "Armature001/Skeleton:BottomArm.R", "Armature001/Skeleton:Claw.L", "Armature001/Skeleton:Claw.R", "Armature001/Skeleton:Head", "Armature001/Skeleton:Neck", "Armature001/Skeleton:UpTorso", "Armature001/Skeleton:UpperArm.L", "Armature001/Skeleton:UpperArm.R", "Body/Skeleton:BottomArm.L", "Body/Skeleton:BottomArm.R", "Body/Skeleton:Claw.L", "Body/Skeleton:Claw.R", "Body/Skeleton:Head", "Body/Skeleton:MidTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpTorso", "Body/Skeleton:UpperArm.L", "Body/Skeleton:UpperArm.R" ]
+filters = [ ".", "Armature/Skeleton:bottom_arm_l", "Armature/Skeleton:bottom_arm_r", "Armature/Skeleton:claw_l", "Armature/Skeleton:claw_r", "Armature/Skeleton:head", "Armature/Skeleton:neck", "Armature/Skeleton:torso", "Armature/Skeleton:upper_arm_l", "Armature/Skeleton:upper_arm_r", "Armature001/Skeleton:BottomArm.L", "Armature001/Skeleton:BottomArm.R", "Armature001/Skeleton:Claw.L", "Armature001/Skeleton:Claw.R", "Armature001/Skeleton:Head", "Armature001/Skeleton:Neck", "Armature001/Skeleton:UpTorso", "Armature001/Skeleton:UpperArm.L", "Armature001/Skeleton:UpperArm.R", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:MidleTorso", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton:BottomArm.L", "Body/Skeleton:BottomArm.R", "Body/Skeleton:Claw.L", "Body/Skeleton:Claw.R", "Body/Skeleton:Head", "Body/Skeleton:MidTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpTorso", "Body/Skeleton:UpperArm.L", "Body/Skeleton:UpperArm.R" ]
 
 [sub_resource type="AnimationNodeTransition" id=67]
 input_count = 2
@@ -4260,79 +4260,99 @@ input_1/auto_advance = false
 input_2/name = "JumpEnd"
 input_2/auto_advance = false
 
-[sub_resource type="AnimationNodeAnimation" id=377]
-animation = "RunForward"
-
-[sub_resource type="AnimationNodeAnimation" id=378]
-animation = "RunForward"
-
-[sub_resource type="AnimationNodeAnimation" id=379]
-animation = "RunBackwardsDRight"
-
-[sub_resource type="AnimationNodeAnimation" id=380]
-animation = "RunBackwardsDLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=391]
+[sub_resource type="AnimationNodeAnimation" id=393]
 animation = "StandIdle"
 
-[sub_resource type="AnimationNodeAnimation" id=381]
-animation = "RunLeft"
+[sub_resource type="AnimationNodeAnimation" id=394]
+animation = "WalkForward"
 
-[sub_resource type="AnimationNodeAnimation" id=382]
-animation = "RunLeft"
-
-[sub_resource type="AnimationNodeAnimation" id=383]
+[sub_resource type="AnimationNodeAnimation" id=395]
 animation = "RunBackwards"
 
-[sub_resource type="AnimationNodeAnimation" id=384]
-animation = "RunBackwards"
-
-[sub_resource type="AnimationNodeAnimation" id=385]
-animation = "RunRight"
-
-[sub_resource type="AnimationNodeAnimation" id=386]
-animation = "RunRight"
-
-[sub_resource type="AnimationNodeAnimation" id=387]
-animation = "RunForwardDRight"
-
-[sub_resource type="AnimationNodeAnimation" id=388]
+[sub_resource type="AnimationNodeAnimation" id=396]
 animation = "RunForwardDLeft"
 
-[sub_resource type="AnimationNodeBlendSpace2D" id=310]
-blend_point_0/node = SubResource( 377 )
-blend_point_0/pos = Vector2( 0.1, -0.8 )
-blend_point_1/node = SubResource( 378 )
-blend_point_1/pos = Vector2( -0.1, -0.8 )
-blend_point_2/node = SubResource( 381 )
-blend_point_2/pos = Vector2( 0.9, 0.2 )
-blend_point_3/node = SubResource( 382 )
-blend_point_3/pos = Vector2( 0.9, -0.1 )
-blend_point_4/node = SubResource( 383 )
-blend_point_4/pos = Vector2( 0.1, 0.8 )
-blend_point_5/node = SubResource( 384 )
-blend_point_5/pos = Vector2( -0.1, 0.8 )
-blend_point_6/node = SubResource( 385 )
-blend_point_6/pos = Vector2( -0.9, 0.2 )
-blend_point_7/node = SubResource( 386 )
-blend_point_7/pos = Vector2( -0.9, -0.2 )
-blend_point_8/node = SubResource( 387 )
-blend_point_8/pos = Vector2( -0.6, -0.6 )
-blend_point_9/node = SubResource( 388 )
-blend_point_9/pos = Vector2( 0.6, -0.6 )
-blend_point_10/node = SubResource( 379 )
-blend_point_10/pos = Vector2( -0.6, 0.6 )
-blend_point_11/node = SubResource( 380 )
-blend_point_11/pos = Vector2( 0.6, 0.6 )
-blend_point_12/node = SubResource( 391 )
-blend_point_12/pos = Vector2( 0, 0 )
+[sub_resource type="AnimationNodeAnimation" id=397]
+animation = "RunForwardDRight"
+
+[sub_resource type="AnimationNodeAnimation" id=398]
+animation = "RunBackwardsDLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=399]
+animation = "RunBackwardsDRight"
+
+[sub_resource type="AnimationNodeAnimation" id=400]
+animation = "RunRight"
+
+[sub_resource type="AnimationNodeAnimation" id=401]
+animation = "RunLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=402]
+animation = "WalkBackwards"
+
+[sub_resource type="AnimationNodeAnimation" id=403]
+animation = "WalkLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=404]
+animation = "WalkRight"
+
+[sub_resource type="AnimationNodeAnimation" id=405]
+animation = "WalkForwardDRight"
+
+[sub_resource type="AnimationNodeAnimation" id=406]
+animation = "WalkForwardDLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=407]
+animation = "WalkBackwardsDRight"
+
+[sub_resource type="AnimationNodeAnimation" id=408]
+animation = "WalkBackwardsDLeft"
+
+[sub_resource type="AnimationNodeAnimation" id=409]
+animation = "RunForward"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=410]
+blend_point_0/node = SubResource( 393 )
+blend_point_0/pos = Vector2( 0, 0 )
+blend_point_1/node = SubResource( 394 )
+blend_point_1/pos = Vector2( 0, -0.3 )
+blend_point_2/node = SubResource( 402 )
+blend_point_2/pos = Vector2( 0, 0.3 )
+blend_point_3/node = SubResource( 403 )
+blend_point_3/pos = Vector2( 0.3, 0 )
+blend_point_4/node = SubResource( 404 )
+blend_point_4/pos = Vector2( -0.3, 0 )
+blend_point_5/node = SubResource( 405 )
+blend_point_5/pos = Vector2( -0.2, -0.1 )
+blend_point_6/node = SubResource( 406 )
+blend_point_6/pos = Vector2( 0.2, -0.1 )
+blend_point_7/node = SubResource( 407 )
+blend_point_7/pos = Vector2( -0.2, 0.1 )
+blend_point_8/node = SubResource( 408 )
+blend_point_8/pos = Vector2( 0.2, 0.1 )
+blend_point_9/node = SubResource( 409 )
+blend_point_9/pos = Vector2( 0, -0.7 )
+blend_point_10/node = SubResource( 395 )
+blend_point_10/pos = Vector2( 0, 0.7 )
+blend_point_11/node = SubResource( 396 )
+blend_point_11/pos = Vector2( 0.4, -0.4 )
+blend_point_12/node = SubResource( 397 )
+blend_point_12/pos = Vector2( -0.4, -0.4 )
+blend_point_13/node = SubResource( 398 )
+blend_point_13/pos = Vector2( 0.4, 0.4 )
+blend_point_14/node = SubResource( 399 )
+blend_point_14/pos = Vector2( -0.4, 0.4 )
+blend_point_15/node = SubResource( 400 )
+blend_point_15/pos = Vector2( -0.5, 0 )
+blend_point_16/node = SubResource( 401 )
+blend_point_16/pos = Vector2( 0.5, 0 )
 
 [sub_resource type="AnimationNodeTimeScale" id=346]
 
 [sub_resource type="AnimationNodeTimeScale" id=347]
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -948, 33 )
+graph_offset = Vector2( -584.963, -50.25 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -4350,26 +4370,26 @@ nodes/Attack/position = Vector2( -226.8, 147.44 )
 nodes/AttackTransition/node = SubResource( 67 )
 nodes/AttackTransition/position = Vector2( -500, 220 )
 nodes/IdleMovementBlend/node = SubResource( 74 )
-nodes/IdleMovementBlend/position = Vector2( -20, -120 )
+nodes/IdleMovementBlend/position = Vector2( 100, -80 )
 nodes/JumpBlend/node = SubResource( 75 )
 nodes/JumpBlend/position = Vector2( 449.212, 106.96 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
-nodes/Movement/node = SubResource( 310 )
-nodes/Movement/position = Vector2( -500, 20 )
+nodes/Movement/node = SubResource( 410 )
+nodes/Movement/position = Vector2( -540, -20 )
 nodes/TimeScale/node = SubResource( 347 )
 nodes/TimeScale/position = Vector2( -700, 340 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -720, 200 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "JumpBlend", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale", 0, "Animation 2", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
+node_connections = [ "output", 0, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "IdleMovementBlend", 0, "Animation 3", "IdleMovementBlend", 1, "Attack", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "IdleMovementBlend", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
 
 [sub_resource type="CapsuleShape" id=80]
 radius = 0.617836
-height = 1.73957
+height = 1.74
 
 [node name="MeleeGruntNew" type="KinematicBody" groups=["Enemy", "Melee"]]
 collision_layer = 8
@@ -4387,18 +4407,17 @@ left_down_ray_path = NodePath("DownLeftRayCast")
 current_health = 60
 StartTimer_path = NodePath("Start")
 
+[node name="Target" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.846 )
+
+[node name="LookAt" type="Spatial" parent="Target"]
+script = ExtResource( 1 )
+skeleton_path = NodePath("../../Body/Skeleton")
+bone_name = "MidTorso"
+additional_rotation = Vector3( 10, 180, 0 )
+
 [node name="Body" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.667, 0 )
-
-[node name="Target" type="Spatial" parent="Body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.667, -4.959 )
-
-[node name="LookAt" type="Spatial" parent="Body/Target"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
-script = ExtResource( 1 )
-skeleton_path = NodePath("../../Skeleton")
-bone_name = "MidTorso"
-additional_rotation = Vector3( 0, 180, 0 )
 
 [node name="Skeleton" type="Skeleton" parent="Body"]
 bones/0/name = "Hip"
@@ -4440,7 +4459,7 @@ bones/7/name = "Claw.L"
 bones/7/parent = 6
 bones/7/rest = Transform( -0.982375, -0.169682, -0.0784027, 0.139045, -0.383052, -0.913202, 0.124922, -0.908008, 0.399894, 1.74672e-07, 0.720556, 1.68531e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("ClawL") ]
+bones/7/bound_children = [  ]
 bones/8/name = "UpperArm.R"
 bones/8/parent = 2
 bones/8/rest = Transform( 0.158607, -0.879295, 0.449093, 0.967783, 0.0483651, -0.247099, 0.195552, 0.473816, 0.858638, -0.351179, 0.317814, 0.0771444 )
@@ -4455,7 +4474,7 @@ bones/10/name = "Claw.R"
 bones/10/parent = 9
 bones/10/rest = Transform( -0.996916, 0.00345513, 0.0784026, -0.0732082, -0.400878, -0.913202, 0.0282746, -0.916125, 0.399895, -1.28112e-07, 0.720556, 1.15175e-09 )
 bones/10/enabled = true
-bones/10/bound_children = [ NodePath("ClawR") ]
+bones/10/bound_children = [  ]
 bones/11/name = "UpperLeg.L"
 bones/11/parent = 0
 bones/11/rest = Transform( -0.947681, 0.301932, -0.103631, -0.303701, -0.952767, 0.00135747, -0.0983265, 0.0327593, 0.994616, 0.149322, 0.146779, -0.041739 )
@@ -4514,7 +4533,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.621299, -0.218425, -0.752516, -0.0869024, -0.935229, 0.34321, -0.778739, 0.278631, 0.562076, -0.314216, 1.921, -0.901409 )
+transform = Transform( -0.973744, -0.173408, 0.14749, 0.150018, -0.00149098, 0.988681, -0.171226, 0.984849, 0.027466, -0.559547, 1.34636, -0.834869 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4528,7 +4547,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.647427, 0.112635, 0.753758, 0.241672, -0.907636, 0.34321, 0.722796, 0.404367, 0.560407, 0.312298, 1.921, -0.902103 )
+transform = Transform( -0.973249, 0.176237, -0.14741, -0.150018, -0.00149104, 0.988683, 0.174023, 0.984347, 0.0278897, 0.557297, 1.34636, -0.836475 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4577,7 +4596,7 @@ active = true
 process_mode = 0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
-parameters/IdleMovementBlend/blend_amount = 1.0
+parameters/IdleMovementBlend/blend_amount = 0.0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
 parameters/Movement/blend_position = Vector2( 0, 0 )
@@ -4595,12 +4614,12 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.783,
 shape = SubResource( 79 )
 
 [node name="FrontRayCast" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.154517, -2 )
-cast_to = Vector3( 0, -1.55, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+cast_to = Vector3( 0, -15, 0 )
 collision_mask = 2
 
 [node name="RightRayCast" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, -0.154517, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.155, 0 )
 cast_to = Vector3( 5, 0, 0 )
 collision_mask = 2
 
@@ -4610,7 +4629,7 @@ cast_to = Vector3( 0, -1.55, 0 )
 collision_mask = 2
 
 [node name="LeftRayCast" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, -0.154517, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.155, 0 )
 cast_to = Vector3( -5, 0, 0 )
 collision_mask = 2
 

@@ -87,6 +87,7 @@ func update_skeleton(delta):
 	#var rest = skeleton_to_use.get_bone_custom_pose(bone)
 	var inverse_rest = skeleton_to_use.get_bone_rest(bone).affine_inverse()
 	var global_pose = skeleton_to_use.get_bone_global_pose(bone)
+#	var global_pose_original = global_pose
 	#var custom = skeleton_to_use.get_bone_custom_pose(bone)#.affine_inverse()
 	var parent = skeleton_to_use.get_bone_parent(bone)
 	var inverse_parent_global = skeleton_to_use.get_bone_global_pose(parent).affine_inverse()
@@ -100,9 +101,23 @@ func update_skeleton(delta):
 #	var wtransform = custom.looking_at(target_pos,Vector3.UP)
 #	var wrotation = Quat(custom.basis).slerp(Quat(wtransform.basis), 15 * delta)
 #	custom = Transform(Basis(wrotation), custom.origin)
+#	var m11 = global_pose.basis.x[0]*global_pose_original.basis.x[0] + global_pose.basis.x[1]*global_pose_original.basis.y[0] + global_pose.basis.x[2]*global_pose_original.basis.z[0]
+#	var m12 = global_pose.basis.x[0]*global_pose_original.basis.x[1] + global_pose.basis.x[1]*global_pose_original.basis.y[1] + global_pose.basis.x[2]*global_pose_original.basis.z[1]
+#	var m13 = global_pose.basis.x[0]*global_pose_original.basis.x[2] + global_pose.basis.x[1]*global_pose_original.basis.y[2] + global_pose.basis.x[2]*global_pose_original.basis.z[2]
+#
+#	var m21 = global_pose.basis.y[0]*global_pose_original.basis.x[0] + global_pose.basis.y[1]*global_pose_original.basis.y[0] + global_pose.basis.y[2]*global_pose_original.basis.z[0]
+#	var m22 = global_pose.basis.y[0]*global_pose_original.basis.x[1] + global_pose.basis.y[1]*global_pose_original.basis.y[1] + global_pose.basis.y[2]*global_pose_original.basis.z[1]
+#	var m23 = global_pose.basis.y[0]*global_pose_original.basis.x[2] + global_pose.basis.y[1]*global_pose_original.basis.y[2] + global_pose.basis.y[2]*global_pose_original.basis.z[2]
+#
+#	var m31 = global_pose.basis.z[0]*global_pose_original.basis.x[0] + global_pose.basis.z[1]*global_pose_original.basis.y[0] + global_pose.basis.z[2]*global_pose_original.basis.z[0]
+#	var m32 = global_pose.basis.z[0]*global_pose_original.basis.x[1] + global_pose.basis.z[1]*global_pose_original.basis.y[1] + global_pose.basis.z[2]*global_pose_original.basis.z[1]
+#	var m33 = global_pose.basis.z[0]*global_pose_original.basis.x[2] + global_pose.basis.z[1]*global_pose_original.basis.y[2] + global_pose.basis.z[2]*global_pose_original.basis.z[2]
+#
+#	global_pose.basis = Basis(Vector3(m11,m12,m13),Vector3(m21,m22,m23),Vector3(m31,m32,m33))
+
 	#
-	var rest_euler = global_pose.basis.get_euler()
-	global_pose.basis = Basis(rest_euler)	
+	#var rest_euler = global_pose.basis.get_euler()
+	#global_pose.basis = Basis(rest_euler)	
 	if additional_rotation != Vector3.ZERO:
 		global_pose.basis = global_pose.basis.rotated(global_pose.basis.x, deg2rad(additional_rotation.x))
 		global_pose.basis = global_pose.basis.rotated(global_pose.basis.y, deg2rad(additional_rotation.y))
