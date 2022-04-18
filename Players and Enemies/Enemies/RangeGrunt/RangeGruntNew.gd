@@ -35,7 +35,7 @@ const SPEED_AIR : float = 8.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 70.0
 
-const SPEED_NORMAL : float = 8.0
+const SPEED_NORMAL : float = 10.0
 const SPEED_SIDE_STEP : float = 5.0
 var speed : float = SPEED_NORMAL
 
@@ -52,6 +52,8 @@ var accel : float = ACCEL
 var gravity : float = 40.0
 
 var is_on_floor : bool = false
+
+var global_timer : int = 0
 
 enum {
 		RESET,
@@ -157,11 +159,11 @@ func state_machine(delta):
 		SHOOT:
 			velocityXY = velocityXY.linear_interpolate(Vector3.ZERO, delta)
 			speed = SPEED_SIDE_STEP
-			face_threat(20,30,delta,player.global_transform.origin,player.global_transform.origin)
+			face_threat(20,delta,player.global_transform.origin,player.global_transform.origin)
 		EVADE:
 			evading(delta)
 		JUMP:
-			face_threat(20,30,delta,link_to[0] + offset,link_to[0] + offset)
+			face_threat(20,delta,link_to[0] + offset,link_to[0] + offset)
 			if jump_time < 1.0:
 				jump_time += delta / jump_time_coeff
 				self.global_transform.origin = Global.quadratic_bezier(start_jump_pos,p1,link_to[0],jump_time)
@@ -461,7 +463,7 @@ func move_to_target(delta, dir, state, turn_to = null):
 				direction = Vector3.ZERO
 			else:
 				direction = direction.linear_interpolate(dist, 10*delta)
-			face_threat(15,20,delta,player.global_transform.origin,player.global_transform.origin)
+			face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:
 			if dist_length > 3.5:
 				direction = dir
@@ -471,9 +473,9 @@ func move_to_target(delta, dir, state, turn_to = null):
 #				if (is_player_in_sight()):
 #					face_threat(10,30,delta,player.global_transform.origin,turn_to)
 #				else:
-				face_threat(10,30,delta,turn_to,turn_to)
+				face_threat(10,delta,turn_to,turn_to)
 			else: 
-				face_threat(10,30,delta,player.global_transform.origin,player.global_transform.origin)
+				face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
 	
 	front_ray.transform.origin = dir.normalized() * 2
 	front_ray.force_raycast_update()
@@ -481,7 +483,7 @@ func move_to_target(delta, dir, state, turn_to = null):
 		direction = Vector3.ZERO
 
 func look_at_allert(delta):
-	face_threat(10,10,delta,player.global_transform.origin,player.global_transform.origin)
+	face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
 	_timer_update(delta, LOOK_AT_ALLERT_TIMER, ALLERTED_AND_DOESNT_KNOW_LOC)
 
 func update_hp(damage):
@@ -536,7 +538,7 @@ func death():
 	call_deferred("queue_free")
 	
 
-func face_threat(d1,d2,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
+func face_threat(d1,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	Global.turn_face(self,turn,d1,delta)
 	$Target.global_transform.origin = look
 	pass

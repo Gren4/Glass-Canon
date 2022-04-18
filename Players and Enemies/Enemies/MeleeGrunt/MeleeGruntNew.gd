@@ -13,6 +13,8 @@ export(NodePath) var left_ray_path = null
 export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
 
+export(PackedScene) var ragdoll = null
+
 onready var hitboxl = get_node(hitboxl_path)
 onready var hitboxr = get_node(hitboxr_path)
 onready var animation_tree = get_node(animation_tree_path)
@@ -48,6 +50,8 @@ var accel : float = ACCEL
 var gravity : float = 40.0
 
 var is_on_floor : bool = false
+
+var global_timer : int = 0
 
 enum {
 		RESET,
@@ -155,7 +159,7 @@ func state_machine(delta):
 		EVADE:
 			evading(delta)
 		JUMP:
-			face_threat(20,30,delta,link_to[0] + offset,link_to[0] + offset)
+			face_threat(20,delta,link_to[0] + offset,link_to[0] + offset)
 			if jump_time < 1.0:
 				jump_time += delta / jump_time_coeff
 				self.global_transform.origin = Global.quadratic_bezier(start_jump_pos,p1,link_to[0],jump_time)
@@ -186,7 +190,7 @@ func state_machine(delta):
 		LOOK_AT_ALLERT:
 			look_at_allert(delta)
 		DEATH:
-			death()
+			pass
 
 func _timer_update(delta, state_timer, switch_to_state = null) -> bool:
 	if _timer >= state_timer:
@@ -219,6 +223,8 @@ func set_state(state):
 		JUMP_END:
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
+		DEATH:
+			death()
 			
 
 func tact_init(delta):
@@ -338,7 +344,7 @@ func move_along_path(delta) -> bool:
 			my_path.remove(0)
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
-	else:		
+	else:
 		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
 	return false
 	
@@ -414,27 +420,27 @@ func move_to_target(delta, dir, state, turn_to = null):
 			elif dist_length < 3.5 and dist_length > 2.0:
 				direction = Vector3.ZERO
 			else:
-				direction = direction.linear_interpolate(dist, 10*delta)
-			face_threat(15,20,delta,player.global_transform.origin,player.global_transform.origin)
+				direction = direction.linear_interpolate(dist.normalized(), delta)
+			face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:
 			if dist_length > 3.5:
 				direction = dir
 			else:
-				direction = direction.linear_interpolate(dist, 10*delta)
+				direction = direction.linear_interpolate(dist.normalized(), delta)
 			if (turn_to != null and dist_length > 10.0):
 				if (is_player_in_sight()):
-					face_threat(10,30,delta,player.global_transform.origin,turn_to)
+					face_threat(10,delta,player.global_transform.origin,turn_to)
 				else:
-					face_threat(10,30,delta,turn_to,turn_to)
+					face_threat(10,delta,turn_to,turn_to)
 			else: 
-				face_threat(10,30,delta,player.global_transform.origin,player.global_transform.origin)
+				face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
 	
 	front_ray.force_raycast_update()
 	if not front_ray.is_colliding():
 		direction = Vector3.ZERO
 
 func look_at_allert(delta):
-	face_threat(10,10,delta,player.global_transform.origin,player.global_transform.origin)
+	face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
 	_timer_update(delta, LOOK_AT_ALLERT_TIMER, ALLERTED_AND_DOESNT_KNOW_LOC)
 
 func update_hp(damage):
@@ -495,12 +501,19 @@ func death():
 	call_deferred("queue_free")
 	
 
-func face_threat(d1,d2,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
+func face_threat(d1,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	Global.turn_face(self,turn,d1,delta)
 	$Target.global_transform.origin = look
 	pass
 
-
+func _exit_tree():
+#	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
+#	var new_rag = ragdoll.instance()
+#	for i in $Body/Skeleton.get_bone_count():
+#		new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
+#	new_rag.global_transform = self.global_transform
+#	root.call_deferred("add_child",new_rag)
+	pass
 
 func _on_Start_timeout():
 	animation_tree.active = true

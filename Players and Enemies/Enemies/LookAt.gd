@@ -86,7 +86,7 @@ func update_skeleton(delta):
 		var inverse_pose = skeleton_to_use.get_bone_pose(bone).affine_inverse()
 		
 		var target_pos = skeleton_to_use.global_transform.xform_inv(global_transform.origin)
-		target = lerp(target,target_pos,0.2)
+		target = lerp(target,target_pos,0.05)
 		#var target_pos = global_transform.origin
 		#target_pos.y *= -1
 		global_pose = global_pose.looking_at(target, Vector3.UP)

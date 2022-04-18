@@ -54,6 +54,9 @@ func place_node(root, clone, pos = null, normal = null, parent = null):
 			var place_holder : Spatial = parent.get_node("GlobalParticles")
 			place_holder.set_disable_scale(true)
 			place_holder.add_child(clone)
+		elif parent.is_in_group("Ragdoll"):
+			parent = root
+			parent.add_child(clone)
 		else:
 			parent.add_child(clone)
 	
