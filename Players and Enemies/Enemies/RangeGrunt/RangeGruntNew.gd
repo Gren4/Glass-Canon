@@ -53,8 +53,6 @@ var gravity : float = 40.0
 
 var is_on_floor : bool = false
 
-var global_timer : int = 0
-
 enum {
 		RESET,
 		IDLE, 

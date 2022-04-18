@@ -1,6 +1,6 @@
 extends Camera
 
-export(NodePath) var main_cam_path = null
+export(NodePath) var main_cam_path
 onready var main_cam = get_node(main_cam_path)
 
 func _process(_delta):

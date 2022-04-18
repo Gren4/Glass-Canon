@@ -4363,7 +4363,7 @@ blend_point_16/pos = Vector2( -0.5, 0 )
 [sub_resource type="AnimationNodeTimeScale" id=347]
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -997, -17.5 )
+graph_offset = Vector2( -823, -115 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -4395,7 +4395,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -720, 200 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "TimeScale 2", 0, "Animation", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
+node_connections = [ "output", 0, "IdleAlert", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -4444,7 +4444,7 @@ bones/1/name = "MidTorso"
 bones/1/parent = 0
 bones/1/rest = Transform( 1, -5.87456e-08, -3.30059e-07, -6.01619e-08, 0.937098, -0.349066, 3.29803e-07, 0.349066, 0.937098, -1.37769e-09, 0.390751, 7.12839e-08 )
 bones/1/enabled = true
-bones/1/bound_children = [  ]
+bones/1/bound_children = [ NodePath("MidBone") ]
 bones/2/name = "UpTorso"
 bones/2/parent = 1
 bones/2/rest = Transform( 1, 8.74816e-07, -3.23042e-06, -3.23584e-06, 0.00625694, -0.99998, -8.54586e-07, 0.99998, 0.00625694, 8.51434e-10, 0.348884, -5.97266e-10 )
@@ -4548,7 +4548,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.973616, -0.173605, 0.1481, 0.156528, -0.0358244, 0.987023, -0.166047, 0.984164, 0.0620532, -0.560055, 1.39371, -0.87085 )
+transform = Transform( -0.668212, -0.195982, -0.717695, -0.0873644, -0.937333, 0.337301, -0.738823, 0.28809, 0.609216, -0.311392, 2.10432, -1.18678 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4562,7 +4562,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.973136, 0.176429, -0.147921, -0.156528, -0.0358227, 0.987024, 0.168841, 0.983662, 0.0624764, 0.557687, 1.39371, -0.872454 )
+transform = Transform( -0.677009, 0.157565, 0.718911, 0.142482, -0.930274, 0.338068, 0.722052, 0.331307, 0.607354, 0.320856, 2.10432, -1.18921 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4574,6 +4574,13 @@ monitorable = false
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Right"]
 transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0.00892669, 0.861218, 0.10278 )
 shape = SubResource( 392 )
+
+[node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.999993, 0.000159199, -0.00382869, -3.72529e-09, 0.999136, 0.0415458, 0.003832, 0.0415455, -0.999129, 0.0134977, 2.13818, -0.323583 )
+bone_name = "MidTorso"
+
+[node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]
+transform = Transform( 1, 0, 0, 0, 0.707106, -0.707107, 0, 0.707106, 0.707107, 0, 0, -7.45058e-09 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Alert = SubResource( 350 )
@@ -4611,10 +4618,10 @@ active = true
 process_mode = 0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
-parameters/IdleAlert/current = 0
+parameters/IdleAlert/current = 2
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
-parameters/Movement/blend_position = Vector2( 0.409186, 0.405172 )
+parameters/Movement/blend_position = Vector2( 0, -0.768 )
 parameters/TimeScale/scale = 0.8
 "parameters/TimeScale 2/scale" = 0.8
 

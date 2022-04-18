@@ -6167,7 +6167,7 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -1060, 280 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -6246,7 +6246,7 @@ bones/7/name = "Head"
 bones/7/parent = 6
 bones/7/rest = Transform( 1, 4.73691e-07, -1.85377e-06, -1.5148e-08, 0.970799, 0.239895, 1.91328e-06, -0.239895, 0.970799, -3.56102e-14, 0.234504, 2.90119e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("Head") ]
+bones/7/bound_children = [  ]
 bones/8/name = "MandibleStart.L"
 bones/8/parent = 7
 bones/8/rest = Transform( 0.381262, -0.345715, 0.857392, -0.140769, 0.894919, 0.423443, -0.913687, -0.282137, 0.292533, -0.0934621, 0.119377, -0.110246 )
@@ -6360,7 +6360,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, -3.02005e-07, -1.82462e-07, -1.23773e-08, -0.546837, 0.837238, -3.5263e-07, -0.837239, -0.546838, -7.29642e-08, 0.209623, -0.880634 )
+transform = Transform( 1, 2.52065e-08, 2.39011e-08, -1.13364e-08, -0.413385, 0.910555, 3.28327e-08, -0.910556, -0.413385, 1.04786e-08, 0.404521, -0.903643 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]

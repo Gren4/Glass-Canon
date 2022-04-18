@@ -6,14 +6,15 @@ onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/M
 onready var RangeGrunt = preload("res://Players and Enemies/Enemies/RangeGrunt/RangeGruntNew.tscn")
 ########################
 onready var forces : Array = []
+onready var timer : Array = []
 onready var spawn_points : Array = []
 
-export(NodePath) var player_path = null
+export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 0
+const max_enem : int = 10
 
-var col_enem_to_spawn = 1
+var col_enem_to_spawn = 30
 
 var phy_timer : int = 0
 var link_timer : int = 0
@@ -70,13 +71,13 @@ func init_target(target):
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
-		target.global_timer = randi()%5
+		timer.append(randi()%5)
 	elif target.is_in_group("Range"):
 		if pl_sides_it + 1 >= 8:
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
-		target.global_timer = randi()%41
+		timer.append(randi()%41)
 
 func set_target(target,point):
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
@@ -84,8 +85,8 @@ func set_target(target,point):
 	target.global_transform.origin = spawn_points[point].global_transform.origin
 	forces.append(target)
 	init_target(target)
+	
 func _physics_process(delta):
-		
 	col_enem = forces.size()
 		
 	if col_enem < max_enem and col_enem_to_spawn > 0:
@@ -112,36 +113,33 @@ func _physics_process(delta):
 		
 	if phy_timer >= 2:
 		if col_enem > 0:
-			if is_instance_valid(forces[it]):
-				var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
-				var dist_l = dist_to_player.length()
-				if forces[it].is_in_group("Melee"):
-					if forces[it].global_timer == 4:
-						forces[it].global_timer = 0
-						move_to(forces[it],dist_l)
+				if is_instance_valid(forces[it]):
+					if (timer[it] < 100):
+						timer[it] += 1
 					else:
-						forces[it].global_timer += 1
-				elif forces[it].is_in_group("Range"):
-					if forces[it].global_timer == 40:
-						forces[it].global_timer = 0
-						move_to(forces[it],dist_l)
-					else:
-						forces[it].global_timer += 1
-			else:
-				forces.pop_at(it)
-				it -= 1
-				col_enem -= 1
+						timer[it] = 0
+					var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
+					var dist_l = dist_to_player.length()
+					if forces[it].is_in_group("Melee"):
+						if timer[it]%4 == 0:
+							move_to(forces[it],dist_l)
+					elif forces[it].is_in_group("Range"):
+						if timer[it]%40 == 0:
+							move_to(forces[it],dist_l)
+				else:
+					forces.remove(it)
+					timer.remove(it)
+					col_enem -= 1
 
-			if it+1 >= col_enem:
-				it = 0
-			else:
-				it += 1
+				if it+1 >= col_enem:
+					it = 0
+				else:
+					it += 1
 		phy_timer = 0
 		if link_timer > 0:
 			link_timer = link_timer - 1
 	else:
 		phy_timer += 1
-		
 
 func move_to(target,dist_l):
 	var path = {}
@@ -160,19 +158,19 @@ func move_to(target,dist_l):
 				path = nav.get_nav_link_path(closest_t, closest_p)
 				if path.has("complete_path"):
 					target.get_nav_path(path)
-#					if path["nav_link_to_first"].size() > 0:
-#						var j : int = 0
-#						for i in forces:
-#							if i == target:
-#								continue
-#							if is_instance_valid(i):
-#								if i.is_in_group("Melee") and i.my_path.size() == 0:
-#									var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
-#									if (dt.length() <= 5.0):
-#										i.global_timer = 0
-#										i.get_nav_path(path)
-#										pass
-#							j += 1
+					if path["nav_link_to_first"].size() > 0:
+						var j : int = 0
+						for i in forces:
+							if i == target:
+								continue
+							if is_instance_valid(i):
+								if i.is_in_group("Melee") and i.my_path.size() == 0:
+									var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
+									if (dt.length() <= 5.0):
+										timer[j] = 0
+										i.get_nav_path(path)
+										pass
+							j += 1
 			else:
 				var temp_path = nav.get_simple_path(closest_t, closest_p)
 				if (temp_path.size()>0):

@@ -200,6 +200,41 @@ func get_point_for_npc(dist,side) -> Vector3:
 				result = rayForward.get_collision_point()
 	
 	return result
+
+
+#func get_point_for_npc_local(dist,side) -> Vector3:
+#	var result : Vector3 = Vector3.ZERO
+#	match side:
+#		0:
+#			rayForward.set_cast_to(Vector3(0,0,-dist))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#		1:
+#			rayForward.set_cast_to(Vector3(dist,0,0))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#		2:
+#			rayForward.set_cast_to(Vector3(0,0,dist))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#		3:
+#			rayForward.set_cast_to(Vector3(-dist,0,0))
+#			rayForward.force_raycast_update()
+#			if rayForward.is_colliding():
+#				result = rayForward.get_collision_point()
+#			else:
+#				result = to_global(rayForward.cast_to)
+#
+#	return result
 	
 func _process(delta) -> void:
 	weapon_manager.current_weapon.sway(mouse_input,delta)

@@ -12,7 +12,6 @@ export(NodePath) var right_ray_path = null
 export(NodePath) var left_ray_path = null
 export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
-
 export(PackedScene) var ragdoll = null
 
 onready var hitboxl = get_node(hitboxl_path)
@@ -50,8 +49,6 @@ var accel : float = ACCEL
 var gravity : float = 40.0
 
 var is_on_floor : bool = false
-
-var global_timer : int = 0
 
 enum {
 		RESET,
@@ -105,6 +102,7 @@ var p1 : Vector3 = Vector3.ZERO
 var offset : Vector3 = Vector3.ZERO
 
 var attack_side : int = 0
+var ragdoll_create : bool = true
 
 func _ready():
 	set_process(true)
@@ -344,7 +342,7 @@ func move_along_path(delta) -> bool:
 			my_path.remove(0)
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
-	else:
+	else:		
 		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
 	return false
 	
@@ -498,6 +496,13 @@ func death():
 	for i in glob_part.get_children():
 		glob_part.remove_child(i)
 		root.add_child(i)
+	if ragdoll_create:
+		ragdoll_create = false
+		var new_rag = ragdoll.instance()
+		for i in $Body/Skeleton.get_bone_count():
+			new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
+		new_rag.global_transform = self.global_transform
+		root.call_deferred("add_child",new_rag)
 	call_deferred("queue_free")
 	
 
@@ -506,14 +511,7 @@ func face_threat(d1,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	$Target.global_transform.origin = look
 	pass
 
-func _exit_tree():
-#	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
-#	var new_rag = ragdoll.instance()
-#	for i in $Body/Skeleton.get_bone_count():
-#		new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
-#	new_rag.global_transform = self.global_transform
-#	root.call_deferred("add_child",new_rag)
-	pass
+
 
 func _on_Start_timeout():
 	animation_tree.active = true
