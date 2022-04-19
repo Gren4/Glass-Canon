@@ -14,6 +14,7 @@ export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
 
 export(PackedScene) var projectile = null
+export(PackedScene) var ragdoll = null
 
 onready var hitbox = get_node(hitbox_path)
 onready var shoot = get_node(shoot_path)
@@ -110,6 +111,7 @@ var p1 : Vector3 = Vector3.ZERO
 var offset : Vector3 = Vector3.ZERO
 
 var attack_side : int = 0
+var ragdoll_create : bool = true
 
 func _ready():
 	set_process(true)
@@ -192,7 +194,7 @@ func state_machine(delta):
 		LOOK_AT_ALLERT:
 			look_at_allert(delta)
 		DEATH:
-			death()
+			pass
 
 func _timer_update(delta, state_timer, switch_to_state = null) -> bool:
 	if _timer >= state_timer:
@@ -227,6 +229,8 @@ func set_state(state):
 			velocityXY = Vector3.ZERO
 		SHOOT:
 			direction = Vector3.ZERO
+		DEATH:
+			death()
 
 func tact_init(delta):
 	dist = self.global_transform.origin - player.global_transform.origin
@@ -533,6 +537,13 @@ func death():
 	for i in glob_part.get_children():
 		glob_part.remove_child(i)
 		root.add_child(i)
+	if ragdoll_create:
+		ragdoll_create = false
+		var new_rag = ragdoll.instance()
+		for i in $Body/Skeleton.get_bone_count():
+			new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
+		new_rag.global_transform = self.global_transform
+		root.call_deferred("add_child",new_rag)
 	call_deferred("queue_free")
 	
 
