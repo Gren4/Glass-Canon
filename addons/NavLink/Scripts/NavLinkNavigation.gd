@@ -479,8 +479,10 @@ func _get_nav_link_paths() -> Array:
 	for p in nav_link_group:
 		if p is NavLinkPath:
 			var inverse : NavLinkPath = p.duplicate()
-			inverse.end_node = p.start_node
-			inverse.start_node = p.end_node
+			inverse.change_transform_start(p.get_transform_end())
+			inverse.change_transform_end(p.get_transform_start())
+#			inverse.end_node.transform.origin = p.start_node.transform.origin
+#			inverse.start_node.transform.origin = p.end_node.transform.origin
 			p.get_parent().add_child(inverse)
 			nav_link_paths.append(p)
 			nav_link_paths.append(inverse)

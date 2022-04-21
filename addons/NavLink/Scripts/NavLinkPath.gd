@@ -27,6 +27,17 @@ var origin_draw: MeshInstance
 # var start_position: Vector3 = Vector3(0.0, 0.0, 0.0)
 # var end_position: Vector3 = Vector3(0.0, 0.0, 1.0)
 
+func get_transform_start() -> Vector3:
+	return $Start.get_translation()
+
+func change_transform_start(v : Vector3):
+	$Start.set_translation(v)
+
+func get_transform_end() -> Vector3:
+	return $End.get_translation()
+
+func change_transform_end(v : Vector3):
+	$End.set_translation(v)
 
 func _enter_tree():
 	start_node_scene_template = preload("res://addons/NavLink/Scenes/NavLinkPathStart.tscn")

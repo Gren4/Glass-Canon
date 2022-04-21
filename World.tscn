@@ -837,7 +837,7 @@ mesh = SubResource( 34 )
 material/0 = SubResource( 35 )
 
 [node name="NavLinkPath18" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.999856, 0, 0.0169986, 0, 1, 0, -0.0169986, 0, -0.999856, -34.4551, 16.3131, -62.6081 )
+transform = Transform( -0.999856, 0, 0.0169986, 0, 1, 0, -0.0169986, 0, -0.999856, -34.455, 17, -62.608 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath18" instance=ExtResource( 20 )]
@@ -851,7 +851,7 @@ mesh = SubResource( 34 )
 material/0 = SubResource( 35 )
 
 [node name="NavLinkPath19" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.0286542, 1.74575e-09, -0.999589, -1.45424e-11, 1, 1.74688e-09, 0.999589, 6.45943e-11, -0.0286542, -27.7533, 16.3131, -66.7984 )
+transform = Transform( -0.0286542, 1.74575e-09, -0.999589, -1.45424e-11, 1, 1.74688e-09, 0.999589, 6.45943e-11, -0.0286542, -27.753, 17, -66.798 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath19" instance=ExtResource( 20 )]
@@ -865,7 +865,7 @@ mesh = SubResource( 34 )
 material/0 = SubResource( 35 )
 
 [node name="NavLinkPath20" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 0.99965, 6.07245e-11, -0.0264385, -1.45424e-11, 1, 1.74688e-09, 0.0264385, -1.74589e-09, 0.99965, -31.9519, 16.3131, -73.5842 )
+transform = Transform( 0.99965, 6.07245e-11, -0.0264385, -1.45424e-11, 1, 1.74688e-09, 0.0264385, -1.74589e-09, 0.99965, -31.952, 17, -73.584 )
 script = ExtResource( 18 )
 
 [node name="Start" parent="NavLinkPaths/NavLinkPath20" instance=ExtResource( 20 )]
@@ -875,20 +875,6 @@ material/0 = SubResource( 33 )
 
 [node name="End" parent="NavLinkPaths/NavLinkPath20" instance=ExtResource( 19 )]
 transform = Transform( 1, 0, 0, 0, 1, 6.66134e-16, 0, 0, 1, -1.2304, -2.96019, -4.47022 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath21" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.25793, 16.3131, -107.044 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath21" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19284, 2.66742, 5.54798 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath21" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1362, -3.05645, -4.36871 )
 mesh = SubResource( 34 )
 material/0 = SubResource( 35 )
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Materials/RiffleShotgun.tres" type="Material" id=1]
+[ext_resource path="res://Materials/Grunt.tres" type="Material" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagDoll.gd" type="Script" id=2]
 
 [sub_resource type="ArrayMesh" id=20]
@@ -277,7 +277,7 @@ transform = Transform( -1, 3.87071e-08, -1.09517e-07, 3.10533e-08, 0.997614, 0.0
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -7.99361e-14, 7.10543e-14, -6.66134e-14, 1, 1.56462e-07, 1.42109e-14, -1.56462e-07, 1, 0, 0, 0 )
+body_offset = Transform( 1, -8.61533e-14, 7.10543e-14, -7.01661e-14, 1, 1.63913e-07, 1.42109e-14, -1.63913e-07, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "MidTorso"
 joint_constraints/angular_limit_enabled = true
@@ -292,11 +292,11 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.139, 0 )
 shape = SubResource( 21 )
 
 [node name="Physical Bone UpTorso" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( -1, -9.84089e-07, 3.19103e-06, -3.25606e-06, 0.0752794, -0.997163, 7.41078e-07, -0.997163, -0.0752794, 0.00545364, 2.19148, -0.0114642 )
+transform = Transform( -1, -9.84088e-07, 3.19103e-06, -3.25606e-06, 0.0752793, -0.997162, 7.41078e-07, -0.997162, -0.0752793, 0.00545364, 2.19148, -0.0114642 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -1.42109e-12, 2.34479e-13, -1.7053e-13, 1, 1.3411e-07, 5.68434e-13, -1.3411e-07, 1, 0, 0, 0 )
+body_offset = Transform( 1, -1.53477e-12, 2.62901e-13, -1.7053e-13, 1, 1.41561e-07, 5.68434e-13, -1.41561e-07, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "UpTorso"
 joint_constraints/angular_limit_enabled = true
@@ -353,7 +353,7 @@ transform = Transform( 0.705663, 0.685285, -0.180069, 0.214777, 0.0353008, 0.976
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -2.98023e-08, 3.05474e-07, -1.2815e-06, 1, 3.05474e-07, -2.23517e-08, 7.45058e-09, 1, 0, 0, 0 )
+body_offset = Transform( 1, -2.98023e-08, 3.20375e-07, -1.37091e-06, 1, 3.27826e-07, -1.49012e-08, 7.45058e-09, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "BottomArm.L"
 joint_constraints/angular_limit_enabled = true
@@ -368,11 +368,11 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.366, 0 )
 shape = SubResource( 25 )
 
 [node name="Physical Bone UpperArmR" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( -0.158608, 0.879296, -0.44909, -0.122144, -0.468827, -0.874804, -0.979758, -0.083897, 0.181761, 0.356633, 2.13848, -0.334184 )
+transform = Transform( -0.158608, 0.879296, -0.44909, -0.122144, -0.468827, -0.874804, -0.979757, -0.083897, 0.181761, 0.356633, 2.13848, -0.334184 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -7.45058e-09, -8.9407e-08, -1.2666e-07, 1, -2.16067e-07, 1.63913e-07, -1.85333e-07, 1, 0, 0, 0 )
+body_offset = Transform( 1, -7.45058e-09, -8.9407e-08, -1.2666e-07, 1, -2.40281e-07, 1.63913e-07, -1.85333e-07, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "UpperArm.R"
 joint_constraints/angular_limit_enabled = true
@@ -406,11 +406,11 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.36, 0 )
 shape = SubResource( 27 )
 
 [node name="Physical Bone UpperLegL" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( 0.947681, -0.301932, 0.10363, -0.317201, -0.854218, 0.411941, -0.0358552, -0.423261, -0.905299, -0.143868, 1.604, -0.0982793 )
+transform = Transform( 0.947681, -0.301932, 0.10363, -0.317201, -0.854218, 0.411941, -0.0358552, -0.423261, -0.905298, -0.143868, 1.604, -0.0982793 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -1.11759e-08, 1.3411e-07, -8.3819e-09, 1, 1.10269e-06, -5.96046e-08, 0, 0.999999, 0, 0, 0 )
+body_offset = Transform( 1, -1.11759e-08, 1.3411e-07, -2.79397e-09, 1, 1.16229e-06, -6.70552e-08, 0, 0.999999, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "UpperLeg.L"
 joint_constraints/angular_limit_enabled = true
@@ -425,11 +425,11 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, -0.05, 0.43, 0.13 )
 shape = SubResource( 28 )
 
 [node name="Physical Bone MiddleLegL" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( 0.946597, -0.222015, -0.233805, -0.322377, -0.663612, -0.67505, -0.00528483, 0.714372, -0.699747, -0.32767, 1.08399, -0.35594 )
+transform = Transform( 0.946597, -0.222015, -0.233805, -0.322377, -0.663612, -0.67505, -0.00528485, 0.714372, -0.699747, -0.32767, 1.08399, -0.35594 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, 2.79397e-09, 3.25963e-08, -6.45872e-07, 1, 0, 3.32948e-08, -2.98023e-08, 1, 0, 0, 0 )
+body_offset = Transform( 1, 2.79397e-09, 3.25963e-08, -6.60541e-07, 1, 0, 6.26314e-08, -2.98023e-08, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "MiddleLeg.L"
 joint_constraints/angular_limit_enabled = true
@@ -444,11 +444,11 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.4, 0 )
 shape = SubResource( 29 )
 
 [node name="Physical Bone UpperLegR" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( 0.94348, 0.31437, 0.104959, 0.329619, -0.923087, -0.198145, 0.0345949, 0.221542, -0.974536, 0.154776, 1.604, -0.0982793 )
+transform = Transform( 0.943479, 0.31437, 0.104959, 0.329619, -0.923087, -0.198145, 0.0345948, 0.221542, -0.974536, 0.154776, 1.604, -0.0982793 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, 3.81842e-08, 0, -8.00937e-08, 1, 1.49012e-08, 3.35276e-08, 2.08616e-07, 1, 0, 0, 0 )
+body_offset = Transform( 1, 3.63216e-08, 0, -8.42847e-08, 1, 1.49012e-08, 4.47035e-08, 2.23517e-07, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "UpperLeg.R"
 joint_constraints/angular_limit_enabled = true
@@ -463,11 +463,11 @@ transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, -0.05, 0.43, 0.13 )
 shape = SubResource( 30 )
 
 [node name="Physical Bone BottomLegR" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( 0.946, 0.288361, -0.148096, 0.324157, -0.837633, 0.439648, 0.00272653, -0.463914, -0.885876, 0.334757, 1.05768, 0.806232 )
+transform = Transform( 0.946, 0.288361, -0.148096, 0.324157, -0.837633, 0.439648, 0.00272655, -0.463914, -0.885876, 0.334757, 1.05768, 0.806232 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, 0, 3.91388e-07, 1.47149e-07, 1, -2.38419e-07, -3.49246e-07, 0, 1, 0, 0, 0 )
+body_offset = Transform( 1, 0, 4.07686e-07, 1.45636e-07, 1, -2.68221e-07, -3.67174e-07, 0, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "BottomLeg.R"
 joint_constraints/angular_limit_enabled = true
@@ -482,11 +482,11 @@ transform = Transform( 1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.695, -0.059 )
 shape = SubResource( 30 )
 
 [node name="Physical Bone BottomLegL" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( 0.943533, -0.153402, 0.293621, -0.331197, -0.417198, 0.84632, -0.00732927, -0.895777, -0.444446, -0.498597, 0.573082, 0.194049 )
+transform = Transform( 0.943533, -0.153402, 0.293621, -0.331197, -0.417198, 0.84632, -0.00732927, -0.895778, -0.444446, -0.498597, 0.573082, 0.194049 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -5.9139e-08, 2.32831e-10, -3.86499e-08, 1, -5.96046e-08, 3.58559e-08, 2.98023e-07, 1, 0, 0, 0 )
+body_offset = Transform( 1, -5.7742e-08, 2.32831e-10, -4.00469e-08, 1, -5.96046e-08, 3.51574e-08, 2.98023e-07, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "BottomLeg.L"
 joint_constraints/angular_limit_enabled = true
@@ -501,11 +501,11 @@ transform = Transform( 1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0.695, -0.059 )
 shape = SubResource( 30 )
 
 [node name="Physical Bone MiddleLegR" type="PhysicalBone" parent="Body/Skeleton" groups=["Ragdoll"]]
-transform = Transform( 0.948799, -0.0147965, 0.315534, 0.315789, 0.0202834, -0.948612, 0.00763594, 0.999685, 0.023917, 0.346149, 1.04207, 0.0365848 )
+transform = Transform( 0.948799, -0.0147965, 0.315534, 0.315789, 0.0202834, -0.948611, 0.00763594, 0.999685, 0.023917, 0.346149, 1.04207, 0.0365848 )
 collision_layer = 32
 collision_mask = 34
 joint_type = 3
-body_offset = Transform( 1, -3.21306e-08, 3.88012e-07, -6.0536e-09, 1, 0, 3.34549e-08, -3.91155e-08, 1, 0, 0, 0 )
+body_offset = Transform( 1, -3.3062e-08, 3.87896e-07, -6.0536e-09, 1, 1.86265e-09, 3.3353e-08, -4.09782e-08, 1, 0, 0, 0 )
 gravity_scale = 5.0
 bone_name = "MiddleLeg.R"
 joint_constraints/angular_limit_enabled = true

@@ -3,7 +3,7 @@
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=3]
-[ext_resource path="res://Materials/RiffleShotgun.tres" type="Material" id=4]
+[ext_resource path="res://Materials/Grunt.tres" type="Material" id=4]
 
 [sub_resource type="ArrayMesh" id=348]
 resource_name = "MeleeGruntNew2_Cube"
@@ -4363,7 +4363,7 @@ blend_point_16/pos = Vector2( -0.5, 0 )
 [sub_resource type="AnimationNodeTimeScale" id=347]
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -823, -115 )
+graph_offset = Vector2( -968, 151.5 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -4395,7 +4395,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -720, 200 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation" ]
+node_connections = [ "output", 0, "IdleAlert", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -4444,7 +4444,7 @@ bones/1/name = "MidTorso"
 bones/1/parent = 0
 bones/1/rest = Transform( 1, -5.87456e-08, -3.30059e-07, -6.01619e-08, 0.937098, -0.349066, 3.29803e-07, 0.349066, 0.937098, -1.37769e-09, 0.390751, 7.12839e-08 )
 bones/1/enabled = true
-bones/1/bound_children = [ NodePath("MidBone") ]
+bones/1/bound_children = [  ]
 bones/2/name = "UpTorso"
 bones/2/parent = 1
 bones/2/rest = Transform( 1, 8.74816e-07, -3.23042e-06, -3.23584e-06, 0.00625694, -0.99998, -8.54586e-07, 0.99998, 0.00625694, 8.51434e-10, 0.348884, -5.97266e-10 )
@@ -4474,7 +4474,7 @@ bones/7/name = "Claw.L"
 bones/7/parent = 6
 bones/7/rest = Transform( -0.982375, -0.169682, -0.0784027, 0.139045, -0.383052, -0.913202, 0.124922, -0.908008, 0.399894, 1.74672e-07, 0.720556, 1.68531e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("ClawL") ]
+bones/7/bound_children = [  ]
 bones/8/name = "UpperArm.R"
 bones/8/parent = 2
 bones/8/rest = Transform( 0.158607, -0.879295, 0.449093, 0.967783, 0.0483651, -0.247099, 0.195552, 0.473816, 0.858638, -0.351179, 0.317814, 0.0771444 )
@@ -4489,7 +4489,7 @@ bones/10/name = "Claw.R"
 bones/10/parent = 9
 bones/10/rest = Transform( -0.996916, 0.00345513, 0.0784026, -0.0732082, -0.400878, -0.913202, 0.0282746, -0.916125, 0.399895, -1.28112e-07, 0.720556, 1.15175e-09 )
 bones/10/enabled = true
-bones/10/bound_children = [ NodePath("ClawR") ]
+bones/10/bound_children = [  ]
 bones/11/name = "UpperLeg.L"
 bones/11/parent = 0
 bones/11/rest = Transform( -0.947681, 0.301932, -0.103631, -0.303701, -0.952767, 0.00135747, -0.0983265, 0.0327593, 0.994616, 0.149322, 0.146779, -0.041739 )
@@ -4548,7 +4548,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.668212, -0.195982, -0.717695, -0.0873644, -0.937333, 0.337301, -0.738823, 0.28809, 0.609216, -0.311392, 2.10432, -1.18678 )
+transform = Transform( -0.974119, -0.172924, 0.145567, 0.125545, 0.121619, 0.984605, -0.187966, 0.977398, -0.0967617, -0.557775, 1.2724, -0.717916 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4562,7 +4562,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.677009, 0.157565, 0.718911, 0.142482, -0.930274, 0.338068, 0.722052, 0.331307, 0.607354, 0.320856, 2.10432, -1.18921 )
+transform = Transform( -0.973558, 0.175821, -0.145853, -0.125545, 0.121621, 0.984606, 0.190854, 0.97688, -0.0963313, 0.556141, 1.2724, -0.719567 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4576,7 +4576,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.999993, 0.000159199, -0.00382869, -3.72529e-09, 0.999136, 0.0415458, 0.003832, 0.0415455, -0.999129, 0.0134977, 2.13818, -0.323583 )
+transform = Transform( -0.999999, 0.000156676, -0.00147448, -9.19681e-09, 0.994401, 0.10567, 0.00148278, 0.10567, -0.9944, 0.00563698, 1.92847, -0.0441571 )
 bone_name = "MidTorso"
 
 [node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]
@@ -4618,10 +4618,10 @@ active = true
 process_mode = 0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
-parameters/IdleAlert/current = 2
+parameters/IdleAlert/current = 0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
-parameters/Movement/blend_position = Vector2( 0, -0.768 )
+parameters/Movement/blend_position = Vector2( 0, 0 )
 parameters/TimeScale/scale = 0.8
 "parameters/TimeScale 2/scale" = 0.8
 

@@ -12,7 +12,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 5
+const max_enem : int = 1
 
 var col_enem_to_spawn = 30
 
@@ -71,7 +71,7 @@ func init_target(target):
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
-		timer.append(randi()%5)
+		timer.append(randi()%21)
 	elif target.is_in_group("Range"):
 		if pl_sides_it + 1 >= 8:
 			pl_sides_it = 0
@@ -101,6 +101,7 @@ func _physics_process(delta):
 					new_t = RangeGrunt.instance()			
 				set_target(new_t,spawn_it)
 				new_t.set_state(new_t.ALLERTED_AND_KNOWS_LOC)
+				new_t.allerted = true
 				col_enem_to_spawn = col_enem_to_spawn - 1
 				if spawn_it+1 >= col_spawn:
 					spawn_it = 0
@@ -121,8 +122,12 @@ func _physics_process(delta):
 					var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
 					var dist_l = dist_to_player.length()
 					if forces[it].is_in_group("Melee"):
-						if timer[it]%4 == 0:
-							move_to(forces[it],dist_l)
+						if dist_l <= 10.0:
+							if timer[it]%4 == 0:
+								move_to(forces[it],dist_l)
+						else:
+							if timer[it]%20 == 0:
+								move_to(forces[it],dist_l)
 					elif forces[it].is_in_group("Range"):
 						if timer[it]%40 == 0:
 							move_to(forces[it],dist_l)
@@ -154,7 +159,7 @@ func move_to(target,dist_l):
 			var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
 			var closest_p : Vector3 = nav.get_closest_point(plV3)
 			if (link_timer == 0 ):
-				link_timer = 4
+				link_timer = 0
 				path = nav.get_nav_link_path(closest_t, closest_p)
 				if path.has("complete_path"):
 					target.get_nav_path(path)
@@ -186,7 +191,7 @@ func move_to(target,dist_l):
 		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
 		var closest_p : Vector3 = nav.get_closest_point(plV3)
 		if (link_timer == 0):
-			link_timer = 4
+			link_timer = 0
 			path = nav.get_nav_link_path(closest_t, closest_p)
 			if path.has("complete_path"):
 				target.get_nav_path(path)

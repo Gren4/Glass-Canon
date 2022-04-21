@@ -14,7 +14,7 @@ func _ready():
 #
 func _physics_process(delta):
 	if Dis > 0.0:
-#		$Body/Skeleton/Cube.material_override.set_shader_param("Dissolve",Dis)
+		$Body/Skeleton/Cube.material_override.set_shader_param("Diss",Dis)
 		Dis -= delta
 	else:
 		skeleton.physical_bones_stop_simulation()

@@ -71,6 +71,7 @@ var dist_length : float = 0.0
 var dist2D_length : float = 0.0
 
 onready var _state : int = IDLE
+var allerted : bool = false
 
 const IDLE_TIMER : float = 3.0
 const RESET_TIMER : float = 3.0
@@ -132,10 +133,14 @@ func ai(delta):
 func allert_everyone():
 	if _state < ALLERTED_AND_KNOWS_LOC:
 		set_state(ALLERTED_AND_KNOWS_LOC)
+		allerted = true
 	
 func state_machine(delta):
 	match _state:
 		IDLE:
+			if not is_on_floor:
+				set_state(AIR)
+				return
 			idle(delta)
 		RESET:
 			if reset_self(delta):
@@ -177,7 +182,10 @@ func state_machine(delta):
 		JUMP_END:
 			if _timer >= 0.25:
 				animation_tree.set("parameters/JumpBlend/blend_amount",0)
-				set_state(ALLERTED_AND_KNOWS_LOC)
+				if allerted:
+					set_state(ALLERTED_AND_KNOWS_LOC)
+				else:
+					set_state(IDLE)
 			else:
 				animation_tree.set("parameters/JumpBlend/blend_amount",1 - (1/0.25)*_timer)
 				_timer += delta
@@ -203,6 +211,9 @@ func set_state(state):
 	_dop_timer = 0.0
 	_state = state
 	match _state:
+		IDLE:
+			set_deferred("area_detection.monitoring", true)
+			animation_tree.set("parameters/IdleAlert/current",0)
 		RESET:
 			set_deferred("area_detection.monitoring", true)
 		LOOK_AT_ALLERT:
@@ -211,6 +222,7 @@ func set_state(state):
 			animation_tree.set("parameters/IdleAlert/current",2)
 			set_deferred("area_detection.monitoring", true)
 		ALLERTED_AND_KNOWS_LOC:
+			allerted = true
 			animation_tree.set("parameters/IdleAlert/current",2)
 			set_deferred("area_detection.monitoring", false)
 		JUMP,AIR:
@@ -455,22 +467,20 @@ func is_player_in_sight() -> bool:
 		return true
 	else:
 		return false
-	
+
 func get_nav_path(path):
-	my_path = path["complete_path"]
 	if _state != JUMP and _state != JUMP_END:
+		my_path = path["complete_path"]
 		link_from.resize(0)
 		link_to.resize(0)
-	if not path["nav_link_to_first"].empty():
-		if path["nav_link_path_inbetween"].empty():
-			if _state != JUMP and _state != JUMP_END:
+		if not path["nav_link_to_first"].empty():
+			if path["nav_link_path_inbetween"].empty():
 				var to = path["nav_link_from_last"][0]
 				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
 				if to in my_path and from in my_path:
 					link_from.append(from)
 					link_to.append(to)
-		else:
-			if _state != JUMP and _state != JUMP_END:
+			else:
 				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
 				if from in my_path:
 					link_from.append(from)

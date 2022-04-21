@@ -4,7 +4,7 @@
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=2]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/RangeGruntNew.gd" type="Script" id=3]
 [ext_resource path="res://Players and Enemies/Enemies/EnemyRange/EnemyProjectile.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Materials/RiffleShotgun.tres" type="Material" id=5]
+[ext_resource path="res://Materials/Grunt.tres" type="Material" id=5]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/RangeGruntRagdoll.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ArrayMesh" id=423]
@@ -6168,7 +6168,7 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -1060, 280 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -6362,7 +6362,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, 1.18879e-07, -1.12846e-07, 1.51595e-07, -0.408863, 0.912595, 6.235e-08, -0.912596, -0.408864, 2.29794e-08, 0.411007, -0.903794 )
+transform = Transform( 1, -5.13191e-07, -4.47156e-08, -2.69079e-07, -0.594407, 0.804165, -4.39272e-07, -0.804165, -0.594407, -1.14687e-07, 0.139462, -0.863885 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
