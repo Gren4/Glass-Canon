@@ -1,0 +1,238 @@
+extends Navigation
+
+export (NodePath) var NavLink_path = null
+onready var NavLink : Node = get_node(NavLink_path)
+
+class JumpLink:
+	var from : Vector3
+	var to : Vector3
+
+class PathWithCostArray:
+	var cost:float
+	var path:Array
+	var jumplink:Array
+	
+class PathWithCostPool:
+	var cost:float
+	var path:PoolVector3Array
+	var jumplink:Array
+	
+var all_nav_link_path_nodes: Array
+var nav_link_path_graph: Dictionary
+
+export (float) var grid_step = 0.0001
+
+func _ready():
+	yield(get_tree(), "idle_frame")
+	parse_nav_link_nodes()
+	print("Done")
+			
+		
+func _get_nav_link_paths() -> Array:
+	var nav_link_group = NavLink.get_children()
+	var nav_link_paths: Array = []
+	for p in nav_link_group:
+		if p is Link:
+			nav_link_paths.append(p)
+	return nav_link_paths
+	
+class _SorterFor_graph:
+	static func sort_graph_ascending(a:PathWithCostArray, b:PathWithCostArray):
+		return a.cost < b.cost
+
+func parse_nav_link_nodes() -> void:
+	nav_link_path_graph.clear()
+	all_nav_link_path_nodes.clear()
+	all_nav_link_path_nodes = _get_nav_link_paths()
+	if (all_nav_link_path_nodes.size() > 1):
+		for nav_link_path_node in all_nav_link_path_nodes:
+			nav_link_path_node.One.global_transform.origin = get_closest_point(nav_link_path_node.One.global_transform.origin)
+			nav_link_path_node.Two.global_transform.origin = get_closest_point(nav_link_path_node.Two.global_transform.origin)
+	
+	if (all_nav_link_path_nodes.size() > 1):
+		for nav_link_path_node in all_nav_link_path_nodes:
+#			var one_coords = get_closest_point(nav_link_path_node.One.global_transform.origin)
+#			var two_coords = get_closest_point(nav_link_path_node.Two.global_transform.origin)
+			var one_coords = (nav_link_path_node.One.global_transform.origin)
+			var two_coords = (nav_link_path_node.Two.global_transform.origin)
+			var key1 : String = _create_key(two_coords,one_coords)
+			var key2 : String = _create_key(one_coords,two_coords)
+			
+			var path2 : PathWithCostArray = PathWithCostArray.new()
+			path2.path = [one_coords,two_coords]
+			var from_to2 : JumpLink = JumpLink.new()
+			from_to2.from = one_coords
+			from_to2.to = two_coords
+			path2.jumplink = [from_to2]
+			path2.cost = 0.0
+			_calculate_paths_cost(path2)
+			nav_link_path_graph[key2] = [path2]
+			_form_path_between_links(one_coords, two_coords, path2, [nav_link_path_node])
+			
+			var path1 : PathWithCostArray = PathWithCostArray.new()
+			path1.path = [two_coords,one_coords]
+			var from_to1 : JumpLink = JumpLink.new()
+			from_to1.from = two_coords
+			from_to1.to = one_coords
+			path1.jumplink = [from_to1]
+			path1.cost = 0.0
+			_calculate_paths_cost(path1)
+			nav_link_path_graph[key1] = [path1]
+			_form_path_between_links(two_coords, one_coords, path1, [nav_link_path_node])
+		
+		for i in nav_link_path_graph:
+			nav_link_path_graph[i].sort_custom(_SorterFor_graph,"sort_graph_ascending")
+			#_calculate_paths_cost(nav_link_path_graph[i])
+#			var pool : PathWithCostPool = PathWithCostPool.new()
+#			pool.jumplink = nav_link_path_graph[i].jumplink
+#			pool.cost = nav_link_path_graph[i].cost
+#			pool.path = PoolVector3Array(nav_link_path_graph[i].path)
+#			nav_link_path_graph[i] = pool
+
+func _form_path_between_links(start : Vector3, from : Vector3, path: PathWithCostArray, exlude:Array = []) -> void:
+	for neighbor_nav_link_path_node in all_nav_link_path_nodes:
+		if neighbor_nav_link_path_node in exlude:
+			continue
+#		var neighbor_one_coords = get_closest_point(neighbor_nav_link_path_node.One.global_transform.origin)
+#		var neighbor_two_coords = get_closest_point(neighbor_nav_link_path_node.Two.global_transform.origin)
+		var neighbor_one_coords = (neighbor_nav_link_path_node.One.global_transform.origin)
+		var neighbor_two_coords = (neighbor_nav_link_path_node.Two.global_transform.origin)
+		var exlude_new = exlude.duplicate()
+		exlude_new.append(neighbor_nav_link_path_node)
+		_try_get_path(start, from, neighbor_one_coords, neighbor_two_coords, path, exlude_new)
+		_try_get_path(start, from, neighbor_two_coords, neighbor_one_coords, path, exlude_new)	
+	
+func _try_get_path(start : Vector3, from : Vector3, one : Vector3, two : Vector3, path: PathWithCostArray, exlude:Array = []) -> void:
+	var direct_path = Array(get_simple_path(from, one))
+	var direct_path_exists : bool = len(direct_path) > 0
+	if direct_path_exists:
+		var key = _create_key(start,two)
+		var path_new : PathWithCostArray = PathWithCostArray.new()
+		path_new.path = path.path.duplicate()
+		path_new.jumplink = path.jumplink.duplicate()
+		path_new.cost = 0.0
+		direct_path.append_array([one,two])
+		path_new.path.append_array(direct_path)
+		
+		var from_to : JumpLink = JumpLink.new()
+		from_to.from = one
+		from_to.to = two
+		path_new.jumplink.append(from_to)
+		_calculate_paths_cost(path_new)
+		
+		if (nav_link_path_graph.has(key)):		
+			nav_link_path_graph[key].append(path_new)
+		else:
+			nav_link_path_graph[key] = [path_new]
+		_form_path_between_links(start,two,path_new,exlude)
+
+func _create_key(from : Vector3, to : Vector3) -> String:
+	return _world_point(from)+";"+_world_point(to)
+
+func _world_point(world : Vector3) -> String:
+	return "%0.4f,%0.4f,%0.4f" % [stepify(world.x,grid_step),stepify(world.y,grid_step),stepify(world.z,grid_step)]
+	
+func _calculate_paths_cost(path : PathWithCostArray) -> void:
+	for i in range(0, len(path.path) - 1):
+		path.cost += path.path[i].distance_to(path.path[i + 1])
+	
+func get_simple_path_with_cost(from_position: Vector3, to_position: Vector3, optimize: bool = true) -> PathWithCostArray:
+	var ret:PathWithCostArray = PathWithCostArray.new()
+	ret.path = Array(get_simple_path(from_position, to_position, optimize))
+	ret.jumplink = []
+	ret.cost = 0.0
+	for i in range(0, len(ret.path) - 1):
+		ret.cost += ret.path[i].distance_to(ret.path[i + 1])
+	return ret
+	
+class LinkDistFrom:
+	var origin : Vector3
+	var dist : float
+	var height_diff : float
+	
+class LinkDistTo:
+	var origin : Vector3
+	var dist : float
+	var dop_dist : float
+	var abs_dist : float
+	var height_diff : float
+
+func _get_path_with_links(from : Vector3, to : Vector3) -> PathWithCostArray:
+	var dist = from.distance_to(to)
+	var path : PathWithCostArray = get_simple_path_with_cost(from,to)
+	
+	if path.path.size() == 0:
+		var link_to : Array = []
+		var link_from : Array = []
+		for link in all_nav_link_path_nodes:
+			
+			link_from.append(_get_struct_from(from,link.One.global_transform.origin))
+			link_from.append(_get_struct_from(from,link.Two.global_transform.origin))
+			
+			link_to.append(_get_struct_to(to,link.One.global_transform.origin, from))
+			link_to.append(_get_struct_to(to,link.Two.global_transform.origin, from))
+			
+		link_to.sort_custom(_SorterFor_link_paths,"sort_ascending_to")
+		link_from.sort_custom(_SorterFor_link_paths,"sort_ascending_from")
+		for l_i in link_to:
+			var path_to : PathWithCostArray = get_simple_path_with_cost(l_i.origin,to)
+			if path_to.path.size() > 0:
+				for l_j in link_from:
+					var path_from : PathWithCostArray = get_simple_path_with_cost(from,l_j.origin)
+					if path_from.path.size() > 0:
+						var temp_key = _create_key(l_j.origin,l_i.origin)
+						if (nav_link_path_graph.has(temp_key)):
+							var link_path : PathWithCostArray = nav_link_path_graph[temp_key][0]
+							path = path_from
+							path.path.append_array(link_path.path)
+							path.path.append_array(path_to.path)
+							path.cost += link_path.cost + path_to.cost
+							return path
+		pass
+	
+	return path
+	
+func _get_struct_from(from : Vector3, to : Vector3) -> LinkDistFrom:
+	var ld : LinkDistFrom = LinkDistFrom.new()
+	ld.origin = to
+	ld.dist = from.distance_to(to)
+	ld.height_diff = abs(from.y - to.y)
+	return ld
+	
+func _get_struct_to(from : Vector3, to : Vector3, dop : Vector3) -> LinkDistTo:
+	var ld : LinkDistTo = LinkDistTo.new()
+	ld.origin = to
+	ld.dist = from.distance_to(to)
+	ld.dop_dist = dop.distance_to(to)
+	ld.abs_dist = dop.distance_to(from)
+	ld.height_diff = abs(from.y - to.y)
+	return ld
+	
+class _SorterFor_link_paths:
+	static func sort_ascending_from(a:LinkDistFrom, b:LinkDistFrom):
+		if (a.height_diff < b.height_diff):
+			return 1
+		elif (a.height_diff > b.height_diff):
+			return 0
+		else:
+			if (a.dist < b.dist):
+				return 1
+			else:
+				return 0
+	static func sort_ascending_to(a:LinkDistTo, b:LinkDistTo):
+		if (a.height_diff < b.height_diff):
+			return 1
+		elif (a.height_diff > b.height_diff):
+			return 0
+		else:
+			var p_a = (a.dist + a.dop_dist + a.abs_dist) / 2
+			var weight_a : float = sqrt(p_a*(p_a-a.dist)*(p_a-a.dop_dist)*(p_a-a.abs_dist))
+			var p_b = (b.dist + b.dop_dist + b.abs_dist) / 2
+			var weight_b : float = sqrt(p_b*(p_b-b.dist)*(p_b-b.dop_dist)*(p_b-b.abs_dist))
+			#var weight_a : float = (a.dist + a.dop_dist)
+			#var weight_b : float = (b.dist + b.dop_dist)
+			if (weight_a > weight_b):
+			#if (a.dist < b.dist):
+				return 1
+			else:
+				return 0

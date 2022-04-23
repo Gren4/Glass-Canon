@@ -34,9 +34,9 @@ var isAlive : bool = true
 const ACCEL : float = 10.0
 const SPEED_AIR : float = 8.0
 const SPEED_DOP_ATTACK : float = 20.0
-const SPEED_DOP_EVADE : float = 70.0
+const SPEED_DOP_EVADE : float = 14.0
 
-const SPEED_NORMAL : float = 10.0
+const SPEED_NORMAL : float = 12.0
 const SPEED_SIDE_STEP : float = 5.0
 var speed : float = SPEED_NORMAL
 
@@ -400,7 +400,10 @@ func move_along_path(delta) -> bool:
 	else:
 #		front_ray.force_raycast_update()
 #		if front_ray.is_colliding():
-		move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
+		if dist2D_length < 3.0:
+			move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
+		else:
+			move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
 	return false
 	
 func evade_maneuver(delta, dist_V):
@@ -457,7 +460,7 @@ func evading(delta):
 				side = -1
 				set_state(ALLERTED_AND_KNOWS_LOC)
 				
-	if _dop_timer >= 0.05:
+	if _dop_timer >= 0.25:
 		direction = -dist
 		dop_speed = 0.0
 		side = -side

@@ -205,7 +205,7 @@ func move_to(target,dist_l):
 							"nav_link_path_inbetween": []
 						}
 				target.get_nav_path(path)
-		if target.attack_side + 1 >= 8:
+		if target.attack_side + 1 >= 4:
 			target.attack_side = 0
 		else:
 			target.attack_side += 1		

@@ -32,7 +32,7 @@ var isAlive : bool = true
 const ACCEL : float = 15.0
 const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
-const SPEED_DOP_EVADE : float = 70.0
+const SPEED_DOP_EVADE : float = 14.0
 
 const SPEED_NORMAL : float = 19.0
 var speed : float = SPEED_NORMAL
@@ -80,7 +80,6 @@ const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
 const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
 const ATTACK_CD_TIMER : float = 1.5
-const DIR_CD_TIMER : float = 5.0
 
 export(NodePath) var StartTimer_path = null
 onready var StartTimer : Timer = get_node(StartTimer_path)
@@ -89,7 +88,6 @@ var _timer : float = 0.0
 var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
 var _evade_timer : int = 1 + randi() % 5
-var _dir_timer : float = 0.0
 var side : int = 1
 
 var no_collision_between : bool = false
@@ -150,13 +148,6 @@ func state_machine(delta):
 				set_state(AIR)
 				return
 			analyze_and_prepare_attack(delta)
-			if _dir_timer >= DIR_CD_TIMER:
-				if attack_side + 1 >= 4:
-					attack_side = 0
-				else:
-					attack_side += 1
-			else:
-				_dir_timer += delta
 		ATTACK_MELEE:
 			move_to_target(delta,-dist,ATTACK_MELEE)
 		EVADE:
@@ -245,7 +236,7 @@ func tact_init(delta):
 	is_on_floor = is_on_floor()
 	
 	if is_on_floor:
-		speed = SPEED_NORMAL - (2.0*SPEED_NORMAL/(dist_length*dist_length))
+		speed = SPEED_NORMAL - (1.0*SPEED_NORMAL/(dist_length*dist_length))
 	else:
 		speed = SPEED_AIR
 	
@@ -286,6 +277,10 @@ func on_animation_finish(anim_name:String):
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
 			dop_speed = 0.0
+			if attack_side + 1 >= 4:
+				attack_side = 0
+			else:
+				attack_side += 1
 	
 func idle(delta):
 	if _dop_timer >= 0.1:
@@ -354,8 +349,14 @@ func move_along_path(delta) -> bool:
 			my_path.remove(0)
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
-	else:		
-		move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+	else:
+		if dist_length > 4.5:
+			move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+		elif dist2D_length < 3.0:
+			move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
+		else:
+			move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
+		
 	return false
 	
 func evade_maneuver(delta, dist_V):
@@ -412,7 +413,7 @@ func evading(delta):
 				side = -1
 				set_state(ALLERTED_AND_KNOWS_LOC)
 				
-	if _dop_timer >= 0.05:
+	if _dop_timer >= 0.25:
 		direction = -dist
 		dop_speed = 0.0
 		side = -side
@@ -430,13 +431,14 @@ func move_to_target(delta, dir, state, turn_to = null):
 			elif dist_length < 3.5 and dist_length > 2.0:
 				direction = Vector3.ZERO
 			else:
-				direction = direction.linear_interpolate(dist.normalized(), delta)
+				direction = dist
 			face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:
-			if dist_length > 3.5:
-				direction = dir
-			else:
-				direction = direction.linear_interpolate(dist.normalized(), delta)
+#			if dist_length > 4.5:
+#				direction = dir
+#			elif dist_length < 4.1:
+#				direction = dist
+			direction = dir
 			if (turn_to != null and dist_length > 10.0):
 				if (is_player_in_sight()):
 					face_threat(10,delta,player.global_transform.origin,turn_to)
