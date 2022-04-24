@@ -13,7 +13,7 @@ export(NodePath) var ray_empty_path
 
 export(NodePath) var ray_forward_path
 
-export(NodePath) var animation_player_path
+export(NodePath) var animation_tree_path
 export(NodePath) var hud_path
 
 onready var head = get_node(head_path)
@@ -28,7 +28,7 @@ onready var rayEmpty = get_node(ray_empty_path)
 
 onready var rayForward = get_node(ray_forward_path)
 
-onready var animation_player = get_node(animation_player_path)
+onready var animation_tree = get_node(animation_tree_path)
 onready var hud = get_node(hud_path)
 
 ### Перечисления ###
@@ -143,10 +143,17 @@ func _ready() -> void:
 	set_process_input(true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func update_health(value = 0) -> void:
+func update_health(value = 0, origin : Vector3 = Vector3.ZERO) -> void:
 	if value < 0 and not imunity:
+		animation_tree.set("parameters/Hit/active",true)
 		hp_recovery_timer = HP_RECOVERY_CD
+		if origin != Vector3.ZERO:
+			var point : Vector2 = Vector2(self.global_transform.origin.z,self.global_transform.origin.x).direction_to(Vector2(origin.z,origin.x))
+			var base : Vector2 = Vector2(-self.global_transform.basis.z.z,-self.global_transform.basis.z.x)
+			var degree : float = rad2deg(point.angle_to(base))
+			hud.rotate_indicator(degree)
 	current_health += value
+	current_health = clamp(current_health,0,100)
 	hud.update_health(int(current_health))
 
 func _input(event) -> void:
@@ -170,7 +177,7 @@ func _input(event) -> void:
 				BUTTON_WHEEL_DOWN:
 					weapon_manager.previous_weapon()
 
-func get_point_for_npc(dist,side) -> Vector3:
+func get_point_for_npc(dist:float,side:int,type:String = "Melee") -> Vector3:
 	var result : Vector3 = Vector3.ZERO
 	var origin = self.global_transform.origin
 	match side:
@@ -180,24 +187,32 @@ func get_point_for_npc(dist,side) -> Vector3:
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
+				if type == "Range":
+					result.z = result.z*0.7
 		1:
 			result = Vector3(origin.x+dist,origin.y,origin.z)
 			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
+				if type == "Range":
+					result.x = result.x*0.7
 		2:
 			result = Vector3(origin.x,origin.y,origin.z+dist)
 			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
+				if type == "Range":
+					result.z = result.z*0.7
 		3:
 			result = Vector3(origin.x-dist,origin.y,origin.z)
 			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
+				if type == "Range":
+					result.x = result.x*0.7
 	
 	return result
 
@@ -373,12 +388,10 @@ func primary_setup(delta) -> void:
 		WALLRUNNING:
 			velocity.y -= WALL_RUNNING_GRAVITY * delta
 			
-	if cur_speed >= ADS_WALKING_SPEED:
-		if hp_recovery_timer > 0.0:
-			hp_recovery_timer -= delta
+	
+	if hp_recovery_timer > 0.0:
+		hp_recovery_timer -= delta
 	else:
-		hp_recovery_timer = HP_RECOVERY_CD
-	if hp_recovery_timer <= 0.0:
 		if current_health < 100.0:
 			current_health += 5 * delta
 			current_health = clamp(current_health,0,100)
@@ -682,10 +695,11 @@ func finalize_velocity(delta) -> void:
 	
 func animations_handler() -> void:
 	if State == WALKING:
-		if cur_speed > ADS_WALKING_SPEED and isfloor_tek:
-			animation_player.play("HeadBop", 0.1, 1.5 * vel_info.length_squared() / pow(WALKING_SPEED,2))
+		if isfloor_tek:
+			animation_tree.set("parameters/HeadBop/blend_position", vel_info.length_squared() / pow(WALKING_SPEED,2))
 		else:
-			animation_player.play("RESET", 0.5, 1.0)
+			animation_tree.set("parameters/HeadBop/blend_position", 0)
 	else:
-		animation_player.play("RESET", 0.1, 1.0)	
+		animation_tree.set("parameters/HeadBop/blend_position", 0)
+
 

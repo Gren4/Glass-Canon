@@ -18,7 +18,7 @@ func _physics_process(delta):
 func _on_Area_body_entered(body):
 	if body != parent:
 		if body.is_in_group("Player"):
-			body.update_health(-attack_damage)
+			body.update_health(-attack_damage, self.global_transform.origin)
 			queue_free()
 		elif body.is_in_group("Enemy"): 
 			body.update_hp(attack_damage)

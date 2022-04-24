@@ -29,15 +29,13 @@ onready var  left_down_ray = get_node(left_down_ray_path)
 
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 
-var isAlive : bool = true
-
 const ACCEL : float = 10.0
 const SPEED_AIR : float = 8.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 14.0
 
-const SPEED_NORMAL : float = 12.0
-const SPEED_SIDE_STEP : float = 5.0
+const SPEED_NORMAL : float = 14.0
+const SPEED_SIDE_STEP : float = 7.0
 var speed : float = SPEED_NORMAL
 
 var jump_time_coeff : float = 0.7
@@ -85,8 +83,7 @@ const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
 const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
 const ATTACK_CD_TIMER : float = 1.5
-var SHOOT_CD_TIMER : float = 1.0
-#const DIR_CD_TIMER : float = 5.0
+var SHOOT_CD_TIMER : float = 2.0
 
 export(NodePath) var StartTimer_path = null
 onready var StartTimer : Timer = get_node(StartTimer_path)
@@ -97,7 +94,8 @@ var _attack_timer : float = 0.0
 var _shoot_timer : float = 0.0
 var _change_dir_timer : float = 2 * randf()
 var _evade_timer : int = 1 + randi() % 5
-#var _dir_timer : float = 0.0
+var _path_timer : float = 0.0
+var give_path : bool = true
 var _stop_timer : float = 0.0
 var side : int = 1
 
@@ -160,11 +158,15 @@ func state_machine(delta):
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
-			move_to_target(delta,-dist,ATTACK_MELEE)
+			front_ray.force_raycast_update()
+			if front_ray.is_colliding():
+				move_to_target(delta,-dist,ATTACK_MELEE)
+			else:
+				move_to_target(delta,Vector3.ZERO,ATTACK_MELEE)
 		SHOOT:
 			velocityXY = velocityXY.linear_interpolate(Vector3.ZERO, delta)
 			speed = SPEED_SIDE_STEP
-			face_threat(20,delta,player.global_transform.origin,player.global_transform.origin)
+			face_threat(5,delta,player.global_transform.origin,player.global_transform.origin)
 		EVADE:
 			evading(delta)
 		JUMP:
@@ -251,15 +253,11 @@ func tact_init(delta):
 	is_on_floor = is_on_floor()
 	
 	if is_on_floor:
-		speed = SPEED_NORMAL - (2.0*SPEED_NORMAL/(dist_length*dist_length))
-	else:
-		speed = SPEED_AIR
-	
-	if is_on_floor:
 		velocity.y = -0.1
 		snap = Vector3.DOWN
 	else:
 		velocity.y -= gravity * delta
+		speed = SPEED_AIR
 	
 func finalize_velocity(delta):
 	direction = direction.normalized()
@@ -273,7 +271,7 @@ func finalize_velocity(delta):
 func attack():
 	var targets = hitbox.get_overlapping_bodies()
 	if player in targets:
-		player.update_health(-attack_damage)
+		player.update_health(-attack_damage, self.global_transform.origin)
 	pass
 
 func shoot():
@@ -324,40 +322,22 @@ func look_for_player(delta):
 	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
 	
 func analyze_and_prepare_attack(delta):
-	var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin,[self],11)
-	if result:
-		if result.collider.is_in_group("Player"):
-			if dist_length <= 5.0:
-				if _attack_timer < ATTACK_CD_TIMER:
-					_attack_timer += delta
-				if _attack_timer >= ATTACK_CD_TIMER:
-					dop_speed = SPEED_DOP_ATTACK
-					set_state(ATTACK_MELEE)
-					animation_tree.set("parameters/Attack/active",true)
-					_attack_timer = 0.0
-			else:
-				if _shoot_timer < SHOOT_CD_TIMER:
-					_shoot_timer += delta
-				if _shoot_timer >= SHOOT_CD_TIMER:
-					set_state(SHOOT)
-					animation_tree.set("parameters/Shoot/active",true)
-					_shoot_timer = 0.0
-					SHOOT_CD_TIMER = 1.0+ randf()*0.5
-					return
-			if _change_dir_timer <= 0.0:
-				_change_dir_timer = 2 * randf()
-				side = -side
-			else:
-				_change_dir_timer -= delta
-			move_around_target(delta)
-		else:
-			move_around_target(delta)
-	elif not move_along_path(delta):
-		pass
 	evade_maneuver(delta, dist)
+	move_around_target(delta)
 	
 func move_around_target(delta):
 	if my_path.size() == 0:
+		if _path_timer < 5.0:
+			_path_timer += delta
+		else:
+			give_path = true
+			
+		if _change_dir_timer <= 0.0:
+			_change_dir_timer = 2 * randf()
+			side = -side
+		else:
+			_change_dir_timer -= delta
+			
 		speed = SPEED_SIDE_STEP
 		match side:
 			1:
@@ -370,11 +350,38 @@ func move_around_target(delta):
 				if not left_down_ray.is_colliding():
 					side = 1
 					velocityXY = Vector3.ZERO
-		move_to_target(delta, side * Vector3.UP.cross(dist).normalized(), ALLERTED_AND_KNOWS_LOC)
+		move_to_target(delta, side * Vector3.UP.cross(dist).normalized(), ALLERTED_AND_KNOWS_LOC)	
+		if attack_shoot(delta):
+			return
 	else:
 		move_along_path(delta)
 		
+func attack_shoot(delta) -> bool:
+	var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin,[self],11)
+	if result:
+		if result.collider.is_in_group("Player"):
+			if dist_length <= 5.0:
+				if _attack_timer < ATTACK_CD_TIMER:
+					_attack_timer += delta
+				if _attack_timer >= ATTACK_CD_TIMER:
+					dop_speed = SPEED_DOP_ATTACK
+					set_state(ATTACK_MELEE)
+					animation_tree.set("parameters/Attack/active",true)
+					_attack_timer = 0.0
+					return true
+			else:
+				if _shoot_timer < SHOOT_CD_TIMER:
+					_shoot_timer += delta
+				if _shoot_timer >= SHOOT_CD_TIMER:
+					set_state(SHOOT)
+					animation_tree.set("parameters/Shoot/active",true)
+					_shoot_timer = 0.0
+					SHOOT_CD_TIMER = 1.0+ randf()*0.5
+					return true
+	return false
+		
 func move_along_path(delta) -> bool:
+	speed = SPEED_NORMAL
 	if my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
 		if link_from.size() > 0 and link_to.size() > 0:
@@ -396,10 +403,9 @@ func move_along_path(delta) -> bool:
 		if dir_to_path.length() < 1.4:
 			my_path.remove(0)
 		else:
-			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC)
+			if not attack_shoot(delta):
+				move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
-#		front_ray.force_raycast_update()
-#		if front_ray.is_colliding():
 		if dist2D_length < 3.0:
 			move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
 		else:
@@ -485,13 +491,13 @@ func move_to_target(delta, dir, state, turn_to = null):
 				direction = dir
 			else:
 				direction = direction.linear_interpolate(dist, 10*delta)
-			if (turn_to != null and dist_length > 5.0):
-#				if (is_player_in_sight()):
-#					face_threat(10,30,delta,player.global_transform.origin,turn_to)
-#				else:
-				face_threat(10,delta,turn_to,turn_to)
+			if (turn_to != null and dist_length > 10.0):
+				if (is_player_in_sight()):
+					face_threat(1,delta,player.global_transform.origin,turn_to)
+				else:
+					face_threat(1,delta,turn_to,turn_to)
 			else: 
-				face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
+				face_threat(5,delta,player.global_transform.origin,player.global_transform.origin)
 	
 	front_ray.transform.origin = dir.normalized() * 2
 	front_ray.force_raycast_update()
@@ -519,6 +525,8 @@ func is_player_in_sight() -> bool:
 	
 func get_nav_path(path):
 	if _state != JUMP and _state != JUMP_END:
+		give_path = false
+		_path_timer = 0.0
 		my_path = path["complete_path"]
 		link_from.resize(0)
 		link_to.resize(0)

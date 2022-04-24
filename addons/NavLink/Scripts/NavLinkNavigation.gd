@@ -92,22 +92,6 @@ func get_nav_link_path(
 	var total_nav_link_cost: float = 0.0
 	var nav_link_path: Dictionary = {}
 	
-	# Find path through nav link path nodes.
-	# Returns a dictionary {
-	# "path_to_first_nav_link_cost": float,
-	# "path_to_first_nav_link": PoolVector3Array,
-	# "path_from_last_nav_link_cost": float,
-	# "path_from_last_nav_link": PoolVector3Array,
-	# "nav_links": [nav_link_path_object]
-	nav_link_path = _nav_link_path_find_dijkstra(
-		from_position,
-		to_position,
-		agent_tags,
-		agent_width
-	)
-	
-	var nav_link_path_exists = not nav_link_path.empty()
-	
 	var nav_link_to_first:PoolVector3Array = []
 	var nav_link_from_last:PoolVector3Array = []
 	var nav_link_to_first_cost: float = 0.0
@@ -116,38 +100,56 @@ func get_nav_link_path(
 	var nav_link_path_node_costs: PoolRealArray = []
 	var nav_link_path_inbetween: Array = []
 	var nav_link_path_inbetween_costs: PoolRealArray = []
+	var nav_link_path_exists : bool = false
 	
-	if nav_link_path_exists:
-		nav_link_to_first = nav_link_path.path_to_first_nav_link
-		nav_link_from_last = nav_link_path.path_from_last_nav_link
+	if ((direct_path_exists and direct_path.cost > 1.5 * from_position.distance_to(to_position)) or (not direct_path_exists)):
+		# Find path through nav link path nodes.
+		# Returns a dictionary {
+		# "path_to_first_nav_link_cost": float,
+		# "path_to_first_nav_link": PoolVector3Array,
+		# "path_from_last_nav_link_cost": float,
+		# "path_from_last_nav_link": PoolVector3Array,
+		# "nav_links": [nav_link_path_object]
+		nav_link_path = _nav_link_path_find_dijkstra(
+			from_position,
+			to_position,
+			agent_tags,
+			agent_width
+		)
 		
-		nav_link_to_first_cost = nav_link_path.path_to_first_nav_link_cost
-		nav_link_from_last_cost = nav_link_path.path_from_last_nav_link_cost
+		nav_link_path_exists = not nav_link_path.empty()
 		
-		total_nav_link_cost = nav_link_to_first_cost
-		total_nav_link_cost += nav_link_from_last_cost
-		
-		nav_link_complete_path.append_array(nav_link_to_first)
-		
-		if len(nav_link_path.nav_links) > 1:
-			for i in range(0, len(nav_link_path.nav_links) - 1):
-				var nav_link_prop:PathWithCost = get_nav_link_path_node_inbetween(
-					nav_link_path.nav_links[i],
-					nav_link_path.nav_links[i + 1]
-				)
-				total_nav_link_cost += nav_link_prop.cost
-				
-				nav_link_path_inbetween_costs.append(nav_link_prop.cost)
-				nav_link_path_inbetween.append([nav_link_prop.path])
-				
-				nav_link_complete_path.append_array(nav_link_prop.path)
-		
-		for n in nav_link_path.nav_links:
-			var travel_cost = n.get_link_travel_cost()
-			nav_link_path_node_costs.append(travel_cost)
-			total_nav_link_cost += travel_cost
-		
-		nav_link_complete_path.append_array(nav_link_from_last)
+		if nav_link_path_exists:
+			nav_link_to_first = nav_link_path.path_to_first_nav_link
+			nav_link_from_last = nav_link_path.path_from_last_nav_link
+			
+			nav_link_to_first_cost = nav_link_path.path_to_first_nav_link_cost
+			nav_link_from_last_cost = nav_link_path.path_from_last_nav_link_cost
+			
+			total_nav_link_cost = nav_link_to_first_cost
+			total_nav_link_cost += nav_link_from_last_cost
+			
+			nav_link_complete_path.append_array(nav_link_to_first)
+			
+			if len(nav_link_path.nav_links) > 1:
+				for i in range(0, len(nav_link_path.nav_links) - 1):
+					var nav_link_prop:PathWithCost = get_nav_link_path_node_inbetween(
+						nav_link_path.nav_links[i],
+						nav_link_path.nav_links[i + 1]
+					)
+					total_nav_link_cost += nav_link_prop.cost
+					
+					nav_link_path_inbetween_costs.append(nav_link_prop.cost)
+					nav_link_path_inbetween.append([nav_link_prop.path])
+					
+					nav_link_complete_path.append_array(nav_link_prop.path)
+			
+			for n in nav_link_path.nav_links:
+				var travel_cost = n.get_link_travel_cost()
+				nav_link_path_node_costs.append(travel_cost)
+				total_nav_link_cost += travel_cost
+			
+			nav_link_complete_path.append_array(nav_link_from_last)
 		
 	if not direct_path_exists and not nav_link_path_exists:
 		# No path found

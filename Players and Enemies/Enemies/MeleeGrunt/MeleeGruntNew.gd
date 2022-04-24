@@ -27,8 +27,6 @@ onready var  left_down_ray = get_node(left_down_ray_path)
 
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 
-var isAlive : bool = true
-
 const ACCEL : float = 15.0
 const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
@@ -149,7 +147,11 @@ func state_machine(delta):
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
-			move_to_target(delta,-dist,ATTACK_MELEE)
+			front_ray.force_raycast_update()
+			if front_ray.is_colliding():
+				move_to_target(delta,-dist,ATTACK_MELEE)
+			else:
+				move_to_target(delta,Vector3.ZERO,ATTACK_MELEE)
 		EVADE:
 			evading(delta)
 		JUMP:
@@ -158,7 +160,7 @@ func state_machine(delta):
 				jump_time += delta / jump_time_coeff
 				self.global_transform.origin = Global.quadratic_bezier(start_jump_pos,p1,link_to[0],jump_time)
 				if jump_time >= 0.95:
-					animation_tree.set("parameters/JumpTransition/current","JumpEnd")
+					animation_tree.set("parameters/JumpTransition/current",2)
 			else: 
 				link_to.remove(0)
 				link_from.remove(0)
@@ -167,7 +169,7 @@ func state_machine(delta):
 				
 		AIR:
 			if is_on_floor:
-				animation_tree.set("parameters/JumpTransition/current","JumpEnd")
+				animation_tree.set("parameters/JumpTransition/current",2)
 				set_state(JUMP_END)
 				
 		JUMP_END:
@@ -218,7 +220,7 @@ func set_state(state):
 			set_deferred("area_detection.monitoring", false)
 		JUMP,AIR:
 			animation_tree.set("parameters/JumpBlend/blend_amount",1)
-			animation_tree.set("parameters/JumpTransition/current","JumpStart")
+			animation_tree.set("parameters/JumpTransition/current",0)
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
 		JUMP_END:
@@ -253,7 +255,11 @@ func finalize_velocity(delta):
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
-	animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
+	if velocity.length() < 1.0:
+		animation_tree.set("parameters/Zero/current", 1)
+	else:
+		animation_tree.set("parameters/Zero/current", 0)
+		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack(side:String):
 	var targets
@@ -263,7 +269,7 @@ func attack(side:String):
 		"right":
 			targets = hitboxr.get_overlapping_bodies()
 	if player in targets:
-		player.update_health(-attack_damage)
+		player.update_health(-attack_damage, self.global_transform.origin)
 	pass
 
 func on_animation_finish(anim_name:String):
@@ -350,10 +356,14 @@ func move_along_path(delta) -> bool:
 		else:
 			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
-		if dist_length > 4.5:
-			move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
-		elif dist2D_length < 3.0:
-			move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
+		front_ray.force_raycast_update()
+		if front_ray.is_colliding():
+			if dist_length > 4.5:
+				move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
+			elif dist2D_length < 3.0:
+				move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
+			else:
+				move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
 		else:
 			move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
 		

@@ -32,6 +32,9 @@ func hide_loading_screen():
 func update_health(hp):
 	health_ui.text = "Health: " + String(hp)
 
+func rotate_indicator(degree : float):
+	$Indicator.rect_rotation = degree
+
 func update_weapon_ui(weapon_data, weapon_slot):
 	slot_ui.text = weapon_slot
 	if weapon_data["Name"] == "Unarmed":

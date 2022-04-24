@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/ViewportSettings.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Player/WeaponCamera.gd" type="Script" id=2]
@@ -33,6 +33,38 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.08, 0 ), Vector3( 0, 0.1, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=10]
+resource_name = "Hit1"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Head:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 1.5 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "Hit2"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Head:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -1.5 ), Vector3( 0, 0, 0 ) ]
+}
+
 [sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
@@ -48,6 +80,53 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0.1, 0 ) ]
 }
 
+[sub_resource type="AnimationNodeAnimation" id=14]
+animation = "Hit2"
+
+[sub_resource type="AnimationNodeAnimation" id=15]
+animation = "Hit1"
+
+[sub_resource type="AnimationNodeAnimation" id=5]
+animation = "HeadBop"
+
+[sub_resource type="AnimationNodeAnimation" id=6]
+animation = "RESET"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id=7]
+blend_point_0/node = SubResource( 5 )
+blend_point_0/pos = 1.0
+blend_point_1/node = SubResource( 6 )
+blend_point_1/pos = 0.0
+
+[sub_resource type="AnimationNodeOneShot" id=13]
+filters = [ "Head:rotation_degrees" ]
+
+[sub_resource type="AnimationNodeTransition" id=16]
+input_count = 2
+input_0/name = "state 0"
+input_0/auto_advance = true
+input_1/name = "state 1"
+input_1/auto_advance = true
+
+[sub_resource type="AnimationNodeTimeScale" id=9]
+
+[sub_resource type="AnimationNodeBlendTree" id=8]
+graph_offset = Vector2( -470, 46 )
+nodes/Animation/node = SubResource( 15 )
+nodes/Animation/position = Vector2( -360, 220 )
+"nodes/Animation 2/node" = SubResource( 14 )
+"nodes/Animation 2/position" = Vector2( -340, 340 )
+nodes/HeadBop/node = SubResource( 7 )
+nodes/HeadBop/position = Vector2( -280, 80 )
+nodes/Hit/node = SubResource( 13 )
+nodes/Hit/position = Vector2( 140, 60 )
+nodes/HitTransition/node = SubResource( 16 )
+nodes/HitTransition/position = Vector2( -120, 240 )
+nodes/TimeScale/node = SubResource( 9 )
+nodes/TimeScale/position = Vector2( -60, 60 )
+nodes/output/position = Vector2( 340, 60 )
+node_connections = [ "output", 0, "Hit", "TimeScale", 0, "HeadBop", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition" ]
+
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10
 script = ExtResource( 4 )
@@ -60,7 +139,7 @@ ray_top_path = NodePath("ClimbRays/RayTop")
 ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
 ray_empty_path = NodePath("ClimbRays/RayEmpty")
 ray_forward_path = NodePath("OffsetForNPC/Forward")
-animation_player_path = NodePath("AnimationPlayer")
+animation_tree_path = NodePath("AnimationTree")
 hud_path = NodePath("HUD")
 
 [node name="OffsetForNPC" type="Spatial" parent="."]
@@ -163,4 +242,15 @@ material/0 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/HeadBop = SubResource( 3 )
+anims/Hit1 = SubResource( 10 )
+anims/Hit2 = SubResource( 11 )
 anims/RESET = SubResource( 4 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 8 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/HeadBop/blend_position = 0.0
+parameters/Hit/active = false
+parameters/HitTransition/current = 0
+parameters/TimeScale/scale = 1.5

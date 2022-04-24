@@ -1,16 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/HUD/HUD_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Players and Enemies/Player/HUD/HUD.gd" type="Script" id=2]
 [ext_resource path="res://Players and Enemies/Player/HUD/Cross Hair.png" type="Texture" id=3]
+[ext_resource path="res://Players and Enemies/Player/HUD/Indicator.png" type="Texture" id=4]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LoadingScreen" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -175,3 +173,16 @@ custom_fonts/font = ExtResource( 1 )
 text = "Interact"
 align = 1
 valign = 1
+
+[node name="Indicator" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = 139.0
+margin_right = 50.0
+margin_bottom = 239.0
+rect_pivot_offset = Vector2( 50, 200 )
+texture = ExtResource( 4 )
+expand = true
