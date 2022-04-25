@@ -645,7 +645,7 @@ func check_edge_climb() -> bool:
 						rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
 						climbPoint = (rayClimb.get_collision_point())
 						direction = normal * 0.5
-						if climbPoint.y - self.global_transform.origin.y > 1.25:
+						if climbPoint.y - self.global_transform.origin.y > 1.0:
 							weapon_manager.climb()
 						set_state(CLIMBING)
 						return false
