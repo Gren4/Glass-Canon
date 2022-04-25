@@ -30,6 +30,9 @@ func is_equip_finished() -> bool:
 		
 func is_unequip_finished() -> bool:
 	return true
+	
+func climb():
+	pass
 			
 func update_info():
 	var weapon_data = {

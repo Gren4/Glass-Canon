@@ -102,6 +102,10 @@ var attack_side : int = 0
 var ragdoll_create : bool = true
 
 func _ready():
+	animation_tree.set("parameters/IdleAlert/current",0)
+	animation_tree.set("parameters/Zero/current",1)
+	animation_tree.set("parameters/JumpTransition/current",0)
+	animation_tree.set("parameters/JumpBlend/blend_amount",0)
 	set_process(true)
 	set_physics_process(true)
 	call_deferred("init_timer_set")
@@ -444,10 +448,6 @@ func move_to_target(delta, dir, state, turn_to = null):
 				direction = dist
 			face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:
-#			if dist_length > 4.5:
-#				direction = dir
-#			elif dist_length < 4.1:
-#				direction = dist
 			direction = dir
 			if (turn_to != null and dist_length > 10.0):
 				if (is_player_in_sight()):

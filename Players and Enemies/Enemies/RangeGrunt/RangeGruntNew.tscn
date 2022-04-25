@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=2]
+[gd_scene load_steps=77 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Material_001.material" type="Material" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=2]
@@ -6002,6 +6002,9 @@ animation = "Shoot"
 [sub_resource type="AnimationNodeAnimation" id=458]
 animation = "Alert"
 
+[sub_resource type="AnimationNodeAnimation" id=459]
+animation = "Stand"
+
 [sub_resource type="AnimationNodeAnimation" id=49]
 animation = "AttackLeft"
 
@@ -6131,8 +6134,15 @@ filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdo
 
 [sub_resource type="AnimationNodeTimeScale" id=347]
 
+[sub_resource type="AnimationNodeTransition" id=460]
+input_count = 2
+input_0/name = "Move"
+input_0/auto_advance = false
+input_1/name = "Stand"
+input_1/auto_advance = false
+
 [sub_resource type="AnimationNodeBlendTree" id=406]
-graph_offset = Vector2( -596.069, -129.321 )
+graph_offset = Vector2( -954.977, -78.924 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -1260, 300 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -6149,6 +6159,8 @@ nodes/Animation/position = Vector2( -1260, 300 )
 "nodes/Animation 7/position" = Vector2( -600, 300 )
 "nodes/Animation 8/node" = SubResource( 458 )
 "nodes/Animation 8/position" = Vector2( -400, -140 )
+"nodes/Animation 9/node" = SubResource( 459 )
+"nodes/Animation 9/position" = Vector2( -1231.67, 176.414 )
 nodes/Attack/node = SubResource( 48 )
 nodes/Attack/position = Vector2( -660, 20 )
 nodes/AttackTransition/node = SubResource( 67 )
@@ -6160,15 +6172,17 @@ nodes/JumpBlend/position = Vector2( 60, 100 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 408 )
-nodes/Movement/position = Vector2( -1000, -100 )
+nodes/Movement/position = Vector2( -1200, -100 )
 nodes/Shoot/node = SubResource( 409 )
 nodes/Shoot/position = Vector2( -340, 40 )
 nodes/TimeScale/node = SubResource( 347 )
 nodes/TimeScale/position = Vector2( -1060, 420 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
 "nodes/TimeScale 2/position" = Vector2( -1060, 280 )
+nodes/Zero/node = SubResource( 460 )
+nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Movement", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -6196,7 +6210,7 @@ current_health = 40
 StartTimer_path = NodePath("Start")
 
 [node name="Target" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.871 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 
 [node name="LookAt" type="Spatial" parent="Target"]
 script = ExtResource( 2 )
@@ -6362,7 +6376,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, 4.10714e-08, 2.8115e-08, -8.92521e-09, -0.407617, 0.913153, 4.89651e-08, -0.913153, -0.407617, 1.42948e-08, 0.41277, -0.903848 )
+transform = Transform( 1, -5.11367e-07, -4.69236e-08, -3.36717e-07, -0.721968, 0.691926, -3.87709e-07, -0.691927, -0.721968, -1.15582e-07, 0.0377839, -0.858633 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -6422,6 +6436,7 @@ parameters/Movement/blend_position = Vector2( 0, 0 )
 parameters/Shoot/active = false
 parameters/TimeScale/scale = 1.0
 "parameters/TimeScale 2/scale" = 1.0
+parameters/Zero/current = 0
 
 [node name="Area" type="Area" parent="."]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.210877, 0 )

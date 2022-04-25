@@ -93,6 +93,7 @@ var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
 var _shoot_timer : float = 0.0
 var _change_dir_timer : float = 2 * randf()
+var _change_side_timer : float = 0.0
 var _evade_timer : int = 1 + randi() % 5
 var _path_timer : float = 0.0
 var give_path : bool = true
@@ -113,6 +114,10 @@ var attack_side : int = 0
 var ragdoll_create : bool = true
 
 func _ready():
+	animation_tree.set("parameters/IdleAlert/current",0)
+	animation_tree.set("parameters/Zero/current",1)
+	animation_tree.set("parameters/JumpTransition/current",0)
+	animation_tree.set("parameters/JumpBlend/blend_amount",0)
 	set_process(true)
 	set_physics_process(true)
 	call_deferred("init_timer_set")
@@ -266,7 +271,11 @@ func finalize_velocity(delta):
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
-	animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
+	if velocity.length() < 1.0:
+		animation_tree.set("parameters/Zero/current", 1)
+	else:
+		animation_tree.set("parameters/Zero/current", 0)
+		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack():
 	var targets = hitbox.get_overlapping_bodies()
@@ -334,22 +343,60 @@ func move_around_target(delta):
 			
 		if _change_dir_timer <= 0.0:
 			_change_dir_timer = 2 * randf()
-			side = -side
+			if side == 0:
+				side = 1
+			else:
+				side = -side
 		else:
 			_change_dir_timer -= delta
 			
 		speed = SPEED_SIDE_STEP
-		match side:
-			1:
-				right_down_ray.force_raycast_update()
-				if not right_down_ray.is_colliding():
-					side = -1
-					velocityXY = Vector3.ZERO
-			-1:
-				left_down_ray.force_raycast_update()
-				if not left_down_ray.is_colliding():
-					side = 1
-					velocityXY = Vector3.ZERO
+		if _change_side_timer >=  0.5:
+			match side:
+				1:
+					right_ray.force_raycast_update()
+					if (right_ray.is_colliding()):
+						if (self.global_transform.origin.distance_to(right_ray.get_collision_point()) < 2.0):
+							left_ray.force_raycast_update()
+							if (left_ray.is_colliding()):
+								if (self.global_transform.origin.distance_to(left_ray.get_collision_point()) < 2.0):
+									side = 0
+								else:
+									side = -1
+							else:
+								side = -1
+					else:
+						right_down_ray.force_raycast_update()
+						if not right_down_ray.is_colliding():
+							left_down_ray.force_raycast_update()
+							if not left_down_ray.is_colliding():
+								side = 0
+							else:
+								side = -1
+					#velocityXY = Vector3.ZERO
+				-1:
+					left_ray.force_raycast_update()
+					if (left_ray.is_colliding()):
+						if (self.global_transform.origin.distance_to(left_ray.get_collision_point()) < 2.0):
+							right_ray.force_raycast_update()
+							if (right_ray.is_colliding()):
+								if (self.global_transform.origin.distance_to(right_ray.get_collision_point()) < 2.0):
+									side = 0
+								else:
+									side = 1
+							else:
+								side = 1
+					else:
+						left_down_ray.force_raycast_update()
+						if not left_down_ray.is_colliding():
+							right_down_ray.force_raycast_update()
+							if not right_down_ray.is_colliding():
+								side = 0
+							else:
+								side = 1
+							#velocityXY = Vector3.ZERO
+		else:
+			_change_side_timer += delta
 		move_to_target(delta, side * Vector3.UP.cross(dist).normalized(), ALLERTED_AND_KNOWS_LOC)	
 		if attack_shoot(delta):
 			return
@@ -357,27 +404,34 @@ func move_around_target(delta):
 		move_along_path(delta)
 		
 func attack_shoot(delta) -> bool:
-	var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin,[self],11)
-	if result:
-		if result.collider.is_in_group("Player"):
-			if dist_length <= 5.0:
-				if _attack_timer < ATTACK_CD_TIMER:
-					_attack_timer += delta
-				if _attack_timer >= ATTACK_CD_TIMER:
-					dop_speed = SPEED_DOP_ATTACK
-					set_state(ATTACK_MELEE)
-					animation_tree.set("parameters/Attack/active",true)
-					_attack_timer = 0.0
-					return true
+	if _attack_timer < ATTACK_CD_TIMER:
+		_attack_timer += delta
+	if _shoot_timer < SHOOT_CD_TIMER:
+		_shoot_timer += delta
+	if _attack_timer >= ATTACK_CD_TIMER or _shoot_timer >= SHOOT_CD_TIMER:
+		var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin,[self],11)
+		if result:
+			if result.collider.is_in_group("Player"):
+				if dist_length <= 5.0:
+						set_state(ATTACK_MELEE)
+						animation_tree.set("parameters/Attack/active",true)
+						_attack_timer = 0.0
+						_shoot_timer = 0.0
+						return true
+				else:
+						set_state(SHOOT)
+						animation_tree.set("parameters/Shoot/active",true)
+						_attack_timer = 0.0
+						_shoot_timer = 0.0
+						SHOOT_CD_TIMER = 1.0+ randf()*0.5
+						return true
 			else:
-				if _shoot_timer < SHOOT_CD_TIMER:
-					_shoot_timer += delta
-				if _shoot_timer >= SHOOT_CD_TIMER:
-					set_state(SHOOT)
-					animation_tree.set("parameters/Shoot/active",true)
-					_shoot_timer = 0.0
-					SHOOT_CD_TIMER = 1.0+ randf()*0.5
-					return true
+				give_path = true
+				_path_timer = 0.0
+		else:
+			give_path = true
+			_path_timer = 0.0
+			
 	return false
 		
 func move_along_path(delta) -> bool:
@@ -513,6 +567,7 @@ func update_hp(damage):
 		set_state(LOOK_AT_ALLERT)
 		
 	current_health -= damage
+	$Target.transform.origin = Vector3(2*side,$Target.transform.origin.y,$Target.transform.origin.z)
 	_evade_timer -= 1
 	if (current_health <= 0):
 		set_state(DEATH)

@@ -10,6 +10,7 @@ export(NodePath) var animation_tree_path
 export(NodePath) var arms_path
 export(NodePath) var right_hand_path
 export(NodePath) var left_hand_path
+export(NodePath) var left_hand_4_anim_path
 
 export(int) var spread : int = 3
 export(int) var damage : int = 10
@@ -18,12 +19,14 @@ export(int) var spread_alt : int = 10
 export(int) var heat_per_bullet : float = 2.0
 export(int) var heat_per_alt : float = 18.0
 export(Vector3) var equip_pos : Vector3 = Vector3.ZERO
+export(Transform) var left_hand_def_pos : Transform
 
 onready var animation_tree = get_node(animation_tree_path)
 onready var muzzle_flash = get_node(muzzle_flash_path)
 onready var arms = get_node(arms_path)
 onready var right_hand = get_node(right_hand_path)
 onready var left_hand = get_node(left_hand_path)
+onready var left_hand_4_anim = get_node(left_hand_4_anim_path)
 onready var heat : float = 0.0
 onready var alt_spread_array : Array = [
 	[0,0],[spread_alt,0],[-spread_alt,0],[0,spread_alt],[0,-spread_alt],
@@ -136,7 +139,13 @@ func reload():
 		animation_tree.set("parameters/CoolOff/blend_amount",1)
 		animation_tree.set("parameters/SetCool/current",0)
 
+func climb():	
+	arms.set_left_hand(left_hand_4_anim.get_path())
+	animation_tree.set("parameters/Climb/active",1)
+
 func _process(delta):
+	if arms.left_hand.interpolation < 1:
+		arms.left_hand.interpolation += 6*delta
 	if is_reloading:
 		if heat <= 0.0:
 			heat = 0.0
@@ -203,12 +212,15 @@ func on_animation_finish(anim_name):
 		"SwitchFromCoolOff":
 			animation_tree.set("parameters/CoolOff/blend_amount",0)	
 			is_reloading = false
+		"Climb":
+			arms.set_left_hand(left_hand.get_path())
+			arms.left_hand.interpolation = 0.5
 			
 func update_info():
 		var weapon_data = {
 			"Name" : weapon_name,
 			"Image" : weapon_image,
-			"Ammo" : str(int(heat))
+			"Ammo" : int(heat)
 		}
 		
 		weapon_manager.update_hud(weapon_data)

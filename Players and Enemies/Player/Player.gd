@@ -151,9 +151,12 @@ func update_health(value = 0, origin : Vector3 = Vector3.ZERO) -> void:
 			var point : Vector2 = Vector2(self.global_transform.origin.z,self.global_transform.origin.x).direction_to(Vector2(origin.z,origin.x))
 			var base : Vector2 = Vector2(-self.global_transform.basis.z.z,-self.global_transform.basis.z.x)
 			var degree : float = rad2deg(point.angle_to(base))
-			hud.rotate_indicator(degree)
+			hud.show_indicator(degree)
 	current_health += value
 	current_health = clamp(current_health,0,100)
+	if current_health <= 0:
+		current_health = 100
+		global_transform.origin = Vector3(0,20,0)
 	hud.update_health(int(current_health))
 
 func _input(event) -> void:
@@ -377,6 +380,7 @@ func primary_setup(delta) -> void:
 			if isfloor_tek:
 				velocity.y = GROUND_GRAVITATION
 				set_state(WALKING)
+				animation_tree.set("parameters/Land/active", true)
 			else:
 				if iswall_tek:
 					if velocity.y <= 0.0:
@@ -575,6 +579,7 @@ func jump(factor) -> bool:
 		velocity.y = factor * JUMP_POWER
 		velocityXY = direction * WALKING_SPEED
 		snap = Vector3.ZERO
+		animation_tree.set("parameters/Jump/active", true)
 		set_state(IN_AIR)
 		return false
 	return true
@@ -640,6 +645,7 @@ func check_edge_climb() -> bool:
 						rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
 						climbPoint = (rayClimb.get_collision_point())
 						direction = normal * 0.5
+						weapon_manager.climb()
 						set_state(CLIMBING)
 						return false
 					break

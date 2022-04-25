@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/ViewportSettings.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Player/WeaponCamera.gd" type="Script" id=2]
@@ -21,7 +21,7 @@ resource_name = "HeadBop"
 length = 0.7
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head/WallRun/HeadBop:translation")
+tracks/0/path = NodePath("Head/Hit/WallRun/HeadBop:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -30,14 +30,14 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4, 0.7 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.08, 0 ), Vector3( 0, 0.1, 0 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0.1, 0 ), Vector3( 0, 0.08, 0 ), Vector3( 0, 0.04, 0 ), Vector3( 0, 0.1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=10]
 resource_name = "Hit1"
 length = 0.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head:rotation_degrees")
+tracks/0/path = NodePath("Head/Hit:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -46,14 +46,14 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 1.5 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 2 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=11]
 resource_name = "Hit2"
 length = 0.4
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head:rotation_degrees")
+tracks/0/path = NodePath("Head/Hit:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -62,13 +62,29 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -1.5 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -2 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "Land"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Head/Hit/WallRun/HeadBop:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -2, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=4]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("Head/WallRun/HeadBop:translation")
+tracks/0/path = NodePath("Head/Hit/WallRun/HeadBop:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -79,9 +95,39 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0.1, 0 ) ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Head/Hit:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -2, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Head/Hit/WallRun/HeadBop:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="AnimationNodeAnimation" id=14]
 animation = "Hit2"
+
+[sub_resource type="AnimationNodeAnimation" id=18]
+animation = "Land"
+
+[sub_resource type="AnimationNodeAnimation" id=20]
+animation = "Land"
 
 [sub_resource type="AnimationNodeAnimation" id=15]
 animation = "Hit1"
@@ -99,7 +145,8 @@ blend_point_1/node = SubResource( 6 )
 blend_point_1/pos = 0.0
 
 [sub_resource type="AnimationNodeOneShot" id=13]
-filters = [ "Head:rotation_degrees" ]
+filter_enabled = true
+filters = [ "Head/Hit:rotation_degrees", "Head:rotation_degrees" ]
 
 [sub_resource type="AnimationNodeTransition" id=16]
 input_count = 2
@@ -108,32 +155,46 @@ input_0/auto_advance = true
 input_1/name = "state 1"
 input_1/auto_advance = true
 
+[sub_resource type="AnimationNodeOneShot" id=21]
+
+[sub_resource type="AnimationNodeOneShot" id=19]
+filter_enabled = true
+filters = [ "Head/Hit/WallRun/HeadBop:rotation_degrees" ]
+
 [sub_resource type="AnimationNodeTimeScale" id=9]
 
 [sub_resource type="AnimationNodeBlendTree" id=8]
-graph_offset = Vector2( -470, 46 )
+graph_offset = Vector2( -166.111, 58 )
 nodes/Animation/node = SubResource( 15 )
 nodes/Animation/position = Vector2( -360, 220 )
 "nodes/Animation 2/node" = SubResource( 14 )
 "nodes/Animation 2/position" = Vector2( -340, 340 )
+"nodes/Animation 3/node" = SubResource( 18 )
+"nodes/Animation 3/position" = Vector2( 180, 300 )
+"nodes/Animation 4/node" = SubResource( 20 )
+"nodes/Animation 4/position" = Vector2( 480, 360 )
 nodes/HeadBop/node = SubResource( 7 )
 nodes/HeadBop/position = Vector2( -280, 80 )
 nodes/Hit/node = SubResource( 13 )
 nodes/Hit/position = Vector2( 140, 60 )
 nodes/HitTransition/node = SubResource( 16 )
 nodes/HitTransition/position = Vector2( -120, 240 )
+nodes/Jump/node = SubResource( 21 )
+nodes/Jump/position = Vector2( 680, 60 )
+nodes/Land/node = SubResource( 19 )
+nodes/Land/position = Vector2( 400, 60 )
 nodes/TimeScale/node = SubResource( 9 )
 nodes/TimeScale/position = Vector2( -60, 60 )
-nodes/output/position = Vector2( 340, 60 )
-node_connections = [ "output", 0, "Hit", "TimeScale", 0, "HeadBop", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition" ]
+nodes/output/position = Vector2( 960, 80 )
+node_connections = [ "output", 0, "Jump", "TimeScale", 0, "HeadBop", "Jump", 0, "Land", "Jump", 1, "Animation 4", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition", "Land", 0, "Hit", "Land", 1, "Animation 3", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2" ]
 
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10
 script = ExtResource( 4 )
 head_path = NodePath("Head")
-wall_run_path = NodePath("Head/WallRun")
-camera_path = NodePath("Head/WallRun/HeadBop/Camera")
-weapon_manager_path = NodePath("Head/WallRun/Weapons")
+wall_run_path = NodePath("Head/Hit/WallRun")
+camera_path = NodePath("Head/Hit/WallRun/HeadBop/Camera")
+weapon_manager_path = NodePath("Head/Hit/WallRun/Weapons")
 ray_climb_path = NodePath("ClimbRays/RayClimb")
 ray_top_path = NodePath("ClimbRays/RayTop")
 ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
@@ -193,38 +254,41 @@ fov = 90.0
 near = 0.01
 far = 7.0
 script = ExtResource( 2 )
-main_cam_path = NodePath("../../../Head/WallRun/HeadBop/Camera")
+main_cam_path = NodePath("../../../Head/Hit/WallRun/HeadBop/Camera")
 
 [node name="ShaderPrecompiler" parent="WeaponNoClipping/Viewport/WeaponCamera" instance=ExtResource( 6 )]
 
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.818, 0 )
 
-[node name="WallRun" type="Spatial" parent="Head"]
+[node name="Hit" type="Spatial" parent="Head"]
+transform = Transform( 1, 0, 0, 0, 0.99939, 0.0348995, 0, -0.0348995, 0.999391, 0, 0, 0 )
 
-[node name="HeadBop" type="Spatial" parent="Head/WallRun"]
+[node name="WallRun" type="Spatial" parent="Head/Hit"]
+
+[node name="HeadBop" type="Spatial" parent="Head/Hit/WallRun"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
 
-[node name="Camera" type="Camera" parent="Head/WallRun/HeadBop"]
+[node name="Camera" type="Camera" parent="Head/Hit/WallRun/HeadBop"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0 )
 cull_mask = 1048573
 current = true
 fov = 90.0
 far = 250.0
 
-[node name="RayCast" type="RayCast" parent="Head/WallRun/HeadBop/Camera"]
+[node name="RayCast" type="RayCast" parent="Head/Hit/WallRun/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )
 collision_mask = 10
 collide_with_areas = true
 
-[node name="ShaderPrecompiler" parent="Head/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
+[node name="ShaderPrecompiler" parent="Head/Hit/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
 
-[node name="Weapons" type="Spatial" parent="Head/WallRun"]
+[node name="Weapons" type="Spatial" parent="Head/Hit/WallRun"]
 script = ExtResource( 3 )
 ray_path = NodePath("../HeadBop/Camera/RayCast")
-camera_path = NodePath("../../../WeaponNoClipping/Viewport/WeaponCamera")
+camera_path = NodePath("../../../../WeaponNoClipping/Viewport/WeaponCamera")
 
-[node name="Unarmed" parent="Head/WallRun/Weapons" instance=ExtResource( 9 )]
+[node name="Unarmed" parent="Head/Hit/WallRun/Weapons" instance=ExtResource( 9 )]
 visible = false
 
 [node name="HUD" parent="." instance=ExtResource( 8 )]
@@ -244,6 +308,7 @@ material/0 = null
 anims/HeadBop = SubResource( 3 )
 anims/Hit1 = SubResource( 10 )
 anims/Hit2 = SubResource( 11 )
+anims/Land = SubResource( 17 )
 anims/RESET = SubResource( 4 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -252,5 +317,7 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/HeadBop/blend_position = 0.0
 parameters/Hit/active = false
-parameters/HitTransition/current = 0
+parameters/HitTransition/current = 1
+parameters/Jump/active = false
+parameters/Land/active = false
 parameters/TimeScale/scale = 1.5

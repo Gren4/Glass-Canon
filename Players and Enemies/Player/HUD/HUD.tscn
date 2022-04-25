@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/HUD/HUD_font.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Players and Enemies/Player/HUD/HUD.gd" type="Script" id=2]
 [ext_resource path="res://Players and Enemies/Player/HUD/Cross Hair.png" type="Texture" id=3]
-[ext_resource path="res://Players and Enemies/Player/HUD/Indicator.png" type="Texture" id=4]
+[ext_resource path="res://Players and Enemies/Player/HUD/HeatEmpty.png" type="Texture" id=4]
+[ext_resource path="res://Players and Enemies/Player/HUD/HeatFull.png" type="Texture" id=5]
+[ext_resource path="res://Players and Enemies/Player/HUD/Health.png" type="Texture" id=6]
 
 [node name="HUD" type="Control"]
 anchor_right = 1.0
@@ -13,6 +15,8 @@ script = ExtResource( 2 )
 [node name="LoadingScreen" type="ColorRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 15
+size_flags_vertical = 15
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -36,18 +40,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HealtState" type="ColorRect" parent="."]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 15
+size_flags_vertical = 15
+color = Color( 0.631373, 0.0117647, 0.0117647, 1 )
+
+[node name="Damage" type="TextureRect" parent="HealtState"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 15
+size_flags_vertical = 15
+texture = ExtResource( 6 )
+stretch_mode = 1
+
 [node name="Background" type="ColorRect" parent="."]
 visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -86.0
 margin_right = 297.0
+size_flags_horizontal = 15
+size_flags_vertical = 15
 color = Color( 0, 0, 0, 0.470588 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HealthUI" type="Label" parent="Background"]
+visible = false
 margin_left = 10.0
 margin_right = 124.0
 margin_bottom = 40.0
@@ -60,6 +84,7 @@ __meta__ = {
 }
 
 [node name="WeaponUI" type="Label" parent="Background"]
+visible = false
 anchor_top = 0.93
 anchor_bottom = 0.93
 margin_left = 10.0
@@ -75,6 +100,7 @@ __meta__ = {
 }
 
 [node name="Weapon" type="ColorRect" parent="Background"]
+visible = false
 anchor_left = 0.862
 anchor_top = 0.5
 anchor_right = 0.862
@@ -89,6 +115,7 @@ __meta__ = {
 }
 
 [node name="WeaponSlot" type="Label" parent="Background/Weapon"]
+visible = false
 margin_top = -1.0
 margin_right = 82.0
 margin_bottom = 35.0
@@ -101,6 +128,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="Background/Weapon"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 expand = true
@@ -110,7 +138,6 @@ __meta__ = {
 }
 
 [node name="Crosshair" type="ColorRect" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -120,6 +147,8 @@ margin_top = -1.99997
 margin_right = 38.0
 margin_bottom = 38.0
 rect_scale = Vector2( 0.1, 0.1 )
+size_flags_horizontal = 15
+size_flags_vertical = 15
 color = Color( 1, 1, 1, 0.588235 )
 
 [node name="TextureRect" type="TextureRect" parent="Crosshair"]
@@ -136,6 +165,25 @@ texture = ExtResource( 3 )
 expand = true
 stretch_mode = 4
 
+[node name="TextureProgress" type="TextureProgress" parent="Crosshair"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -40.0
+margin_right = 250.0
+margin_bottom = 460.0
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 250, 250 )
+value = 100.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
+fill_mode = 4
+tint_under = Color( 1, 1, 1, 0 )
+radial_initial_angle = 85.0
+radial_fill_degrees = 190.0
+
 [node name="InteractionPrompt" type="ColorRect" parent="."]
 visible = false
 anchor_left = 0.5
@@ -146,6 +194,8 @@ margin_left = -15.0
 margin_top = -15.0
 margin_right = 15.0
 margin_bottom = 15.0
+size_flags_horizontal = 15
+size_flags_vertical = 15
 color = Color( 0, 0, 0, 0.411765 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -173,16 +223,3 @@ custom_fonts/font = ExtResource( 1 )
 text = "Interact"
 align = 1
 valign = 1
-
-[node name="Indicator" type="TextureRect" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -50.0
-margin_top = 139.0
-margin_right = 50.0
-margin_bottom = 239.0
-rect_pivot_offset = Vector2( 50, 200 )
-texture = ExtResource( 4 )
-expand = true

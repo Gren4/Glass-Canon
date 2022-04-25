@@ -138,7 +138,7 @@ animation = "HoldTrigger"
 animation = "HoldCharger"
 
 [sub_resource type="AnimationNodeBlendTree" id=9]
-graph_offset = Vector2( -506.995, -106.862 )
+graph_offset = Vector2( -326.995, -7.862 )
 nodes/Add2/node = SubResource( 6 )
 nodes/Add2/position = Vector2( 200, 80 )
 nodes/Animation/node = SubResource( 8 )

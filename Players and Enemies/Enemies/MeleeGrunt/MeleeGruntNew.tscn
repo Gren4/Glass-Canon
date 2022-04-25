@@ -4373,7 +4373,7 @@ input_1/name = "Stay"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -767.361, -48.2778 )
+graph_offset = Vector2( -585.361, 161.722 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -4409,7 +4409,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale", 0, "Animation 2", "TimeScale 2", 0, "Animation", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Zero", 0, "Movement", "Zero", 1, "Animation 8" ]
+node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -4436,7 +4436,7 @@ current_health = 60
 StartTimer_path = NodePath("Start")
 
 [node name="Target" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.846 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 
 [node name="LookAt" type="Spatial" parent="Target"]
 script = ExtResource( 1 )
@@ -4562,7 +4562,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.632532, -0.215088, -0.744071, -0.0490437, -0.947617, 0.315619, -0.772979, 0.236132, 0.58885, -0.27296, 2.01638, -0.901866 )
+transform = Transform( -0.665429, -0.20517, -0.717712, -0.0419239, -0.949694, 0.310357, -0.745282, 0.23661, 0.623354, -0.253062, 1.89517, -0.876558 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4576,7 +4576,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.668454, 0.0868783, 0.738662, 0.217052, -0.927135, 0.305469, 0.711378, 0.364521, 0.600889, 0.385346, 2.04766, -0.937135 )
+transform = Transform( -0.666871, 0.071205, 0.741764, 0.223155, -0.930658, 0.289963, 0.710975, 0.358897, 0.604739, 0.435547, 1.95645, -0.963535 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4590,7 +4590,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.999879, 0.00176943, -0.0154498, -9.31323e-09, 0.993506, 0.113784, 0.0155508, 0.113771, -0.993385, 0.0591051, 1.89723, -0.0456536 )
+transform = Transform( -0.998268, 0.00722458, -0.05838, -1.30385e-08, 0.992429, 0.122814, 0.0588254, 0.122601, -0.990711, 0.115695, 1.7682, -0.0366421 )
 bone_name = "MidTorso"
 
 [node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]

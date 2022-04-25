@@ -93,6 +93,8 @@ func _process(_delta):
 		changing_weapon = false
 		set_process(false)
 
+func climb():
+	current_weapon.climb()
 
 func update_hud(weapon_data):
 	var weapon_slot = "1"
