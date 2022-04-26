@@ -78,6 +78,7 @@ const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
 const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
 const ATTACK_CD_TIMER : float = 1.5
+const NOT_IN_AIR_TIMER : float = 0.5
 
 export(NodePath) var StartTimer_path = null
 onready var StartTimer : Timer = get_node(StartTimer_path)
@@ -86,6 +87,7 @@ var _timer : float = 0.0
 var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
 var _evade_timer : int = 1 + randi() % 5
+var timer_not_on_ground : float = 0.0
 var side : int = 1
 
 var no_collision_between : bool = false
@@ -139,7 +141,10 @@ func state_machine(delta):
 	match _state:
 		IDLE:
 			if not is_on_floor:
-				set_state(AIR)
+				if timer_not_on_ground >= NOT_IN_AIR_TIMER:
+					set_state(AIR)
+				else:
+					timer_not_on_ground += delta
 				return
 			idle(delta)
 		RESET:
@@ -147,7 +152,10 @@ func state_machine(delta):
 				set_state(IDLE)
 		ALLERTED_AND_KNOWS_LOC:
 			if not is_on_floor:
-				set_state(AIR)
+				if timer_not_on_ground >= NOT_IN_AIR_TIMER:
+					set_state(AIR)
+				else:
+					timer_not_on_ground += delta
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
@@ -243,6 +251,7 @@ func tact_init(delta):
 	
 	if is_on_floor:
 		speed = SPEED_NORMAL - (1.0*SPEED_NORMAL/(dist_length*dist_length))
+		timer_not_on_ground = 0.0
 	else:
 		speed = SPEED_AIR
 	
@@ -362,7 +371,7 @@ func move_along_path(delta) -> bool:
 	else:
 		front_ray.force_raycast_update()
 		if front_ray.is_colliding():
-			if dist_length > 4.5:
+			if dist_length < 6.0 and dist_length > 4.5:
 				move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
 			elif dist2D_length < 3.0:
 				move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)

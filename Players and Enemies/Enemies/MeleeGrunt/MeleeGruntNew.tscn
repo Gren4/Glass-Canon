@@ -4409,13 +4409,13 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6" ]
+node_connections = [ "output", 0, "IdleAlert", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "TimeScale 2", 0, "Animation", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Zero", "Attack", 1, "AttackTransition" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
 
 [sub_resource type="CapsuleShape" id=80]
-radius = 0.617836
+radius = 0.75
 height = 1.74
 
 [node name="MeleeGruntNew" type="KinematicBody" groups=["Enemy", "Melee"]]
@@ -4562,7 +4562,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.665429, -0.20517, -0.717712, -0.0419239, -0.949694, 0.310357, -0.745282, 0.23661, 0.623354, -0.253062, 1.89517, -0.876558 )
+transform = Transform( -0.655682, -0.207965, -0.725834, -0.0466297, -0.94833, 0.313838, -0.753596, 0.239623, 0.612106, -0.267686, 1.90183, -0.88111 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4576,7 +4576,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.666871, 0.071205, 0.741764, 0.223155, -0.930658, 0.289963, 0.710975, 0.358897, 0.604739, 0.435547, 1.95645, -0.963535 )
+transform = Transform( -0.662375, 0.0816075, 0.744715, 0.221132, -0.928463, 0.298427, 0.715794, 0.362351, 0.596944, 0.40617, 1.94889, -0.948767 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4590,7 +4590,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.998268, 0.00722458, -0.05838, -1.30385e-08, 0.992429, 0.122814, 0.0588254, 0.122601, -0.990711, 0.115695, 1.7682, -0.0366421 )
+transform = Transform( -0.998948, 0.00535806, -0.0455411, -9.31323e-09, 0.99315, 0.116848, 0.0458553, 0.116725, -0.992105, 0.0901668, 1.78003, -0.0357293 )
 bone_name = "MidTorso"
 
 [node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]
@@ -4676,7 +4676,7 @@ cast_to = Vector3( 0, -1.55, 0 )
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.17182, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.0434901, 0 )
 shape = SubResource( 80 )
 
 [node name="GlobalParticles" type="Spatial" parent="."]

@@ -135,11 +135,12 @@ func fire_spray():
 			
 func reload():
 	if not is_reloading:
-		is_firing = false
-		is_reloading = true
-		if is_not_climbing:
-			animation_tree.set("parameters/CoolOff/blend_amount",1)
-			animation_tree.set("parameters/SetCool/current",0)
+		if heat > 0:
+			is_firing = false
+			is_reloading = true
+			if is_not_climbing:
+				animation_tree.set("parameters/CoolOff/blend_amount",1)
+				animation_tree.set("parameters/SetCool/current",0)
 
 func climb():	
 	arms.set_left_hand(left_hand_4_anim.get_path())
@@ -242,6 +243,7 @@ func weapon_regime(value, delta) -> int:
 	if is_equipped:
 		if value:
 			if not is_alt_active and not is_firing and not is_reloading:
+				weapon_manager.update_sight(0)
 				animation_tree.set("parameters/Idle/current",1)
 				animation_tree.set("parameters/FireRifle/active", false)
 				is_alt_active = true
@@ -252,6 +254,7 @@ func weapon_regime(value, delta) -> int:
 				return BASE
 		else:
 			if is_alt_active and not is_firing and not is_reloading:
+				weapon_manager.update_sight(1)
 				animation_tree.set("parameters/Idle/current",3)
 				animation_tree.set("parameters/FireShotgun/active", false)
 				is_alt_active = false

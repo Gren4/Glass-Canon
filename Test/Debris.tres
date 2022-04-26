@@ -1,0 +1,9 @@
+[gd_resource type="CylinderMesh" load_steps=2 format=2]
+
+[ext_resource path="res://Materials/Test_material_3.tres" type="Material" id=1]
+
+[resource]
+material = ExtResource( 1 )
+top_radius = 0.0
+radial_segments = 4
+rings = 2

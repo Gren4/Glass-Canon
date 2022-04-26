@@ -84,10 +84,12 @@ const IDLE_TURN_TIMER : float = 3.0
 const LOOK_AT_ALLERT_TIMER : float = 0.5
 const ATTACK_CD_TIMER : float = 1.5
 var SHOOT_CD_TIMER : float = 2.0
+const NOT_IN_AIR_TIMER : float = 0.5
 
 export(NodePath) var StartTimer_path = null
 onready var StartTimer : Timer = get_node(StartTimer_path)
 
+var timer_not_on_ground : float = 0.0
 var _timer : float = 0.0
 var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
@@ -95,8 +97,10 @@ var _shoot_timer : float = 0.0
 var _change_dir_timer : float = 2 * randf()
 var _change_side_timer : float = 0.0
 var _evade_timer : int = 1 + randi() % 5
+
 var _path_timer : float = 0.0
 var give_path : bool = true
+
 var _stop_timer : float = 0.0
 var side : int = 1
 
@@ -151,7 +155,10 @@ func state_machine(delta):
 	match _state:
 		IDLE:
 			if not is_on_floor:
-				set_state(AIR)
+				if timer_not_on_ground >= NOT_IN_AIR_TIMER:
+					set_state(AIR)
+				else:
+					timer_not_on_ground += delta
 				return
 			idle(delta)
 		RESET:
@@ -159,7 +166,10 @@ func state_machine(delta):
 				set_state(IDLE)
 		ALLERTED_AND_KNOWS_LOC:
 			if not is_on_floor:
-				set_state(AIR)
+				if timer_not_on_ground >= NOT_IN_AIR_TIMER:
+					set_state(AIR)
+				else:
+					timer_not_on_ground += delta
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
@@ -258,6 +268,7 @@ func tact_init(delta):
 	is_on_floor = is_on_floor()
 	
 	if is_on_floor:
+		timer_not_on_ground = 0.0
 		velocity.y = -0.1
 		snap = Vector3.DOWN
 	else:

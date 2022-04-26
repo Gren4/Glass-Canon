@@ -1,5 +1,9 @@
 extends Control
 
+export(NodePath) var animation_player_path = null
+
+onready var animation_player = get_node(animation_player_path)
+
 var weapon_ui
 var health_ui
 var display_ui
@@ -47,7 +51,15 @@ func show_indicator(degree : float):
 	var new = indicator.instance()
 	new.rect_rotation = degree
 	self.add_child(new)
-
+	
+func change_sights(var type : int) -> void:
+	match type:
+		0:
+			animation_player.play("StandartToSeparate", -1.0, 1.0)
+		1:
+			animation_player.play("SeparateToStandart", -1.0, 1.0)
+	return
+			
 func update_weapon_ui(weapon_data, weapon_slot):
 #	slot_ui.text = weapon_slot
 	if weapon_data["Name"] == "Unarmed":

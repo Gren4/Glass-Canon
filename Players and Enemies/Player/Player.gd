@@ -379,8 +379,8 @@ func primary_setup(delta) -> void:
 				velocity.y -= WALL_RUNNING_GRAVITY
 			if isfloor_tek:
 				velocity.y = GROUND_GRAVITATION
-				set_state(WALKING)
 				animation_tree.set("parameters/Land/active", true)
+				set_state(WALKING)
 			else:
 				if iswall_tek:
 					if velocity.y <= 0.0:
@@ -634,13 +634,13 @@ func check_edge_climb() -> bool:
 					if not rayEmpty.is_colliding():
 						rayTop.force_raycast_update()
 						if rayTop.is_colliding():
-							var TopPoint : Vector3 = to_local(rayTop.get_collision_point())
-							if TopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
+							var TopPoint : Vector3 = to_local(rayTop.get_collision_point()) - Vector3(0,(player_height)/2,0)
+							if TopPoint.y - ClimbPoint.y < 1.2*player_height + PLAYER_HEIGHT_DEVIATION:
 								return true
 						rayTopPoint.force_raycast_update()
 						if rayTopPoint.is_colliding():
 							var ClimbTopPoint : Vector3 = to_local(rayTopPoint.get_collision_point())
-							if ClimbTopPoint.y - ClimbPoint.y < player_height + PLAYER_HEIGHT_DEVIATION:
+							if ClimbTopPoint.y - ClimbPoint.y < 1.2*player_height + PLAYER_HEIGHT_DEVIATION:
 								return true
 						rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
 						climbPoint = (rayClimb.get_collision_point())
@@ -677,6 +677,7 @@ func process_weapons(delta) -> void:
 
 	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(true, delta)
+		
 	else:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(false, delta)
 #

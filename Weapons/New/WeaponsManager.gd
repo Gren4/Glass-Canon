@@ -95,6 +95,9 @@ func _process(_delta):
 
 func climb():
 	current_weapon.climb()
+	
+func update_sight(var type : int) -> void:
+	hud.change_sights(type)
 
 func update_hud(weapon_data):
 	var weapon_slot = "1"
