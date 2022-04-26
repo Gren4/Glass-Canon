@@ -647,6 +647,8 @@ func check_edge_climb() -> bool:
 						direction = normal * 0.5
 						if climbPoint.y - self.global_transform.origin.y > 1.0:
 							weapon_manager.climb()
+						animation_tree.set("parameters/HitTransition/current",1)
+						animation_tree.set("parameters/Hit/active",true)
 						set_state(CLIMBING)
 						return false
 					break
@@ -681,12 +683,10 @@ func process_weapons(delta) -> void:
 	if not weapon_manager.is_switching_active():
 		if Input.is_action_pressed("fire"):
 			weapon_manager.fire()
-#
-#	if Input.is_action_just_pressed("reload"):
-#		weapon_manager.reload()
-#
-#
-#
+
+	if Input.is_action_just_pressed("reload"):
+		weapon_manager.reload()
+
 #	if Input.is_action_just_pressed("drop"):
 #		weapon_manager.drop_weapon()
 		

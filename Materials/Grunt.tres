@@ -33,11 +33,11 @@ constant = Color( 0.224515, 0.519935, 0, 1 )
 
 [sub_resource type="OpenSimplexNoise" id=2]
 
-[sub_resource type="NoiseTexture" id=3]
+[sub_resource type="NoiseTexture" id=19]
 noise = SubResource( 2 )
 
 [sub_resource type="VisualShaderNodeTexture" id=4]
-texture = SubResource( 3 )
+texture = SubResource( 19 )
 
 [sub_resource type="VisualShaderNodeInput" id=13]
 output_port_for_preview = 0

@@ -1,5 +1,8 @@
 extends Spatial
 
+export(NodePath) var particle_path
+onready var particles = get_node(particle_path)
+
 export(int) var numFrames: int = 10  # The number of frames to display all materials
 export(int) var layers_to_process: int = 2
 
@@ -45,6 +48,8 @@ func _process(_delta: float) -> void:
 		_rotate_children()
 	
 	if iter == layers_to_process - 1:
+		if not particles.is_queued_for_deletion():
+			particles.queue_free()
 		queue_free()
 		emit_signal("allShadersCompiled")
 

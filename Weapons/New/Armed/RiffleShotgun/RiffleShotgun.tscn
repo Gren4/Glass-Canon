@@ -104,7 +104,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.5 ),
+"times": PoolRealArray( 0.6 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ "Climb" ],
@@ -118,7 +118,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4, 0.8 ),
+"times": PoolRealArray( 0, 0.3, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 ), Transform( 0.842, -0.439, -0.315, 0.538, 0.734, 0.415, 0.049, -0.518, 0.854, -0.247, 0, 0.104 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 ) ]
@@ -942,6 +942,9 @@ animation = "SwitchToCoolOff"
 animation = "Equip"
 
 [sub_resource type="AnimationNodeOneShot" id=64]
+fadein_time = 0.5
+fadeout_time = 1.0
+sync = true
 
 [sub_resource type="AnimationNodeBlend2" id=41]
 filter_enabled = true
@@ -990,7 +993,7 @@ input_2/auto_advance = false
 [sub_resource type="AnimationNodeOneShot" id=32]
 
 [sub_resource type="AnimationNodeBlendTree" id=33]
-graph_offset = Vector2( -417.372, -51.6414 )
+graph_offset = Vector2( -933.132, -219.046 )
 nodes/Animation/node = SubResource( 27 )
 nodes/Animation/position = Vector2( 40, 300 )
 "nodes/Animation 10/node" = SubResource( 38 )
@@ -1002,11 +1005,11 @@ nodes/Animation/position = Vector2( 40, 300 )
 "nodes/Animation 2/node" = SubResource( 20 )
 "nodes/Animation 2/position" = Vector2( 220, 240 )
 "nodes/Animation 3/node" = SubResource( 21 )
-"nodes/Animation 3/position" = Vector2( -1160, -180 )
+"nodes/Animation 3/position" = Vector2( -1320, -180 )
 "nodes/Animation 4/node" = SubResource( 22 )
 "nodes/Animation 4/position" = Vector2( -1180, 140 )
 "nodes/Animation 5/node" = SubResource( 23 )
-"nodes/Animation 5/position" = Vector2( -900, -20 )
+"nodes/Animation 5/position" = Vector2( -860, -20 )
 "nodes/Animation 6/node" = SubResource( 24 )
 "nodes/Animation 6/position" = Vector2( -860, 320 )
 "nodes/Animation 7/node" = SubResource( 25 )
@@ -1018,7 +1021,7 @@ nodes/Animation/position = Vector2( 40, 300 )
 nodes/Climb/node = SubResource( 64 )
 nodes/Climb/position = Vector2( 660, 0 )
 nodes/CoolOff/node = SubResource( 41 )
-nodes/CoolOff/position = Vector2( -160, 20 )
+nodes/CoolOff/position = Vector2( -100, -40 )
 nodes/Equip/node = SubResource( 28 )
 nodes/Equip/position = Vector2( 120, -20 )
 nodes/FireRifle/node = SubResource( 29 )
@@ -1026,7 +1029,7 @@ nodes/FireRifle/position = Vector2( -940, -200 )
 nodes/FireShotgun/node = SubResource( 30 )
 nodes/FireShotgun/position = Vector2( -960, 120 )
 nodes/Idle/node = SubResource( 31 )
-nodes/Idle/position = Vector2( -420, 0 )
+nodes/Idle/position = Vector2( -360, -80 )
 nodes/SetCool/node = SubResource( 42 )
 nodes/SetCool/position = Vector2( -300, 320 )
 nodes/TimeScale/node = SubResource( 37 )
@@ -1036,13 +1039,13 @@ nodes/TimeScale/position = Vector2( -1120, -40 )
 "nodes/TimeScale 3/node" = SubResource( 35 )
 "nodes/TimeScale 3/position" = Vector2( -620, 240 )
 "nodes/TimeScale 4/node" = SubResource( 36 )
-"nodes/TimeScale 4/position" = Vector2( -640, -20 )
+"nodes/TimeScale 4/position" = Vector2( -640, -60 )
 "nodes/TimeScale 5/node" = SubResource( 66 )
-"nodes/TimeScale 5/position" = Vector2( 700, 220 )
+"nodes/TimeScale 5/position" = Vector2( 460, 220 )
 nodes/Unequip/node = SubResource( 32 )
 nodes/Unequip/position = Vector2( 400, -20 )
 nodes/output/position = Vector2( 840, -20 )
-node_connections = [ "output", 0, "Climb", "TimeScale 3", 0, "Animation 6", "TimeScale 4", 0, "Animation 5", "TimeScale 5", 0, "Animation 12", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale", 0, "Animation 7", "TimeScale 2", 0, "Animation 8" ]
+node_connections = [ "output", 0, "Climb", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale 2", 0, "Animation 8", "TimeScale", 0, "Animation 7", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "TimeScale 3", 0, "Animation 6", "TimeScale 5", 0, "Animation 12", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "TimeScale 4", 0, "Animation 5", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11" ]
 
 [sub_resource type="SpatialMaterial" id=59]
 params_line_width = 128.0
@@ -1054,7 +1057,7 @@ script = ExtResource( 2 )
 impact_effect = ExtResource( 7 )
 hole_effect = ExtResource( 5 )
 trace_effect = ExtResource( 6 )
-muzzle_flash_path = NodePath("Skeleton/Cube001/MuzzleFlash")
+muzzle_flash_path = NodePath("Skeleton/BoneAttachment2/MuzzleFlash")
 animation_tree_path = NodePath("RiffleAnimationTree")
 arms_path = NodePath("Arms")
 right_hand_path = NodePath("Skeleton/BoneAttachment/RightHand")
@@ -1064,7 +1067,7 @@ equip_pos = Vector3( 0.25, -0.15, -0.25 )
 left_hand_def_pos = Transform( 0.164, 0.791, -0.59, 0.115, 0.578, 0.808, 0.98, -0.2, 0.004, -0.163, 0.055, -0.088 )
 
 [node name="LeftHandForAnim" type="Position3D" parent="."]
-transform = Transform( 0.0118023, 0.0379644, 0.398214, -0.355764, 0.182873, -0.00690667, -0.182691, -0.353665, 0.0391753, -0.478926, -0.159961, -0.574578 )
+transform = Transform( 0.0371694, 0.0157933, 0.398152, -0.381713, 0.115779, 0.0310529, -0.114005, -0.382503, 0.0258388, -0.6736, -0.489529, -0.489106 )
 
 [node name="Skeleton" type="Skeleton" parent="."]
 transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.0674719, 0.263691 )
@@ -1120,11 +1123,6 @@ mesh = SubResource( 1 )
 skin = SubResource( 2 )
 material/0 = ExtResource( 8 )
 
-[node name="MuzzleFlash" parent="Skeleton/Cube001" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0286593, -2.10327 )
-visibility_aabb = AABB( -4, -4, -4.02197, 8, 8, 8 )
-process_material = SubResource( 15 )
-
 [node name="BoneAttachment" type="BoneAttachment" parent="Skeleton"]
 transform = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
 bone_name = "Bone"
@@ -1138,6 +1136,11 @@ bone_name = "Bone.004"
 
 [node name="LeftHand" type="Position3D" parent="Skeleton/BoneAttachment2"]
 transform = Transform( 0.164099, 0.790823, -0.589812, 0.115285, 0.578091, 0.808139, 0.97995, -0.200437, 0.00369564, -0.163, 0.055, -0.088 )
+
+[node name="MuzzleFlash" parent="Skeleton/BoneAttachment2" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 3.10474e-08, -1, 0, 1, 3.10474e-08, 0, 0.83884, 0.22827 )
+visibility_aabb = AABB( -4, -4, -4.02197, 8, 8, 8 )
+process_material = SubResource( 15 )
 
 [node name="RiffleAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Climb = SubResource( 60 )
@@ -1158,12 +1161,12 @@ tree_root = SubResource( 33 )
 anim_player = NodePath("../RiffleAnimationPlayer")
 active = true
 parameters/Climb/active = false
-parameters/CoolOff/blend_amount = 0
+parameters/CoolOff/blend_amount = 0.0
 parameters/Equip/active = false
 parameters/FireRifle/active = false
 parameters/FireShotgun/active = false
 parameters/Idle/current = 0
-parameters/SetCool/current = 0
+parameters/SetCool/current = 1
 parameters/TimeScale/scale = 1.5
 "parameters/TimeScale 2/scale" = 1.5
 "parameters/TimeScale 3/scale" = 8.0

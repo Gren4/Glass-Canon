@@ -39,6 +39,7 @@ var is_reloading : bool = false
 var is_switching_active : bool = false
 var is_alt_active : bool = false
 var is_unequip_active : bool = false
+var is_not_climbing : bool = true
 
 func _ready():
 	set_process(false)
@@ -48,7 +49,7 @@ func is_switching_active() -> bool:
 	return is_switching_active
 	
 func fire():
-	if not is_reloading:
+	if not is_reloading and is_not_climbing:
 		if heat < 100:
 			if not is_alt_active:
 				animation_tree.set("parameters/FireRifle/active", true)
@@ -136,18 +137,22 @@ func reload():
 	if not is_reloading:
 		is_firing = false
 		is_reloading = true
-		animation_tree.set("parameters/CoolOff/blend_amount",1)
-		animation_tree.set("parameters/SetCool/current",0)
+		if is_not_climbing:
+			animation_tree.set("parameters/CoolOff/blend_amount",1)
+			animation_tree.set("parameters/SetCool/current",0)
 
 func climb():	
 	arms.set_left_hand(left_hand_4_anim.get_path())
 	animation_tree.set("parameters/Climb/active",1)
+	if is_reloading:
+		animation_tree.set("parameters/CoolOff/blend_amount", 0)
+	is_not_climbing = false
 
 func _process(delta):
 	if arms.left_hand.interpolation < 1:
 		arms.left_hand.interpolation += 6*delta
 	if is_reloading:
-		if heat <= 0.0:
+		if heat <= 0.0 and is_not_climbing:
 			heat = 0.0
 			update_info()
 			animation_tree.set("parameters/SetCool/current",2)
@@ -166,18 +171,16 @@ func _process(delta):
 func equip() -> void:
 	arms.set_right_hand(right_hand.get_path())
 	arms.set_left_hand(left_hand.get_path())
+	is_not_climbing = true
 	is_unequip_active = false
 	animation_tree.set("parameters/Idle/current",0)
 	animation_tree.set("parameters/Equip/active",true)
-	if is_reloading:
-		pass
 	player.camera.fov = default_fov
 	set_process(true)
 	
 func unequip() -> void:
 	is_unequip_active = true
 	animation_tree.set("parameters/Unequip/active",true)
-	#muzzle_flash.one_shot = true
 	is_firing = false
 	set_process(false)
 	
@@ -215,6 +218,10 @@ func on_animation_finish(anim_name):
 		"Climb":
 			arms.set_left_hand(left_hand.get_path())
 			arms.left_hand.interpolation = 0.5
+			is_not_climbing = true
+			if is_reloading:
+				animation_tree.set("parameters/CoolOff/blend_amount",1)
+				animation_tree.set("parameters/SetCool/current",0)
 			
 func update_info():
 		var weapon_data = {
@@ -240,7 +247,6 @@ func weapon_regime(value, delta) -> int:
 				is_alt_active = true
 				is_switching_active = true
 				is_firing = false
-				#muzzle_flash.one_shot = true
 				return ALT
 			else:
 				return BASE
@@ -251,7 +257,6 @@ func weapon_regime(value, delta) -> int:
 				is_alt_active = false
 				is_switching_active = true
 				is_firing = false
-				#muzzle_flash.one_shot = true
 				return BASE
 			else:
 				return ALT

@@ -1,12 +1,83 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/ViewportSettings.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Player/WeaponCamera.gd" type="Script" id=2]
 [ext_resource path="res://Weapons/New/WeaponsManager.gd" type="Script" id=3]
 [ext_resource path="res://Players and Enemies/Player/Player.gd" type="Script" id=4]
+[ext_resource path="res://Weapons/GunBulletHole/GunBulletHoleTexture.png" type="Texture" id=5]
 [ext_resource path="res://Assets/ShaderPrecompiler/ShaderPrecompiler.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/RangeGruntRagdoll.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Players and Enemies/Player/HUD/HUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Weapons/New/Unarmed/Unarmed.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Weapons/BulletTrace.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Weapons/Impact.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/EnemyProjectile.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Weapons/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Weapons/MuzzleFlash.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=15]
+
+[sub_resource type="Gradient" id=49]
+offsets = PoolRealArray( 0.0214286, 0.407143, 0.871429 )
+colors = PoolColorArray( 0.87451, 0.52549, 0.0392157, 1, 1, 0.188235, 0.0352941, 1, 0.858824, 0.964706, 0.0666667, 1 )
+
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 49 )
+
+[sub_resource type="Curve" id=50]
+_data = [ Vector2( 0.250755, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 50 )
+
+[sub_resource type="ParticlesMaterial" id=51]
+resource_local_to_scene = true
+emission_shape = 1
+emission_sphere_radius = 0.1
+direction = Vector3( 0, 0, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 1.0
+angular_velocity_random = 0.5
+damping = 1.0
+angle = 360.0
+angle_random = 1.0
+scale = 0.7
+scale_curve = SubResource( 7 )
+color = Color( 0.905882, 0.694118, 0.054902, 1 )
+color_ramp = SubResource( 5 )
+
+[sub_resource type="Gradient" id=52]
+offsets = PoolRealArray( 0.0214286, 0.407143, 0.871429 )
+colors = PoolColorArray( 0.87451, 0.52549, 0.0392157, 1, 1, 0.188235, 0.0352941, 1, 0.858824, 0.964706, 0.0666667, 1 )
+
+[sub_resource type="GradientTexture" id=46]
+gradient = SubResource( 52 )
+
+[sub_resource type="Curve" id=53]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=48]
+curve = SubResource( 53 )
+
+[sub_resource type="ParticlesMaterial" id=54]
+resource_local_to_scene = true
+direction = Vector3( 0, 0, -1 )
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 1.0
+angular_velocity_random = 0.5
+damping = 1.0
+angle = 360.0
+angle_random = 1.0
+scale = 0.5
+scale_curve = SubResource( 48 )
+color = Color( 0.905882, 0.694118, 0.054902, 1 )
+color_ramp = SubResource( 46 )
+
+[sub_resource type="SpatialMaterial" id=55]
+resource_local_to_scene = true
+flags_transparent = true
+flags_unshaded = true
+albedo_texture = ExtResource( 5 )
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.75
@@ -132,14 +203,14 @@ animation = "Land"
 [sub_resource type="AnimationNodeAnimation" id=15]
 animation = "Hit1"
 
-[sub_resource type="AnimationNodeAnimation" id=5]
+[sub_resource type="AnimationNodeAnimation" id=56]
 animation = "HeadBop"
 
 [sub_resource type="AnimationNodeAnimation" id=6]
 animation = "RESET"
 
-[sub_resource type="AnimationNodeBlendSpace1D" id=7]
-blend_point_0/node = SubResource( 5 )
+[sub_resource type="AnimationNodeBlendSpace1D" id=57]
+blend_point_0/node = SubResource( 56 )
 blend_point_0/pos = 1.0
 blend_point_1/node = SubResource( 6 )
 blend_point_1/pos = 0.0
@@ -164,7 +235,7 @@ filters = [ "Head/Hit/WallRun/HeadBop:rotation_degrees" ]
 [sub_resource type="AnimationNodeTimeScale" id=9]
 
 [sub_resource type="AnimationNodeBlendTree" id=8]
-graph_offset = Vector2( -166.111, 58 )
+graph_offset = Vector2( -569.111, -25 )
 nodes/Animation/node = SubResource( 15 )
 nodes/Animation/position = Vector2( -360, 220 )
 "nodes/Animation 2/node" = SubResource( 14 )
@@ -173,7 +244,7 @@ nodes/Animation/position = Vector2( -360, 220 )
 "nodes/Animation 3/position" = Vector2( 180, 300 )
 "nodes/Animation 4/node" = SubResource( 20 )
 "nodes/Animation 4/position" = Vector2( 480, 360 )
-nodes/HeadBop/node = SubResource( 7 )
+nodes/HeadBop/node = SubResource( 57 )
 nodes/HeadBop/position = Vector2( -280, 80 )
 nodes/Hit/node = SubResource( 13 )
 nodes/Hit/position = Vector2( 140, 60 )
@@ -186,7 +257,7 @@ nodes/Land/position = Vector2( 400, 60 )
 nodes/TimeScale/node = SubResource( 9 )
 nodes/TimeScale/position = Vector2( -60, 60 )
 nodes/output/position = Vector2( 960, 80 )
-node_connections = [ "output", 0, "Jump", "TimeScale", 0, "HeadBop", "Jump", 0, "Land", "Jump", 1, "Animation 4", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition", "Land", 0, "Hit", "Land", 1, "Animation 3", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2" ]
+node_connections = [ "output", 0, "Jump", "Jump", 0, "Land", "Jump", 1, "Animation 4", "TimeScale", 0, "HeadBop", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Land", 0, "Hit", "Land", 1, "Animation 3" ]
 
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10
@@ -202,6 +273,26 @@ ray_empty_path = NodePath("ClimbRays/RayEmpty")
 ray_forward_path = NodePath("OffsetForNPC/Forward")
 animation_tree_path = NodePath("AnimationTree")
 hud_path = NodePath("HUD")
+
+[node name="Particles" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.828669, -20.6548 )
+
+[node name="BulletTrace" parent="Particles" instance=ExtResource( 10 )]
+
+[node name="Impact" parent="Particles" instance=ExtResource( 11 )]
+process_material = SubResource( 51 )
+
+[node name="MuzzleFlash" parent="Particles" instance=ExtResource( 14 )]
+process_material = SubResource( 54 )
+
+[node name="EnemyProjectile" parent="Particles" instance=ExtResource( 12 )]
+
+[node name="GunBulletHole" parent="Particles" instance=ExtResource( 13 )]
+material/0 = SubResource( 55 )
+
+[node name="RangeGruntRagdoll" parent="Particles" instance=ExtResource( 7 )]
+
+[node name="MeleeGruntRagdoll" parent="Particles" instance=ExtResource( 15 )]
 
 [node name="OffsetForNPC" type="Spatial" parent="."]
 
@@ -257,6 +348,7 @@ script = ExtResource( 2 )
 main_cam_path = NodePath("../../../Head/Hit/WallRun/HeadBop/Camera")
 
 [node name="ShaderPrecompiler" parent="WeaponNoClipping/Viewport/WeaponCamera" instance=ExtResource( 6 )]
+particle_path = NodePath("../../../../Particles")
 
 [node name="Head" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.818, 0 )
@@ -282,6 +374,7 @@ collision_mask = 10
 collide_with_areas = true
 
 [node name="ShaderPrecompiler" parent="Head/Hit/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
+particle_path = NodePath("../../../../../../Particles")
 
 [node name="Weapons" type="Spatial" parent="Head/Hit/WallRun"]
 script = ExtResource( 3 )
