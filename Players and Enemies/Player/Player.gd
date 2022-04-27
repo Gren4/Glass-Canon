@@ -12,6 +12,7 @@ export(NodePath) var ray_top_point_path
 export(NodePath) var ray_empty_path
 
 export(NodePath) var ray_forward_path
+export(NodePath) var ray_down_path
 
 export(NodePath) var animation_tree_path
 export(NodePath) var hud_path
@@ -27,6 +28,7 @@ onready var rayTopPoint = get_node(ray_top_point_path)
 onready var rayEmpty = get_node(ray_empty_path)
 
 onready var rayForward = get_node(ray_forward_path)
+onready var rayDown = get_node(ray_down_path)
 
 onready var animation_tree = get_node(animation_tree_path)
 onready var hud = get_node(hud_path)
@@ -180,7 +182,7 @@ func _input(event) -> void:
 				BUTTON_WHEEL_DOWN:
 					weapon_manager.previous_weapon()
 
-func get_point_for_npc(dist:float,side:int,type:String = "Melee") -> Vector3:
+func get_point_for_npc(dist:float,side:int) -> Vector3:
 	var result : Vector3 = Vector3.ZERO
 	var origin = self.global_transform.origin
 	match side:
@@ -190,32 +192,100 @@ func get_point_for_npc(dist:float,side:int,type:String = "Melee") -> Vector3:
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
-				if type == "Range":
-					result.z = result.z*0.7
+				result.z = result.z + dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
 		1:
+			result = Vector3(origin.x+(dist/1.4),origin.y,origin.z-(dist/1.4))
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
+				result.x = result.x - dist*0.3
+				result.z = result.z + dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
+		2:
 			result = Vector3(origin.x+dist,origin.y,origin.z)
 			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
-				if type == "Range":
-					result.x = result.x*0.7
-		2:
+				result.x = result.x - dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
+		3:
+			result = Vector3(origin.x+(dist/1.4),origin.y,origin.z+(dist/1.4))
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
+				result.x = result.x - dist*0.3
+				result.z = result.z - dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
+		4:
 			result = Vector3(origin.x,origin.y,origin.z+dist)
 			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
-				if type == "Range":
-					result.z = result.z*0.7
-		3:
+				result.z = result.z - dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
+		5:
+			result = Vector3(origin.x-(dist/1.4),origin.y,origin.z+(dist/1.4))
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
+				result.x = result.x + dist*0.3
+				result.z = result.z - dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
+		6:
 			result = Vector3(origin.x-dist,origin.y,origin.z)
 			rayForward.set_cast_to(to_local(result))
 			rayForward.force_raycast_update()
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
-				if type == "Range":
-					result.x = result.x*0.7
+				result.x = result.x + dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
+		7:
+			result = Vector3(origin.x-(dist/1.4),origin.y,origin.z-(dist/1.4))
+			rayForward.set_cast_to(to_local(result))
+			rayForward.force_raycast_update()
+			if rayForward.is_colliding():
+				result = rayForward.get_collision_point()
+				result.x = result.x + dist*0.3
+				result.z = result.z + dist*0.3
+			else:
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if not rayDown.is_colliding():
+					result = origin
 	
 	return result
 
@@ -649,6 +719,7 @@ func check_edge_climb() -> bool:
 							weapon_manager.climb()
 						animation_tree.set("parameters/HitTransition/current",1)
 						animation_tree.set("parameters/Hit/active",true)
+						self.set_collision_mask_bit(3,false)
 						set_state(CLIMBING)
 						return false
 					break
@@ -659,6 +730,7 @@ func edge_climb(delta) -> bool:
 	if transform.origin.y > climbPoint.y + player_height or isfloor_tek or isceil_tek:
 		direction = Vector3.ZERO
 		velocity = Vector3.ZERO
+		self.set_collision_mask_bit(3,true)
 		set_state(WALKING)
 		return false
 	return true
@@ -684,6 +756,8 @@ func process_weapons(delta) -> void:
 	if not weapon_manager.is_switching_active():
 		if Input.is_action_pressed("fire"):
 			weapon_manager.fire()
+		elif Input.is_action_just_released("fire"):
+			weapon_manager.stop_fire()
 
 	if Input.is_action_just_pressed("reload"):
 		weapon_manager.reload()

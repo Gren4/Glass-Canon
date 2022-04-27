@@ -86,13 +86,14 @@ onready var StartTimer : Timer = get_node(StartTimer_path)
 var _timer : float = 0.0
 var _dop_timer : float = 0.0
 var _attack_timer : float = 0.0
-var _evade_timer : int = 1 + randi() % 5
+var _evade_timer : int = 3 + randi() % 2
 var timer_not_on_ground : float = 0.0
 var side : int = 1
 
 var no_collision_between : bool = false
 
 var my_path = []
+onready var prev_origin : Vector3 = self.global_transform.origin
 var link_from : PoolVector3Array = []
 var link_to : PoolVector3Array = []
 var start_jump_pos : Vector3 = Vector3.ZERO
@@ -131,6 +132,7 @@ func ai(delta):
 	state_machine(delta)
 	if _state != JUMP:
 		finalize_velocity(delta)
+	prev_origin = self.global_transform.origin
 
 func allert_everyone():
 	if _state < ALLERTED_AND_KNOWS_LOC:
@@ -159,11 +161,7 @@ func state_machine(delta):
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
-			front_ray.force_raycast_update()
-			if front_ray.is_colliding():
-				move_to_target(delta,-dist,ATTACK_MELEE)
-			else:
-				move_to_target(delta,Vector3.ZERO,ATTACK_MELEE)
+			move_to_target(delta,-dist,ATTACK_MELEE)
 		EVADE:
 			evading(delta)
 		JUMP:
@@ -267,7 +265,8 @@ func finalize_velocity(delta):
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
+	var info = (self.global_transform.origin - prev_origin)/delta
+	var loc_v : Vector3 = (info/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
 	if velocity.length() < 1.0:
 		animation_tree.set("parameters/Zero/current", 1)
 	else:
@@ -296,7 +295,7 @@ func on_animation_finish(anim_name:String):
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
 			dop_speed = 0.0
-			if attack_side + 1 >= 4:
+			if attack_side + 1 >= 8:
 				attack_side = 0
 			else:
 				attack_side += 1
@@ -371,7 +370,7 @@ func move_along_path(delta) -> bool:
 	else:
 		front_ray.force_raycast_update()
 		if front_ray.is_colliding():
-			if dist_length < 6.0 and dist_length > 4.5:
+			if dist2D_length > 4.5 and dist_length > 4.5:
 				move_to_target(delta, -dist, ALLERTED_AND_KNOWS_LOC)
 			elif dist2D_length < 3.0:
 				move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
@@ -384,7 +383,7 @@ func move_along_path(delta) -> bool:
 	
 func evade_maneuver(delta, dist_V):
 	if _evade_timer <= 0:
-		_evade_timer = 1 + randi() % 5
+		_evade_timer = 3 + randi() % 2
 		if is_on_floor:
 			match side:
 				1: # right
@@ -479,7 +478,8 @@ func update_hp(damage):
 		set_state(LOOK_AT_ALLERT)
 		
 	current_health -= damage
-	_evade_timer -= 1
+	if _state != JUMP or _state != JUMP_END:
+		_evade_timer -= 1
 	if (current_health <= 0):
 		set_state(DEATH)
 		

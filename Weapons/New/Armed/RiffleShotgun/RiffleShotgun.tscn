@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Weapons/New/Armed/RiffleShotgun/Material.material" type="Material" id=1]
 [ext_resource path="res://Weapons/New/Armed/RiffleShotgun/RiffleShotgun.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Weapons/BulletTrace.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Weapons/Impact.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Materials/GunMat.tres" type="Material" id=8]
+[ext_resource path="res://Weapons/New/Armed/RiffleShotgun/AudioStreamPlayer.gd" type="Script" id=10]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "RiffleShotgun_Cube002"
@@ -84,7 +85,6 @@ color_ramp = SubResource( 5 )
 
 [sub_resource type="Animation" id=60]
 resource_name = "Climb"
-length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("LeftHandForAnim:transform")
 tracks/0/interp = 2
@@ -104,7 +104,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0.6 ),
+"times": PoolRealArray( 1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
 "args": [ "Climb" ],
@@ -118,7 +118,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3, 0.5 ),
+"times": PoolRealArray( 0, 0.5, 1 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 ), Transform( 0.842, -0.439, -0.315, 0.538, 0.734, 0.415, 0.049, -0.518, 0.854, -0.247, 0, 0.104 ), Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 ) ]
@@ -993,7 +993,7 @@ input_2/auto_advance = false
 [sub_resource type="AnimationNodeOneShot" id=32]
 
 [sub_resource type="AnimationNodeBlendTree" id=33]
-graph_offset = Vector2( -933.132, -219.046 )
+graph_offset = Vector2( -1272.2, -82.7542 )
 nodes/Animation/node = SubResource( 27 )
 nodes/Animation/position = Vector2( 40, 300 )
 "nodes/Animation 10/node" = SubResource( 38 )
@@ -1045,7 +1045,7 @@ nodes/TimeScale/position = Vector2( -1120, -40 )
 nodes/Unequip/node = SubResource( 32 )
 nodes/Unequip/position = Vector2( 400, -20 )
 nodes/output/position = Vector2( 840, -20 )
-node_connections = [ "output", 0, "Climb", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale 2", 0, "Animation 8", "TimeScale", 0, "Animation 7", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "TimeScale 3", 0, "Animation 6", "TimeScale 5", 0, "Animation 12", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "TimeScale 4", 0, "Animation 5", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11" ]
+node_connections = [ "output", 0, "Climb", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale 2", 0, "Animation 8", "TimeScale", 0, "Animation 7", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "TimeScale 5", 0, "Animation 12", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "TimeScale 3", 0, "Animation 6", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "TimeScale 4", 0, "Animation 5", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2" ]
 
 [sub_resource type="SpatialMaterial" id=59]
 params_line_width = 128.0
@@ -1059,6 +1059,7 @@ hole_effect = ExtResource( 5 )
 trace_effect = ExtResource( 6 )
 muzzle_flash_path = NodePath("Skeleton/BoneAttachment2/MuzzleFlash")
 animation_tree_path = NodePath("RiffleAnimationTree")
+audio_path = NodePath("AudioStreamPlayer")
 arms_path = NodePath("Arms")
 right_hand_path = NodePath("Skeleton/BoneAttachment/RightHand")
 left_hand_path = NodePath("Skeleton/BoneAttachment2/LeftHand")
@@ -1067,7 +1068,7 @@ equip_pos = Vector3( 0.25, -0.15, -0.25 )
 left_hand_def_pos = Transform( 0.164, 0.791, -0.59, 0.115, 0.578, 0.808, 0.98, -0.2, 0.004, -0.163, 0.055, -0.088 )
 
 [node name="LeftHandForAnim" type="Position3D" parent="."]
-transform = Transform( 0.0371694, 0.0157933, 0.398152, -0.381713, 0.115779, 0.0310529, -0.114005, -0.382503, 0.0258388, -0.6736, -0.489529, -0.489106 )
+transform = Transform( 0.0656, 0.316387, -0.235858, 0.392, -0.080076, 0.00153134, -0.046, -0.231191, -0.323304, -0.0652, -0.0475725, -0.264081 )
 
 [node name="Skeleton" type="Skeleton" parent="."]
 transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.0674719, 0.263691 )
@@ -1075,7 +1076,7 @@ bones/0/name = "Bone"
 bones/0/parent = -1
 bones/0/rest = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
 bones/0/enabled = true
-bones/0/bound_children = [ NodePath("BoneAttachment") ]
+bones/0/bound_children = [  ]
 bones/1/name = "Bone.001"
 bones/1/parent = 0
 bones/1/rest = Transform( 1, -2.22471e-15, -1.59156e-15, 2.22471e-15, 0.322927, 0.946424, -1.59156e-15, -0.946424, 0.322927, -1.39775e-17, 0.668364, -0.130421 )
@@ -1115,7 +1116,7 @@ bones/8/name = "Bone.004"
 bones/8/parent = 0
 bones/8/rest = Transform( 1, 0, 0, 0, 1, -3.10474e-08, 0, 3.10474e-08, 1, 0, 1.26443, -0.199611 )
 bones/8/enabled = true
-bones/8/bound_children = [ NodePath("BoneAttachment2") ]
+bones/8/bound_children = [  ]
 
 [node name="Cube001" type="MeshInstance" parent="Skeleton"]
 layers = 2
@@ -1167,7 +1168,7 @@ parameters/FireRifle/active = false
 parameters/FireShotgun/active = false
 parameters/Idle/current = 0
 parameters/SetCool/current = 1
-parameters/TimeScale/scale = 1.5
+parameters/TimeScale/scale = 1.2
 "parameters/TimeScale 2/scale" = 1.5
 "parameters/TimeScale 3/scale" = 8.0
 "parameters/TimeScale 4/scale" = 8.0
@@ -1190,5 +1191,9 @@ root_bone = "UpArm.R"
 magnet = Vector3( -1.3, 0, 0 )
 target_node = NodePath("../../../../LeftHandForAnim")
 max_iterations = 2
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+volume_db = -5.0
+script = ExtResource( 10 )
 
 [editable path="Arms"]

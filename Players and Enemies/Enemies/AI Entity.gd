@@ -24,39 +24,6 @@ var it : int = 0
 var spawn_it : int = 0
 var col_enem
 
-var pl_sides = {
-	0 : Vector3(0,0,0),
-	1 : Vector3(-3,0,0),
-	2 : Vector3(1.75,0,-1.75),
-	3 : Vector3(3,0,0),
-	4 : Vector3(-1.75,0,1.75),
-	5 : Vector3(1.75,0,1.75),
-	6 : Vector3(0,0,3),
-	7 : Vector3(0,0,-3)
-}
-
-var pl_sides_melee = {
-	0 : Vector3(0,0,0),
-	1 : Vector3(-12,0,0),
-	2 : Vector3(5.5,0,-5.5),
-	3 : Vector3(12,0,0),
-	4 : Vector3(-5.5,0,5.5),
-	5 : Vector3(5.5,0,5.5),
-	6 : Vector3(0,0,12),
-	7 : Vector3(0,0,-12)
-}
-
-var pl_sides_range = {
-	0 : Vector3(0,0,-45),
-	1 : Vector3(-15,0,-15),
-	2 : Vector3(-45,0,0),
-	3 : Vector3(-15,0,15),
-	4 : Vector3(0,0,45),
-	5 : Vector3(15,0,15),
-	6 : Vector3(45,0,0),
-	7 : Vector3(15,0,-15),
-}
-
 func _ready():
 	forces = get_tree().get_nodes_in_group("Enemy")
 	spawn_points = get_tree().get_nodes_in_group("SpawnPoint")
@@ -67,13 +34,13 @@ func init_target(target):
 	target.player = player
 	target.attack_side = pl_sides_it
 	if target.is_in_group("Melee"):
-		if pl_sides_it + 1 >= 4:
+		if pl_sides_it + 1 >= 8:
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
 		timer.append(randi()%21)
 	elif target.is_in_group("Range"):
-		if pl_sides_it + 1 >= 4:
+		if pl_sides_it + 1 >= 8:
 			pl_sides_it = 0
 		else:
 			pl_sides_it += 1
@@ -113,7 +80,6 @@ func _physics_process(delta):
 				spawn_timer += delta
 		pass
 		
-	#if phy_timer >= 0:
 	if col_enem > 0:
 		if is_instance_valid(forces[it]):
 			if (timer[it] < 100):
@@ -138,26 +104,21 @@ func _physics_process(delta):
 			it = 0
 		else:
 			it += 1
-	#phy_timer = 0
 	if link_timer > 0:
 		link_timer = link_timer - 1
-	#else:
-		#phy_timer += 1
 
 func move_to(target,dist_l):
 	var path = {}
 	if target.is_in_group("Melee"):
 			var plV3 : Vector3 = Vector3.ZERO
 			if dist_l > 20:
-				plV3 = player.get_point_for_npc(15.0, target.attack_side)
+				plV3 = player.get_point_for_npc(15, target.attack_side)
 			elif dist_l > 10:
 				plV3 = player.get_point_for_npc(8, target.attack_side)
 			else:
 				plV3 = player.get_point_for_npc(4.5, target.attack_side)
 			var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
 			var closest_p : Vector3 = nav.get_closest_point(plV3)
-#			if (link_timer == 0 and dist_l > 6.0):
-#				link_timer = 2
 			path = nav.get_nav_link_path(closest_t, closest_p)
 			if path.has("complete_path"):
 				target.get_nav_path(path)
@@ -174,36 +135,11 @@ func move_to(target,dist_l):
 									i.get_nav_path(path)
 									pass
 						j += 1
-#			else:
-#				var temp_path = nav.get_simple_path(closest_t, closest_p)
-#				if (temp_path.size()>0):
-#					path = {
-#								"complete_path": temp_path,
-#								"nav_link_to_first": [],
-#								"nav_link_from_last": [],
-#								"nav_link_path_inbetween": []
-#							}
-#					target.get_nav_path(path)
 	elif target.is_in_group("Range"):
-		var plV3 : Vector3 = player.get_point_for_npc(25.0, target.attack_side, "Range")
+		var plV3 : Vector3 = player.get_point_for_npc(25.0, target.attack_side)
 		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
 		var closest_p : Vector3 = nav.get_closest_point(plV3)
-#		if (link_timer == 0):
-#			link_timer = 2
 		path = nav.get_nav_link_path(closest_t, closest_p)
 		if path.has("complete_path"):
 			target.get_nav_path(path)
-#		else:
-#			var temp_path = nav.get_simple_path(closest_t, closest_p)
-#			if (temp_path.size()>0):
-#				path = {
-#							"complete_path": temp_path,
-#							"nav_link_to_first": [],
-#							"nav_link_from_last": [],
-#							"nav_link_path_inbetween": []
-#						}
-#				target.get_nav_path(path)
-		if target.attack_side + 1 >= 4:
-			target.attack_side = 0
-		else:
-			target.attack_side += 1		
+		target.attack_side = randi()%8	

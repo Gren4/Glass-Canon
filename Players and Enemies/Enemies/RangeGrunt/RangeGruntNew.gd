@@ -96,7 +96,7 @@ var _attack_timer : float = 0.0
 var _shoot_timer : float = 0.0
 var _change_dir_timer : float = 2 * randf()
 var _change_side_timer : float = 0.0
-var _evade_timer : int = 1 + randi() % 5
+var _evade_timer : int = 3 + randi() % 2
 
 var _path_timer : float = 0.0
 var give_path : bool = true
@@ -107,6 +107,7 @@ var side : int = 1
 var no_collision_between : bool = false
 
 var my_path = []
+onready var prev_origin : Vector3 = self.global_transform.origin
 var link_from : PoolVector3Array = []
 var link_to : PoolVector3Array = []
 var start_jump_pos : Vector3 = Vector3.ZERO
@@ -145,7 +146,8 @@ func ai(delta):
 	state_machine(delta)
 	if _state != JUMP:
 		finalize_velocity(delta)
-
+	prev_origin = self.global_transform.origin
+	
 func allert_everyone():
 	if _state < ALLERTED_AND_KNOWS_LOC:
 		set_state(ALLERTED_AND_KNOWS_LOC)
@@ -281,6 +283,7 @@ func finalize_velocity(delta):
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
+	var info = (self.global_transform.origin - prev_origin)/delta
 	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
 	if velocity.length() < 1.0:
 		animation_tree.set("parameters/Zero/current", 1)
@@ -295,7 +298,10 @@ func attack():
 	pass
 
 func shoot():
-	Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0))
+	if player.speed <= player.WALLRUNNING_SPEED:
+		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0))
+	else:
+		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin) + Vector3(0,1,0))
 	
 func on_animation_finish(anim_name:String):
 	match anim_name:
@@ -479,7 +485,7 @@ func move_along_path(delta) -> bool:
 	
 func evade_maneuver(delta, dist_V):
 	if _evade_timer <= 0:
-		_evade_timer = 1 + randi() % 5
+		_evade_timer = 3 + randi() % 2
 		if is_on_floor:
 			match side:
 				1: # right
@@ -578,8 +584,8 @@ func update_hp(damage):
 		set_state(LOOK_AT_ALLERT)
 		
 	current_health -= damage
-	$Target.transform.origin = Vector3(2*side,$Target.transform.origin.y,$Target.transform.origin.z)
-	_evade_timer -= 1
+	if _state != JUMP or _state != JUMP_END:
+		_evade_timer -= 1
 	if (current_health <= 0):
 		set_state(DEATH)
 		

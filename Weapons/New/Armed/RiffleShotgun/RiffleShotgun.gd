@@ -7,6 +7,7 @@ export(PackedScene) var trace_effect
 
 export(NodePath) var muzzle_flash_path
 export(NodePath) var animation_tree_path
+export(NodePath) var audio_path
 export(NodePath) var arms_path
 export(NodePath) var right_hand_path
 export(NodePath) var left_hand_path
@@ -22,6 +23,7 @@ export(Vector3) var equip_pos : Vector3 = Vector3.ZERO
 export(Transform) var left_hand_def_pos : Transform
 
 onready var animation_tree = get_node(animation_tree_path)
+onready var audio = get_node(audio_path)
 onready var muzzle_flash = get_node(muzzle_flash_path)
 onready var arms = get_node(arms_path)
 onready var right_hand = get_node(right_hand_path)
@@ -61,9 +63,14 @@ func fire():
 			return
 		else:
 			reload()
+
+func stop_fire():
+	audio.fire_end()
+	
 	
 func fire_bullet():
 	muzzle_flash.emitting = true
+	audio.fire_start()
 	heat += heat_per_bullet
 	if heat > 100.0:
 		heat = 100.0
@@ -99,6 +106,7 @@ func fire_bullet():
 
 func fire_spray():
 	muzzle_flash.emitting = true
+	audio.fire_start()
 	heat += heat_per_alt
 	if heat > 100.0:
 		heat = 100.0

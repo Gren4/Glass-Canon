@@ -89,7 +89,7 @@ mid_height = 1.25
 
 [sub_resource type="Animation" id=3]
 resource_name = "HeadBop"
-length = 0.7
+length = 1.4
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Head/Hit/WallRun/HeadBop:translation")
@@ -98,10 +98,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4, 0.7 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.7, 0.9, 1.1, 1.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.1, 0 ), Vector3( 0, 0.08, 0 ), Vector3( 0, 0.04, 0 ), Vector3( 0, 0.1, 0 ) ]
+"values": [ Vector3( 0, 0.1, 0 ), Vector3( 0.01, 0.08, 0 ), Vector3( 0.02, 0.04, 0 ), Vector3( 0, 0.1, 0 ), Vector3( -0.01, 0.08, 0 ), Vector3( -0.02, 0.04, 0 ), Vector3( 0, 0.1, 0 ) ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -257,7 +257,7 @@ nodes/Land/position = Vector2( 400, 60 )
 nodes/TimeScale/node = SubResource( 9 )
 nodes/TimeScale/position = Vector2( -60, 60 )
 nodes/output/position = Vector2( 960, 80 )
-node_connections = [ "output", 0, "Jump", "Jump", 0, "Land", "Jump", 1, "Animation 4", "TimeScale", 0, "HeadBop", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Land", 0, "Hit", "Land", 1, "Animation 3" ]
+node_connections = [ "output", 0, "Jump", "Land", 0, "Hit", "Land", 1, "Animation 3", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition", "Jump", 0, "Land", "Jump", 1, "Animation 4", "TimeScale", 0, "HeadBop" ]
 
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10
@@ -271,6 +271,7 @@ ray_top_path = NodePath("ClimbRays/RayTop")
 ray_top_point_path = NodePath("ClimbRays/RayTopPoint")
 ray_empty_path = NodePath("ClimbRays/RayEmpty")
 ray_forward_path = NodePath("OffsetForNPC/Forward")
+ray_down_path = NodePath("OffsetForNPC/Down")
 animation_tree_path = NodePath("AnimationTree")
 hud_path = NodePath("HUD")
 
@@ -298,6 +299,11 @@ material/0 = SubResource( 55 )
 
 [node name="Forward" type="RayCast" parent="OffsetForNPC"]
 cast_to = Vector3( 0, 0, -15 )
+collision_mask = 2
+
+[node name="Down" type="RayCast" parent="OffsetForNPC"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5 )
+cast_to = Vector3( 0, -1.4, 0 )
 collision_mask = 2
 
 [node name="ClimbRays" type="Spatial" parent="."]
