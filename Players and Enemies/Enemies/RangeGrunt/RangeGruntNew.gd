@@ -515,6 +515,8 @@ func evade_setup(coef,dist_V):
 	direction = coef * side * Vector3.UP.cross(dist_V).normalized()
 	side = coef * side
 	dop_speed = SPEED_DOP_EVADE
+	left_down_ray.transform.origin = Vector3(-4.5,-0.155,0)
+	right_down_ray.transform.origin = Vector3(4.5,-0.155,0)
 	set_state(EVADE)
 	
 	
@@ -527,6 +529,8 @@ func evading(delta):
 				dop_speed = 0.0
 				velocityXY = Vector3.ZERO
 				side = 1
+				left_down_ray.transform.origin = Vector3(-4.5,-0.155,0)
+				right_down_ray.transform.origin = Vector3(4.5,-0.155,0)
 				set_state(ALLERTED_AND_KNOWS_LOC)
 		1:
 			right_down_ray.force_raycast_update()
@@ -535,12 +539,16 @@ func evading(delta):
 				dop_speed = 0.0
 				velocityXY = Vector3.ZERO
 				side = -1
+				left_down_ray.transform.origin = Vector3(-4.5,-0.155,0)
+				right_down_ray.transform.origin = Vector3(4.5,-0.155,0)
 				set_state(ALLERTED_AND_KNOWS_LOC)
 				
 	if _dop_timer >= 0.25:
 		direction = -dist
 		dop_speed = 0.0
 		side = -side
+		left_down_ray.transform.origin = Vector3(-4.5,-0.155,0)
+		right_down_ray.transform.origin = Vector3(4.5,-0.155,0)
 		set_state(ALLERTED_AND_KNOWS_LOC)
 	else:
 		_dop_timer += delta

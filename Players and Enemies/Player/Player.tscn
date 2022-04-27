@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=49 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/ViewportSettings.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Player/WeaponCamera.gd" type="Script" id=2]
@@ -15,6 +15,9 @@
 [ext_resource path="res://Weapons/GunBulletHole/GunBulletHole.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Weapons/MuzzleFlash.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=15]
+[ext_resource path="res://Players and Enemies/Player/Audio.gd" type="Script" id=16]
+
+[sub_resource type="AudioStreamRandomPitch" id=58]
 
 [sub_resource type="Gradient" id=49]
 offsets = PoolRealArray( 0.0214286, 0.407143, 0.871429 )
@@ -102,6 +105,23 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0.1, 0 ), Vector3( 0.01, 0.08, 0 ), Vector3( 0.02, 0.04, 0 ), Vector3( 0, 0.1, 0 ), Vector3( -0.01, 0.08, 0 ), Vector3( -0.02, 0.04, 0 ), Vector3( 0, 0.1, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4, 1.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -215,6 +235,8 @@ blend_point_0/pos = 1.0
 blend_point_1/node = SubResource( 6 )
 blend_point_1/pos = 0.0
 
+[sub_resource type="AnimationNodeTimeScale" id=9]
+
 [sub_resource type="AnimationNodeOneShot" id=13]
 filter_enabled = true
 filters = [ "Head/Hit:rotation_degrees", "Head:rotation_degrees" ]
@@ -232,10 +254,8 @@ input_1/auto_advance = true
 filter_enabled = true
 filters = [ "Head/Hit/WallRun/HeadBop:rotation_degrees" ]
 
-[sub_resource type="AnimationNodeTimeScale" id=9]
-
 [sub_resource type="AnimationNodeBlendTree" id=8]
-graph_offset = Vector2( -569.111, -25 )
+graph_offset = Vector2( -423.049, -32.3696 )
 nodes/Animation/node = SubResource( 15 )
 nodes/Animation/position = Vector2( -360, 220 )
 "nodes/Animation 2/node" = SubResource( 14 )
@@ -246,6 +266,8 @@ nodes/Animation/position = Vector2( -360, 220 )
 "nodes/Animation 4/position" = Vector2( 480, 360 )
 nodes/HeadBop/node = SubResource( 57 )
 nodes/HeadBop/position = Vector2( -280, 80 )
+nodes/HeadBopSpeed/node = SubResource( 9 )
+nodes/HeadBopSpeed/position = Vector2( -60, 60 )
 nodes/Hit/node = SubResource( 13 )
 nodes/Hit/position = Vector2( 140, 60 )
 nodes/HitTransition/node = SubResource( 16 )
@@ -254,10 +276,8 @@ nodes/Jump/node = SubResource( 21 )
 nodes/Jump/position = Vector2( 680, 60 )
 nodes/Land/node = SubResource( 19 )
 nodes/Land/position = Vector2( 400, 60 )
-nodes/TimeScale/node = SubResource( 9 )
-nodes/TimeScale/position = Vector2( -60, 60 )
 nodes/output/position = Vector2( 960, 80 )
-node_connections = [ "output", 0, "Jump", "Land", 0, "Hit", "Land", 1, "Animation 3", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Hit", 0, "TimeScale", "Hit", 1, "HitTransition", "Jump", 0, "Land", "Jump", 1, "Animation 4", "TimeScale", 0, "HeadBop" ]
+node_connections = [ "output", 0, "Jump", "Jump", 0, "Land", "Jump", 1, "Animation 4", "Land", 0, "Hit", "Land", 1, "Animation 3", "Hit", 0, "HeadBopSpeed", "Hit", 1, "HitTransition", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "HeadBopSpeed", 0, "HeadBop" ]
 
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10
@@ -274,6 +294,13 @@ ray_forward_path = NodePath("OffsetForNPC/Forward")
 ray_down_path = NodePath("OffsetForNPC/Down")
 animation_tree_path = NodePath("AnimationTree")
 hud_path = NodePath("HUD")
+audio_path = NodePath("Audio")
+
+[node name="Audio" type="Node" parent="."]
+script = ExtResource( 16 )
+
+[node name="Step" type="AudioStreamPlayer" parent="Audio"]
+stream = SubResource( 58 )
 
 [node name="Particles" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.828669, -20.6548 )
@@ -372,7 +399,7 @@ far = 250.0
 
 [node name="RayCast" type="RayCast" parent="Head/Hit/WallRun/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )
-collision_mask = 10
+collision_mask = 42
 collide_with_areas = true
 
 [node name="ShaderPrecompiler" parent="Head/Hit/WallRun/HeadBop/Camera" instance=ExtResource( 6 )]
@@ -411,8 +438,8 @@ tree_root = SubResource( 8 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/HeadBop/blend_position = 0.0
+parameters/HeadBopSpeed/scale = 2.5
 parameters/Hit/active = false
 parameters/HitTransition/current = 1
 parameters/Jump/active = false
 parameters/Land/active = false
-parameters/TimeScale/scale = 1.5

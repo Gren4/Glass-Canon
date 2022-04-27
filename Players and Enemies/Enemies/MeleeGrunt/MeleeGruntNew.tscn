@@ -1,9 +1,10 @@
-[gd_scene load_steps=72 format=2]
+[gd_scene load_steps=73 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=3]
 [ext_resource path="res://Materials/Grunt.tres" type="Material" id=4]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioEnemy.gd" type="Script" id=5]
 
 [sub_resource type="ArrayMesh" id=348]
 resource_name = "MeleeGruntNew2_Cube"
@@ -1332,6 +1333,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 0.0423259, 2.19296, -1.45006, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, 0.0423259, 2.19296, -1.45006, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=358]
 resource_name = "RunBackwardsDLeft"
@@ -1484,6 +1505,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -2.9049, 1.27774, -1.42015, 0.00388313, 2.31223e-08, 0.382664, 0.92388, 1, 1, 1, 0.5, 1, -2.9049, 1.27774, -1.42015, 0.00388313, 2.31223e-08, 0.382664, 0.92388, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=359]
 resource_name = "RunBackwardsDRight"
@@ -1636,6 +1677,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 2.91117, 0.685465, -1.47917, -0.00388319, -7.27691e-08, -0.382664, 0.92388, 1, 1, 1, 0.5, 1, 2.91117, 0.685465, -1.47917, -0.00388319, -7.27691e-08, -0.382664, 0.92388, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=360]
 resource_name = "RunForward"
@@ -1788,6 +1849,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 0.0423259, 2.19296, -1.45006, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, 0.0423259, 2.19296, -1.45006, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=361]
 resource_name = "RunForwardDLeft"
@@ -1940,6 +2021,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 2.97194, 0.550325, -1.47979, -0.00388319, -5.90973e-08, -0.382664, 0.92388, 1, 1, 1, 0.5, 1, 2.97194, 0.550325, -1.47979, -0.00388319, -5.90973e-08, -0.382664, 0.92388, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=362]
 resource_name = "RunForwardDRight"
@@ -2092,6 +2193,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -3.05216, 1.23024, -1.41866, 0.00388313, 2.31223e-08, 0.382664, 0.92388, 1, 1, 1, 0.5, 1, -3.05216, 1.23024, -1.41866, 0.00388313, 2.31223e-08, 0.382664, 0.92388, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0, 0.25, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=363]
 resource_name = "RunLeft"
@@ -2244,6 +2365,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0.1, 0.33, 0.47 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=364]
 resource_name = "RunRight"
@@ -2396,6 +2537,26 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
+tracks/21/type = "method"
+tracks/21/path = NodePath(".")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0.1, 0.33, 0.47 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
 
 [sub_resource type="Animation" id=365]
 resource_name = "Stand"
@@ -4409,7 +4570,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "TimeScale 2", 0, "Animation", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Attack", 0, "Zero", "Attack", 1, "AttackTransition" ]
+node_connections = [ "output", 0, "IdleAlert", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "TimeScale", 0, "Animation 2", "Zero", 0, "Movement", "Zero", 1, "Animation 8" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -4422,6 +4583,7 @@ height = 1.74
 collision_layer = 8
 collision_mask = 11
 script = ExtResource( 3 )
+ragdoll = ExtResource( 2 )
 hitboxl_path = NodePath("Body/Skeleton/ClawL/Left")
 hitboxr_path = NodePath("Body/Skeleton/ClawR/Right")
 animation_tree_path = NodePath("AnimationTree")
@@ -4431,9 +4593,16 @@ right_ray_path = NodePath("RightRayCast")
 left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
-ragdoll = ExtResource( 2 )
+audio_path = NodePath("Audio")
 current_health = 60
 StartTimer_path = NodePath("Start")
+
+[node name="Audio" type="Spatial" parent="."]
+script = ExtResource( 5 )
+
+[node name="Step" type="AudioStreamPlayer3D" parent="Audio"]
+unit_size = 20.0
+max_distance = 50.0
 
 [node name="Target" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
@@ -4458,7 +4627,7 @@ bones/1/name = "MidTorso"
 bones/1/parent = 0
 bones/1/rest = Transform( 1, -5.87456e-08, -3.30059e-07, -6.01619e-08, 0.937098, -0.349066, 3.29803e-07, 0.349066, 0.937098, -1.37769e-09, 0.390751, 7.12839e-08 )
 bones/1/enabled = true
-bones/1/bound_children = [  ]
+bones/1/bound_children = [ NodePath("MidBone") ]
 bones/2/name = "UpTorso"
 bones/2/parent = 1
 bones/2/rest = Transform( 1, 8.74816e-07, -3.23042e-06, -3.23584e-06, 0.00625694, -0.99998, -8.54586e-07, 0.99998, 0.00625694, 8.51434e-10, 0.348884, -5.97266e-10 )
@@ -4488,7 +4657,7 @@ bones/7/name = "Claw.L"
 bones/7/parent = 6
 bones/7/rest = Transform( -0.982375, -0.169682, -0.0784027, 0.139045, -0.383052, -0.913202, 0.124922, -0.908008, 0.399894, 1.74672e-07, 0.720556, 1.68531e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [  ]
+bones/7/bound_children = [ NodePath("ClawL") ]
 bones/8/name = "UpperArm.R"
 bones/8/parent = 2
 bones/8/rest = Transform( 0.158607, -0.879295, 0.449093, 0.967783, 0.0483651, -0.247099, 0.195552, 0.473816, 0.858638, -0.351179, 0.317814, 0.0771444 )
@@ -4503,7 +4672,7 @@ bones/10/name = "Claw.R"
 bones/10/parent = 9
 bones/10/rest = Transform( -0.996916, 0.00345513, 0.0784026, -0.0732082, -0.400878, -0.913202, 0.0282746, -0.916125, 0.399895, -1.28112e-07, 0.720556, 1.15175e-09 )
 bones/10/enabled = true
-bones/10/bound_children = [  ]
+bones/10/bound_children = [ NodePath("ClawR") ]
 bones/11/name = "UpperLeg.L"
 bones/11/parent = 0
 bones/11/rest = Transform( -0.947681, 0.301932, -0.103631, -0.303701, -0.952767, 0.00135747, -0.0983265, 0.0327593, 0.994616, 0.149322, 0.146779, -0.041739 )
@@ -4562,7 +4731,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.655682, -0.207965, -0.725834, -0.0466297, -0.94833, 0.313838, -0.753596, 0.239623, 0.612106, -0.267686, 1.90183, -0.88111 )
+transform = Transform( -0.623565, -0.211786, -0.75254, -0.0774046, -0.941149, 0.329005, -0.77793, 0.263406, 0.570475, -0.335477, 1.94255, -0.906828 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4576,7 +4745,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.662375, 0.0816075, 0.744715, 0.221132, -0.928463, 0.298427, 0.715794, 0.362351, 0.596944, 0.40617, 1.94889, -0.948767 )
+transform = Transform( -0.655404, 0.107998, 0.747518, 0.226386, -0.916127, 0.330849, 0.720552, 0.386068, 0.575984, 0.299074, 1.93625, -0.895832 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4590,7 +4759,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.998948, 0.00535806, -0.0455411, -9.31323e-09, 0.99315, 0.116848, 0.0458553, 0.116725, -0.992105, 0.0901668, 1.78003, -0.0357293 )
+transform = Transform( -0.999962, -0.000755091, 0.00865702, -7.45058e-09, 0.996217, 0.0868922, -0.00868989, 0.0868889, -0.99618, -0.0170884, 1.83957, -0.0336218 )
 bone_name = "MidTorso"
 
 [node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]

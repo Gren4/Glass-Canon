@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/OpenSpace.ogg-a4448929693ce66c1f7d3555b0d0c9ed.oggstr"
+
+[deps]
+
+source_file="res://SoundEffects/Ambience/OpenSpace.ogg"
+dest_files=[ "res://.import/OpenSpace.ogg-a4448929693ce66c1f7d3555b0d0c9ed.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

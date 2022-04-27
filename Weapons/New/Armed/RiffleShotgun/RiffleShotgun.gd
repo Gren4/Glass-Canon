@@ -63,9 +63,6 @@ func fire():
 			return
 		else:
 			reload()
-
-func stop_fire():
-	audio.fire_end()
 	
 	
 func fire_bullet():

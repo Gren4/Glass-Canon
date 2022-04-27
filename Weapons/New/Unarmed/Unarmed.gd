@@ -7,8 +7,6 @@ var is_reloading : bool = false
 func fire():
 	pass
 	
-func stop_fire():
-	pass
 	
 func reload():
 	pass

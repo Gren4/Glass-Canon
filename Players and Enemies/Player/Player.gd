@@ -17,6 +17,10 @@ export(NodePath) var ray_down_path
 export(NodePath) var animation_tree_path
 export(NodePath) var hud_path
 
+export(NodePath) var audio_path
+
+onready var audio = get_node(audio_path)
+
 onready var head = get_node(head_path)
 onready var wall_run_camera = get_node(wall_run_path)
 onready var camera = get_node(camera_path)
@@ -126,7 +130,6 @@ var timer_not_on_ground : float = 0
 var timer_dashing : float = 0
 # Параметры для карабканья
 var climbPoint : Vector3 = Vector3.ZERO
-var rotateTo : Vector3 = Vector3.ZERO
 # Параметры для бега по стене
 var wall_id : int
 var wallrun_dir_old : Vector3 = Vector3.ZERO
@@ -134,6 +137,8 @@ var sideW : int = -1
 var sideD : int = -1
 var wallrun_current_angle : float
 var wall_normal : KinematicCollision = null
+
+var is_moving : bool = false
 
 ### Функции ###
 func _ready() -> void:
@@ -450,6 +455,7 @@ func primary_setup(delta) -> void:
 			if isfloor_tek:
 				velocity.y = GROUND_GRAVITATION
 				animation_tree.set("parameters/Land/active", true)
+				audio.step()
 				set_state(WALKING)
 			else:
 				if iswall_tek:
@@ -632,17 +638,23 @@ func get_side(point) -> int:
 func movement_inputs() -> void:
 	direction = Vector3.ZERO
 	sideD = -1
+	is_moving = false
 	if Input.is_action_pressed("move_forward"):
 		direction -= self.global_transform.basis.z
+		is_moving = true
 	elif Input.is_action_pressed("move_backwards"):
 		direction += self.global_transform.basis.z
+		is_moving = true
 				
 	if Input.is_action_pressed("move_right"):
 		sideD = 1
 		direction += self.global_transform.basis.x
+		is_moving = true
 	elif Input.is_action_pressed("move_left"):
 		sideD = 0
 		direction -= self.global_transform.basis.x
+		is_moving = true
+		
 
 func jump(factor) -> bool:
 	if Input.is_action_just_pressed("jump"):
@@ -650,6 +662,7 @@ func jump(factor) -> bool:
 		velocityXY = direction * WALKING_SPEED
 		snap = Vector3.ZERO
 		animation_tree.set("parameters/Jump/active", true)
+		audio.step()
 		set_state(IN_AIR)
 		return false
 	return true
@@ -660,6 +673,9 @@ func wall_jump_air() -> bool:
 			snap = Vector3.ZERO
 			velocityXY = Vector3.ZERO
 			velocity.y = JUMP_POWER * WALL_JUMP_VERTICAL_POWER
+			animation_tree.set("parameters/Jump/active", true)
+			audio.step()
+			set_state(IN_AIR)
 			for n in get_slide_count() :
 				var wall_normal = get_slide_collision(n)
 				var isWall : bool = wall_normal.collider.is_in_group("Wall")
@@ -677,6 +693,9 @@ func wall_jump_wallrun() -> bool:
 			snap = Vector3.ZERO
 			velocityXY = Vector3.ZERO
 			velocity.y = JUMP_POWER * WALL_JUMP_VERTICAL_POWER
+			animation_tree.set("parameters/Jump/active", true)
+			audio.step()
+			set_state(IN_AIR)
 			var normal : Vector3 = wall_normal.normal
 			dop_velocity = normal * WALL_JUMP_HORIZONTAL_POWER * WALL_JUMP_FACTOR
 			return false
@@ -712,11 +731,12 @@ func check_edge_climb() -> bool:
 							var ClimbTopPoint : Vector3 = to_local(rayTopPoint.get_collision_point())
 							if ClimbTopPoint.y - ClimbPoint.y < 1.2*player_height + PLAYER_HEIGHT_DEVIATION:
 								return true
-						rotateTo = Vector3(0,self.rotation_degrees.y + angleClimb,0)
 						climbPoint = (rayClimb.get_collision_point())
 						direction = normal * 0.5
 						if climbPoint.y - self.global_transform.origin.y > 1.0:
 							weapon_manager.climb()
+						else:
+							audio.step()
 						animation_tree.set("parameters/HitTransition/current",1)
 						animation_tree.set("parameters/Hit/active",true)
 						self.set_collision_mask_bit(3,false)
@@ -726,7 +746,6 @@ func check_edge_climb() -> bool:
 	return true
 
 func edge_climb(delta) -> bool:
-	self.rotation_degrees = self.rotation_degrees.linear_interpolate(rotateTo, delta * 10)
 	if transform.origin.y > climbPoint.y + player_height or isfloor_tek or isceil_tek:
 		direction = Vector3.ZERO
 		velocity = Vector3.ZERO
@@ -756,8 +775,6 @@ func process_weapons(delta) -> void:
 	if not weapon_manager.is_switching_active():
 		if Input.is_action_pressed("fire"):
 			weapon_manager.fire()
-		elif Input.is_action_just_released("fire"):
-			weapon_manager.stop_fire()
 
 	if Input.is_action_just_pressed("reload"):
 		weapon_manager.reload()
@@ -775,12 +792,26 @@ func finalize_velocity(delta) -> void:
 	velocity.z = velocityXY.z
 	vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	
+func play_audio(var name : String) -> void:
+	match name:
+		"Step":
+			if is_moving:
+				audio.step()
+	
 func animations_handler() -> void:
-	if State == WALKING:
-		if isfloor_tek:
-			animation_tree.set("parameters/HeadBop/blend_position", vel_info.length_squared() / pow(WALKING_SPEED,2))
-		else:
-			animation_tree.set("parameters/HeadBop/blend_position", 0)
+	if is_moving:
+		match State:
+			WALKING:
+				if isfloor_tek:
+					animation_tree.set("parameters/HeadBopSpeed/scale", 2.5)
+					animation_tree.set("parameters/HeadBop/blend_position", vel_info.length_squared() / pow(WALKING_SPEED,2))
+				else:
+					animation_tree.set("parameters/HeadBop/blend_position", 0)
+			WALLRUNNING:
+				animation_tree.set("parameters/HeadBopSpeed/scale", 3.0)
+				animation_tree.set("parameters/HeadBop/blend_position", vel_info.length_squared() / pow(WALLRUNNING_SPEED,2))
+			_:
+				animation_tree.set("parameters/HeadBop/blend_position", 0)
 	else:
 		animation_tree.set("parameters/HeadBop/blend_position", 0)
 

@@ -2,6 +2,8 @@ extends Players_and_Enemies
 
 onready var player
 
+export(PackedScene) var ragdoll = null
+
 export(NodePath) var hitboxl_path = null
 export(NodePath) var hitboxr_path = null
 export(NodePath) var animation_tree_path = null
@@ -12,7 +14,9 @@ export(NodePath) var right_ray_path = null
 export(NodePath) var left_ray_path = null
 export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
-export(PackedScene) var ragdoll = null
+export(NodePath) var audio_path
+
+onready var audio = get_node(audio_path)
 
 onready var hitboxl = get_node(hitboxl_path)
 onready var hitboxr = get_node(hitboxr_path)
@@ -90,8 +94,6 @@ var _evade_timer : int = 3 + randi() % 2
 var timer_not_on_ground : float = 0.0
 var side : int = 1
 
-var no_collision_between : bool = false
-
 var my_path = []
 onready var prev_origin : Vector3 = self.global_transform.origin
 var link_from : PoolVector3Array = []
@@ -100,6 +102,8 @@ var start_jump_pos : Vector3 = Vector3.ZERO
 var jump_time : float = 0.0
 var p1 : Vector3 = Vector3.ZERO
 var offset : Vector3 = Vector3.ZERO
+
+var is_moving : bool = false
 
 var attack_side : int = 0
 var ragdoll_create : bool = true
@@ -175,6 +179,7 @@ func state_machine(delta):
 				link_to.remove(0)
 				link_from.remove(0)
 				jump_time = 0.0
+				audio.step()
 				set_state(JUMP_END)
 				
 		AIR:
@@ -269,7 +274,9 @@ func finalize_velocity(delta):
 	var loc_v : Vector3 = (info/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
 	if velocity.length() < 1.0:
 		animation_tree.set("parameters/Zero/current", 1)
+		is_moving = false
 	else:
+		is_moving = true
 		animation_tree.set("parameters/Zero/current", 0)
 		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
@@ -361,6 +368,7 @@ func move_along_path(delta) -> bool:
 				offset.y = 0
 				while (link_to[0] in my_path):
 					my_path.remove(0)
+				audio.step()
 				set_state(JUMP)
 				return true
 		if dir_to_path.length() < 1.4:
@@ -542,7 +550,11 @@ func face_threat(d1,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	$Target.global_transform.origin = look
 	pass
 
-
+func play_audio(var name : String) -> void:
+	match name:
+		"Step":
+			if is_moving:
+				audio.step()
 
 func _on_Start_timeout():
 	animation_tree.active = true

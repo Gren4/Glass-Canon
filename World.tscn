@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=42 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Materials/Test_material_3.tres" type="Material" id=4]
 [ext_resource path="res://World.gd" type="Script" id=5]
 [ext_resource path="res://Nav/NavMesh.tres" type="NavigationMesh" id=6]
+[ext_resource path="res://WorldAmbience.gd" type="Script" id=8]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkNavigation.gd" type="Script" id=17]
 [ext_resource path="res://addons/NavLink/Scripts/NavLinkPath.gd" type="Script" id=18]
@@ -993,3 +994,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 144.39, 9.49724, 3.40787 )
 
 [node name="Position3D" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 80.887, 2.421, 0.984 )
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Ambience" type="AudioStreamPlayer" parent="Audio"]
+volume_db = -5.0
+autoplay = true
+script = ExtResource( 8 )
