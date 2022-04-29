@@ -108,6 +108,7 @@ var is_moving : bool = false
 var attack_side : int = 0
 var ragdoll_create : bool = true
 
+
 func _ready():
 	animation_tree.set("parameters/IdleAlert/current",0)
 	animation_tree.set("parameters/Zero/current",1)
@@ -185,6 +186,7 @@ func state_machine(delta):
 		AIR:
 			if is_on_floor:
 				animation_tree.set("parameters/JumpTransition/current",2)
+				audio.step()
 				set_state(JUMP_END)
 				
 		JUMP_END:
@@ -255,13 +257,10 @@ func tact_init(delta):
 	if is_on_floor:
 		speed = SPEED_NORMAL - (1.0*SPEED_NORMAL/(dist_length*dist_length))
 		timer_not_on_ground = 0.0
-	else:
-		speed = SPEED_AIR
-	
-	if is_on_floor:
 		velocity.y = -0.1
 		snap = Vector3.DOWN
 	else:
+		speed = SPEED_AIR
 		velocity.y -= gravity * delta
 	
 func finalize_velocity(delta):
@@ -272,13 +271,17 @@ func finalize_velocity(delta):
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	var info = (self.global_transform.origin - prev_origin)/delta
 	var loc_v : Vector3 = (info/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
-	if velocity.length() < 1.0:
-		animation_tree.set("parameters/Zero/current", 1)
+	if loc_v.length_squared() < 0.2:
 		is_moving = false
 	else:
 		is_moving = true
+	if velocity.length() < 1.0:
+		animation_tree.set("parameters/Zero/current", 1)
+		animation_tree.set("parameters/AudioMovement/blend_position", Vector2.ZERO)
+	else:
 		animation_tree.set("parameters/Zero/current", 0)
 		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
+		animation_tree.set("parameters/AudioMovement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack(side:String):
 	var targets
@@ -289,6 +292,7 @@ func attack(side:String):
 			targets = hitboxr.get_overlapping_bodies()
 	if player in targets:
 		player.update_health(-attack_damage, self.global_transform.origin)
+		audio.hit()
 	pass
 
 func on_animation_finish(anim_name:String):
@@ -363,7 +367,7 @@ func move_along_path(delta) -> bool:
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
 				var jdist = (link_to[0] - start_jump_pos)
 				jump_time_coeff = jdist.length() / speed
-				jump_time_coeff = clamp(jump_time_coeff,0.4,0.7)
+				jump_time_coeff = clamp(jump_time_coeff,0.5,0.8)
 				offset = jdist.normalized()
 				offset.y = 0
 				while (link_to[0] in my_path):
@@ -374,7 +378,15 @@ func move_along_path(delta) -> bool:
 		if dir_to_path.length() < 1.4:
 			my_path.remove(0)
 		else:
-			move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
+			if is_on_wall():
+				velocity.y = 1.0
+				snap = Vector3.ZERO
+			if dist_length < 3.5:
+				left_ray.force_raycast_update()
+				if not left_ray.is_colliding():
+					move_to_target(delta, Vector3.UP.cross(dir_to_path).normalized(), ALLERTED_AND_KNOWS_LOC,my_path[0])
+			else:
+				move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
 		front_ray.force_raycast_update()
 		if front_ray.is_colliding():
@@ -555,6 +567,8 @@ func play_audio(var name : String) -> void:
 		"Step":
 			if is_moving:
 				audio.step()
+		"Whoosh":
+			audio.whoosh()
 
 func _on_Start_timeout():
 	animation_tree.active = true

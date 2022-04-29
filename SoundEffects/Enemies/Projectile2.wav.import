@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Projectile2.wav-1c687184e9c4a3b2ec800a6da77090e5.sample"
+
+[deps]
+
+source_file="res://SoundEffects/Enemies/Projectile2.wav"
+dest_files=[ "res://.import/Projectile2.wav-1c687184e9c4a3b2ec800a6da77090e5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

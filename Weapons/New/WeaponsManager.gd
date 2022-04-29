@@ -131,6 +131,9 @@ func previous_weapon():
 func fire():
 	if not changing_weapon:
 		current_weapon.fire()
+		
+func fire_stop():
+	current_weapon.fire_stop()
 	
 func reload():
 	if not changing_weapon:

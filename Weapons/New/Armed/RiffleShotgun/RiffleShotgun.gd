@@ -36,6 +36,8 @@ onready var alt_spread_array : Array = [
 	[spread_alt*0.65,-spread_alt*0.65],[-spread_alt*0.65,-spread_alt*0.65]
 ]
 
+var offset : float = 0.0
+
 var is_firing : bool = false
 var is_reloading : bool = false
 var is_switching_active : bool = false
@@ -54,6 +56,8 @@ func fire():
 	if not is_reloading and is_not_climbing:
 		if heat < 100:
 			if not is_alt_active:
+				if offset < spread:
+					offset += 0.1
 				animation_tree.set("parameters/FireRifle/active", true)
 			else:
 				animation_tree.set("parameters/FireShotgun/active", true)
@@ -62,19 +66,22 @@ func fire():
 				is_firing = true
 			return
 		else:
+			offset = 0.0
 			reload()
 	
+func fire_stop():
+	offset = 0.0
 	
 func fire_bullet():
 	muzzle_flash.emitting = true
-	audio.fire_start()
+	audio.Shoot.fire_start()
 	heat += heat_per_bullet
 	if heat > 100.0:
 		heat = 100.0
 	update_info()
 	
-	ray.cast_to.x = (rand_range(spread,-spread))
-	ray.cast_to.y = (rand_range(spread,-spread))
+	ray.cast_to.x = (rand_range(offset,-offset))
+	ray.cast_to.y = (rand_range(offset,-offset))
 	ray.force_raycast_update()
 		
 	if ray.is_colliding():
@@ -97,17 +104,20 @@ func fire_bullet():
 			else:
 				obj.update_hp(damage)
 			weapon_manager.hud.hit_confirm.visible = true
+			audio.Hit.hit()
 	else:
 		var trace = Global.spawn_node_simple_mesh(trace_effect)
 		trace.draw_start(muzzle_flash.global_transform.origin,to_global(ray.cast_to))			
 
 func fire_spray():
 	muzzle_flash.emitting = true
-	audio.fire_start()
+	audio.Shoot.fire_start()
 	heat += heat_per_alt
 	if heat > 100.0:
 		heat = 100.0
 	update_info()
+	var Enemies : Dictionary = {}
+	var hit_confirm : bool = false
 	
 	for i in 9:
 		ray.cast_to.x = (alt_spread_array[i][0] + rand_range(1,-1))
@@ -129,14 +139,23 @@ func fire_spray():
 				#var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
 				#smoke.emitting = true
 			elif (obj.is_in_group("Enemy")):
-				if heat > 60.0:
-					obj.update_hp(1.25 * alt_damage)
+				hit_confirm = true
+				if obj in Enemies:
+					Enemies[obj] += 1
 				else:
-					obj.update_hp(alt_damage)
-				weapon_manager.hud.hit_confirm.visible = true
+					Enemies[obj] = 1
+				
 		else:
 			var trace = Global.spawn_node_simple_mesh(trace_effect)
 			trace.draw_start(muzzle_flash.global_transform.origin,to_global(ray.cast_to))		
+	if hit_confirm:
+		weapon_manager.hud.hit_confirm.visible = true
+		audio.Hit.hit()
+	for e in Enemies:
+		if heat > 60.0:
+			e.update_hp(1.25 * alt_damage * Enemies[e])
+		else:
+			e.update_hp(alt_damage * Enemies[e])
 			
 func reload():
 	if not is_reloading:

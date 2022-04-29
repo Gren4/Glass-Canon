@@ -16,6 +16,12 @@ var is_equipped : bool = false
 export(String) var weapon_name : String = "Weapon"
 export(Texture) var weapon_image = null
 	
+func fire():
+	pass
+	
+func fire_stop():
+	pass
+	
 func is_switching_active():
 	pass
 
@@ -33,7 +39,10 @@ func is_unequip_finished() -> bool:
 	
 func climb():
 	pass
-			
+	
+func sway(mouse_input,delta):
+	pass
+
 func update_info():
 	var weapon_data = {
 		"Name" : weapon_name,

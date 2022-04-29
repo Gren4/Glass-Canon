@@ -65,7 +65,7 @@ const WALKING_SPEED : float = 18.0
 const ADS_WALKING_SPEED : float = 10.0
 const WALL_SPEED : float = 5.0
 const WALLRUNNING_SPEED : float = 25.0
-const DASHING_SPEED : float = 200.0
+const DASHING_SPEED : float = 100.0
 const MAX_WALL_JUMP : int = 3
 const WALL_JUMP_HORIZONTAL_POWER : float = 20.0
 const WALL_JUMP_VERTICAL_POWER : float = 0.7
@@ -90,7 +90,7 @@ const WALL_RUNNING_GRAVITY : float = IN_AIR_GRAVITY / 30
 const JUMP_POWER : float = 20.0
 # Таймеры
 const ABLILTY_TO_JUMP_TIME : float = 0.5
-const DASHING_TIME : float = 0.1
+const DASHING_TIME : float = 0.2
 const DASHING_TIME_CD : float = 0.5
 const HP_RECOVERY_CD : float = 4.0
 # Отклонения для параметров игрока
@@ -775,6 +775,8 @@ func process_weapons(delta) -> void:
 	if not weapon_manager.is_switching_active():
 		if Input.is_action_pressed("fire"):
 			weapon_manager.fire()
+		elif Input.is_action_just_released("fire"):
+			weapon_manager.fire_stop()
 
 	if Input.is_action_just_pressed("reload"):
 		weapon_manager.reload()

@@ -12,6 +12,9 @@ export(NodePath) var right_ray_path = null
 export(NodePath) var left_ray_path = null
 export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
+export(NodePath) var audio_path
+
+onready var audio = get_node(audio_path)
 
 export(PackedScene) var projectile = null
 export(PackedScene) var ragdoll = null
@@ -118,6 +121,8 @@ var offset : Vector3 = Vector3.ZERO
 var attack_side : int = 0
 var ragdoll_create : bool = true
 
+var is_moving : bool = false
+
 func _ready():
 	animation_tree.set("parameters/IdleAlert/current",0)
 	animation_tree.set("parameters/Zero/current",1)
@@ -197,11 +202,13 @@ func state_machine(delta):
 				link_to.remove(0)
 				link_from.remove(0)
 				jump_time = 0.0
+				audio.step()
 				set_state(JUMP_END)
 				
 		AIR:
 			if is_on_floor:
 				animation_tree.set("parameters/JumpTransition/current","JumpEnd")
+				audio.step()
 				set_state(JUMP_END)
 				
 		JUMP_END:
@@ -284,16 +291,23 @@ func finalize_velocity(delta):
 	velocity.z = velocityXY.z
 	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
 	var info = (self.global_transform.origin - prev_origin)/delta
-	var loc_v : Vector3 = (velocity/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
+	var loc_v : Vector3 = (info/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
+	if loc_v.length_squared() < 0.2:
+		is_moving = false
+	else:
+		is_moving = true
 	if velocity.length() < 1.0:
 		animation_tree.set("parameters/Zero/current", 1)
+		animation_tree.set("parameters/AudioMovement/blend_position", Vector2.ZERO)
 	else:
 		animation_tree.set("parameters/Zero/current", 0)
 		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
+		animation_tree.set("parameters/AudioMovement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack():
 	var targets = hitbox.get_overlapping_bodies()
 	if player in targets:
+		audio.hit()
 		player.update_health(-attack_damage, self.global_transform.origin)
 	pass
 
@@ -464,17 +478,21 @@ func move_along_path(delta) -> bool:
 				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
 				var jdist = (link_to[0] - start_jump_pos)
 				jump_time_coeff = jdist.length() / speed
-				jump_time_coeff = clamp(jump_time_coeff,0.4,0.7)
+				jump_time_coeff = clamp(jump_time_coeff,0.5,0.8)
 				offset = jdist.normalized()
 				offset.y = 0
 				while (link_to[0] in my_path):
 					my_path.remove(0)
+				audio.step()
 				set_state(JUMP)
 				return true
 		if dir_to_path.length() < 1.4:
 			my_path.remove(0)
 		else:
 			if not attack_shoot(delta):
+				if is_on_wall():
+					velocity.y = 1.0
+					snap = Vector3.ZERO
 				move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
 		if dist2D_length < 3.0:
@@ -651,6 +669,16 @@ func face_threat(d1,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
 	Global.turn_face(self,turn,d1,delta)
 	$Target.global_transform.origin = look
 	pass
+
+func play_audio(var name : String) -> void:
+	match name:
+		"Step":
+			if is_moving:
+				audio.step()
+		"Whoosh":
+			audio.whoosh()
+		"Shoot":
+			audio.shoot()
 
 func _on_Area_body_entered(body):
 	if _state == IDLE:

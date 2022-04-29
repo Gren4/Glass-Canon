@@ -1,4 +1,4 @@
-[gd_scene load_steps=77 format=2]
+[gd_scene load_steps=102 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Material_001.material" type="Material" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/EnemyProjectile.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Materials/Grunt.tres" type="Material" id=5]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/RangeGruntRagdoll.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/AudioRangeGrunt.gd" type="Script" id=7]
 
 [sub_resource type="ArrayMesh" id=423]
 resource_name = "RangeGruntNew_Cube001"
@@ -536,9 +537,12 @@ tracks/29/loop_wrap = true
 tracks/29/imported = false
 tracks/29/enabled = true
 tracks/29/keys = {
-"times": PoolRealArray( 0.5, 0.8 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.36, 0.5, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
+"args": [ "Whoosh" ],
+"method": "play_audio"
+}, {
 "args": [  ],
 "method": "attack"
 }, {
@@ -760,14 +764,111 @@ tracks/29/loop_wrap = true
 tracks/29/imported = false
 tracks/29/enabled = true
 tracks/29/keys = {
-"times": PoolRealArray( 0.5, 0.8 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.39, 0.5, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
+"args": [ "Whoosh" ],
+"method": "play_audio"
+}, {
 "args": [  ],
 "method": "attack"
 }, {
 "args": [ "AttackRight" ],
 "method": "on_animation_finish"
+} ]
+}
+
+[sub_resource type="Animation" id=461]
+resource_name = "AudioStep1"
+length = 0.791667
+loop = true
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.33, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
+
+[sub_resource type="Animation" id=462]
+resource_name = "AudioStep2"
+length = 0.5
+loop = true
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
+
+[sub_resource type="Animation" id=463]
+resource_name = "AudioStep3"
+length = 1.125
+loop = true
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.6, 1.125 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
+} ]
+}
+
+[sub_resource type="Animation" id=464]
+resource_name = "AudioStep4"
+length = 0.875
+loop = true
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ "Step" ],
+"method": "play_audio"
+}, {
+"args": [ "Step" ],
+"method": "play_audio"
 } ]
 }
 
@@ -1599,6 +1700,11 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.416667, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+
+[sub_resource type="Animation" id=467]
+resource_name = "NoAudio"
+length = 0.875
+loop = true
 
 [sub_resource type="Animation" id=432]
 resource_name = "RunBackwars"
@@ -3476,9 +3582,12 @@ tracks/29/loop_wrap = true
 tracks/29/imported = false
 tracks/29/enabled = true
 tracks/29/keys = {
-"times": PoolRealArray( 0.6, 0.8 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.46, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
+"args": [ "Shoot" ],
+"method": "play_audio"
+}, {
 "args": [  ],
 "method": "shoot"
 }, {
@@ -5981,6 +6090,8 @@ tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.875, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
 
+[sub_resource type="AnimationNodeAdd2" id=465]
+
 [sub_resource type="AnimationNodeAnimation" id=66]
 animation = "AttackRight"
 
@@ -6018,6 +6129,93 @@ input_0/name = "LeftAttack"
 input_0/auto_advance = true
 input_1/name = "RightAttack"
 input_1/auto_advance = true
+
+[sub_resource type="AnimationNodeAnimation" id=468]
+animation = "NoAudio"
+
+[sub_resource type="AnimationNodeAnimation" id=469]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=470]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=471]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=472]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=473]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=474]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=475]
+animation = "AudioStep2"
+
+[sub_resource type="AnimationNodeAnimation" id=476]
+animation = "AudioStep2"
+
+[sub_resource type="AnimationNodeAnimation" id=477]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=478]
+animation = "AudioStep4"
+
+[sub_resource type="AnimationNodeAnimation" id=479]
+animation = "AudioStep4"
+
+[sub_resource type="AnimationNodeAnimation" id=480]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=481]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=482]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=483]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=484]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=466]
+blend_point_0/node = SubResource( 468 )
+blend_point_0/pos = Vector2( 0, 0 )
+blend_point_1/node = SubResource( 469 )
+blend_point_1/pos = Vector2( 0, -0.5 )
+blend_point_2/node = SubResource( 477 )
+blend_point_2/pos = Vector2( 0, 0.5 )
+blend_point_3/node = SubResource( 478 )
+blend_point_3/pos = Vector2( 0.2, 0 )
+blend_point_4/node = SubResource( 479 )
+blend_point_4/pos = Vector2( -0.2, 0 )
+blend_point_5/node = SubResource( 480 )
+blend_point_5/pos = Vector2( -0.1, 0.3 )
+blend_point_6/node = SubResource( 481 )
+blend_point_6/pos = Vector2( 0.1, 0.3 )
+blend_point_7/node = SubResource( 482 )
+blend_point_7/pos = Vector2( 0.1, -0.3 )
+blend_point_8/node = SubResource( 483 )
+blend_point_8/pos = Vector2( -0.1, -0.3 )
+blend_point_9/node = SubResource( 484 )
+blend_point_9/pos = Vector2( 0, 0.7 )
+blend_point_10/node = SubResource( 470 )
+blend_point_10/pos = Vector2( 0, -0.7 )
+blend_point_11/node = SubResource( 471 )
+blend_point_11/pos = Vector2( 0.3, 0.5 )
+blend_point_12/node = SubResource( 472 )
+blend_point_12/pos = Vector2( -0.3, 0.5 )
+blend_point_13/node = SubResource( 473 )
+blend_point_13/pos = Vector2( 0.3, -0.5 )
+blend_point_14/node = SubResource( 474 )
+blend_point_14/pos = Vector2( -0.3, -0.5 )
+blend_point_15/node = SubResource( 475 )
+blend_point_15/pos = Vector2( 0.6, 0 )
+blend_point_16/node = SubResource( 476 )
+blend_point_16/pos = Vector2( -0.6, 0 )
 
 [sub_resource type="AnimationNodeTransition" id=457]
 input_count = 3
@@ -6094,7 +6292,7 @@ animation = "RunForwardDLeft"
 blend_point_0/node = SubResource( 410 )
 blend_point_0/pos = Vector2( 0, 0 )
 blend_point_1/node = SubResource( 411 )
-blend_point_1/pos = Vector2( 0, -0.8 )
+blend_point_1/pos = Vector2( 0, -0.7 )
 blend_point_2/node = SubResource( 415 )
 blend_point_2/pos = Vector2( 0, -0.5 )
 blend_point_3/node = SubResource( 416 )
@@ -6142,7 +6340,9 @@ input_1/name = "Stand"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=406]
-graph_offset = Vector2( -954.977, -78.924 )
+graph_offset = Vector2( -812.977, -68.924 )
+nodes/Add2/node = SubResource( 465 )
+nodes/Add2/position = Vector2( -160, 60 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -1260, 300 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -6162,9 +6362,11 @@ nodes/Animation/position = Vector2( -1260, 300 )
 "nodes/Animation 9/node" = SubResource( 459 )
 "nodes/Animation 9/position" = Vector2( -1231.67, 176.414 )
 nodes/Attack/node = SubResource( 48 )
-nodes/Attack/position = Vector2( -660, 20 )
+nodes/Attack/position = Vector2( -680, 40 )
 nodes/AttackTransition/node = SubResource( 67 )
 nodes/AttackTransition/position = Vector2( -880, 300 )
+nodes/AudioMovement/node = SubResource( 466 )
+nodes/AudioMovement/position = Vector2( -539.088, 526.852 )
 nodes/IdleAlert/node = SubResource( 457 )
 nodes/IdleAlert/position = Vector2( 420, -160 )
 nodes/JumpBlend/node = SubResource( 75 )
@@ -6172,9 +6374,9 @@ nodes/JumpBlend/position = Vector2( 60, 100 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 408 )
-nodes/Movement/position = Vector2( -1200, -100 )
+nodes/Movement/position = Vector2( -1220, -60 )
 nodes/Shoot/node = SubResource( 409 )
-nodes/Shoot/position = Vector2( -340, 40 )
+nodes/Shoot/position = Vector2( -420, 20 )
 nodes/TimeScale/node = SubResource( 347 )
 nodes/TimeScale/position = Vector2( -1060, 420 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
@@ -6182,14 +6384,14 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 nodes/Zero/node = SubResource( 460 )
 nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "Shoot", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "TimeScale", 0, "Animation 2", "TimeScale 2", 0, "Animation", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
 
 [sub_resource type="CapsuleShape" id=28]
 radius = 0.75
-height = 1.5
+height = 1.1
 
 [node name="RangeGruntNew" type="KinematicBody" groups=["Enemy", "Range"]]
 collision_layer = 8
@@ -6204,11 +6406,32 @@ right_ray_path = NodePath("RightRayCast")
 left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
+audio_path = NodePath("Audio")
 projectile = ExtResource( 4 )
 ragdoll = ExtResource( 6 )
 current_health = 40
 shoot_damage = 15
 StartTimer_path = NodePath("Start")
+
+[node name="Audio" type="Spatial" parent="."]
+script = ExtResource( 7 )
+
+[node name="Step" type="AudioStreamPlayer3D" parent="Audio"]
+unit_size = 20.0
+max_db = -6.0
+max_distance = 100.0
+
+[node name="Hit" type="AudioStreamPlayer3D" parent="Audio"]
+unit_size = 5.0
+
+[node name="Whoosh" type="AudioStreamPlayer3D" parent="Audio"]
+unit_size = 10.0
+max_db = 2.0
+
+[node name="Shoot" type="AudioStreamPlayer3D" parent="Audio"]
+unit_db = -2.0
+unit_size = 20.0
+max_distance = 100.0
 
 [node name="Target" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
@@ -6377,7 +6600,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, -1.00712e-07, -5.37329e-09, -5.87482e-08, -0.625041, 0.780592, -8.19751e-08, -0.780593, -0.625041, -2.00352e-08, 0.211078, -0.913625 )
+transform = Transform( 1, 2.62849e-08, 1.00927e-08, 4.02451e-10, -0.371537, 0.928418, 2.81538e-08, -0.928419, -0.371537, 4.5461e-09, 0.223582, -0.948138 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -6397,10 +6620,15 @@ transform = Transform( 1, -9.09495e-13, 3.18323e-12, -3.63798e-12, 1, 1.19209e-0
 anims/Alert = SubResource( 425 )
 anims/AttackLeft = SubResource( 426 )
 anims/AttackRight = SubResource( 427 )
+anims/AudioStep1 = SubResource( 461 )
+anims/AudioStep2 = SubResource( 462 )
+anims/AudioStep3 = SubResource( 463 )
+anims/AudioStep4 = SubResource( 464 )
 anims/Idle = SubResource( 428 )
 anims/Jump = SubResource( 429 )
 anims/JumpEnd = SubResource( 430 )
 anims/JumpStart = SubResource( 431 )
+anims/NoAudio = SubResource( 467 )
 anims/RunBackwars = SubResource( 432 )
 anims/RunBackwarsDLeft = SubResource( 433 )
 anims/RunBackwarsDRight = SubResource( 434 )
@@ -6426,10 +6654,11 @@ anims/WalkRight = SubResource( 452 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 406 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 process_mode = 0
+parameters/Add2/add_amount = 1.0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
+parameters/AudioMovement/blend_position = Vector2( 0, 0 )
 parameters/IdleAlert/current = 0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 0
@@ -6475,7 +6704,7 @@ cast_to = Vector3( 0, -1.55, 0 )
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.670285, -0.742105, 0, 0.742105, 0.670285, 0, -0.183894, -0.356655 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.198336, -0.356655 )
 shape = SubResource( 28 )
 
 [node name="GlobalParticles" type="Spatial" parent="."]

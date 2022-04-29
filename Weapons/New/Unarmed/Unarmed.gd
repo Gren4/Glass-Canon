@@ -7,6 +7,14 @@ var is_reloading : bool = false
 func fire():
 	pass
 	
+func fire_stop():
+	pass
+	
+func climb():
+	pass
+	
+func update_info():
+	pass
 	
 func reload():
 	pass

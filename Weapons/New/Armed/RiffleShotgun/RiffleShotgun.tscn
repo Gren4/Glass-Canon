@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=58 format=2]
 
 [ext_resource path="res://Weapons/New/Armed/RiffleShotgun/Material.material" type="Material" id=1]
 [ext_resource path="res://Weapons/New/Armed/RiffleShotgun/RiffleShotgun.gd" type="Script" id=2]
@@ -8,7 +8,9 @@
 [ext_resource path="res://Weapons/BulletTrace.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Weapons/Impact.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Materials/GunMat.tres" type="Material" id=8]
+[ext_resource path="res://Weapons/New/Armed/Hit.gd" type="Script" id=9]
 [ext_resource path="res://Weapons/New/Armed/RiffleShotgun/ShootRifle.gd" type="Script" id=10]
+[ext_resource path="res://Weapons/New/Armed/RiffleShotgun/AudioRiffleShotgun.gd" type="Script" id=11]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "RiffleShotgun_Cube002"
@@ -1045,7 +1047,7 @@ nodes/TimeScale/position = Vector2( -1120, -40 )
 nodes/Unequip/node = SubResource( 32 )
 nodes/Unequip/position = Vector2( 400, -20 )
 nodes/output/position = Vector2( 840, -20 )
-node_connections = [ "output", 0, "Climb", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale", 0, "Animation 7", "TimeScale 2", 0, "Animation 8", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "TimeScale 5", 0, "Animation 12", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "TimeScale 4", 0, "Animation 5", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "TimeScale 3", 0, "Animation 6", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool" ]
+node_connections = [ "output", 0, "Climb", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "TimeScale 4", 0, "Animation 5", "TimeScale 3", 0, "Animation 6", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "TimeScale 5", 0, "Animation 12", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale 2", 0, "Animation 8", "TimeScale", 0, "Animation 7" ]
 
 [sub_resource type="SpatialMaterial" id=59]
 params_line_width = 128.0
@@ -1059,7 +1061,7 @@ hole_effect = ExtResource( 5 )
 trace_effect = ExtResource( 6 )
 muzzle_flash_path = NodePath("Skeleton/BoneAttachment2/MuzzleFlash")
 animation_tree_path = NodePath("RiffleAnimationTree")
-audio_path = NodePath("Audio/Shoot")
+audio_path = NodePath("Audio")
 arms_path = NodePath("Arms")
 right_hand_path = NodePath("Skeleton/BoneAttachment/RightHand")
 left_hand_path = NodePath("Skeleton/BoneAttachment2/LeftHand")
@@ -1193,9 +1195,13 @@ target_node = NodePath("../../../../LeftHandForAnim")
 max_iterations = 2
 
 [node name="Audio" type="Node" parent="."]
+script = ExtResource( 11 )
 
 [node name="Shoot" type="AudioStreamPlayer" parent="Audio"]
 volume_db = -5.0
 script = ExtResource( 10 )
+
+[node name="Hit" type="AudioStreamPlayer" parent="Audio"]
+script = ExtResource( 9 )
 
 [editable path="Arms"]

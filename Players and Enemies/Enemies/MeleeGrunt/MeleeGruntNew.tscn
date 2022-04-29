@@ -1,10 +1,14 @@
-[gd_scene load_steps=73 format=2]
+[gd_scene load_steps=97 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=3]
 [ext_resource path="res://Materials/Grunt.tres" type="Material" id=4]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioEnemy.gd" type="Script" id=5]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioMeleeGrunt.gd" type="Script" id=5]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntAudioStep1.tres" type="Animation" id=6]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntAudioStep3.tres" type="Animation" id=7]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntAudioStep4.tres" type="Animation" id=8]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntAudioStep2.tres" type="Animation" id=9]
 
 [sub_resource type="ArrayMesh" id=348]
 resource_name = "MeleeGruntNew2_Cube"
@@ -88,7 +92,7 @@ bind/20/bone = -1
 bind/20/pose = Transform( 0.99957, -0.0101471, 0.0274965, -0.0274979, 1.16415e-10, 0.999622, -0.0101432, -0.999949, -0.000279023, -0.306977, -0.289242, 1.12815 )
 
 [sub_resource type="BoxShape" id=392]
-extents = Vector3( 0.120862, 0.725873, 0.241515 )
+extents = Vector3( 0.121, 0.9, 0.242 )
 
 [sub_resource type="Animation" id=350]
 resource_name = "Alert"
@@ -398,9 +402,12 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"times": PoolRealArray( 0.3, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.2, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
+"args": [ "Whoosh" ],
+"method": "play_audio"
+}, {
 "args": [ "right" ],
 "method": "attack"
 }, {
@@ -566,9 +573,12 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"times": PoolRealArray( 0.3, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0.23, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "values": [ {
+"args": [ "Whoosh" ],
+"method": "play_audio"
+}, {
 "args": [ "left" ],
 "method": "attack"
 }, {
@@ -1181,6 +1191,11 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 0, 0, 0, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.291667, 1, 0, 0, 0, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
+
+[sub_resource type="Animation" id=423]
+resource_name = "NoAudio"
+length = 0.5
+loop = true
 
 [sub_resource type="Animation" id=357]
 resource_name = "RunBackwards"
@@ -1849,26 +1864,6 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 0.0423259, 2.19296, -1.45006, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, 0.0423259, 2.19296, -1.45006, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
-tracks/21/type = "method"
-tracks/21/path = NodePath(".")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/keys = {
-"times": PoolRealArray( 0, 0.25, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"values": [ {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-} ]
-}
 
 [sub_resource type="Animation" id=361]
 resource_name = "RunForwardDLeft"
@@ -2021,26 +2016,6 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, 2.97194, 0.550325, -1.47979, -0.00388319, -5.90973e-08, -0.382664, 0.92388, 1, 1, 1, 0.5, 1, 2.97194, 0.550325, -1.47979, -0.00388319, -5.90973e-08, -0.382664, 0.92388, 1, 1, 1 )
-tracks/21/type = "method"
-tracks/21/path = NodePath(".")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/keys = {
-"times": PoolRealArray( 0, 0.25, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"values": [ {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-} ]
-}
 
 [sub_resource type="Animation" id=362]
 resource_name = "RunForwardDRight"
@@ -2193,26 +2168,6 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -3.05216, 1.23024, -1.41866, 0.00388313, 2.31223e-08, 0.382664, 0.92388, 1, 1, 1, 0.5, 1, -3.05216, 1.23024, -1.41866, 0.00388313, 2.31223e-08, 0.382664, 0.92388, 1, 1, 1 )
-tracks/21/type = "method"
-tracks/21/path = NodePath(".")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/keys = {
-"times": PoolRealArray( 0, 0.25, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"values": [ {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-} ]
-}
 
 [sub_resource type="Animation" id=363]
 resource_name = "RunLeft"
@@ -2365,26 +2320,6 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
-tracks/21/type = "method"
-tracks/21/path = NodePath(".")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/keys = {
-"times": PoolRealArray( 0.1, 0.33, 0.47 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"values": [ {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-} ]
-}
 
 [sub_resource type="Animation" id=364]
 resource_name = "RunRight"
@@ -2537,26 +2472,6 @@ tracks/20/loop_wrap = true
 tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.5, 1, -0.0217969, 0.000201106, -0.705044, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
-tracks/21/type = "method"
-tracks/21/path = NodePath(".")
-tracks/21/interp = 1
-tracks/21/loop_wrap = true
-tracks/21/imported = false
-tracks/21/enabled = true
-tracks/21/keys = {
-"times": PoolRealArray( 0.1, 0.33, 0.47 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"values": [ {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-}, {
-"args": [ "Step" ],
-"method": "play_audio"
-} ]
-}
 
 [sub_resource type="Animation" id=365]
 resource_name = "Stand"
@@ -4380,6 +4295,8 @@ tracks/20/imported = false
 tracks/20/enabled = true
 tracks/20/keys = PoolRealArray( 0, 1, -0.0152229, 0.000201106, -0.0571994, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1, 0.875, 1, -0.0152229, 0.000201106, -0.0571994, 5.95901e-08, -2.58297e-10, -1.86265e-09, 1, 1, 1, 1 )
 
+[sub_resource type="AnimationNodeAdd2" id=418]
+
 [sub_resource type="AnimationNodeAnimation" id=66]
 animation = "AttacRight"
 
@@ -4414,6 +4331,93 @@ input_0/name = "LeftAttack"
 input_0/auto_advance = true
 input_1/name = "RightAttack"
 input_1/auto_advance = true
+
+[sub_resource type="AnimationNodeAnimation" id=420]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=421]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=433]
+animation = "AudioStep4"
+
+[sub_resource type="AnimationNodeAnimation" id=434]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=435]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=436]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=437]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=438]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=439]
+animation = "AudioStep3"
+
+[sub_resource type="AnimationNodeAnimation" id=422]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=424]
+animation = "NoAudio"
+
+[sub_resource type="AnimationNodeAnimation" id=426]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=427]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=428]
+animation = "AudioStep1"
+
+[sub_resource type="AnimationNodeAnimation" id=429]
+animation = "AudioStep2"
+
+[sub_resource type="AnimationNodeAnimation" id=430]
+animation = "AudioStep2"
+
+[sub_resource type="AnimationNodeAnimation" id=440]
+animation = "AudioStep4"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id=419]
+blend_point_0/node = SubResource( 420 )
+blend_point_0/pos = Vector2( 0, -0.7 )
+blend_point_1/node = SubResource( 421 )
+blend_point_1/pos = Vector2( 0.4, -0.4 )
+blend_point_2/node = SubResource( 422 )
+blend_point_2/pos = Vector2( -0.4, -0.4 )
+blend_point_3/node = SubResource( 424 )
+blend_point_3/pos = Vector2( 0, 0 )
+blend_point_4/node = SubResource( 426 )
+blend_point_4/pos = Vector2( -0.4, 0.4 )
+blend_point_5/node = SubResource( 427 )
+blend_point_5/pos = Vector2( 0.4, 0.4 )
+blend_point_6/node = SubResource( 428 )
+blend_point_6/pos = Vector2( 0, 0.7 )
+blend_point_7/node = SubResource( 429 )
+blend_point_7/pos = Vector2( -0.5, 0 )
+blend_point_8/node = SubResource( 430 )
+blend_point_8/pos = Vector2( 0.5, 0 )
+blend_point_9/node = SubResource( 440 )
+blend_point_9/pos = Vector2( -0.3, 0 )
+blend_point_10/node = SubResource( 433 )
+blend_point_10/pos = Vector2( 0.3, 0 )
+blend_point_11/node = SubResource( 434 )
+blend_point_11/pos = Vector2( 0, 0.3 )
+blend_point_12/node = SubResource( 435 )
+blend_point_12/pos = Vector2( 0, -0.3 )
+blend_point_13/node = SubResource( 436 )
+blend_point_13/pos = Vector2( -0.2, 0.1 )
+blend_point_14/node = SubResource( 437 )
+blend_point_14/pos = Vector2( -0.2, -0.1 )
+blend_point_15/node = SubResource( 438 )
+blend_point_15/pos = Vector2( 0.2, -0.1 )
+blend_point_16/node = SubResource( 439 )
+blend_point_16/pos = Vector2( 0.2, 0.1 )
 
 [sub_resource type="AnimationNodeTransition" id=412]
 input_count = 3
@@ -4534,13 +4538,15 @@ input_1/name = "Stay"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -585.361, 161.722 )
+graph_offset = Vector2( -614.65, 39.4529 )
+nodes/Add2/node = SubResource( 418 )
+nodes/Add2/position = Vector2( -80, 80 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
 "nodes/Animation 2/position" = Vector2( -920, 360 )
 "nodes/Animation 3/node" = SubResource( 70 )
-"nodes/Animation 3/position" = Vector2( -340, -160 )
+"nodes/Animation 3/position" = Vector2( 140, -240 )
 "nodes/Animation 4/node" = SubResource( 71 )
 "nodes/Animation 4/position" = Vector2( -138.308, 348.88 )
 "nodes/Animation 5/node" = SubResource( 72 )
@@ -4548,13 +4554,15 @@ nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 6/node" = SubResource( 73 )
 "nodes/Animation 6/position" = Vector2( -144.068, 574.96 )
 "nodes/Animation 7/node" = SubResource( 411 )
-"nodes/Animation 7/position" = Vector2( -78.7199, -2.592 )
+"nodes/Animation 7/position" = Vector2( 140, -60 )
 "nodes/Animation 8/node" = SubResource( 413 )
 "nodes/Animation 8/position" = Vector2( -820, 40 )
 nodes/Attack/node = SubResource( 48 )
-nodes/Attack/position = Vector2( -226.8, 147.44 )
+nodes/Attack/position = Vector2( -320, 40 )
 nodes/AttackTransition/node = SubResource( 67 )
 nodes/AttackTransition/position = Vector2( -500, 220 )
+nodes/AudioMovement/node = SubResource( 419 )
+nodes/AudioMovement/position = Vector2( -460, 400 )
 nodes/IdleAlert/node = SubResource( 412 )
 nodes/IdleAlert/position = Vector2( 468.711, -79.3152 )
 nodes/JumpBlend/node = SubResource( 75 )
@@ -4562,7 +4570,7 @@ nodes/JumpBlend/position = Vector2( 160, 80 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 410 )
-nodes/Movement/position = Vector2( -820, -140 )
+nodes/Movement/position = Vector2( -860, -200 )
 nodes/TimeScale/node = SubResource( 347 )
 nodes/TimeScale/position = Vector2( -700, 340 )
 "nodes/TimeScale 2/node" = SubResource( 346 )
@@ -4570,7 +4578,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "Attack", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "TimeScale", 0, "Animation 2", "Zero", 0, "Movement", "Zero", 1, "Animation 8" ]
+node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "TimeScale 2", 0, "Animation", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -4602,7 +4610,15 @@ script = ExtResource( 5 )
 
 [node name="Step" type="AudioStreamPlayer3D" parent="Audio"]
 unit_size = 20.0
-max_distance = 50.0
+max_db = -6.0
+max_distance = 100.0
+
+[node name="Hit" type="AudioStreamPlayer3D" parent="Audio"]
+unit_size = 5.0
+
+[node name="Whoosh" type="AudioStreamPlayer3D" parent="Audio"]
+unit_size = 10.0
+max_db = 2.0
 
 [node name="Target" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
@@ -4627,7 +4643,7 @@ bones/1/name = "MidTorso"
 bones/1/parent = 0
 bones/1/rest = Transform( 1, -5.87456e-08, -3.30059e-07, -6.01619e-08, 0.937098, -0.349066, 3.29803e-07, 0.349066, 0.937098, -1.37769e-09, 0.390751, 7.12839e-08 )
 bones/1/enabled = true
-bones/1/bound_children = [ NodePath("MidBone") ]
+bones/1/bound_children = [  ]
 bones/2/name = "UpTorso"
 bones/2/parent = 1
 bones/2/rest = Transform( 1, 8.74816e-07, -3.23042e-06, -3.23584e-06, 0.00625694, -0.99998, -8.54586e-07, 0.99998, 0.00625694, 8.51434e-10, 0.348884, -5.97266e-10 )
@@ -4657,7 +4673,7 @@ bones/7/name = "Claw.L"
 bones/7/parent = 6
 bones/7/rest = Transform( -0.982375, -0.169682, -0.0784027, 0.139045, -0.383052, -0.913202, 0.124922, -0.908008, 0.399894, 1.74672e-07, 0.720556, 1.68531e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("ClawL") ]
+bones/7/bound_children = [  ]
 bones/8/name = "UpperArm.R"
 bones/8/parent = 2
 bones/8/rest = Transform( 0.158607, -0.879295, 0.449093, 0.967783, 0.0483651, -0.247099, 0.195552, 0.473816, 0.858638, -0.351179, 0.317814, 0.0771444 )
@@ -4672,7 +4688,7 @@ bones/10/name = "Claw.R"
 bones/10/parent = 9
 bones/10/rest = Transform( -0.996916, 0.00345513, 0.0784026, -0.0732082, -0.400878, -0.913202, 0.0282746, -0.916125, 0.399895, -1.28112e-07, 0.720556, 1.15175e-09 )
 bones/10/enabled = true
-bones/10/bound_children = [ NodePath("ClawR") ]
+bones/10/bound_children = [  ]
 bones/11/name = "UpperLeg.L"
 bones/11/parent = 0
 bones/11/rest = Transform( -0.947681, 0.301932, -0.103631, -0.303701, -0.952767, 0.00135747, -0.0983265, 0.0327593, 0.994616, 0.149322, 0.146779, -0.041739 )
@@ -4731,7 +4747,7 @@ skin = SubResource( 349 )
 material/0 = null
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.623565, -0.211786, -0.75254, -0.0774046, -0.941149, 0.329005, -0.77793, 0.263406, 0.570475, -0.335477, 1.94255, -0.906828 )
+transform = Transform( -0.63973, -0.212578, -0.738619, -0.0585954, -0.944705, 0.322642, -0.766363, 0.249684, 0.5919, -0.291144, 1.91875, -0.89001 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4745,7 +4761,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.655404, 0.107998, 0.747518, 0.226386, -0.916127, 0.330849, 0.720552, 0.386068, 0.575984, 0.299074, 1.93625, -0.895832 )
+transform = Transform( -0.654826, 0.097608, 0.749451, 0.223119, -0.922463, 0.31509, 0.722096, 0.373546, 0.582274, 0.359453, 1.94283, -0.926149 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4759,7 +4775,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="MidBone" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.999962, -0.000755091, 0.00865702, -7.45058e-09, 0.996217, 0.0868922, -0.00868989, 0.0868889, -0.99618, -0.0170884, 1.83957, -0.0336218 )
+transform = Transform( -0.99969, 0.00253273, -0.0247879, -9.31323e-09, 0.99482, 0.101647, 0.0249169, 0.101616, -0.994512, 0.0489629, 1.81013, -0.0355565 )
 bone_name = "MidTorso"
 
 [node name="Spatial" type="Spatial" parent="Body/Skeleton/MidBone"]
@@ -4769,10 +4785,15 @@ transform = Transform( 1, 0, 0, 0, 0.707106, -0.707107, 0, 0.707106, 0.707107, 0
 anims/Alert = SubResource( 350 )
 anims/AttacRight = SubResource( 351 )
 anims/AttackLeft = SubResource( 352 )
+anims/AudioStep1 = ExtResource( 6 )
+anims/AudioStep2 = ExtResource( 9 )
+anims/AudioStep3 = ExtResource( 7 )
+anims/AudioStep4 = ExtResource( 8 )
 anims/Idle = SubResource( 353 )
 anims/Jump = SubResource( 354 )
 anims/JumpEnd = SubResource( 355 )
 anims/JumpStart = SubResource( 356 )
+anims/NoAudio = SubResource( 423 )
 anims/RunBackwards = SubResource( 357 )
 anims/RunBackwardsDLeft = SubResource( 358 )
 anims/RunBackwardsDRight = SubResource( 359 )
@@ -4799,12 +4820,14 @@ tree_root = SubResource( 300 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 process_mode = 0
+parameters/Add2/add_amount = 1.0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
+parameters/AudioMovement/blend_position = Vector2( 0, 0 )
 parameters/IdleAlert/current = 2
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 2
-parameters/Movement/blend_position = Vector2( 0, 0 )
+parameters/Movement/blend_position = Vector2( 0.00348437, -0.70438 )
 parameters/TimeScale/scale = 0.8
 "parameters/TimeScale 2/scale" = 0.8
 parameters/Zero/current = 1
@@ -4853,3 +4876,4 @@ shape = SubResource( 80 )
 [node name="Start" type="Timer" parent="."]
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="timeout" from="Start" to="." method="_on_Start_timeout"]
