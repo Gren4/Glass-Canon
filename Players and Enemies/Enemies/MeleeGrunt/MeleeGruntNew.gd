@@ -31,7 +31,7 @@ onready var  left_down_ray = get_node(left_down_ray_path)
 
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 
-const ACCEL : float = 15.0
+const ACCEL : float = 5.0
 const SPEED_AIR : float = 18.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 14.0
@@ -108,6 +108,8 @@ var is_moving : bool = false
 var attack_side : int = 0
 var ragdoll_create : bool = true
 
+var hit_confirm : bool = false
+
 
 func _ready():
 	animation_tree.set("parameters/IdleAlert/current",0)
@@ -166,6 +168,7 @@ func state_machine(delta):
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
+			attack()
 			move_to_target(delta,-dist,ATTACK_MELEE)
 		EVADE:
 			evading(delta)
@@ -283,17 +286,18 @@ func finalize_velocity(delta):
 		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
 		animation_tree.set("parameters/AudioMovement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
-func attack(side:String):
-	var targets
-	match side:
-		"left":
-			targets = hitboxl.get_overlapping_bodies()
-		"right":
-			targets = hitboxr.get_overlapping_bodies()
-	if player in targets:
-		player.update_health(-attack_damage, self.global_transform.origin)
-		audio.hit()
-	pass
+func attack():
+	if hit_confirm:
+		var targets
+		match animation_tree.get("parameters/AttackTransition/current"):
+			0:
+				targets = hitboxl.get_overlapping_bodies()
+			1:
+				targets = hitboxr.get_overlapping_bodies()
+		if player in targets:
+			player.update_health(-attack_damage, self.global_transform.origin)
+			audio.hit()
+			hit_confirm = false
 
 func on_animation_finish(anim_name:String):
 	match anim_name:
@@ -569,6 +573,7 @@ func play_audio(var name : String) -> void:
 				audio.step()
 		"Whoosh":
 			audio.whoosh()
+			hit_confirm = true
 
 func _on_Start_timeout():
 	animation_tree.active = true

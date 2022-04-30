@@ -32,7 +32,7 @@ onready var  left_down_ray = get_node(left_down_ray_path)
 
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 
-const ACCEL : float = 10.0
+const ACCEL : float = 5.0
 const SPEED_AIR : float = 8.0
 const SPEED_DOP_ATTACK : float = 20.0
 const SPEED_DOP_EVADE : float = 14.0
@@ -118,10 +118,12 @@ var jump_time : float = 0.0
 var p1 : Vector3 = Vector3.ZERO
 var offset : Vector3 = Vector3.ZERO
 
+var is_moving : bool = false
+
 var attack_side : int = 0
 var ragdoll_create : bool = true
 
-var is_moving : bool = false
+var hit_confirm : bool = false
 
 func _ready():
 	animation_tree.set("parameters/IdleAlert/current",0)
@@ -180,11 +182,8 @@ func state_machine(delta):
 				return
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
-			front_ray.force_raycast_update()
-			if front_ray.is_colliding():
-				move_to_target(delta,-dist,ATTACK_MELEE)
-			else:
-				move_to_target(delta,Vector3.ZERO,ATTACK_MELEE)
+			attack()
+			move_to_target(delta,-dist,ATTACK_MELEE)
 		SHOOT:
 			velocityXY = velocityXY.linear_interpolate(Vector3.ZERO, delta)
 			speed = SPEED_SIDE_STEP
@@ -305,18 +304,19 @@ func finalize_velocity(delta):
 		animation_tree.set("parameters/AudioMovement/blend_position", Vector2(loc_v.x,loc_v.z))
 	
 func attack():
-	var targets = hitbox.get_overlapping_bodies()
-	if player in targets:
-		audio.hit()
-		player.update_health(-attack_damage, self.global_transform.origin)
-	pass
+	if hit_confirm:
+		var targets = hitbox.get_overlapping_bodies()
+		if player in targets:
+			audio.hit()
+			player.update_health(-attack_damage, self.global_transform.origin)
+			hit_confirm = false
 
 func shoot():
 	if player.speed <= player.WALLRUNNING_SPEED:
 		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0))
 	else:
 		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin) + Vector3(0,1,0))
-	
+
 func on_animation_finish(anim_name:String):
 	match anim_name:
 		"AttackLeft", "AttackRight":
@@ -677,6 +677,7 @@ func play_audio(var name : String) -> void:
 				audio.step()
 		"Whoosh":
 			audio.whoosh()
+			hit_confirm = true
 		"Shoot":
 			audio.shoot()
 

@@ -404,14 +404,11 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"times": PoolRealArray( 0.2, 0.3, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ "Whoosh" ],
 "method": "play_audio"
-}, {
-"args": [ "left" ],
-"method": "attack"
 }, {
 "args": [ "AttackLeft" ],
 "method": "on_animation_finish"
@@ -575,14 +572,11 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"times": PoolRealArray( 0.2, 0.3, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0.2, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ "Whoosh" ],
 "method": "play_audio"
-}, {
-"args": [ "right" ],
-"method": "attack"
 }, {
 "args": [ "AttackRight" ],
 "method": "on_animation_finish"
@@ -4265,7 +4259,7 @@ animation = "AttackLeft"
 
 [sub_resource type="AnimationNodeOneShot" id=48]
 filter_enabled = true
-filters = [ ".", "Armature/Skeleton:bottom_arm_l", "Armature/Skeleton:bottom_arm_r", "Armature/Skeleton:claw_l", "Armature/Skeleton:claw_r", "Armature/Skeleton:head", "Armature/Skeleton:neck", "Armature/Skeleton:torso", "Armature/Skeleton:upper_arm_l", "Armature/Skeleton:upper_arm_r", "Armature001/Skeleton:BottomArm.L", "Armature001/Skeleton:BottomArm.R", "Armature001/Skeleton:Claw.L", "Armature001/Skeleton:Claw.R", "Armature001/Skeleton:Head", "Armature001/Skeleton:Neck", "Armature001/Skeleton:UpTorso", "Armature001/Skeleton:UpperArm.L", "Armature001/Skeleton:UpperArm.R", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:MidleTorso", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton:BottomArm.L", "Body/Skeleton:BottomArm.R", "Body/Skeleton:Claw.L", "Body/Skeleton:Claw.R", "Body/Skeleton:Head", "Body/Skeleton:MidTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpTorso", "Body/Skeleton:UpperArm.L", "Body/Skeleton:UpperArm.R" ]
+filters = [ ".", "Armature/Skeleton:bottom_arm_l", "Armature/Skeleton:bottom_arm_r", "Armature/Skeleton:claw_l", "Armature/Skeleton:claw_r", "Armature/Skeleton:head", "Armature/Skeleton:neck", "Armature/Skeleton:torso", "Armature/Skeleton:upper_arm_l", "Armature/Skeleton:upper_arm_r", "Armature001/Skeleton:BottomArm.L", "Armature001/Skeleton:BottomArm.R", "Armature001/Skeleton:Claw.L", "Armature001/Skeleton:Claw.R", "Armature001/Skeleton:Head", "Armature001/Skeleton:Neck", "Armature001/Skeleton:UpTorso", "Armature001/Skeleton:UpperArm.L", "Armature001/Skeleton:UpperArm.R", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:MidleTorso", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton:BottomArm.L", "Body/Skeleton:BottomArm.R", "Body/Skeleton:Claw.L", "Body/Skeleton:Claw.R", "Body/Skeleton:Head", "Body/Skeleton:Neck", "Body/Skeleton:UpTorso", "Body/Skeleton:UpperArm.L", "Body/Skeleton:UpperArm.R" ]
 
 [sub_resource type="AnimationNodeTransition" id=67]
 input_count = 2
@@ -4480,7 +4474,7 @@ input_1/name = "Stay"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -794, 157.75 )
+graph_offset = Vector2( -808.664, -86.893 )
 nodes/Add2/node = SubResource( 418 )
 nodes/Add2/position = Vector2( -80, 80 )
 nodes/Animation/node = SubResource( 49 )
@@ -4615,7 +4609,7 @@ bones/7/name = "Claw.L"
 bones/7/parent = 6
 bones/7/rest = Transform( -0.982375, -0.186902, -0.00260486, 0.139045, -0.721381, -0.678437, 0.124922, -0.666842, 0.734654, 1.07109e-07, 0.720556, 1.37038e-07 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("ClawL") ]
+bones/7/bound_children = [  ]
 bones/8/name = "UpperArm.R"
 bones/8/parent = 2
 bones/8/rest = Transform( 0.318269, -0.879295, 0.354323, 0.799766, 0.0483651, -0.598362, 0.508999, 0.473815, 0.718623, -0.351179, 0.317814, 0.0771444 )
@@ -4630,7 +4624,7 @@ bones/10/name = "Claw.R"
 bones/10/parent = 9
 bones/10/rest = Transform( -0.982375, 0.186902, 0.00260474, -0.139045, -0.721381, -0.678437, -0.124922, -0.666842, 0.734655, -2.70788e-07, 0.720556, -3.54956e-08 )
 bones/10/enabled = true
-bones/10/bound_children = [ NodePath("ClawR") ]
+bones/10/bound_children = [  ]
 bones/11/name = "UpperLeg.L"
 bones/11/parent = 0
 bones/11/rest = Transform( -0.992542, -0.0896887, 0.082574, 0.121735, -0.765646, 0.631638, 0.00657161, 0.63698, 0.770852, 0.324961, 0.146779, -0.0417387 )
@@ -4688,7 +4682,7 @@ skin = SubResource( 442 )
 material/0 = ExtResource( 4 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.136784, 0.919182, 0.369316, -0.671927, -0.360034, 0.647217, 0.727877, -0.159625, 0.666871, 0.15613, 1.83474, -0.688295 )
+transform = Transform( -0.210764, 0.899124, 0.383609, -0.688366, -0.415139, 0.594821, 0.69407, -0.138697, 0.706423, 0.1399, 2.04587, -1.04337 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -4698,11 +4692,11 @@ input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Right"]
-transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0.00892669, 0.861218, 0.10278 )
+transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0, 1.4, 0.35 )
 shape = SubResource( 392 )
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.0595077, -0.960403, -0.272186, 0.948943, -0.139046, 0.283153, -0.309786, -0.241439, 0.919641, 0.0685102, 1.97952, -1.11499 )
+transform = Transform( -0.0814456, -0.947843, -0.308157, 0.95022, -0.167141, 0.262954, -0.300745, -0.271401, 0.914273, 0.0853896, 2.18621, -1.44484 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -4712,7 +4706,7 @@ input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawL/Left"]
-transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0.00892669, 0.861218, 0.10278 )
+transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0, 1.1, 0.2 )
 shape = SubResource( 392 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -4752,18 +4746,19 @@ anims/WalkRight = SubResource( 470 )
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( 300 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 process_mode = 0
 parameters/Add2/add_amount = 1.0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 0
 parameters/AudioMovement/blend_position = Vector2( 0, 0 )
-parameters/IdleAlert/current = 0
+parameters/IdleAlert/current = 2
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 0
-parameters/Movement/blend_position = Vector2( 0, 0 )
+parameters/Movement/blend_position = Vector2( 0, -9.308 )
 parameters/TimeScale/scale = 0.8
 "parameters/TimeScale 2/scale" = 0.8
-parameters/Zero/current = 1
+parameters/Zero/current = 0
 
 [node name="Area" type="Area" parent="."]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, -0.210877, 0 )
