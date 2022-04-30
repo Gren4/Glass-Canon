@@ -121,7 +121,7 @@ func _ready():
 	pass
 	
 func init_timer_set():
-	StartTimer.wait_time = 1.0 + randf()/2.0
+	StartTimer.wait_time = 0.1 + randf()*0.1
 	StartTimer.start()
 	
 
