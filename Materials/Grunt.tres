@@ -29,7 +29,7 @@ constant = Color( 1, 0.75309, 0, 1 )
 constant = 0.2
 
 [sub_resource type="VisualShaderNodeColorConstant" id=1]
-constant = Color( 0.224515, 0.519935, 0, 1 )
+constant = Color( 0.0451355, 0.184041, 0.226563, 1 )
 
 [sub_resource type="OpenSimplexNoise" id=2]
 
@@ -74,7 +74,7 @@ void vertex() {
 
 void fragment() {
 // Color:2
-	vec3 n_out2p0 = vec3(0.224515, 0.519935, 0.000000);
+	vec3 n_out2p0 = vec3(0.045135, 0.184041, 0.226563);
 	float n_out2p1 = 1.000000;
 
 // Input:4
@@ -139,7 +139,6 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 68.5924, -96.0244 )
 modes/cull = 2
 modes/depth_draw = 3
 nodes/fragment/0/position = Vector2( 1040, 100 )

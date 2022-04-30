@@ -5,5 +5,12 @@
 [resource]
 background_mode = 2
 background_sky = SubResource( 1 )
+ambient_light_color = Color( 0.701961, 0.168627, 0.168627, 1 )
+fog_sun_amount = 0.42
 fog_depth_curve = 0.535887
 fog_transmit_curve = 0.574349
+auto_exposure_scale = 1.19
+dof_blur_far_distance = 120.0
+dof_blur_far_transition = 1.0
+dof_blur_far_amount = 0.06
+dof_blur_far_quality = 0
