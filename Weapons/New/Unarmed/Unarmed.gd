@@ -29,7 +29,8 @@ func weapon_regime(value, delta) -> int:
 		return BASE
 	
 	if is_ads:
-		player.camera.fov = lerp(player.camera.fov, default_fov / 2, ads_speed * delta)
+		var div : int = int(default_fov / 2)
+		player.camera.fov = lerp(player.camera.fov, div, ads_speed * delta)
 		return ADS
 	else:
 		player.camera.fov = lerp(player.camera.fov, default_fov, ads_speed * delta)

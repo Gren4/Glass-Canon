@@ -677,7 +677,7 @@ func wall_jump_air() -> bool:
 			audio.step()
 			set_state(IN_AIR)
 			for n in get_slide_count() :
-				var wall_normal = get_slide_collision(n)
+				wall_normal = get_slide_collision(n)
 				var isWall : bool = wall_normal.collider.is_in_group("Wall")
 				if (isWall):
 					wall_normal = get_slide_collision(0)

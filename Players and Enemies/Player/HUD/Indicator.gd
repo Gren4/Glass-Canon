@@ -1,11 +1,9 @@
 extends TextureRect
-#var player
-#var degree : float
-func _ready():
+
+func _ready() -> void:
 	pass
 	
-func _process(delta):
-	#rect_rotation = degree - player.rotation_degrees.y
+func _process(delta : float) -> void:
 	modulate.a -= 5*delta
 	
 	if modulate.a <= 0.0:

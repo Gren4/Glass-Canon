@@ -31,7 +31,7 @@ func spawn_node_simple_mesh(packed_scene):
 	root.add_child(clone)
 	return clone
 
-func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, target = null):
+func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, target = null) -> void:
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
 	var clone = packed_scene.instance()
 	clone.parent = parent
@@ -92,20 +92,21 @@ func take_node_from_pool(root, packed_scene):
 	previous_object_taken[scene_path] = index
 	return object
 
-func check_nodes(root, packed_scene, scene_path, index):
+func check_nodes(root, packed_scene, scene_path, index) -> void:
 	if not scene_path in object_pool:
 		load_node_in_pool(root, packed_scene, scene_path)
 		previous_object_taken[scene_path] = 0
 	else:
 		var size : int = object_pool[scene_path].size()
 		if size < min_load_amount and index >= size:
-			for i in range(size, size + (min_load_amount / MAX_INSTANCES_AT_A_TIME)):
+			var div : int = int(min_load_amount / MAX_INSTANCES_AT_A_TIME)
+			for i in range(size, size + div):
 				if object_pool[scene_path].size() == min_load_amount:
 					return
 				else:
 					load_node_in_pool(root, packed_scene, scene_path)
 
-func load_node_in_pool(root, packed_scene, scene_path):
+func load_node_in_pool(root, packed_scene, scene_path) -> void:
 	var object = packed_scene.instance()
 	object.visible = false
 	if scene_path in object_pool:

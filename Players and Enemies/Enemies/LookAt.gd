@@ -24,7 +24,7 @@ var target : Vector3 = Vector3.ZERO
 
 var old_transform : Transform
 
-func _ready():
+func _ready() -> void:
 	set_process(false)
 	set_physics_process(false)
 	set_notify_transform(false)
@@ -43,14 +43,14 @@ func _ready():
 		#_setup_for_editor()
 
 
-func _process(delta):
+func _process(delta : float) -> void:
 	update_skeleton(delta)
 
 
-func _physics_process(delta):
+func _physics_process(delta : float) -> void:
 	update_skeleton(delta)
 
-func update_skeleton(delta):
+func update_skeleton(delta : float) -> void:
 	# NOTE: Because get_node doesn't work in _ready, we need to skip
 	# a call before doing anything.
 	if first_call:
@@ -121,7 +121,7 @@ func update_skeleton(delta):
 		old_transform = x
 
 
-func _set_update(new_value):
+func _set_update(new_value : int) -> void:
 	update_mode = new_value
 
 	# Set all of our processes to false.
@@ -147,7 +147,7 @@ func _set_update(new_value):
 			print(name, " - IK_LookAt: NOT updating skeleton due to unknown update method...")
 
 
-func _set_skeleton_path(new_value):
+func _set_skeleton_path(new_value) -> void:
 	# Because get_node doesn't work in the first call, we just want to assign instead.
 	# This is to get around a issue with NodePaths exposed to the editor.
 	if first_call:

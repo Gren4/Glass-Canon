@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/EnemyProjectile.gd" type="Script" id=1]
 [ext_resource path="res://Materials/EnemyProjectile.tres" type="Material" id=2]
+[ext_resource path="res://Materials/EnemyProjectileGlow.tres" type="Material" id=3]
 
 [sub_resource type="SphereShape" id=10]
 radius = 0.359393
@@ -12,8 +13,10 @@ height = 0.4
 radial_segments = 6
 rings = 4
 
+[sub_resource type="QuadMesh" id=16]
+
 [sub_resource type="Curve" id=12]
-_data = [ Vector2( 0, 0.146591 ), 0.0, 0.0, 0, 0, Vector2( 0.449664, 0.628409 ), 2.80585, 0.0, 0, 0 ]
+_data = [ Vector2( 0, 0.146591 ), 0.0, 0.0, 0, 0, Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.449664, 0.628409 ), 2.80585, 0.0, 0, 0 ]
 
 [sub_resource type="CurveTexture" id=13]
 curve = SubResource( 12 )
@@ -51,9 +54,15 @@ monitorable = false
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 10 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="Body" type="MeshInstance" parent="."]
 material_override = ExtResource( 2 )
 mesh = SubResource( 14 )
+material/0 = null
+
+[node name="Glow" type="MeshInstance" parent="."]
+material_override = ExtResource( 3 )
+mesh = SubResource( 16 )
+skeleton = NodePath("../Area")
 material/0 = null
 
 [node name="Effect" type="Particles" parent="."]

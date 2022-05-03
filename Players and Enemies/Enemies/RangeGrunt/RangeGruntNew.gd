@@ -1,131 +1,35 @@
-extends Players_and_Enemies
-
-onready var player
-
+extends Enemies
 export(NodePath) var hitbox_path = null
 export(NodePath) var shoot_path = null
-export(NodePath) var animation_tree_path = null
-export(NodePath) var area_detection_path = null
-
-export(NodePath) var front_ray_path = null
-export(NodePath) var right_ray_path = null
-export(NodePath) var left_ray_path = null
-export(NodePath) var right_down_ray_path = null
-export(NodePath) var left_down_ray_path = null
-export(NodePath) var audio_path
-
-onready var audio = get_node(audio_path)
 
 export(PackedScene) var projectile = null
-export(PackedScene) var ragdoll = null
 
 onready var hitbox = get_node(hitbox_path)
 onready var shoot = get_node(shoot_path)
-onready var animation_tree = get_node(animation_tree_path)
-onready var area_detection = get_node(area_detection_path)
 
-onready var  front_ray = get_node(front_ray_path)
-onready var  right_ray = get_node(right_ray_path)
-onready var  left_ray = get_node(left_ray_path)
-onready var  right_down_ray = get_node(right_down_ray_path)
-onready var  left_down_ray = get_node(left_down_ray_path)
-
-onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
-
-const ACCEL : float = 5.0
-const SPEED_AIR : float = 8.0
-const SPEED_DOP_ATTACK : float = 20.0
-const SPEED_DOP_EVADE : float = 14.0
-
-const SPEED_NORMAL : float = 14.0
-const SPEED_SIDE_STEP : float = 7.0
-var speed : float = SPEED_NORMAL
-
-var jump_time_coeff : float = 0.7
-
-var dop_speed : float = 0.0
-
-export var current_health : int = 30
-export var attack_damage : int = 2
 export var shoot_damage : int = 20
 
-var accel : float = ACCEL
-
-var gravity : float = 40.0
-
-var is_on_floor : bool = false
-
-enum {
-		RESET,
-		IDLE, 
-		IDLE_TURN, 
-		LOOK_AT_ALLERT,
-		ALLERTED_AND_DOESNT_KNOW_LOC, 
-		ALLERTED_AND_KNOWS_LOC,
-		ATTACK_MELEE,
-		SHOOT,
-		EVADE,
-		AIR,
-		JUMP,
-		JUMP_END,
-		DEATH
-	}
-	
-var dist : Vector3 = Vector3.ZERO
-var dist2D : Vector2 = Vector2.ZERO
-var dist_length : float = 0.0
-var dist2D_length : float = 0.0
-
-onready var _state : int = IDLE
-var allerted : bool = false
-
-const IDLE_TIMER : float = 3.0
-const RESET_TIMER : float = 3.0
-const ALLERTED_AND_KNOWS_LOC_TIMER: float = 20.0
-const ALLERTED_AND_DOESNT_KNOW_LOC_TIMER : float = 3.0
-const IDLE_TURN_TIMER : float = 3.0
-const LOOK_AT_ALLERT_TIMER : float = 0.5
-const ATTACK_CD_TIMER : float = 1.5
 var SHOOT_CD_TIMER : float = 2.0
-const NOT_IN_AIR_TIMER : float = 0.5
 
-export(NodePath) var StartTimer_path = null
-onready var StartTimer : Timer = get_node(StartTimer_path)
-
-var timer_not_on_ground : float = 0.0
-var _timer : float = 0.0
-var _dop_timer : float = 0.0
-var _attack_timer : float = 0.0
 var _shoot_timer : float = 0.0
 var _change_dir_timer : float = 2 * randf()
 var _change_side_timer : float = 0.0
-var _evade_timer : int = 3 + randi() % 2
 
-var _path_timer : float = 0.0
-var give_path : bool = true
-
-var _stop_timer : float = 0.0
-var side : int = 1
-
-var no_collision_between : bool = false
-
-var my_path = []
-onready var prev_origin : Vector3 = self.global_transform.origin
-var link_from : PoolVector3Array = []
-var link_to : PoolVector3Array = []
-var start_jump_pos : Vector3 = Vector3.ZERO
-var jump_time : float = 0.0
-var p1 : Vector3 = Vector3.ZERO
-var offset : Vector3 = Vector3.ZERO
-
-var is_moving : bool = false
-
-var attack_side : int = 0
-var ragdoll_create : bool = true
-
-var hit_confirm : bool = false
-
-func _ready():
+func _ready() -> void:
+	accel = 5.0
+	SPEED_AIR = 8.0
+	SPEED_DOP_ATTACK = 20.0
+	SPEED_DOP_EVADE = 14.0
+	SPEED_NORMAL = 14.0
+	SPEED_SIDE_STEP = 7.0
+	IDLE_TIMER = 3.0
+	RESET_TIMER = 3.0
+	ALLERTED_AND_KNOWS_LOC_TIMER = 20.0
+	ALLERTED_AND_DOESNT_KNOW_LOC_TIMER = 3.0
+	IDLE_TURN_TIMER = 3.0
+	LOOK_AT_ALLERT_TIMER = 0.5
+	ATTACK_CD_TIMER = 1.5
+	NOT_IN_AIR_TIMER = 0.5
 	animation_tree.set("parameters/IdleAlert/current",0)
 	animation_tree.set("parameters/Zero/current",1)
 	animation_tree.set("parameters/JumpTransition/current",0)
@@ -136,31 +40,16 @@ func _ready():
 	#$Body.scale.y = (0.9 + 0.2*randf())
 	pass
 	
-func init_timer_set():
+func init_timer_set() -> void:
 	StartTimer.wait_time = 0.1 + randf()*0.1
 	StartTimer.start()
 	
 
-func _process(delta):
+func _process(delta : float) -> void:
 	if global_transform.origin.y < -50:
 		death()
-
-func _physics_process(delta):
-	ai(delta)
 	
-func ai(delta):
-	tact_init(delta)
-	state_machine(delta)
-	if _state != JUMP:
-		finalize_velocity(delta)
-	prev_origin = self.global_transform.origin
-	
-func allert_everyone():
-	if _state < ALLERTED_AND_KNOWS_LOC:
-		set_state(ALLERTED_AND_KNOWS_LOC)
-		allerted = true
-	
-func state_machine(delta):
+func state_machine(delta : float) -> void:
 	match _state:
 		IDLE:
 			if not is_on_floor:
@@ -183,7 +72,7 @@ func state_machine(delta):
 			analyze_and_prepare_attack(delta)
 		ATTACK_MELEE:
 			attack()
-			move_to_target(delta,-dist,ATTACK_MELEE)
+			move_to_target(delta, 2.0, -dist, ATTACK_MELEE)
 		SHOOT:
 			velocityXY = velocityXY.linear_interpolate(Vector3.ZERO, delta)
 			speed = SPEED_SIDE_STEP
@@ -213,6 +102,8 @@ func state_machine(delta):
 		JUMP_END:
 			if _timer >= 0.25:
 				animation_tree.set("parameters/JumpBlend/blend_amount",0)
+				_attack_timer = 0.0
+				_shoot_timer = 0.0
 				if allerted:
 					set_state(ALLERTED_AND_KNOWS_LOC)
 				else:
@@ -229,15 +120,7 @@ func state_machine(delta):
 		DEATH:
 			pass
 
-func _timer_update(delta, state_timer, switch_to_state = null) -> bool:
-	if _timer >= state_timer:
-		set_state(switch_to_state)
-		return true
-	else:
-		_timer += delta
-	return false
-
-func set_state(state):
+func set_state(state : int) -> void:
 	_timer = 0.0
 	_dop_timer = 0.0
 	_state = state
@@ -267,43 +150,8 @@ func set_state(state):
 			direction = Vector3.ZERO
 		DEATH:
 			death()
-
-func tact_init(delta):
-	dist = self.global_transform.origin - player.global_transform.origin
-	dist2D = Vector2(dist.x,dist.z)
-	dist_length = dist.length()
-	dist2D_length = dist2D.length()
-	is_on_floor = is_on_floor()
 	
-	if is_on_floor:
-		timer_not_on_ground = 0.0
-		velocity.y = -0.1
-		snap = Vector3.DOWN
-	else:
-		velocity.y -= gravity * delta
-		speed = SPEED_AIR
-	
-func finalize_velocity(delta):
-	direction = direction.normalized()
-	velocityXY = velocityXY.linear_interpolate(direction * (speed + dop_speed), accel * delta)
-	velocity.x = velocityXY.x
-	velocity.z = velocityXY.z
-	var vel_inf = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
-	var info = (self.global_transform.origin - prev_origin)/delta
-	var loc_v : Vector3 = (info/SPEED_NORMAL).rotated(Vector3.UP,-self.rotation.y)
-	if loc_v.length_squared() < 0.2:
-		is_moving = false
-	else:
-		is_moving = true
-	if velocity.length() < 1.0:
-		animation_tree.set("parameters/Zero/current", 1)
-		animation_tree.set("parameters/AudioMovement/blend_position", Vector2.ZERO)
-	else:
-		animation_tree.set("parameters/Zero/current", 0)
-		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
-		animation_tree.set("parameters/AudioMovement/blend_position", Vector2(loc_v.x,loc_v.z))
-	
-func attack():
+func attack() -> void:
 	if hit_confirm:
 		var targets = hitbox.get_overlapping_bodies()
 		if player in targets:
@@ -311,13 +159,13 @@ func attack():
 			player.update_health(-attack_damage, self.global_transform.origin)
 			hit_confirm = false
 
-func shoot():
+func shoot() -> void:
 	if player.speed <= player.WALLRUNNING_SPEED:
 		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0))
 	else:
 		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin) + Vector3(0,1,0))
 
-func on_animation_finish(anim_name:String):
+func on_animation_finish(anim_name:String) -> void:
 	match anim_name:
 		"AttackLeft", "AttackRight":
 			_attack_timer = 0.0
@@ -328,44 +176,16 @@ func on_animation_finish(anim_name:String):
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
 			dop_speed = 0.0
+			hit_confirm = false
 		"Shoot":
 			_shoot_timer = 0.0
 			set_state(ALLERTED_AND_KNOWS_LOC)
 	
-func idle(delta):
-	if _dop_timer >= 0.1:
-		_dop_timer = 0.0
-		if is_player_in_sight():
-			set_state(ALLERTED_AND_DOESNT_KNOW_LOC)
-	else:
-		_dop_timer += delta
-
-func reset_self(delta) -> bool:
-	var result : bool = true
-	direction = Vector3.ZERO
-	return result
+func analyze_and_prepare_attack(delta : float) -> void:
+	if not move_around_target(delta):
+		evade_maneuver(delta, dist)
 	
-# Проверяем, видит ли противник игрока
-func look_for_player(delta):
-	if _dop_timer >= 0.1:
-		_dop_timer = 0.0
-		if is_player_in_sight():
-			#var result = space_state.intersect_ray(head.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
-			var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin + Vector3(0,1,0),[self],11)
-			if result:
-				if result.collider.is_in_group("Player"):
-					set_state(ALLERTED_AND_KNOWS_LOC)
-					get_tree().call_group("Enemy", "allert_everyone")
-					return
-	else:
-		_dop_timer += delta
-	_timer_update(delta,ALLERTED_AND_DOESNT_KNOW_LOC_TIMER,RESET)
-	
-func analyze_and_prepare_attack(delta):
-	evade_maneuver(delta, dist)
-	move_around_target(delta)
-	
-func move_around_target(delta):
+func move_around_target(delta : float) -> bool:
 	if my_path.size() == 0:
 		if _path_timer < 5.0:
 			_path_timer += delta
@@ -404,7 +224,6 @@ func move_around_target(delta):
 								side = 0
 							else:
 								side = -1
-					#velocityXY = Vector3.ZERO
 				-1:
 					left_ray.force_raycast_update()
 					if (left_ray.is_colliding()):
@@ -425,16 +244,16 @@ func move_around_target(delta):
 								side = 0
 							else:
 								side = 1
-							#velocityXY = Vector3.ZERO
 		else:
 			_change_side_timer += delta
-		move_to_target(delta, side * Vector3.UP.cross(dist).normalized(), ALLERTED_AND_KNOWS_LOC)	
+		move_to_target(delta, 2.0, side * Vector3.UP.cross(dist).normalized(), ALLERTED_AND_KNOWS_LOC)	
 		if attack_shoot(delta):
-			return
+			return true
 	else:
 		move_along_path(delta)
+	return false
 		
-func attack_shoot(delta) -> bool:
+func attack_shoot(delta : float) -> bool:
 	if _attack_timer < ATTACK_CD_TIMER:
 		_attack_timer += delta
 	if _shoot_timer < SHOOT_CD_TIMER:
@@ -443,11 +262,12 @@ func attack_shoot(delta) -> bool:
 		var result = space_state.intersect_ray(self.global_transform.origin,player.global_transform.origin,[self],11)
 		if result:
 			if result.collider.is_in_group("Player"):
-				if dist_length <= 5.0:
+				if dist_length <= 4.5:
 						set_state(ATTACK_MELEE)
 						animation_tree.set("parameters/Attack/active",true)
 						_attack_timer = 0.0
 						_shoot_timer = 0.0
+						dop_speed = SPEED_DOP_ATTACK
 						return true
 				else:
 						set_state(SHOOT)
@@ -465,7 +285,7 @@ func attack_shoot(delta) -> bool:
 			
 	return false
 		
-func move_along_path(delta) -> bool:
+func move_along_path(delta : float) -> bool:
 	speed = SPEED_NORMAL
 	if my_path.size() > 0:
 		var dir_to_path = (my_path[0] - self.global_transform.origin)
@@ -493,43 +313,22 @@ func move_along_path(delta) -> bool:
 				if is_on_wall():
 					velocity.y = 1.0
 					snap = Vector3.ZERO
-				move_to_target(delta, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
+			else:
+				return true
+			if dist_length < 3.5:
+				left_ray.force_raycast_update()
+				if not left_ray.is_colliding():
+					move_to_target(delta, 2.0, Vector3.UP.cross(dir_to_path).normalized(), ALLERTED_AND_KNOWS_LOC,my_path[0])
+			else:
+				move_to_target(delta, 2.0, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
 	else:
 		if dist2D_length < 3.0:
-			move_to_target(delta, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
+			move_to_target(delta, 2.0, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
 		else:
-			move_to_target(delta, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
+			move_to_target(delta, 2.0, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
 	return false
-	
-func evade_maneuver(delta, dist_V):
-	if _evade_timer <= 0:
-		_evade_timer = 3 + randi() % 2
-		if is_on_floor:
-			match side:
-				1: # right
-					right_down_ray.force_raycast_update()
-					right_ray.force_raycast_update()
-					if not right_ray.is_colliding() and right_down_ray.is_colliding():
-						evade_setup(1, dist_V)
-						return
-					left_down_ray.force_raycast_update()
-					left_ray.force_raycast_update()
-					if not left_ray.is_colliding() and left_down_ray.is_colliding():
-						evade_setup(-1, dist_V)
-						return
-				-1: # left
-					left_down_ray.force_raycast_update()
-					left_ray.force_raycast_update()
-					if not left_ray.is_colliding() and left_down_ray.is_colliding():
-						evade_setup(1, dist_V)
-						return
-					right_down_ray.force_raycast_update()
-					right_ray.force_raycast_update()
-					if not right_ray.is_colliding() and right_down_ray.is_colliding():
-						evade_setup(-1, dist_V)
-						return
 		
-func evade_setup(coef,dist_V):
+func evade_setup(coef : int, dist_V : Vector3) -> void:
 	direction = coef * side * Vector3.UP.cross(dist_V).normalized()
 	side = coef * side
 	dop_speed = SPEED_DOP_EVADE
@@ -538,7 +337,7 @@ func evade_setup(coef,dist_V):
 	set_state(EVADE)
 	
 	
-func evading(delta):
+func evading(delta : float) -> void:
 	match side:
 		-1:
 			left_down_ray.force_raycast_update()
@@ -571,57 +370,9 @@ func evading(delta):
 	else:
 		_dop_timer += delta
 			
-	move_to_target(delta, -dist, EVADE)
+	move_to_target(delta, 2.0, -dist, EVADE)
 	
-func move_to_target(delta, dir, state, turn_to = null):
-	match state:
-		ATTACK_MELEE:
-			if dist_length > 2.5:
-				direction = dir
-			elif dist_length < 2.5 and dist_length > 1.0:
-				direction = Vector3.ZERO
-			else:
-				direction = direction.linear_interpolate(dist, 10*delta)
-			face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
-		ALLERTED_AND_KNOWS_LOC:
-			if dist_length > 3.5:
-				direction = dir
-			else:
-				direction = direction.linear_interpolate(dist, 10*delta)
-			if (turn_to != null and dist_length > 10.0):
-				if (is_player_in_sight()):
-					face_threat(1,delta,player.global_transform.origin,turn_to)
-				else:
-					face_threat(1,delta,turn_to,turn_to)
-			else: 
-				face_threat(5,delta,player.global_transform.origin,player.global_transform.origin)
-	
-	front_ray.transform.origin = dir.normalized() * 2
-	front_ray.force_raycast_update()
-	if not front_ray.is_colliding():
-		direction = Vector3.ZERO
-
-func look_at_allert(delta):
-	face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
-	_timer_update(delta, LOOK_AT_ALLERT_TIMER, ALLERTED_AND_DOESNT_KNOW_LOC)
-
-func update_hp(damage):
-	if _state < LOOK_AT_ALLERT:
-		set_state(LOOK_AT_ALLERT)
-		
-	current_health -= damage
-	if _state != JUMP or _state != JUMP_END:
-		_evade_timer -= 1
-	if (current_health <= 0):
-		set_state(DEATH)
-		
-func is_player_in_sight() -> bool:	
-	if (self.global_transform.basis.z.angle_to(dist) < 1.05 and dist_length <= 250):
-		return true
-	else:
-		return false
-	
-func get_nav_path(path):
+func get_nav_path(path : Dictionary) -> void:
 	if _state != JUMP and _state != JUMP_END:
 		give_path = false
 		_path_timer = 0.0
@@ -649,26 +400,6 @@ func get_nav_path(path):
 				if to in my_path:
 					link_to.append(to)
 
-func death():
-	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
-	var glob_part = get_node("GlobalParticles")
-	for i in glob_part.get_children():
-		glob_part.remove_child(i)
-		root.add_child(i)
-	if ragdoll_create:
-		ragdoll_create = false
-		var new_rag = ragdoll.instance()
-		for i in $Body/Skeleton.get_bone_count():
-			new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
-		new_rag.global_transform = self.global_transform
-		root.call_deferred("add_child",new_rag)
-	call_deferred("queue_free")
-	
-
-func face_threat(d1,delta,look = Vector3.ZERO, turn = Vector3.ZERO):
-	Global.turn_face(self,turn,d1,delta)
-	$Target.global_transform.origin = look
-	pass
 
 func play_audio(var name : String) -> void:
 	match name:
@@ -681,10 +412,10 @@ func play_audio(var name : String) -> void:
 		"Shoot":
 			audio.shoot()
 
-func _on_Area_body_entered(body):
+func _on_Area_body_entered(body) -> void:
 	if _state == IDLE:
 		set_state(LOOK_AT_ALLERT)
 		set_deferred("area_detection.monitoring", false)
 
-func _on_Start_timeout():
+func _on_Start_timeout() -> void:
 	animation_tree.active = true

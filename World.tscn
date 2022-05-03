@@ -378,7 +378,7 @@ material/0 = ExtResource( 3 )
 shape = SubResource( 41 )
 
 [node name="MoovingPlatform" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
-transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 54.8686, 4.05308, -48.7524 )
+transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 54.8686, 4.05308, -50.6885 )
 collision_layer = 2
 collision_mask = 0
 
@@ -441,7 +441,7 @@ mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
 [node name="Wall3" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
-transform = Transform( 12.4832, 0.175871, 0.781095, -0.563316, 9.99604, 0, -15.6157, -0.220003, 0.624411, 86.3046, 10.9438, -9.06185 )
+transform = Transform( 12.4832, 0.175871, 0.781095, -0.563316, 9.99604, 0, -15.6157, -0.220003, 0.624411, 86.305, 10.494, -9.062 )
 collision_layer = 2
 collision_mask = 0
 
@@ -1232,7 +1232,7 @@ material/0 = SubResource( 35 )
 [node name="SpawnPoints" type="Node" parent="."]
 
 [node name="Spawn1" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.6085, 3.58303, -55.8745 )
+transform = Transform( -0.695073, 0, -0.71894, 0, 1, 0, 0.71894, 0, -0.695073, 90.1289, 19.567, -78.5213 )
 
 [node name="Spawn2" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.3921, 4.93117, -77.6386 )

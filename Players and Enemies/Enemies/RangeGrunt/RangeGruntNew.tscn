@@ -115,7 +115,7 @@ bind/28/bone = -1
 bind/28/pose = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, 0.403291, -1.31772, 0.794962 )
 
 [sub_resource type="BoxShape" id=29]
-extents = Vector3( 0.204059, 0.357459, 0.29634 )
+extents = Vector3( 0.204059, 0.418373, 0.29634 )
 
 [sub_resource type="Animation" id=425]
 resource_name = "Alert"
@@ -537,7 +537,7 @@ tracks/29/loop_wrap = true
 tracks/29/imported = false
 tracks/29/enabled = true
 tracks/29/keys = {
-"times": PoolRealArray( 0.36, 0.8 ),
+"times": PoolRealArray( 0.36, 0.6 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ "Whoosh" ],
@@ -761,7 +761,7 @@ tracks/29/loop_wrap = true
 tracks/29/imported = false
 tracks/29/enabled = true
 tracks/29/keys = {
-"times": PoolRealArray( 0.36, 0.8 ),
+"times": PoolRealArray( 0.36, 0.6 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ "Whoosh" ],
@@ -808,7 +808,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.2, 0.4 ),
+"times": PoolRealArray( 0.13, 0.35 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ "Step" ],
@@ -855,7 +855,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.2, 0.6 ),
+"times": PoolRealArray( 0.25, 0.55 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
 "args": [ "Step" ],
@@ -6337,7 +6337,7 @@ input_1/name = "Stand"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=406]
-graph_offset = Vector2( -860.977, -110.924 )
+graph_offset = Vector2( -1149.98, 354.826 )
 nodes/Add2/node = SubResource( 465 )
 nodes/Add2/position = Vector2( -160, 60 )
 nodes/Animation/node = SubResource( 49 )
@@ -6381,7 +6381,7 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 nodes/Zero/node = SubResource( 460 )
 nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "TimeScale", 0, "Animation 2", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -6394,8 +6394,6 @@ height = 1.1
 collision_layer = 8
 collision_mask = 11
 script = ExtResource( 3 )
-hitbox_path = NodePath("Body/Skeleton/Head/Head")
-shoot_path = NodePath("Body/Skeleton/Head/Shoot")
 animation_tree_path = NodePath("AnimationTree")
 area_detection_path = NodePath("Area")
 front_ray_path = NodePath("FrontRayCast")
@@ -6404,11 +6402,14 @@ left_ray_path = NodePath("LeftRayCast")
 right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
 audio_path = NodePath("Audio")
-projectile = ExtResource( 4 )
+StartTimer_path = NodePath("Start")
 ragdoll = ExtResource( 6 )
 current_health = 40
+attack_damage = 2
+hitbox_path = NodePath("Body/Skeleton/Head/Head")
+shoot_path = NodePath("Body/Skeleton/Head/Shoot")
+projectile = ExtResource( 4 )
 shoot_damage = 15
-StartTimer_path = NodePath("Start")
 
 [node name="Audio" type="Spatial" parent="."]
 script = ExtResource( 7 )
@@ -6483,7 +6484,7 @@ bones/7/name = "Head"
 bones/7/parent = 6
 bones/7/rest = Transform( 1, 4.73691e-07, -1.85377e-06, -1.5148e-08, 0.970799, 0.239895, 1.91328e-06, -0.239895, 0.970799, -3.56102e-14, 0.234504, 2.90119e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("Head") ]
+bones/7/bound_children = [  ]
 bones/8/name = "MandibleStart.L"
 bones/8/parent = 7
 bones/8/rest = Transform( 0.381262, -0.345715, 0.857392, -0.140769, 0.894919, 0.423443, -0.913687, -0.282137, 0.292533, -0.0934621, 0.119377, -0.110246 )
@@ -6597,7 +6598,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, 6.97716e-08, 4.12361e-08, 8.68067e-09, -0.598012, 0.801486, 8.05795e-08, -0.801487, -0.598012, 2.78396e-08, 0.0991995, -0.89785 )
+transform = Transform( 1, -1.77904e-06, -7.12385e-07, 4.02792e-10, -0.371545, 0.928415, -1.91637e-06, -0.928415, -0.371545, 2.82768e-06, 0.223591, -0.948158 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -6607,7 +6608,7 @@ input_ray_pickable = false
 monitorable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/Head/Head"]
-transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, -1.5337e-08, 0.13594, 0.106059 )
+transform = Transform( 1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0.265, 0.106 )
 shape = SubResource( 29 )
 
 [node name="Shoot" type="Position3D" parent="Body/Skeleton/Head"]
@@ -6655,7 +6656,7 @@ process_mode = 0
 parameters/Add2/add_amount = 1.0
 parameters/Attack/active = false
 parameters/AttackTransition/current = 1
-parameters/AudioMovement/blend_position = Vector2( 0, 0 )
+parameters/AudioMovement/blend_position = Vector2( -0.201581, 0.032258 )
 parameters/IdleAlert/current = 0
 parameters/JumpBlend/blend_amount = 0.0
 parameters/JumpTransition/current = 0

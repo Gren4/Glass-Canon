@@ -1,7 +1,5 @@
 extends Node
 ########################
-onready var Enemy_Melee_instance = preload("res://Players and Enemies/Enemies/EnemyMelee/EnemyMelee.tscn")
-onready var Enemy_Range_instance = preload("res://Players and Enemies/Enemies/EnemyRange/EnemyRange.tscn")
 onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
 onready var RangeGrunt = preload("res://Players and Enemies/Enemies/RangeGrunt/RangeGruntNew.tscn")
 ########################
@@ -12,7 +10,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 10
+const max_enem : int = 1
 
 var col_enem_to_spawn = 300
 
@@ -63,7 +61,7 @@ func _physics_process(delta):
 				spawn_timer = 0.0
 				var en_type = randi()%100
 				var new_t
-				if en_type <= 50:
+				if en_type <= 100:
 					new_t = MeleeGrunt.instance()
 				else:
 					new_t = RangeGrunt.instance()			
