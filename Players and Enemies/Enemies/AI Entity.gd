@@ -1,6 +1,7 @@
 extends Node
 ########################
-onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
+#onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
+onready var MeleeGrunt = preload("res://Players and Enemies/Test/MeleeGruntNewBase.tscn")
 onready var RangeGrunt = preload("res://Players and Enemies/Enemies/RangeGrunt/RangeGruntNew.tscn")
 ########################
 onready var forces : Array = []

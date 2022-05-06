@@ -734,6 +734,8 @@ shape = SubResource( 45 )
 
 [node name="StaticBody12" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 1, -31 )
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody12"]
 shape = SubResource( 47 )
@@ -744,6 +746,8 @@ material/0 = ExtResource( 4 )
 
 [node name="StaticBody13" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1, -46 )
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody13"]
 shape = SubResource( 47 )
@@ -754,6 +758,8 @@ material/0 = ExtResource( 4 )
 
 [node name="StaticBody14" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 1, -55 )
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody14"]
 shape = SubResource( 47 )
@@ -764,6 +770,8 @@ material/0 = ExtResource( 4 )
 
 [node name="StaticBody15" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 1, -67 )
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody15"]
 shape = SubResource( 47 )
@@ -774,6 +782,8 @@ material/0 = ExtResource( 4 )
 
 [node name="StaticBody16" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -81 )
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody16"]
 shape = SubResource( 47 )
@@ -784,6 +794,8 @@ material/0 = ExtResource( 4 )
 
 [node name="StaticBody17" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -61 )
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody17"]
 shape = SubResource( 47 )
