@@ -5659,7 +5659,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend" ]
+node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 8" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -5835,22 +5835,22 @@ bones/16/bound_children = [  ]
 bones/17/name = "IkLeg.L"
 bones/17/parent = -1
 bones/17/rest = Transform( 0.707102, -0.707107, -0.0025771, 0.00364453, 0, 0.999993, -0.707102, -0.707106, 0.00257701, -0.495998, 0.0922129, -0.483194 )
-bones/17/enabled = true
+bones/17/enabled = false
 bones/17/bound_children = [  ]
 bones/18/name = "IkLeg.R"
 bones/18/parent = -1
 bones/18/rest = Transform( 0.686935, -0.726714, 0.00250354, -0.0036445, 0, 0.999993, -0.72671, -0.68694, -0.00264859, 1.35046, 0.0512743, 0.682438 )
-bones/18/enabled = true
+bones/18/enabled = false
 bones/18/bound_children = [  ]
 bones/19/name = "Pull.L"
 bones/19/parent = -1
 bones/19/rest = Transform( 0.70707, 0.707107, 0.00717509, 0.0101472, -1.19209e-07, -0.999949, -0.707071, 0.707106, -0.00717521, 2.91995, 2.57453, 2.92404 )
-bones/19/enabled = true
+bones/19/enabled = false
 bones/19/bound_children = [  ]
 bones/20/name = "Pull.R"
 bones/20/parent = -1
 bones/20/rest = Transform( 0.726246, 0.687396, -0.00736967, -0.0101472, 1.19209e-07, -0.999948, -0.68736, 0.726283, 0.00697523, 3.28997, 2.57453, 2.44936 )
-bones/20/enabled = true
+bones/20/enabled = false
 bones/20/bound_children = [  ]
 bones/21/name = "Toe.L"
 bones/21/parent = 13
@@ -5869,7 +5869,7 @@ skin = SubResource( 442 )
 material/0 = ExtResource( 7 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.849445, 0.275918, -0.449791, -0.481283, -0.754608, 0.446019, -0.216351, 0.595347, 0.773794, 1.13932, 2.94997, -1.13551 )
+transform = Transform( -0.120458, 0.923272, 0.364773, -0.779953, -0.315338, 0.540587, 0.614137, -0.219388, 0.758095, 0.157635, 1.95498, -1.02589 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -5883,7 +5883,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.863607, -0.385895, 0.324451, 0.502502, -0.711063, 0.491813, 0.0409177, 0.587772, 0.807992, -1.03616, 2.8213, -1.2316 )
+transform = Transform( -0.0532408, -0.962683, -0.265346, 0.987213, -0.0907252, 0.131071, -0.150253, -0.254974, 0.955203, 0.0629602, 2.17048, -1.42848 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]

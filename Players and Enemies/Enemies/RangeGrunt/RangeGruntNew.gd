@@ -2,10 +2,24 @@ extends Enemies
 export(NodePath) var hitbox_path = null
 export(NodePath) var shoot_path = null
 
+export(NodePath) var ray_l_path = null
+export(NodePath) var ray_r_path = null
+export(NodePath) var ik_l_path = null
+export(NodePath) var ik_r_path = null
+export(NodePath) var point_l_path = null
+export(NodePath) var point_r_path = null
+
 export(PackedScene) var projectile = null
 
 onready var hitbox = get_node(hitbox_path)
 onready var shoot = get_node(shoot_path)
+
+onready var ray_l = get_node(ray_l_path)
+onready var ray_r = get_node(ray_r_path)
+onready var ik_l = get_node(ik_l_path)
+onready var ik_r = get_node(ik_r_path)
+onready var point_l = get_node(point_l_path)
+onready var point_r = get_node(point_r_path)
 
 export var shoot_damage : int = 20
 
@@ -44,6 +58,37 @@ func init_timer_set() -> void:
 	StartTimer.wait_time = 0.1 + randf()*0.1
 	StartTimer.start()
 	
+func ik_update() -> void:
+	ray_l.force_raycast_update()
+	ray_r.force_raycast_update()
+	if not ray_l.is_colliding():
+		#ik_l.interpolation = 0
+		pass
+	else:
+		point_l.global_transform.origin = ray_l.get_collision_point()
+		
+	if not ray_r.is_colliding():
+		#ik_r.interpolation = 0
+		pass
+	else:
+		point_r.global_transform.origin = ray_r.get_collision_point()
+	
+func ik_setup() -> void:
+	if ik_l.is_running() or ik_r.is_running():
+		if dist_length > 15:
+			ik_l.stop()
+			ik_r.stop()
+			return
+		ik_update()
+	else:
+		if dist_length <= 15:
+			ik_l.start()
+			ik_r.start()
+			ik_update()
+	
+func tact_init(delta : float) -> void:
+	.tact_init(delta)
+	ik_setup()	
 
 func _process(delta : float) -> void:
 	if global_transform.origin.y < -50:

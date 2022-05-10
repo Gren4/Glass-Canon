@@ -20,8 +20,8 @@ onready var ik_r = get_node(ik_r_path)
 onready var point_l = get_node(point_l_path)
 onready var point_r = get_node(point_r_path)
 
-var foot_l_up : bool = false
-var foot_r_up : bool = false
+#var foot_l_up : bool = false
+#var foot_r_up : bool = false
 
 func _ready() -> void:
 	accel = 5.0
@@ -78,10 +78,10 @@ func ik_setup() -> void:
 			ik_l.start()
 			ik_r.start()
 			ik_update()
-	if ik_l.interpolation < 0.5 and foot_l_up == false:
-		foot_l_up = true
-	if ik_r. interpolation < 0.5 and foot_r_up == false:
-		foot_r_up = true
+#	if ik_l.interpolation < 0.5 and foot_l_up == false:
+#		foot_l_up = true
+#	if ik_r. interpolation < 0.5 and foot_r_up == false:
+#		foot_r_up = true
 	
 #	if ik_l.interpolation == 1.0 and foot_l_up:
 #		foot_l_up = false

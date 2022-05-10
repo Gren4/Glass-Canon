@@ -1,4 +1,4 @@
-[gd_scene load_steps=104 format=2]
+[gd_scene load_steps=103 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Material_001.material" type="Material" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://Materials/Grunt.tres" type="Material" id=5]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/RangeGruntRagdoll.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/AudioRangeGrunt.gd" type="Script" id=7]
-[ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Helper.gd" type="Script" id=8]
 
 [sub_resource type="ArrayMesh" id=423]
 resource_name = "RangeGruntNew_Cube001"
@@ -26,7 +25,7 @@ surfaces/0 = {
 
 [sub_resource type="Skin" id=424]
 resource_name = "Skin"
-bind_count = 29
+bind_count = 31
 bind/0/name = "Hip"
 bind/0/bone = -1
 bind/0/pose = Transform( -1, -6.90349e-08, -1.3429e-07, 7.10543e-15, 0.889365, -0.457198, 1.50996e-07, -0.457198, -0.889365, -1.83885e-08, -0.139292, -0.121781 )
@@ -114,6 +113,12 @@ bind/27/pose = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, 0.50708, 0.46853, 1.46514 
 bind/28/name = "PullLeg.R"
 bind/28/bone = -1
 bind/28/pose = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, 0.403291, -1.31772, 0.794962 )
+bind/29/name = "Toe.L"
+bind/29/bone = -1
+bind/29/pose = Transform( 0.98822, -0.153043, -2.80178e-09, -9.18722e-08, -1.06402e-07, -0.999999, 0.153043, 0.988219, -3.05915e-08, 0.276877, -0.46853, 1.52548 )
+bind/30/name = "Toe.R"
+bind/30/bone = -1
+bind/30/pose = Transform( 0.988219, 0.153043, 7.36281e-09, 3.40937e-08, 3.54376e-08, -1, -0.153043, 0.988219, -1.14026e-09, -0.276877, -0.46853, 1.52548 )
 
 [sub_resource type="BoxShape" id=29]
 extents = Vector3( 0.204059, 0.418373, 0.29634 )
@@ -4165,6 +4170,26 @@ tracks/29/keys = {
 "method": "on_animation_finish"
 } ]
 }
+tracks/30/type = "bezier"
+tracks/30/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.8 )
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.8 )
+}
 
 [sub_resource type="Animation" id=441]
 resource_name = "Stand"
@@ -7496,14 +7521,13 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 nodes/Zero/node = SubResource( 460 )
 nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
 
 [sub_resource type="CapsuleShape" id=28]
 radius = 0.75
-height = 1.1
 
 [node name="RangeGruntNew" type="KinematicBody" groups=["Enemy", "Range"]]
 collision_layer = 8
@@ -7523,18 +7547,14 @@ current_health = 40
 attack_damage = 2
 hitbox_path = NodePath("Body/Skeleton/Head/Head")
 shoot_path = NodePath("Body/Skeleton/Head/Shoot")
+ray_l_path = NodePath("LegLCast/LegLCast")
+ray_r_path = NodePath("LegRCast/LegRCast")
+ik_l_path = NodePath("Body/Skeleton/LegL")
+ik_r_path = NodePath("Body/Skeleton/LegR")
+point_l_path = NodePath("LegL")
+point_r_path = NodePath("LegR")
 projectile = ExtResource( 4 )
 shoot_damage = 15
-
-[node name="legL" type="Spatial" parent="."]
-script = ExtResource( 8 )
-who = NodePath("../LegLCast")
-to = NodePath("../Body/Skeleton/L/Position3D")
-
-[node name="legR" type="Spatial" parent="."]
-script = ExtResource( 8 )
-who = NodePath("../LegRCast")
-to = NodePath("../Body/Skeleton/R/Position3D")
 
 [node name="Audio" type="Spatial" parent="."]
 script = ExtResource( 7 )
@@ -7583,11 +7603,12 @@ cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2
 
 [node name="LegL" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.374004, -1.26967, -0.303383 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.698656, -1.25537, -1.06867 )
 
 [node name="LegLOffset" type="Position3D" parent="LegL"]
 
 [node name="LegR" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.381015, -0.780282, -0.0808468 )
 
 [node name="LegROffset" type="Position3D" parent="LegR"]
 
@@ -7614,7 +7635,7 @@ bones/3/name = "DownLeg.L"
 bones/3/parent = 2
 bones/3/rest = Transform( 0.997445, -0.0566781, 0.0434853, 0.0575189, 0.276169, -0.959387, 0.0423669, 0.959437, 0.278723, 4.05394e-09, 0.61926, 9.35829e-08 )
 bones/3/enabled = true
-bones/3/bound_children = [ NodePath("L") ]
+bones/3/bound_children = [  ]
 bones/4/name = "MidleTorso"
 bones/4/parent = 0
 bones/4/rest = Transform( 1, 3.66937e-08, 2.97465e-07, 3.66937e-08, 0.970023, -0.243011, -2.97465e-07, 0.243011, 0.970023, 4.24258e-15, 0.192808, 1.14055e-09 )
@@ -7634,7 +7655,7 @@ bones/7/name = "Head"
 bones/7/parent = 6
 bones/7/rest = Transform( 1, 4.73691e-07, -1.85377e-06, -1.5148e-08, 0.970799, 0.239895, 1.91328e-06, -0.239895, 0.970799, -3.56102e-14, 0.234504, 2.90119e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("Head") ]
+bones/7/bound_children = [  ]
 bones/8/name = "MandibleStart.L"
 bones/8/parent = 7
 bones/8/rest = Transform( 0.381262, -0.345715, 0.857392, -0.140769, 0.894919, 0.423443, -0.913687, -0.282137, 0.292533, -0.0934621, 0.119377, -0.110246 )
@@ -7699,7 +7720,7 @@ bones/20/name = "DownLeg.R"
 bones/20/parent = 19
 bones/20/rest = Transform( 0.996665, 0.0588809, -0.0564866, -0.0597547, 0.055305, -0.996679, -0.0555614, 0.996732, 0.0586391, -2.80744e-08, 0.61926, 1.9406e-08 )
 bones/20/enabled = true
-bones/20/bound_children = [ NodePath("R") ]
+bones/20/bound_children = [  ]
 bones/21/name = "Abdomen1"
 bones/21/parent = 0
 bones/21/rest = Transform( -1, -5.97111e-08, 1.38688e-07, -1.27898e-13, -0.918488, -0.39545, 1.50996e-07, -0.39545, 0.918489, -4.49402e-14, -1.21335e-07, -3.02612e-07 )
@@ -7723,23 +7744,33 @@ bones/24/bound_children = [  ]
 bones/25/name = "IKLeg.L"
 bones/25/parent = -1
 bones/25/rest = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, -0.617243, -1.46514, 0.0324981 )
-bones/25/enabled = true
+bones/25/enabled = false
 bones/25/bound_children = [  ]
 bones/26/name = "PullLeg.L"
 bones/26/parent = -1
 bones/26/rest = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, -0.324149, -0.794962, 1.31772 )
-bones/26/enabled = true
+bones/26/enabled = false
 bones/26/bound_children = [  ]
 bones/27/name = "IKLeg.R"
 bones/27/parent = -1
 bones/27/rest = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, 0.341835, -1.46514, -0.9452 )
-bones/27/enabled = true
+bones/27/enabled = false
 bones/27/bound_children = [  ]
 bones/28/name = "PullLeg.R"
 bones/28/parent = -1
 bones/28/rest = Transform( -1, 0, 0, 0, 0, 1, 0, 1, 0, 0.275953, -0.794962, 1.31772 )
-bones/28/enabled = true
+bones/28/enabled = false
 bones/28/bound_children = [  ]
+bones/29/name = "Toe.L"
+bones/29/parent = 3
+bones/29/rest = Transform( 1, -2.59255e-08, -4.61847e-08, -2.29807e-08, 0.573256, -0.819376, 4.77183e-08, 0.819377, 0.573256, -4.02748e-08, 0.827659, 1.31257e-07 )
+bones/29/enabled = true
+bones/29/bound_children = [  ]
+bones/30/name = "Toe.R"
+bones/30/parent = 20
+bones/30/rest = Transform( 1, 4.48139e-08, 6.72134e-08, 2.93832e-08, 0.573256, -0.819376, -7.52499e-08, 0.819376, 0.573256, -2.72494e-08, 0.827659, -3.35276e-08 )
+bones/30/enabled = true
+bones/30/bound_children = [  ]
 
 [node name="Cube" type="MeshInstance" parent="Body/Skeleton"]
 material_override = ExtResource( 5 )
@@ -7748,7 +7779,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, -1.36259e-07, -9.54279e-08, -6.40455e-09, -0.604793, 0.796382, -1.6623e-07, -0.796383, -0.604793, 3.34315e-07, 0.118599, -0.900835 )
+transform = Transform( 1, 4.91222e-08, 3.82329e-08, -9.32346e-10, -0.602232, 0.79832, 6.22395e-08, -0.798321, -0.602233, 1.61541e-08, 0.117852, -0.900411 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -7767,31 +7798,17 @@ transform = Transform( 1, -9.09495e-13, 3.18323e-12, -3.63798e-12, 1, 1.19209e-0
 [node name="LegL" type="SkeletonIK" parent="Body/Skeleton"]
 process_priority = 1
 root_bone = "UpLeg.L"
-tip_bone = "DownLeg.L"
+tip_bone = "Toe.L"
 override_tip_basis = false
 target_node = NodePath("../../../LegL")
 
 [node name="LegR" type="SkeletonIK" parent="Body/Skeleton"]
 process_priority = 1
 root_bone = "UpLeg.R"
-tip_bone = "DownLeg.R"
+tip_bone = "Toe.R"
 interpolation = 0.0
 override_tip_basis = false
-target_node = NodePath("../../../LegL")
-
-[node name="L" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 0.998076, -0.00195599, 0.0619722, -0.052648, -0.554658, 0.830412, 0.0327488, -0.832079, -0.553692, -0.274144, -1.00681, -0.550645 )
-bone_name = "DownLeg.L"
-
-[node name="Position3D" type="Position3D" parent="Body/Skeleton/L"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0 )
-
-[node name="R" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 0.978881, -0.0370763, -0.20104, -0.134764, -0.856516, -0.498214, -0.153722, 0.514784, -0.843425, 0.306451, -0.583711, 0.601854 )
-bone_name = "DownLeg.R"
-
-[node name="Position3D" type="Position3D" parent="Body/Skeleton/R"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0 )
+target_node = NodePath("../../../LegR")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Alert = SubResource( 425 )
@@ -7882,7 +7899,7 @@ cast_to = Vector3( 0, -1.55, 0 )
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.000891209, -0.205285, -0.35656 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.000891209, -0.177576, -0.35656 )
 shape = SubResource( 28 )
 
 [node name="GlobalParticles" type="Spatial" parent="."]
