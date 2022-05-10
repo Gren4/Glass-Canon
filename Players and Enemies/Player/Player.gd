@@ -90,6 +90,7 @@ const WALL_RUNNING_GRAVITY : float = IN_AIR_GRAVITY / 30
 const JUMP_POWER : float = 20.0
 # Таймеры
 const ABLILTY_TO_JUMP_TIME : float = 0.5
+const DOP_VEL_TIME : float = 0.1
 const DASHING_TIME : float = 0.2
 const DASHING_TIME_CD : float = 0.8
 const HP_RECOVERY_CD : float = 4.0
@@ -128,6 +129,7 @@ var interactable_items_count : int = 0
 # Таймеры
 var timer_not_on_ground : float = 0
 var timer_dashing : float = 0
+var timer_dop_vel : float = 0
 # Параметры для карабканья
 var climbPoint : Vector3 = Vector3.ZERO
 # Параметры для бега по стене
@@ -684,11 +686,12 @@ func wall_jump_air() -> bool:
 					var normal : Vector3 = wall_normal.normal
 					dop_velocity = normal * WALL_JUMP_HORIZONTAL_POWER * WALL_JUMP_FACTOR
 					coun_wall_jump -= 1
+					timer_dop_vel = DOP_VEL_TIME
 					return false
 	return true
 
 func wall_jump_wallrun() -> bool:
-	if iswall_tek and coun_wall_jump > 0:
+	if iswall_tek:
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3.ZERO
 			velocityXY = Vector3.ZERO
@@ -698,6 +701,7 @@ func wall_jump_wallrun() -> bool:
 			set_state(IN_AIR)
 			var normal : Vector3 = wall_normal.normal
 			dop_velocity = normal * WALL_JUMP_HORIZONTAL_POWER * WALL_JUMP_FACTOR
+			timer_dop_vel = DOP_VEL_TIME
 			return false
 	return true
 
@@ -755,7 +759,6 @@ func edge_climb(delta) -> bool:
 	return true
 
 func process_weapons(delta) -> void:
-	pass
 	if interactable_items_count > 0:
 		weapon_manager.process_weapon_pickup()
 #
@@ -788,7 +791,10 @@ func finalize_velocity(delta) -> void:
 		
 	direction = direction.normalized()
 	velocityXY = velocityXY.linear_interpolate(direction * speed, accel * delta) + dop_velocity
-	dop_velocity = dop_velocity.linear_interpolate(Vector3.ZERO, ACCEL_DOP * delta)
+	if timer_dop_vel <= 0.0:
+		dop_velocity = dop_velocity.linear_interpolate(Vector3.ZERO, ACCEL_DOP * delta)
+	else:
+		timer_dop_vel -= delta
 	velocity.x = velocityXY.x
 	velocity.z = velocityXY.z
 	vel_info = move_and_slide_with_snap(velocity, snap, Vector3.UP, not_on_moving_platform, 4, deg2rad(45))
@@ -804,8 +810,13 @@ func animations_handler() -> void:
 		match State:
 			WALKING:
 				if isfloor_tek:
-					animation_tree.set("parameters/HeadBopSpeed/scale", 2.5)
-					animation_tree.set("parameters/HeadBop/blend_position", vel_info.length_squared() / pow(WALKING_SPEED,2))
+					var n = vel_info.length_squared() / pow(WALKING_SPEED,2)
+					if n > 0.01:
+						animation_tree.set("parameters/HeadBopSpeed/scale", 2.5)
+						animation_tree.set("parameters/HeadBop/blend_position", n)
+					else:
+						animation_tree.set("parameters/HeadBopSpeed/scale", 2.5)
+						animation_tree.set("parameters/HeadBop/blend_position", 0)
 				else:
 					animation_tree.set("parameters/HeadBop/blend_position", 0)
 			WALLRUNNING:

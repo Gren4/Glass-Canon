@@ -175,7 +175,7 @@ func climb():
 
 func _process(delta):
 	if arms.left_hand.interpolation < 1:
-		arms.left_hand.interpolation += 6*delta
+		arms.left_hand.interpolation += 5*delta
 	if is_reloading:
 		if heat <= 0.0 and is_not_climbing:
 			heat = 0.0

@@ -7460,7 +7460,7 @@ blend_point_16/pos = Vector2( -0.2, 0 )
 
 [sub_resource type="AnimationNodeOneShot" id=409]
 filter_enabled = true
-filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton:Abdomen1", "Body/Skeleton:Abdomen2", "Body/Skeleton:Abdomen3", "Body/Skeleton:Abdomen4", "Body/Skeleton:BigF.L", "Body/Skeleton:BigF.R", "Body/Skeleton:DownArm.L", "Body/Skeleton:DownArm.R", "Body/Skeleton:DownLeg.L", "Body/Skeleton:DownLeg.R", "Body/Skeleton:Head", "Body/Skeleton:Hip", "Body/Skeleton:MandibleEnd.L", "Body/Skeleton:MandibleEnd.R", "Body/Skeleton:MandibleStart.L", "Body/Skeleton:MandibleStart.R", "Body/Skeleton:MidLeg.L", "Body/Skeleton:MidLeg.R", "Body/Skeleton:MidleTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpArm.L", "Body/Skeleton:UpArm.R", "Body/Skeleton:UpLeg.L", "Body/Skeleton:UpLeg.R", "Body/Skeleton:UpTorso" ]
+filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton/LegL:interpolation", "Body/Skeleton/LegR:interpolation", "Body/Skeleton:Abdomen1", "Body/Skeleton:Abdomen2", "Body/Skeleton:Abdomen3", "Body/Skeleton:Abdomen4", "Body/Skeleton:BigF.L", "Body/Skeleton:BigF.R", "Body/Skeleton:DownArm.L", "Body/Skeleton:DownArm.R", "Body/Skeleton:DownLeg.L", "Body/Skeleton:DownLeg.R", "Body/Skeleton:Head", "Body/Skeleton:Hip", "Body/Skeleton:MandibleEnd.L", "Body/Skeleton:MandibleEnd.R", "Body/Skeleton:MandibleStart.L", "Body/Skeleton:MandibleStart.R", "Body/Skeleton:MidLeg.L", "Body/Skeleton:MidLeg.R", "Body/Skeleton:MidleTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpArm.L", "Body/Skeleton:UpArm.R", "Body/Skeleton:UpLeg.L", "Body/Skeleton:UpLeg.R", "Body/Skeleton:UpTorso" ]
 fadein_time = 0.2
 fadeout_time = 0.2
 sync = true
@@ -7477,7 +7477,7 @@ input_1/name = "Stand"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=406]
-graph_offset = Vector2( -1149.98, 354.826 )
+graph_offset = Vector2( -712.907, 20.0837 )
 nodes/Add2/node = SubResource( 465 )
 nodes/Add2/position = Vector2( -160, 60 )
 nodes/Animation/node = SubResource( 49 )
@@ -7521,7 +7521,7 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 nodes/Zero/node = SubResource( 460 )
 nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "TimeScale", 0, "Animation 2", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Zero", 0, "Movement", "Zero", 1, "Animation 9" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -7655,7 +7655,7 @@ bones/7/name = "Head"
 bones/7/parent = 6
 bones/7/rest = Transform( 1, 4.73691e-07, -1.85377e-06, -1.5148e-08, 0.970799, 0.239895, 1.91328e-06, -0.239895, 0.970799, -3.56102e-14, 0.234504, 2.90119e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [  ]
+bones/7/bound_children = [ NodePath("Head") ]
 bones/8/name = "MandibleStart.L"
 bones/8/parent = 7
 bones/8/rest = Transform( 0.381262, -0.345715, 0.857392, -0.140769, 0.894919, 0.423443, -0.913687, -0.282137, 0.292533, -0.0934621, 0.119377, -0.110246 )
@@ -7779,7 +7779,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, 4.91222e-08, 3.82329e-08, -9.32346e-10, -0.602232, 0.79832, 6.22395e-08, -0.798321, -0.602233, 1.61541e-08, 0.117852, -0.900411 )
+transform = Transform( 1, 2.62782e-08, 1.00899e-08, 4.02451e-10, -0.371537, 0.928418, 2.81466e-08, -0.928419, -0.371537, 4.5566e-09, 0.223582, -0.948138 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -7806,7 +7806,6 @@ target_node = NodePath("../../../LegL")
 process_priority = 1
 root_bone = "UpLeg.R"
 tip_bone = "Toe.R"
-interpolation = 0.0
 override_tip_basis = false
 target_node = NodePath("../../../LegR")
 

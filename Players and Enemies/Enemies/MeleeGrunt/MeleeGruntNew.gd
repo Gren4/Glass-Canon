@@ -240,53 +240,62 @@ func analyze_and_prepare_attack(delta : float) -> void:
 		evade_maneuver(delta, dist)
 
 func move_along_path(delta : float) -> bool:
-	if my_path.size() > 0:
-		var dir_to_path = (my_path[0] - self.global_transform.origin)
-		if link_from.size() > 0 and link_to.size() > 0:
-			var dtp_l = (my_path[0] - link_from[0])
-			if dtp_l.length() < 1.5 and dir_to_path.length() < 1.4:
-				direction = Vector3.ZERO
-				velocityXY = Vector3.ZERO
-				start_jump_pos = self.global_transform.origin
-				p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
-				var jdist = (link_to[0] - start_jump_pos)
-				jump_time_coeff = jdist.length() / speed
-				jump_time_coeff = clamp(jump_time_coeff,0.5,0.8)
-				offset = jdist.normalized()
-				offset.y = 0
-				while (link_to[0] in my_path):
-					my_path.remove(0)
-				audio.step()
-				set_state(JUMP)
-				return true
-		if dir_to_path.length() < 1.4:
-			my_path.remove(0)
-		else:
-			if is_on_wall():
-				velocity.y = 1.0
-				snap = Vector3.ZERO
-			if dist_length < 3.5:
-				left_ray.force_raycast_update()
-				if not left_ray.is_colliding():
-					move_to_target(delta, 3.5, Vector3.UP.cross(dir_to_path).normalized(), ALLERTED_AND_KNOWS_LOC,my_path[0])
-			else:
-				if dist_length > 8.0:
-					move_to_target(delta, 3.5, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
-				else:
-					move_to_target(delta, 3.5, dir_to_path, ALLERTED_AND_KNOWS_LOC)
+	if dist_length < 5.0:
+		no_path_movement(delta)
+		give_path = false
 	else:
-		front_ray.force_raycast_update()
-		if front_ray.is_colliding():
-			if dist2D_length > 4.5 and dist_length > 4.5:
-				move_to_target(delta, 3.5, -dist, ALLERTED_AND_KNOWS_LOC)
-			elif dist2D_length < 3.0:
-				move_to_target(delta, 3.5, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
+		give_path = true
+		if my_path.size() > 0:
+			var dir_to_path = (my_path[0] - self.global_transform.origin)
+			if link_from.size() > 0 and link_to.size() > 0:
+				var dtp_l = (my_path[0] - link_from[0])
+				if dtp_l.length() < 1.5 and dir_to_path.length() < 1.4:
+					direction = Vector3.ZERO
+					velocityXY = Vector3.ZERO
+					start_jump_pos = self.global_transform.origin
+					p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
+					var jdist = (link_to[0] - start_jump_pos)
+					jump_time_coeff = jdist.length() / speed
+					jump_time_coeff = clamp(jump_time_coeff,0.5,0.8)
+					offset = jdist.normalized()
+					offset.y = 0
+					while (link_to[0] in my_path):
+						my_path.remove(0)
+					audio.step()
+					set_state(JUMP)
+					return true
+			if dir_to_path.length() < 1.4:
+				my_path.remove(0)
 			else:
-				move_to_target(delta, 3.5, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
+				if is_on_wall():
+					velocity.y = 1.0
+					snap = Vector3.ZERO
+				if dist_length < 3.5:
+					left_ray.force_raycast_update()
+					if not left_ray.is_colliding():
+						move_to_target(delta, 3.5, Vector3.UP.cross(dir_to_path).normalized(), ALLERTED_AND_KNOWS_LOC,my_path[0])
+				else:
+					if dist_length > 8.0:
+						move_to_target(delta, 3.5, dir_to_path, ALLERTED_AND_KNOWS_LOC,my_path[0])
+					else:
+						move_to_target(delta, 3.5, dir_to_path, ALLERTED_AND_KNOWS_LOC)
+		else:
+			no_path_movement(delta)
+	return false
+	
+func no_path_movement(delta : float) -> void:
+	front_ray.force_raycast_update()
+	if front_ray.is_colliding():
+		if dist2D_length > 4.5 and dist_length > 4.5:
+			move_to_target(delta, 3.5, -dist, ALLERTED_AND_KNOWS_LOC)
+		elif dist2D_length < 3.0:
+			move_to_target(delta, 3.5, self.global_transform.basis.z, ALLERTED_AND_KNOWS_LOC)
 		else:
 			move_to_target(delta, 3.5, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
-	return false
-		
+	else:
+		move_to_target(delta, 3.5, Vector3.ZERO, ALLERTED_AND_KNOWS_LOC)
+	
+
 func evade_setup(coef : int, dist_V : Vector3) -> void:
 	direction = coef * side * Vector3.UP.cross(dist_V).normalized()
 	side = coef * side

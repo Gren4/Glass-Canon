@@ -11,7 +11,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 20
+const max_enem : int = 5
 
 var col_enem_to_spawn = 300
 
@@ -78,24 +78,32 @@ func _physics_process(delta):
 		pass
 		
 	if col_enem > 0:
-		if is_instance_valid(forces[it]):
-			if (timer[it] < 100):
-				timer[it] += 1
+		for e in range(it,col_enem):
+			if e >= col_enem:
+				break
+			if is_instance_valid(forces[e]):
+				if (timer[e] < 100):
+					timer[e] += 1
+				else:
+					timer[e] = 0
+				var dist_to_player = player.global_transform.origin - forces[e].global_transform.origin
+				var dist_l = dist_to_player.length()
+				if forces[e].is_in_group("Melee"):
+					if (forces[e].give_path):
+						if timer[e]%5 == 0:
+							move_to(forces[e],dist_l)
+							it = e
+							break
+				elif forces[e].is_in_group("Range"):
+					if (forces[e].give_path):
+						if timer[e]%50 == 0:
+							move_to(forces[e],dist_l)
+							it = e
+							break
 			else:
-				timer[it] = 0
-			var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
-			var dist_l = dist_to_player.length()
-			if forces[it].is_in_group("Melee"):
-				if timer[it]%5 == 0:
-					move_to(forces[it],dist_l)
-			elif forces[it].is_in_group("Range"):
-				if (forces[it].give_path):
-					if timer[it]%50 == 0:
-						move_to(forces[it],dist_l)
-		else:
-			forces.remove(it)
-			timer.remove(it)
-			col_enem -= 1
+				forces.remove(e)
+				timer.remove(e)
+				col_enem -= 1
 
 		if it+1 >= col_enem:
 			it = 0

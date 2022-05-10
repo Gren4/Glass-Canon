@@ -277,7 +277,7 @@ nodes/Jump/position = Vector2( 680, 60 )
 nodes/Land/node = SubResource( 19 )
 nodes/Land/position = Vector2( 400, 60 )
 nodes/output/position = Vector2( 960, 80 )
-node_connections = [ "output", 0, "Jump", "Hit", 0, "HeadBopSpeed", "Hit", 1, "HitTransition", "Jump", 0, "Land", "Jump", 1, "Animation 4", "Land", 0, "Hit", "Land", 1, "Animation 3", "HeadBopSpeed", 0, "HeadBop", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2" ]
+node_connections = [ "output", 0, "Jump", "Hit", 0, "HeadBopSpeed", "Hit", 1, "HitTransition", "Jump", 0, "Land", "Jump", 1, "Animation 4", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Land", 0, "Hit", "Land", 1, "Animation 3", "HeadBopSpeed", 0, "HeadBop" ]
 
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10

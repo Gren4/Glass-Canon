@@ -12,7 +12,6 @@ func all_loaded():
 	# Две камеры, ждем два сигнала
 	if init_compile_wait == 2:
 		get_tree().paused = false
-		#get_node("Particles").queue_free()
 		emit_signal("canStart")
 		disconnect("canStart", get_node("Player/HUD"), "hide_loading_screen")
 
