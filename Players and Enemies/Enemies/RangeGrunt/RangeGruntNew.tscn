@@ -1,4 +1,4 @@
-[gd_scene load_steps=102 format=2]
+[gd_scene load_steps=104 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Material_001.material" type="Material" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Materials/Grunt.tres" type="Material" id=5]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/RangeGruntRagdoll.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/AudioRangeGrunt.gd" type="Script" id=7]
+[ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/Helper.gd" type="Script" id=8]
 
 [sub_resource type="ArrayMesh" id=423]
 resource_name = "RangeGruntNew_Cube001"
@@ -120,6 +121,7 @@ extents = Vector3( 0.204059, 0.418373, 0.29634 )
 [sub_resource type="Animation" id=425]
 resource_name = "Alert"
 length = 0.833333
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -245,7 +247,7 @@ tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/keys = PoolRealArray( 0, 1, 2.98023e-08, 6.33299e-08, -1.78814e-07, -0.242283, 8.40027e-10, 0.0145258, 0.970097, 1, 1, 1, 0.0666667, 1, 2.6077e-08, 5.58794e-08, -1.78814e-07, -0.237569, 9.82847e-09, 0.0142431, 0.971266, 1, 1, 1, 0.133333, 1, 2.23517e-08, 5.21541e-08, -1.78814e-07, -0.225828, 3.4659e-09, 0.0135393, 0.974073, 1, 1, 1, 0.266667, 1, 1.86265e-08, 4.09782e-08, -1.78814e-07, -0.18656, 0, 0.011185, 0.98238, 1, 1, 1, 0.4, 1, 1.49012e-08, 2.6077e-08, -1.78814e-07, -0.137985, 6.22982e-09, 0.00827273, 0.9904, 1, 1, 1, 0.466667, 1, 1.11759e-08, 2.6077e-08, -2.38419e-07, -0.0881651, -2.20596e-09, 0.00528583, 0.996092, 1, 1, 1, 0.533333, 1, 7.45058e-09, 1.86265e-08, -2.38419e-07, -0.00342481, -4.22613e-09, 0.000205321, 0.999994, 1, 1, 1, 0.6, 1, 7.45058e-09, 1.11759e-08, -2.38419e-07, 0.0472379, 1.05693e-08, -0.00283209, 0.99888, 1, 1, 1, 0.666667, 1, 3.72529e-09, 7.45058e-09, -2.38419e-07, 0.02497, -2.09049e-08, -0.00149706, 0.999687, 1, 1, 1, 0.8, 1, 0, -3.72529e-09, -2.38419e-07, -0.148881, 5.59228e-09, 0.00892597, 0.988815, 1, 1, 1, 0.833333, 1, 0, -7.45058e-09, -2.38419e-07, -0.167772, -1.22819e-08, 0.0100586, 0.985775, 1, 1, 1 )
+tracks/17/keys = PoolRealArray( 0, 1, 2.98023e-08, 6.33299e-08, -1.78814e-07, -0.242283, 8.40027e-10, 0.0145258, 0.970097, 1, 1, 1, 0.0666667, 1, 2.6077e-08, 5.58794e-08, -1.78814e-07, -0.237569, 9.82847e-09, 0.0142431, 0.971266, 1, 1, 1, 0.133333, 1, 2.23517e-08, 5.21541e-08, -1.78814e-07, -0.225828, 3.4659e-09, 0.0135393, 0.974073, 1, 1, 1, 0.266667, 1, 1.86265e-08, 4.09782e-08, -1.78814e-07, -0.18656, 0, 0.011185, 0.98238, 1, 1, 1, 0.4, 1, 1.49012e-08, 2.6077e-08, -1.78814e-07, -0.137985, 6.22982e-09, 0.00827273, 0.9904, 1, 1, 1, 0.466667, 1, 1.11759e-08, 2.6077e-08, -2.38419e-07, -0.0881651, -2.20596e-09, 0.00528583, 0.996092, 1, 1, 1, 0.533333, 1, 7.45058e-09, 1.86265e-08, -2.38419e-07, -0.00342481, -4.22613e-09, 0.000205321, 0.999994, 1, 1, 1, 0.6, 1, 7.45058e-09, 1.11759e-08, -2.38419e-07, 0.0472379, 1.05693e-08, -0.00283209, 0.99888, 1, 1, 1, 0.666667, 1, 3.72529e-09, 7.45058e-09, -2.38419e-07, 0.02497, -2.09049e-08, -0.00149706, 0.999687, 1, 1, 1, 0.71, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.8, 1, 0, -3.72529e-09, -2.38419e-07, -0.148881, 5.59228e-09, 0.00892597, 0.988815, 1, 1, 1, 0.833333, 1, 0, -7.45058e-09, -2.38419e-07, -0.167772, -1.22819e-08, 0.0100586, 0.985775, 1, 1, 1 )
 tracks/18/type = "transform"
 tracks/18/path = NodePath("Body/Skeleton:MidLeg.R")
 tracks/18/interp = 1
@@ -323,6 +325,50 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.833333, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.8, 0.83 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.937879, -1.47745, 0.232764 ), Vector3( -0.939869, -1.41232, 0.229469 ), Vector3( -0.945535, -1.31569, 0.216489 ), Vector3( -0.963255, -1.24192, 0.181381 ), Vector3( -1.01218, -1.29216, 0.0949394 ), Vector3( -1.08256, -1.39663, -0.0263472 ), Vector3( -1.12065, -1.45986, -0.0963386 ), Vector3( -1.12646, -1.46599, -0.111498 ), Vector3( -1.12633, -1.46443, -0.111855 ), Vector3( -1.12582, -1.46261, -0.112487 ), Vector3( -1.12689, -1.46523, -0.112052 ), Vector3( -1.12696, -1.47155, -0.101997 ), Vector3( -1.127, -1.4718, -0.10156 ), Vector3( -1.12701, -1.47179, -0.101575 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.8, 0.83 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.612305, -1.47199, -0.944053 ), Vector3( 0.612308, -1.47191, -0.944158 ), Vector3( 0.612309, -1.47172, -0.944362 ), Vector3( 0.612144, -1.4685, -0.947556 ), Vector3( 0.612743, -1.47192, -0.945196 ), Vector3( 0.612641, -1.46783, -0.948991 ), Vector3( 0.61229, -1.4636, -0.951921 ), Vector3( 0.622813, -1.41747, -0.970612 ), Vector3( 0.650022, -1.3235, -1.00687 ), Vector3( 0.694746, -1.23665, -1.06094 ), Vector3( 0.744011, -1.25537, -1.11545 ), Vector3( 0.780132, -1.35391, -1.14676 ), Vector3( 0.808079, -1.44826, -1.18029 ), Vector3( 0.812118, -1.46528, -1.18484 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.3, 0.4, 0.83 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 0.58, 0.75, 0.83 )
+}
 
 [sub_resource type="Animation" id=426]
 resource_name = "AttackLeft"
@@ -870,6 +916,7 @@ tracks/0/keys = {
 resource_name = "Idle"
 length = 1.625
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -1073,6 +1120,50 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1.625, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.26, 0.53, 0.6, 0.67, 0.73, 0.8, 0.87, 0.93, 1, 1.4, 1.47, 1.53, 1.6, 1.62 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.937879, -1.47745, 0.232764 ), Vector3( -0.937906, -1.47744, 0.232683 ), Vector3( -0.937953, -1.4774, 0.232525 ), Vector3( -0.937661, -1.4762, 0.231924 ), Vector3( -0.938479, -1.47769, 0.232312 ), Vector3( -0.938166, -1.47489, 0.230696 ), Vector3( -0.93756, -1.47315, 0.229456 ), Vector3( -0.93864, -1.47667, 0.230145 ), Vector3( -0.93867, -1.47663, 0.230044 ), Vector3( -0.93787, -1.47712, 0.229275 ), Vector3( -0.938666, -1.47664, 0.230062 ), Vector3( -0.938633, -1.47668, 0.230178 ), Vector3( -0.938574, -1.47674, 0.230363 ), Vector3( -0.937434, -1.48002, 0.232081 ), Vector3( -0.936762, -1.4794, 0.231585 ), Vector3( -0.937856, -1.47754, 0.232596 ), Vector3( -0.937885, -1.47745, 0.232749 ), Vector3( -0.937881, -1.47745, 0.232761 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.26, 0.53, 0.6, 0.67, 0.73, 0.8, 0.87, 0.93, 1, 1.4, 1.47, 1.53, 1.6, 1.62 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.612305, -1.47199, -0.944053 ), Vector3( 0.612307, -1.47192, -0.944131 ), Vector3( 0.612307, -1.47179, -0.944277 ), Vector3( 0.612191, -1.46942, -0.946669 ), Vector3( 0.612519, -1.47155, -0.945737 ), Vector3( 0.61229, -1.46557, -0.951794 ), Vector3( 0.611933, -1.46291, -0.953029 ), Vector3( 0.612251, -1.46937, -0.946476 ), Vector3( 0.612247, -1.46925, -0.946574 ), Vector3( 0.611846, -1.4696, -0.945729 ), Vector3( 0.612247, -1.46927, -0.946558 ), Vector3( 0.612253, -1.4694, -0.946455 ), Vector3( 0.61226, -1.46962, -0.946272 ), Vector3( 0.612002, -1.47392, -0.943551 ), Vector3( 0.611698, -1.47347, -0.942827 ), Vector3( 0.612275, -1.47198, -0.94409 ), Vector3( 0.612306, -1.47198, -0.944067 ), Vector3( 0.612305, -1.47199, -0.944056 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.63 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.63 )
+}
 
 [sub_resource type="Animation" id=429]
 resource_name = "Jump"
@@ -1280,10 +1371,31 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "bezier"
+tracks/29/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/30/type = "bezier"
+tracks/30/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
 [sub_resource type="Animation" id=430]
 resource_name = "JumpEnd"
 length = 0.416667
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -1487,10 +1599,55 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.416667, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.42 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.217089, -1.47924, -0.0953522 ), Vector3( -0.363259, -1.4886, -0.099457 ), Vector3( -0.607821, -1.49647, -0.103938 ), Vector3( -0.916687, -1.47299, -0.105788 ), Vector3( -1.10031, -1.46778, -0.105845 ), Vector3( -1.12683, -1.46803, -0.105158 ), Vector3( -1.1284, -1.47236, -0.101111 ), Vector3( -1.12701, -1.47178, -0.101577 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.42 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.222111, -0.933907, -0.669302 ), Vector3( 0.315126, -1.01829, -0.752438 ), Vector3( 0.472421, -1.17129, -0.890958 ), Vector3( 0.672611, -1.33475, -1.0671 ), Vector3( 0.792279, -1.44184, -1.17322 ), Vector3( 0.810313, -1.45938, -1.1881 ), Vector3( 0.813985, -1.47808, -1.16746 ), Vector3( 0.81256, -1.46715, -1.18534 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.01, 0.42 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.42 )
+}
 
 [sub_resource type="Animation" id=431]
 resource_name = "JumpStart"
 length = 0.416667
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -1694,16 +1851,88 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.416667, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.42 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.12701, -1.47178, -0.101577 ), Vector3( -1.13164, -1.47095, -0.09998 ), Vector3( -1.10579, -1.46835, -0.106032 ), Vector3( -0.976451, -1.47089, -0.105785 ), Vector3( -0.686815, -1.4758, -0.104846 ), Vector3( -0.382789, -1.48237, -0.0999862 ), Vector3( -0.237416, -1.48107, -0.0959755 ), Vector3( -0.217089, -1.47924, -0.0953522 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.42 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81256, -1.46715, -1.18534 ), Vector3( 0.815233, -1.46463, -1.19102 ), Vector3( 0.795121, -1.4447, -1.1756 ), Vector3( 0.711891, -1.36965, -1.10176 ), Vector3( 0.522126, -1.19526, -0.934872 ), Vector3( 0.32938, -1.02683, -0.762915 ), Vector3( 0.235566, -0.941082, -0.679748 ), Vector3( 0.222111, -0.933907, -0.669302 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.41, 0.42 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.2, 0.42 )
+}
 
 [sub_resource type="Animation" id=467]
 resource_name = "NoAudio"
 length = 0.875
 loop = true
 
+[sub_resource type="Animation" id=485]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("LegLCast:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.939869, -1.41232, 0.229469 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LegRCast:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.612308, -1.47191, -0.944158 ) ]
+}
+
 [sub_resource type="Animation" id=432]
 resource_name = "RunBackwars"
 length = 0.791667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -1843,7 +2072,7 @@ tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/imported = false
 tracks/19/enabled = true
-tracks/19/keys = PoolRealArray( 0, 1, 0, 0, 2.98023e-08, -0.412743, -0.166867, 0.159841, 0.88105, 1, 1, 1, 0.0666667, 1, 0, 0, 2.98023e-08, -0.383215, -0.146895, 0.151968, 0.899152, 1, 1, 1, 0.133333, 1, 0, 0, 2.98023e-08, -0.291444, -0.109424, 0.142279, 0.939598, 1, 1, 1, 0.2, 1, 0, 0, 2.23517e-08, -0.116397, -0.0681065, 0.139314, 0.981022, 1, 1, 1, 0.266667, 1, 0, 0, 2.23517e-08, 0.0828499, -0.0335999, 0.137492, 0.98646, 1, 1, 1, 0.333333, 1, 0, 0, 2.23517e-08, 0.217879, -0.0129595, 0.133835, 0.966669, 1, 1, 1, 0.4, 1, 0, -7.45058e-09, 2.98023e-08, 0.264281, -0.00611056, 0.131904, 0.955364, 1, 1, 1, 0.466667, 1, 0, -7.45058e-09, 2.98023e-08, 0.249952, -0.00818637, 0.132503, 0.959114, 1, 1, 1, 0.533333, 1, 0, -7.45058e-09, 2.98023e-08, 0.151603, -0.0227317, 0.135771, 0.978808, 1, 1, 1, 0.6, 1, 0, -7.45058e-09, 2.23517e-08, -0.0854872, -0.0627585, 0.139051, 0.98459, 1, 1, 1, 0.666667, 1, 0, -7.45058e-09, 2.23517e-08, -0.319718, -0.116566, 0.142659, 0.929431, 1, 1, 1, 0.733333, 1, 0, -7.45058e-09, 2.23517e-08, -0.396379, -0.153703, 0.154316, 0.891878, 1, 1, 1, 0.791667, 1, 0, -7.45058e-09, 2.23517e-08, -0.412743, -0.166867, 0.159841, 0.88105, 1, 1, 1 )
+tracks/19/keys = PoolRealArray( 0, 1, 0, 0, 2.98023e-08, -0.412743, -0.166867, 0.159841, 0.88105, 1, 1, 1, 0.07, 1, 0, 0, 2.98023e-08, -0.383215, -0.146895, 0.151968, 0.899152, 1, 1, 1, 0.133333, 1, 0, 0, 2.98023e-08, -0.291444, -0.109424, 0.142279, 0.939598, 1, 1, 1, 0.2, 1, 0, 0, 2.23517e-08, -0.116397, -0.0681065, 0.139314, 0.981022, 1, 1, 1, 0.266667, 1, 0, 0, 2.23517e-08, 0.0828499, -0.0335999, 0.137492, 0.98646, 1, 1, 1, 0.333333, 1, 0, 0, 2.23517e-08, 0.217879, -0.0129595, 0.133835, 0.966669, 1, 1, 1, 0.4, 1, 0, -7.45058e-09, 2.98023e-08, 0.264281, -0.00611056, 0.131904, 0.955364, 1, 1, 1, 0.466667, 1, 0, -7.45058e-09, 2.98023e-08, 0.249952, -0.00818637, 0.132503, 0.959114, 1, 1, 1, 0.533333, 1, 0, -7.45058e-09, 2.98023e-08, 0.151603, -0.0227317, 0.135771, 0.978808, 1, 1, 1, 0.6, 1, 0, -7.45058e-09, 2.23517e-08, -0.0854872, -0.0627585, 0.139051, 0.98459, 1, 1, 1, 0.666667, 1, 0, -7.45058e-09, 2.23517e-08, -0.319718, -0.116566, 0.142659, 0.929431, 1, 1, 1, 0.733333, 1, 0, -7.45058e-09, 2.23517e-08, -0.396379, -0.153703, 0.154316, 0.891878, 1, 1, 1, 0.791667, 1, 0, -7.45058e-09, 2.23517e-08, -0.412743, -0.166867, 0.159841, 0.88105, 1, 1, 1 )
 tracks/20/type = "transform"
 tracks/20/path = NodePath("Body/Skeleton:Abdomen4")
 tracks/20/interp = 1
@@ -1907,11 +2136,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.791667, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.46, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.330963, -1.46765, -1.51497 ), Vector3( -0.331019, -1.39371, -1.33466 ), Vector3( -0.331027, -1.26009, -0.979204 ), Vector3( -0.330798, -1.11607, -0.396279 ), Vector3( -0.328391, -1.10226, 0.282327 ), Vector3( -0.328725, -1.145, 0.848685 ), Vector3( -0.329879, -1.24714, 1.21553 ), Vector3( -0.329207, -1.3331, 1.11837 ), Vector3( -0.328872, -1.41389, 0.628255 ), Vector3( -0.330046, -1.45588, -0.0971815 ), Vector3( -0.330989, -1.46274, -0.830316 ), Vector3( -0.331022, -1.47796, -1.29382 ), Vector3( -0.330968, -1.46852, -1.50949 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.46, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.329934, -1.26906, 1.25175 ), Vector3( 0.328728, -1.29925, 1.02594 ), Vector3( 0.328921, -1.33305, 0.59531 ), Vector3( 0.330176, -1.37478, -0.0623057 ), Vector3( 0.330909, -1.42588, -0.720667 ), Vector3( 0.330967, -1.44893, -1.20362 ), Vector3( 0.330966, -1.46633, -1.48485 ), Vector3( 0.331006, -1.41791, -1.38331 ), Vector3( 0.331064, -1.25108, -0.895236 ), Vector3( 0.329744, -1.11051, -0.189215 ), Vector3( 0.329632, -1.11389, 0.55436 ), Vector3( 0.329229, -1.22079, 1.03569 ), Vector3( 0.329923, -1.26869, 1.24731 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.46, 0.57, 0.79 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.32, 0.43, 0.53, 0.79 )
+}
 
 [sub_resource type="Animation" id=433]
 resource_name = "RunBackwarsDLeft"
 length = 0.791667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -2115,11 +2389,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -1.35037, 0.1725, -5.96046e-08, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1, 0.791667, 1, -1.35037, 0.1725, -5.96046e-08, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.46, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.629451, -1.46765, -1.39134 ), Vector3( 0.501914, -1.39371, -1.26388 ), Vector3( 0.250559, -1.26009, -1.01254 ), Vector3( -0.161471, -1.11607, -0.600181 ), Vector3( -0.639614, -1.10226, -0.118635 ), Vector3( -1.04033, -1.145, 0.281606 ), Vector3( -1.30054, -1.24714, 0.540188 ), Vector3( -1.19219, -1.33581, 0.463958 ), Vector3( -0.724585, -1.41806, 0.0916672 ), Vector3( -0.126158, -1.45419, -0.43869 ), Vector3( 0.343111, -1.45962, -0.949263 ), Vector3( 0.550022, -1.47289, -1.25093 ), Vector3( 0.627581, -1.46811, -1.38783 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.46, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.859593, -1.26906, 1.03236 ), Vector3( -0.700774, -1.29925, 0.871832 ), Vector3( -0.396137, -1.33305, 0.567468 ), Vector3( 0.0697569, -1.37478, 0.10335 ), Vector3( 0.535806, -1.42588, -0.361664 ), Vector3( 0.877348, -1.44893, -0.703124 ), Vector3( 1.0762, -1.46633, -0.90198 ), Vector3( 1.06362, -1.41416, -0.848352 ), Vector3( 0.898979, -1.24227, -0.560788 ), Vector3( 0.524416, -1.10597, -0.0938788 ), Vector3( -0.0667201, -1.11686, 0.445365 ), Vector3( -0.59163, -1.23244, 0.843525 ), Vector3( -0.853804, -1.2697, 1.02862 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.46, 0.57, 0.79 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.32, 0.43, 0.53, 0.79 )
+}
 
 [sub_resource type="Animation" id=434]
 resource_name = "RunBackwarsDRight"
 length = 0.791667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -2323,11 +2642,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0.859453, 0.74284, -5.96046e-08, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1, 0.791667, 1, 0.859453, 0.74284, -5.96046e-08, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.33, 0.4, 0.46, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.0975, -1.46765, -0.923282 ), Vector3( -0.970045, -1.39371, -0.795747 ), Vector3( -0.659921, -1.24841, -0.485765 ), Vector3( -0.30635, -1.11607, -0.132364 ), Vector3( 0.1752, -1.10226, 0.345781 ), Vector3( 0.575439, -1.14501, 0.746492 ), Vector3( 0.834021, -1.24714, 1.00671 ), Vector3( 0.76579, -1.33311, 0.937526 ), Vector3( 0.419466, -1.41389, 0.590727 ), Vector3( -0.0943244, -1.45588, 0.0785963 ), Vector3( -0.613395, -1.46274, -0.439139 ), Vector3( -0.941166, -1.47796, -0.766864 ), Vector3( -1.09363, -1.46851, -0.919409 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.33, 0.4, 0.46, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1.32619, -1.26906, 0.565757 ), Vector3( 1.16567, -1.29925, 0.40694 ), Vector3( 0.798255, -1.34733, 0.0399485 ), Vector3( 0.397179, -1.37478, -0.36359 ), Vector3( -0.0678297, -1.42588, -0.82964 ), Vector3( -0.409291, -1.44893, -1.17118 ), Vector3( -0.608149, -1.46633, -1.37004 ), Vector3( -0.536319, -1.41791, -1.29827 ), Vector3( -0.191159, -1.25108, -0.953189 ), Vector3( 0.30714, -1.11051, -0.453022 ), Vector3( 0.832847, -1.11389, 0.0728431 ), Vector3( 1.17292, -1.2208, 0.413483 ), Vector3( 1.32304, -1.26869, 0.562623 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.46, 0.57, 0.79 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.32, 0.43, 0.53, 0.79 )
+}
 
 [sub_resource type="Animation" id=435]
 resource_name = "RunForward"
 length = 0.791667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -2531,11 +2895,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.791667, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.330947, -1.46634, -1.5158 ), Vector3( -0.331004, -1.47663, -1.24159 ), Vector3( -0.330852, -1.47055, -0.742979 ), Vector3( -0.330244, -1.44782, -0.00514925 ), Vector3( -0.328443, -1.40841, 0.701455 ), Vector3( -0.329741, -1.31809, 1.15943 ), Vector3( -0.32964, -1.23336, 1.19332 ), Vector3( -0.328498, -1.13907, 0.775904 ), Vector3( -0.329127, -1.09241, 0.203551 ), Vector3( -0.330053, -1.14575, -0.464325 ), Vector3( -0.330984, -1.27011, -1.0495 ), Vector3( -0.330982, -1.41823, -1.40414 ), Vector3( -0.33095, -1.46521, -1.51228 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.329758, -1.26947, 1.25104 ), Vector3( 0.329137, -1.20707, 0.980849 ), Vector3( 0.32906, -1.11692, 0.468847 ), Vector3( 0.330348, -1.11458, -0.279779 ), Vector3( 0.331095, -1.27764, -0.964042 ), Vector3( 0.330946, -1.42681, -1.42781 ), Vector3( 0.33095, -1.4636, -1.47032 ), Vector3( 0.330991, -1.44756, -1.13967 ), Vector3( 0.330935, -1.41676, -0.647877 ), Vector3( 0.329824, -1.3742, 0.0191274 ), Vector3( 0.329611, -1.32013, 0.669714 ), Vector3( 0.329067, -1.28839, 1.10995 ), Vector3( 0.3297, -1.27048, 1.2468 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.67, 0.79 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.27, 0.34, 0.6, 0.67, 0.79 )
+}
 
 [sub_resource type="Animation" id=436]
 resource_name = "RunForwardDLeft"
 length = 0.791667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -2739,11 +3148,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0.915662, 0.766122, 0, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1, 0.791667, 1, 0.915662, 0.766122, 0, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.03062, -1.46633, -0.951818 ), Vector3( -0.836767, -1.47662, -0.757881 ), Vector3( -0.484089, -1.47055, -0.405417 ), Vector3( 0.038064, -1.44782, 0.115875 ), Vector3( 0.538981, -1.40841, 0.614247 ), Vector3( 0.843638, -1.33613, 0.92005 ), Vector3( 0.885934, -1.23336, 0.962893 ), Vector3( 0.591585, -1.13907, 0.666929 ), Vector3( 0.186428, -1.09241, 0.262661 ), Vector3( -0.286487, -1.14575, -0.208945 ), Vector3( -0.700926, -1.27011, -0.622069 ), Vector3( -0.928021, -1.40676, -0.849138 ), Vector3( -1.02814, -1.46521, -0.949327 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1.39302, -1.26947, 0.537447 ), Vector3( 1.20152, -1.20707, 0.346829 ), Vector3( 0.83943, -1.11692, -0.015156 ), Vector3( 0.310982, -1.11458, -0.545426 ), Vector3( -0.172339, -1.27764, -1.0298 ), Vector3( -0.478703, -1.42155, -1.33602 ), Vector3( -0.530431, -1.4636, -1.38769 ), Vector3( -0.296597, -1.44756, -1.15391 ), Vector3( 0.0511115, -1.41676, -0.806126 ), Vector3( 0.521969, -1.3742, -0.333696 ), Vector3( 0.981852, -1.32013, 0.126488 ), Vector3( 1.26396, -1.29431, 0.409816 ), Vector3( 1.38998, -1.27048, 0.534487 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.67, 0.79 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.27, 0.34, 0.6, 0.67, 0.79 )
+}
 
 [sub_resource type="Animation" id=437]
 resource_name = "RunForwardDRight"
 length = 0.791667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -2947,11 +3401,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -1.40658, 0.195782, 0, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1, 0.791667, 1, -1.40658, 0.195782, 0, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.562592, -1.46634, -1.41984 ), Vector3( 0.368658, -1.47663, -1.22599 ), Vector3( 0.0161929, -1.47055, -0.873314 ), Vector3( -0.505099, -1.44782, -0.351159 ), Vector3( -1.00347, -1.40841, 0.149759 ), Vector3( -1.30927, -1.33613, 0.454417 ), Vector3( -1.35212, -1.23336, 0.496714 ), Vector3( -1.05615, -1.13907, 0.202365 ), Vector3( -0.651885, -1.09241, -0.202795 ), Vector3( -0.180278, -1.14575, -0.675712 ), Vector3( 0.232844, -1.27011, -1.09015 ), Vector3( 0.459912, -1.40676, -1.31724 ), Vector3( 0.560101, -1.46522, -1.41736 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.79 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.926671, -1.26947, 1.0038 ), Vector3( -0.736052, -1.20707, 0.812299 ), Vector3( -0.374068, -1.11692, 0.450206 ), Vector3( 0.1562, -1.11458, -0.0782396 ), Vector3( 0.640575, -1.27764, -0.56156 ), Vector3( 0.946797, -1.42155, -0.867926 ), Vector3( 0.998464, -1.4636, -0.919654 ), Vector3( 0.764687, -1.44756, -0.685819 ), Vector3( 0.416902, -1.41676, -0.338112 ), Vector3( -0.05553, -1.3742, 0.132747 ), Vector3( -0.515712, -1.32013, 0.592629 ), Vector3( -0.799041, -1.29431, 0.874745 ), Vector3( -0.923711, -1.27048, 1.00076 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.67, 0.79 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.27, 0.34, 0.6, 0.67, 0.79 )
+}
 
 [sub_resource type="Animation" id=438]
 resource_name = "RunLeft"
 length = 0.5
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -3155,11 +3654,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.33, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.561104, -1.46686, -1.18617 ), Vector3( -1.14183, -1.27158, -1.18877 ), Vector3( -1.05931, -1.49004, -1.18398 ), Vector3( -0.652443, -1.52295, -1.18646 ), Vector3( -0.0189153, -1.52411, -1.18612 ), Vector3( 0.235149, -1.51415, -1.1845 ), Vector3( -0.0464467, -1.49578, -1.18875 ), Vector3( -0.469511, -1.47131, -1.18687 ), Vector3( -0.561104, -1.46686, -1.18617 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.33, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.359584, -1.47662, -0.00239208 ), Vector3( 0.482692, -1.4775, -0.00216386 ), Vector3( 0.532924, -1.45995, -0.00186655 ), Vector3( 0.312281, -1.36198, -0.00323552 ), Vector3( 5.31077e-05, -1.34999, -0.00129503 ), Vector3( -0.106996, -1.51094, -0.000548899 ), Vector3( 0.0587097, -1.50598, -0.00228101 ), Vector3( 0.306215, -1.48182, -0.00267011 ), Vector3( 0.359584, -1.47662, -0.00239202 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.03, 0.1, 0.14, 0.5 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.17, 0.27, 0.33, 0.5 )
+}
 
 [sub_resource type="Animation" id=439]
 resource_name = "RunRight"
 length = 0.5
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -3363,6 +3907,38 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.47748, -1.46677, -1.18629 ), Vector3( -0.526706, -1.46738, -1.18667 ), Vector3( -0.592451, -1.44573, -1.1875 ), Vector3( -0.415856, -1.31799, -1.18938 ), Vector3( -0.110466, -1.23519, -1.18996 ), Vector3( 0.132279, -1.27761, -1.18914 ), Vector3( 0.277113, -1.45255, -1.18614 ), Vector3( -0.198177, -1.48385, -1.18952 ), Vector3( -0.47748, -1.46677, -1.18629 ) ]
+}
+tracks/30/type = "bezier"
+tracks/30/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.04, 0.1, 0.14, 0.5 )
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.14, 0.34, 0.4, 0.5 )
+}
 
 [sub_resource type="Animation" id=440]
 resource_name = "Shoot"
@@ -3594,6 +4170,7 @@ tracks/29/keys = {
 resource_name = "Stand"
 length = 1.16667
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -3797,6 +4374,50 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1.16667, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13, 1.17 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.12701, -1.47178, -0.101577 ), Vector3( -1.12713, -1.47199, -0.101334 ), Vector3( -1.12728, -1.47315, -0.100739 ), Vector3( -1.12756, -1.47187, -0.100565 ), Vector3( -1.12763, -1.47183, -0.100431 ), Vector3( -1.12761, -1.47185, -0.100471 ), Vector3( -1.12753, -1.47186, -0.100613 ), Vector3( -1.12717, -1.47237, -0.101079 ), Vector3( -1.1268, -1.47221, -0.10175 ), Vector3( -1.12659, -1.47179, -0.102284 ), Vector3( -1.12651, -1.47168, -0.102528 ), Vector3( -1.12649, -1.47164, -0.102619 ), Vector3( -1.12649, -1.47162, -0.102634 ), Vector3( -1.12654, -1.47155, -0.102546 ), Vector3( -1.12658, -1.46951, -0.102674 ), Vector3( -1.12662, -1.4712, -0.102067 ), Vector3( -1.12692, -1.4718, -0.101775 ), Vector3( -1.12699, -1.47179, -0.101617 ), Vector3( -1.12701, -1.4718, -0.101563 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13, 1.17 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81256, -1.46715, -1.18534 ), Vector3( 0.812312, -1.46705, -1.18563 ), Vector3( 0.812142, -1.46727, -1.18667 ), Vector3( 0.811739, -1.46606, -1.18624 ), Vector3( 0.811678, -1.46588, -1.18633 ), Vector3( 0.811697, -1.46595, -1.1863 ), Vector3( 0.811784, -1.46613, -1.18618 ), Vector3( 0.812052, -1.46728, -1.18573 ), Vector3( 0.812714, -1.46788, -1.1851 ), Vector3( 0.813319, -1.46798, -1.1846 ), Vector3( 0.813589, -1.46809, -1.18438 ), Vector3( 0.813659, -1.4681, -1.18435 ), Vector3( 0.813659, -1.46808, -1.18437 ), Vector3( 0.813532, -1.46806, -1.18447 ), Vector3( 0.813587, -1.46897, -1.18418 ), Vector3( 0.813249, -1.46833, -1.1853 ), Vector3( 0.812721, -1.46734, -1.18519 ), Vector3( 0.81259, -1.46719, -1.18531 ), Vector3( 0.812543, -1.46716, -1.18535 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.17 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 1.17 )
+}
 
 [sub_resource type="Animation" id=442]
 resource_name = "StandIdle"
@@ -4005,10 +4626,55 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1.12701, -1.47178, -0.101577 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.81256, -1.46715, -1.18534 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
 [sub_resource type="Animation" id=443]
 resource_name = "TurnLeft"
 length = 0.5
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -4212,10 +4878,55 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.33, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.12701, -1.47178, -0.101577 ), Vector3( -1.02501, -1.34754, 0.0470929 ), Vector3( -0.834397, -1.27934, 0.31643 ), Vector3( -0.674439, -1.39869, 0.53977 ), Vector3( -0.636715, -1.47825, 0.591235 ), Vector3( -0.742653, -1.47728, 0.441769 ), Vector3( -0.947189, -1.47932, 0.155942 ), Vector3( -1.09995, -1.47247, -0.0630898 ), Vector3( -1.12701, -1.47178, -0.101577 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.33, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81256, -1.46715, -1.18534 ), Vector3( 0.812699, -1.46801, -1.18489 ), Vector3( 0.81267, -1.46824, -1.18445 ), Vector3( 0.812129, -1.466, -1.18391 ), Vector3( 0.812917, -1.43056, -1.18617 ), Vector3( 0.812719, -1.2728, -1.18737 ), Vector3( 0.812653, -1.23545, -1.18758 ), Vector3( 0.812697, -1.41615, -1.18605 ), Vector3( 0.81256, -1.46715, -1.18534 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.2, 0.27, 0.5 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.44, 0.5 )
+}
 
 [sub_resource type="Animation" id=444]
 resource_name = "TurnRight"
 length = 0.5
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -4419,11 +5130,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.5, 1, -0.127338, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.06, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.12701, -1.47178, -0.101577 ), Vector3( -1.12693, -1.47226, -0.101067 ), Vector3( -1.1267, -1.4725, -0.10074 ), Vector3( -1.12566, -1.4697, -0.101289 ), Vector3( -1.12779, -1.43454, -0.101537 ), Vector3( -1.12839, -1.26258, -0.103177 ), Vector3( -1.12874, -1.23671, -0.103188 ), Vector3( -1.12757, -1.42001, -0.10189 ), Vector3( -1.12701, -1.47178, -0.101577 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.06, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81256, -1.46715, -1.18534 ), Vector3( 0.881384, -1.27971, -0.91223 ), Vector3( 1.00774, -1.10395, -0.338559 ), Vector3( 1.12874, -1.33658, 0.244947 ), Vector3( 1.15007, -1.47829, 0.361221 ), Vector3( 1.06385, -1.48401, -0.0557872 ), Vector3( 0.941441, -1.48018, -0.61564 ), Vector3( 0.830676, -1.46581, -1.09841 ), Vector3( 0.81256, -1.46715, -1.18534 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.34, 0.45, 0.5 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.06, 0.2, 0.27, 0.5 )
+}
 
 [sub_resource type="Animation" id=445]
 resource_name = "WalkBackwards"
 length = 1.125
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -4627,11 +5383,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0.406227, 1.19209e-07, 0, 0, 0, 0, 1, 1, 1, 1, 1.125, 1, 0.406227, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.809145, -1.4682, -1.18526 ), Vector3( -0.809228, -1.43354, -1.14191 ), Vector3( -0.807641, -1.35422, -1.03408 ), Vector3( -0.808295, -1.28657, -0.910028 ), Vector3( -0.809911, -1.2188, -0.717156 ), Vector3( -0.810006, -1.1959, -0.509846 ), Vector3( -0.810321, -1.24504, -0.328563 ), Vector3( -0.811664, -1.35594, -0.144605 ), Vector3( -0.810415, -1.44117, -0.0404172 ), Vector3( -0.808196, -1.47694, -0.00927225 ), Vector3( -0.791038, -1.47682, -0.0845077 ), Vector3( -0.761057, -1.4776, -0.245622 ), Vector3( -0.735954, -1.47484, -0.419806 ), Vector3( -0.721182, -1.47296, -0.650732 ), Vector3( -0.732027, -1.46978, -0.836747 ), Vector3( -0.763245, -1.46422, -1.02508 ), Vector3( -0.796815, -1.46876, -1.1457 ), Vector3( -0.809186, -1.46594, -1.18237 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.810173, -1.47696, -0.00125426 ), Vector3( 0.799209, -1.47689, -0.0451427 ), Vector3( 0.776094, -1.47579, -0.151992 ), Vector3( 0.752329, -1.4769, -0.283888 ), Vector3( 0.730307, -1.47512, -0.473747 ), Vector3( 0.722343, -1.47305, -0.682641 ), Vector3( 0.736852, -1.47032, -0.862202 ), Vector3( 0.769839, -1.4654, -1.04101 ), Vector3( 0.797817, -1.46867, -1.14689 ), Vector3( 0.809155, -1.46198, -1.1774 ), Vector3( 0.80922, -1.40804, -1.1034 ), Vector3( 0.809546, -1.31479, -0.945133 ), Vector3( 0.809545, -1.23571, -0.771301 ), Vector3( 0.810099, -1.19569, -0.546131 ), Vector3( 0.810413, -1.23299, -0.357555 ), Vector3( 0.812467, -1.34054, -0.161174 ), Vector3( 0.81032, -1.43764, -0.0417742 ), Vector3( 0.809437, -1.47698, -0.00417826 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.47, 0.6, 1.13 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 0.74, 1, 1.13 )
+}
 
 [sub_resource type="Animation" id=446]
 resource_name = "WalkBackwardsDLeft"
 length = 1.125
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -4835,11 +5636,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -1.004, -0.191983, 0, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1, 1.125, 1, -1.004, -0.191983, 0, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.0210847, -1.4682, -1.51168 ), Vector3( -0.00962663, -1.43354, -1.48109 ), Vector3( -0.0710763, -1.36492, -1.41701 ), Vector3( -0.172933, -1.28657, -1.31647 ), Vector3( -0.310456, -1.2188, -1.18123 ), Vector3( -0.436333, -1.19128, -1.05539 ), Vector3( -0.585522, -1.24504, -0.906739 ), Vector3( -0.716549, -1.35594, -0.777611 ), Vector3( -0.789338, -1.44117, -0.703055 ), Vector3( -0.809681, -1.47694, -0.679354 ), Vector3( -0.743482, -1.47682, -0.719562 ), Vector3( -0.607323, -1.47761, -0.811256 ), Vector3( -0.466242, -1.47484, -0.9165 ), Vector3( -0.29511, -1.4732, -1.07091 ), Vector3( -0.176556, -1.47313, -1.21071 ), Vector3( -0.069284, -1.47214, -1.36528 ), Vector3( 0.00127453, -1.46876, -1.47554 ), Vector3( 0.0190149, -1.46594, -1.50967 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.328899, -1.47696, 0.470564 ), Vector3( 0.351029, -1.47689, 0.430616 ), Vector3( 0.397326, -1.47527, 0.353252 ), Vector3( 0.483371, -1.4769, 0.225311 ), Vector3( 0.602969, -1.47511, 0.0760862 ), Vector3( 0.72898, -1.47214, -0.0574003 ), Vector3( 0.890398, -1.46861, -0.189783 ), Vector3( 1.03869, -1.46423, -0.291918 ), Vector3( 1.13115, -1.4686, -0.347444 ), Vector3( 1.15984, -1.46198, -0.361815 ), Vector3( 1.10756, -1.40804, -0.309443 ), Vector3( 0.995878, -1.31479, -0.197303 ), Vector3( 0.872959, -1.23571, -0.0743834 ), Vector3( 0.714132, -1.19568, 0.085226 ), Vector3( 0.58101, -1.23299, 0.218791 ), Vector3( 0.443602, -1.34054, 0.359106 ), Vector3( 0.357655, -1.43764, 0.442017 ), Vector3( 0.330367, -1.47698, 0.467897 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.47, 0.6, 1.13 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 0.74, 1, 1.13 )
+}
 
 [sub_resource type="Animation" id=447]
 resource_name = "WalkBackwardsDRight"
 length = 1.125
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -5043,11 +5889,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 1.26765, 1.13293, 0, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1, 1.125, 1, 1.26765, 1.13293, 0, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.61, 0.67, 0.73, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.16539, -1.46819, -0.367382 ), Vector3( -1.13479, -1.43354, -0.33667 ), Vector3( -1.07072, -1.36491, -0.27522 ), Vector3( -0.970171, -1.28657, -0.173364 ), Vector3( -0.834932, -1.21879, -0.0358405 ), Vector3( -0.709095, -1.19128, 0.0900368 ), Vector3( -0.560445, -1.24504, 0.239226 ), Vector3( -0.431318, -1.35594, 0.370253 ), Vector3( -0.356762, -1.44117, 0.443042 ), Vector3( -0.338468, -1.47705, 0.45444 ), Vector3( -0.373267, -1.47682, 0.397187 ), Vector3( -0.449082, -1.47713, 0.282826 ), Vector3( -0.570206, -1.47484, 0.119948 ), Vector3( -0.724615, -1.4732, -0.0511843 ), Vector3( -0.864418, -1.47313, -0.169739 ), Vector3( -1.01898, -1.47214, -0.277011 ), Vector3( -1.12925, -1.46876, -0.347571 ), Vector3( -1.16338, -1.46594, -0.365312 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.61, 0.67, 0.73, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81686, -1.47696, -0.675193 ), Vector3( 0.776911, -1.4769, -0.697323 ), Vector3( 0.699547, -1.47527, -0.74362 ), Vector3( 0.571606, -1.4769, -0.829666 ), Vector3( 0.422381, -1.47511, -0.949263 ), Vector3( 0.288895, -1.47214, -1.07528 ), Vector3( 0.156514, -1.46861, -1.23669 ), Vector3( 0.054378, -1.46424, -1.38498 ), Vector3( -0.00114828, -1.4686, -1.47745 ), Vector3( -0.00829113, -1.45491, -1.49914 ), Vector3( 0.0368527, -1.40804, -1.45385 ), Vector3( 0.12938, -1.327, -1.36114 ), Vector3( 0.271912, -1.23571, -1.21925 ), Vector3( 0.431521, -1.19569, -1.06043 ), Vector3( 0.565087, -1.23299, -0.927305 ), Vector3( 0.705401, -1.34054, -0.789896 ), Vector3( 0.788311, -1.43764, -0.703949 ), Vector3( 0.814192, -1.47698, -0.676662 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.47, 0.6, 1.13 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 0.74, 1, 1.13 )
+}
 
 [sub_resource type="Animation" id=448]
 resource_name = "WalkForward"
 length = 1.125
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -5251,11 +6142,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0.406227, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1.125, 1, 0.406227, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.809145, -1.46819, -1.18526 ), Vector3( -0.791203, -1.46914, -1.12577 ), Vector3( -0.757565, -1.47061, -0.984516 ), Vector3( -0.731231, -1.4739, -0.819745 ), Vector3( -0.725, -1.47948, -0.597096 ), Vector3( -0.741449, -1.47532, -0.374347 ), Vector3( -0.767451, -1.47586, -0.204973 ), Vector3( -0.795724, -1.47677, -0.0628772 ), Vector3( -0.808488, -1.477, -0.00828743 ), Vector3( -0.810311, -1.43521, -0.0463066 ), Vector3( -0.812597, -1.33618, -0.17678 ), Vector3( -0.810531, -1.24021, -0.344175 ), Vector3( -0.809917, -1.19213, -0.554537 ), Vector3( -0.809973, -1.23007, -0.759531 ), Vector3( -0.814052, -1.30289, -0.909468 ), Vector3( -0.813798, -1.3823, -1.05154 ), Vector3( -0.809214, -1.4449, -1.1567 ), Vector3( -0.807931, -1.46832, -1.18129 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.73, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.810173, -1.47696, -0.00125369 ), Vector3( 0.810411, -1.41989, -0.0621561 ), Vector3( 0.810551, -1.31347, -0.204786 ), Vector3( 0.810206, -1.22322, -0.371612 ), Vector3( 0.810253, -1.19934, -0.593887 ), Vector3( 0.809836, -1.25307, -0.815799 ), Vector3( 0.810417, -1.33475, -0.980941 ), Vector3( 0.809205, -1.42278, -1.12471 ), Vector3( 0.809214, -1.463, -1.17833 ), Vector3( 0.796064, -1.46879, -1.14124 ), Vector3( 0.763208, -1.4689, -1.00955 ), Vector3( 0.736334, -1.47515, -0.847606 ), Vector3( 0.722951, -1.47875, -0.637571 ), Vector3( 0.733993, -1.47498, -0.431718 ), Vector3( 0.756089, -1.47628, -0.287107 ), Vector3( 0.781834, -1.47369, -0.120801 ), Vector3( 0.802827, -1.47719, -0.0302864 ), Vector3( 0.810219, -1.47314, -0.00535917 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.53, 0.67, 0.93, 1.13 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.14, 0.4, 0.59, 1.13 )
+}
 
 [sub_resource type="Animation" id=449]
 resource_name = "WalkForwardDLeft"
 length = 1.125
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -5459,11 +6395,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 1.26765, 1.13293, 0, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1, 1.125, 1, 1.26765, 1.13293, 0, 2.75338e-08, 1.14049e-08, 0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.81, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.16539, -1.46819, -0.367382 ), Vector3( -1.11153, -1.46901, -0.337465 ), Vector3( -1.01161, -1.46726, -0.279092 ), Vector3( -0.855074, -1.47237, -0.165478 ), Vector3( -0.69006, -1.47904, -0.0132068 ), Vector3( -0.541868, -1.47532, 0.155889 ), Vector3( -0.440869, -1.47586, 0.294422 ), Vector3( -0.361505, -1.47677, 0.416015 ), Vector3( -0.332589, -1.47699, 0.464307 ), Vector3( -0.360854, -1.43521, 0.438804 ), Vector3( -0.454728, -1.33618, 0.348163 ), Vector3( -0.592298, -1.23125, 0.207581 ), Vector3( -0.740635, -1.19879, 0.0591534 ), Vector3( -0.864938, -1.23006, -0.0657598 ), Vector3( -0.973844, -1.30288, -0.168897 ), Vector3( -1.07413, -1.3823, -0.269539 ), Vector3( -1.14524, -1.4449, -0.347135 ), Vector3( -1.16178, -1.46831, -0.365375 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.81, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81686, -1.47696, -0.675193 ), Vector3( 0.773964, -1.41989, -0.718425 ), Vector3( 0.691185, -1.32771, -0.801263 ), Vector3( 0.555, -1.22322, -0.937099 ), Vector3( 0.397862, -1.19934, -1.0943 ), Vector3( 0.240652, -1.25307, -1.25093 ), Vector3( 0.124289, -1.33476, -1.36811 ), Vector3( 0.0217717, -1.42278, -1.46891 ), Vector3( -0.0161343, -1.463, -1.50683 ), Vector3( 0.00182229, -1.46879, -1.47234 ), Vector3( 0.072632, -1.46997, -1.35904 ), Vector3( 0.182986, -1.47268, -1.20348 ), Vector3( 0.319462, -1.47391, -1.04516 ), Vector3( 0.454926, -1.47506, -0.920952 ), Vector3( 0.581301, -1.47649, -0.823459 ), Vector3( 0.709505, -1.47369, -0.736915 ), Vector3( 0.790236, -1.47692, -0.689709 ), Vector3( 0.81399, -1.47314, -0.678129 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.53, 0.67, 0.93, 1.13 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.14, 0.4, 0.59, 1.13 )
+}
 
 [sub_resource type="Animation" id=450]
 resource_name = "WalkForwardDRight"
 length = 1.125
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -5667,11 +6648,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, -1.004, -0.191983, 0, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1, 1.125, 1, -1.004, -0.191983, 0, 2.75338e-08, -1.14049e-08, -0.382683, 0.92388, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.0210855, -1.4682, -1.51168 ), Vector3( -0.00883156, -1.46901, -1.45782 ), Vector3( -0.0672036, -1.46726, -1.3579 ), Vector3( -0.180817, -1.47237, -1.20137 ), Vector3( -0.333089, -1.47904, -1.03635 ), Vector3( -0.502185, -1.47532, -0.888162 ), Vector3( -0.640718, -1.47586, -0.787164 ), Vector3( -0.76231, -1.47678, -0.7078 ), Vector3( -0.810602, -1.477, -0.678883 ), Vector3( -0.785099, -1.43521, -0.707148 ), Vector3( -0.694457, -1.33618, -0.801023 ), Vector3( -0.553875, -1.23125, -0.938593 ), Vector3( -0.425449, -1.19213, -1.06624 ), Vector3( -0.280536, -1.23007, -1.21123 ), Vector3( -0.177398, -1.30289, -1.32014 ), Vector3( -0.0767563, -1.3823, -1.42042 ), Vector3( 0.000839531, -1.4449, -1.49154 ), Vector3( 0.0190791, -1.46831, -1.50807 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.87, 0.93, 1, 1.07, 1.13 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.328899, -1.47696, 0.470565 ), Vector3( 0.372131, -1.41989, 0.427669 ), Vector3( 0.454968, -1.32771, 0.344891 ), Vector3( 0.590806, -1.22322, 0.208702 ), Vector3( 0.748011, -1.19934, 0.051565 ), Vector3( 0.90463, -1.25307, -0.105643 ), Vector3( 1.02181, -1.33475, -0.222006 ), Vector3( 1.12262, -1.42278, -0.324523 ), Vector3( 1.16054, -1.46299, -0.362431 ), Vector3( 1.12604, -1.46879, -0.344474 ), Vector3( 1.01274, -1.46997, -0.273664 ), Vector3( 0.857188, -1.47268, -0.163311 ), Vector3( 0.71987, -1.47192, -0.0499217 ), Vector3( 0.574658, -1.47505, 0.10863 ), Vector3( 0.477165, -1.47648, 0.235007 ), Vector3( 0.390621, -1.47369, 0.363211 ), Vector3( 0.343415, -1.47692, 0.443942 ), Vector3( 0.331835, -1.47314, 0.467695 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.53, 0.67, 0.93, 1.13 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.14, 0.4, 0.59, 1.13 )
+}
 
 [sub_resource type="Animation" id=451]
 resource_name = "WalkLeft"
 length = 0.875
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -5875,11 +6901,56 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.875, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.88 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.561104, -1.46686, -1.18617 ), Vector3( -1.03102, -1.24024, -1.18916 ), Vector3( -1.13499, -1.27386, -1.18724 ), Vector3( -1.14018, -1.45643, -1.18169 ), Vector3( -1.05716, -1.5007, -1.18163 ), Vector3( -0.870422, -1.51097, -1.18938 ), Vector3( -0.518478, -1.52153, -1.1861 ), Vector3( -0.0811946, -1.52164, -1.18632 ), Vector3( 0.207278, -1.51576, -1.18486 ), Vector3( 0.1772, -1.50429, -1.18542 ), Vector3( -0.019377, -1.49129, -1.18651 ), Vector3( -0.265668, -1.48084, -1.18764 ), Vector3( -0.452809, -1.47292, -1.18751 ), Vector3( -0.598156, -1.45396, -1.18808 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.33, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.88 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.359584, -1.47662, -0.00239202 ), Vector3( 0.419875, -1.47698, -0.00285044 ), Vector3( 0.507192, -1.47715, -0.00214124 ), Vector3( 0.573965, -1.47705, -0.00129658 ), Vector3( 0.528231, -1.44779, -0.00144708 ), Vector3( 0.420187, -1.39486, 0.000797063 ), Vector3( 0.231788, -1.32224, -0.00389814 ), Vector3( 0.027324, -1.32667, -0.00150064 ), Vector3( -0.0953275, -1.48936, 0.000355422 ), Vector3( -0.0714917, -1.51591, -0.000878513 ), Vector3( 0.0439159, -1.50243, -0.00170642 ), Vector3( 0.187222, -1.49316, -0.00288862 ), Vector3( 0.296238, -1.48248, -0.00256202 ), Vector3( 0.363856, -1.47673, -0.00250608 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.88 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.33, 0.47, 0.53, 0.88 )
+}
 
 [sub_resource type="Animation" id=452]
 resource_name = "WalkRight"
 length = 0.875
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:DownLeg.L")
 tracks/0/interp = 1
@@ -6083,6 +7154,50 @@ tracks/28/loop_wrap = true
 tracks/28/imported = false
 tracks/28/enabled = true
 tracks/28/keys = PoolRealArray( 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0.875, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1 )
+tracks/29/type = "value"
+tracks/29/path = NodePath("LegLCast:translation")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.88 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.47748, -1.46677, -1.18629 ), Vector3( -0.480137, -1.46645, -1.18662 ), Vector3( -0.528098, -1.46756, -1.18641 ), Vector3( -0.620324, -1.46872, -1.18501 ), Vector3( -0.595878, -1.42998, -1.18652 ), Vector3( -0.499146, -1.33926, -1.19341 ), Vector3( -0.362706, -1.2669, -1.18893 ), Vector3( -0.145457, -1.23383, -1.1896 ), Vector3( 0.0733421, -1.25181, -1.189 ), Vector3( 0.26691, -1.42939, -1.18646 ), Vector3( 0.095265, -1.49492, -1.18664 ), Vector3( -0.299615, -1.4906, -1.18749 ), Vector3( -0.446741, -1.47874, -1.18619 ), Vector3( -0.477529, -1.46676, -1.18632 ) ]
+}
+tracks/30/type = "value"
+tracks/30/path = NodePath("LegRCast:translation")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/keys = {
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.27, 0.34, 0.4, 0.47, 0.53, 0.6, 0.67, 0.74, 0.8, 0.88 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.814212, -1.47585, -0.00165129 ), Vector3( 0.95206, -1.33071, -0.00221038 ), Vector3( 0.98066, -1.35143, -0.000600457 ), Vector3( 0.972578, -1.45451, 0.000928193 ), Vector3( 0.937373, -1.46909, 0.00057286 ), Vector3( 0.826414, -1.47421, -0.000793844 ), Vector3( 0.615824, -1.47625, -0.00224251 ), Vector3( 0.190045, -1.48042, -0.00418192 ), Vector3( -0.156844, -1.47576, -0.00271666 ), Vector3( -0.0871586, -1.47474, -0.00251526 ), Vector3( 0.218613, -1.4764, -0.00341818 ), Vector3( 0.531162, -1.47945, -0.00400022 ), Vector3( 0.722838, -1.47806, -0.00223798 ), Vector3( 0.825199, -1.4654, -0.00167063 ) ]
+}
+tracks/31/type = "bezier"
+tracks/31/path = NodePath("Body/Skeleton/LegL:interpolation")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.6, 0.67, 0.88 )
+}
+tracks/32/type = "bezier"
+tracks/32/path = NodePath("Body/Skeleton/LegR:interpolation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.13, 0.2, 0.88 )
+}
 
 [sub_resource type="AnimationNodeAdd2" id=465]
 
@@ -6381,7 +7496,7 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 nodes/Zero/node = SubResource( 460 )
 nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "TimeScale 2", 0, "Animation", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
+node_connections = [ "output", 0, "IdleAlert", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -6410,6 +7525,16 @@ hitbox_path = NodePath("Body/Skeleton/Head/Head")
 shoot_path = NodePath("Body/Skeleton/Head/Shoot")
 projectile = ExtResource( 4 )
 shoot_damage = 15
+
+[node name="legL" type="Spatial" parent="."]
+script = ExtResource( 8 )
+who = NodePath("../LegLCast")
+to = NodePath("../Body/Skeleton/L/Position3D")
+
+[node name="legR" type="Spatial" parent="."]
+script = ExtResource( 8 )
+who = NodePath("../LegRCast")
+to = NodePath("../Body/Skeleton/R/Position3D")
 
 [node name="Audio" type="Spatial" parent="."]
 script = ExtResource( 7 )
@@ -6441,6 +7566,31 @@ bone_name = "MidleTorso"
 update_mode = 1
 additional_rotation = Vector3( -45, 180, 0 )
 
+[node name="LegLCast" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.939869, -1.41232, 0.229469 )
+
+[node name="LegLCast" type="RayCast" parent="LegLCast"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.999998, 0, 1, 0 )
+cast_to = Vector3( 0, -3, 0 )
+collision_mask = 2
+
+[node name="LegRCast" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.612308, -1.47191, -0.944158 )
+
+[node name="LegRCast" type="RayCast" parent="LegRCast"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+cast_to = Vector3( 0, -3, 0 )
+collision_mask = 2
+
+[node name="LegL" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.374004, -1.26967, -0.303383 )
+
+[node name="LegLOffset" type="Position3D" parent="LegL"]
+
+[node name="LegR" type="Position3D" parent="."]
+
+[node name="LegROffset" type="Position3D" parent="LegR"]
+
 [node name="Body" type="Spatial" parent="."]
 transform = Transform( 1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 0, 0.305409, 0 )
 
@@ -6464,7 +7614,7 @@ bones/3/name = "DownLeg.L"
 bones/3/parent = 2
 bones/3/rest = Transform( 0.997445, -0.0566781, 0.0434853, 0.0575189, 0.276169, -0.959387, 0.0423669, 0.959437, 0.278723, 4.05394e-09, 0.61926, 9.35829e-08 )
 bones/3/enabled = true
-bones/3/bound_children = [  ]
+bones/3/bound_children = [ NodePath("L") ]
 bones/4/name = "MidleTorso"
 bones/4/parent = 0
 bones/4/rest = Transform( 1, 3.66937e-08, 2.97465e-07, 3.66937e-08, 0.970023, -0.243011, -2.97465e-07, 0.243011, 0.970023, 4.24258e-15, 0.192808, 1.14055e-09 )
@@ -6484,7 +7634,7 @@ bones/7/name = "Head"
 bones/7/parent = 6
 bones/7/rest = Transform( 1, 4.73691e-07, -1.85377e-06, -1.5148e-08, 0.970799, 0.239895, 1.91328e-06, -0.239895, 0.970799, -3.56102e-14, 0.234504, 2.90119e-09 )
 bones/7/enabled = true
-bones/7/bound_children = [  ]
+bones/7/bound_children = [ NodePath("Head") ]
 bones/8/name = "MandibleStart.L"
 bones/8/parent = 7
 bones/8/rest = Transform( 0.381262, -0.345715, 0.857392, -0.140769, 0.894919, 0.423443, -0.913687, -0.282137, 0.292533, -0.0934621, 0.119377, -0.110246 )
@@ -6549,7 +7699,7 @@ bones/20/name = "DownLeg.R"
 bones/20/parent = 19
 bones/20/rest = Transform( 0.996665, 0.0588809, -0.0564866, -0.0597547, 0.055305, -0.996679, -0.0555614, 0.996732, 0.0586391, -2.80744e-08, 0.61926, 1.9406e-08 )
 bones/20/enabled = true
-bones/20/bound_children = [  ]
+bones/20/bound_children = [ NodePath("R") ]
 bones/21/name = "Abdomen1"
 bones/21/parent = 0
 bones/21/rest = Transform( -1, -5.97111e-08, 1.38688e-07, -1.27898e-13, -0.918488, -0.39545, 1.50996e-07, -0.39545, 0.918489, -4.49402e-14, -1.21335e-07, -3.02612e-07 )
@@ -6598,7 +7748,7 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, -1.77904e-06, -7.12385e-07, 4.02792e-10, -0.371545, 0.928415, -1.91637e-06, -0.928415, -0.371545, 2.82768e-06, 0.223591, -0.948158 )
+transform = Transform( 1, -1.36259e-07, -9.54279e-08, -6.40455e-09, -0.604793, 0.796382, -1.6623e-07, -0.796383, -0.604793, 3.34315e-07, 0.118599, -0.900835 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
@@ -6614,6 +7764,35 @@ shape = SubResource( 29 )
 [node name="Shoot" type="Position3D" parent="Body/Skeleton/Head"]
 transform = Transform( 1, -9.09495e-13, 3.18323e-12, -3.63798e-12, 1, 1.19209e-07, 0, 2.08616e-07, 1, 2.83307e-06, 0.274124, -0.123504 )
 
+[node name="LegL" type="SkeletonIK" parent="Body/Skeleton"]
+process_priority = 1
+root_bone = "UpLeg.L"
+tip_bone = "DownLeg.L"
+override_tip_basis = false
+target_node = NodePath("../../../LegL")
+
+[node name="LegR" type="SkeletonIK" parent="Body/Skeleton"]
+process_priority = 1
+root_bone = "UpLeg.R"
+tip_bone = "DownLeg.R"
+interpolation = 0.0
+override_tip_basis = false
+target_node = NodePath("../../../LegL")
+
+[node name="L" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.998076, -0.00195599, 0.0619722, -0.052648, -0.554658, 0.830412, 0.0327488, -0.832079, -0.553692, -0.274144, -1.00681, -0.550645 )
+bone_name = "DownLeg.L"
+
+[node name="Position3D" type="Position3D" parent="Body/Skeleton/L"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0 )
+
+[node name="R" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.978881, -0.0370763, -0.20104, -0.134764, -0.856516, -0.498214, -0.153722, 0.514784, -0.843425, 0.306451, -0.583711, 0.601854 )
+bone_name = "DownLeg.R"
+
+[node name="Position3D" type="Position3D" parent="Body/Skeleton/R"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Alert = SubResource( 425 )
 anims/AttackLeft = SubResource( 426 )
@@ -6627,6 +7806,7 @@ anims/Jump = SubResource( 429 )
 anims/JumpEnd = SubResource( 430 )
 anims/JumpStart = SubResource( 431 )
 anims/NoAudio = SubResource( 467 )
+anims/RESET = SubResource( 485 )
 anims/RunBackwars = SubResource( 432 )
 anims/RunBackwarsDLeft = SubResource( 433 )
 anims/RunBackwarsDRight = SubResource( 434 )
@@ -6702,7 +7882,7 @@ cast_to = Vector3( 0, -1.55, 0 )
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.198336, -0.356655 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.000891209, -0.205285, -0.35656 )
 shape = SubResource( 28 )
 
 [node name="GlobalParticles" type="Spatial" parent="."]

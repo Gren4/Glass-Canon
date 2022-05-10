@@ -258,9 +258,9 @@ func update_info():
 		weapon_manager.update_hud(weapon_data)
 	
 func sway(mouse_input,delta):
-	var rot : Vector3 = Vector3(0,
-								clamp(mouse_input.x*5,-30,30),
-								clamp(mouse_input.y*5,-30,30))
+	var rot : Vector3 = Vector3(clamp(mouse_input.y*5,-10,10),
+								clamp(mouse_input.x*5,-10,10),
+								0)
 	rotation_degrees = rotation_degrees.linear_interpolate(rot, delta * 6)
 		
 func weapon_regime(value, delta) -> int:

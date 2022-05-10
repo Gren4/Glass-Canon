@@ -1,7 +1,7 @@
 extends Node
 ########################
 #onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
-onready var MeleeGrunt = preload("res://Players and Enemies/Test/MeleeGruntNewBase.tscn")
+onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
 onready var RangeGrunt = preload("res://Players and Enemies/Enemies/RangeGrunt/RangeGruntNew.tscn")
 ########################
 onready var forces : Array = []
@@ -11,12 +11,10 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 1
+const max_enem : int = 5
 
 var col_enem_to_spawn = 300
 
-var phy_timer : int = 0
-var link_timer : int = 0
 var spawn_timer : float = 0.0
 var pl_sides_it : int = 0
 var it : int = 0
@@ -88,11 +86,11 @@ func _physics_process(delta):
 			var dist_to_player = player.global_transform.origin - forces[it].global_transform.origin
 			var dist_l = dist_to_player.length()
 			if forces[it].is_in_group("Melee"):
-				if timer[it]%4 == 0:
+				if timer[it]%5 == 0:
 					move_to(forces[it],dist_l)
 			elif forces[it].is_in_group("Range"):
 				if (forces[it].give_path):
-					if timer[it]%40 == 0:
+					if timer[it]%50 == 0:
 						move_to(forces[it],dist_l)
 		else:
 			forces.remove(it)
@@ -103,8 +101,6 @@ func _physics_process(delta):
 			it = 0
 		else:
 			it += 1
-	if link_timer > 0:
-		link_timer = link_timer - 1
 
 func move_to(target,dist_l):
 	var path = {}

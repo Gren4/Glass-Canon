@@ -3,9 +3,25 @@ extends Enemies
 export(NodePath) var hitboxl_path = null
 export(NodePath) var hitboxr_path = null
 
+export(NodePath) var ray_l_path = null
+export(NodePath) var ray_r_path = null
+export(NodePath) var ik_l_path = null
+export(NodePath) var ik_r_path = null
+export(NodePath) var point_l_path = null
+export(NodePath) var point_r_path = null
+
 onready var hitboxl = get_node(hitboxl_path)
 onready var hitboxr = get_node(hitboxr_path)
 
+onready var ray_l = get_node(ray_l_path)
+onready var ray_r = get_node(ray_r_path)
+onready var ik_l = get_node(ik_l_path)
+onready var ik_r = get_node(ik_r_path)
+onready var point_l = get_node(point_l_path)
+onready var point_r = get_node(point_r_path)
+
+var foot_l_up : bool = false
+var foot_r_up : bool = false
 
 func _ready() -> void:
 	accel = 5.0
@@ -28,8 +44,6 @@ func _ready() -> void:
 	set_process(true)
 	set_physics_process(true)
 	call_deferred("init_timer_set")
-	$Body/Skeleton/LegL.start()
-	$Body/Skeleton/LegR.start()
 	#$Body.scale.y = (0.9 + 0.2*randf())
 	pass
 	
@@ -37,16 +51,48 @@ func init_timer_set() -> void:
 	StartTimer.wait_time = 0.1 + randf()*0.1
 	StartTimer.start()
 	
+func ik_update() -> void:
+	ray_l.force_raycast_update()
+	ray_r.force_raycast_update()
+	if not ray_l.is_colliding():
+		#ik_l.interpolation = 0
+		pass
+	else:
+		point_l.global_transform.origin = ray_l.get_collision_point()
+		
+	if not ray_r.is_colliding():
+		#ik_r.interpolation = 0
+		pass
+	else:
+		point_r.global_transform.origin = ray_r.get_collision_point()
+	
+func ik_setup() -> void:
+	if ik_l.is_running() or ik_r.is_running():
+		if dist_length > 15:
+			ik_l.stop()
+			ik_r.stop()
+			return
+		ik_update()
+	else:
+		if dist_length <= 15:
+			ik_l.start()
+			ik_r.start()
+			ik_update()
+	if ik_l.interpolation < 0.5 and foot_l_up == false:
+		foot_l_up = true
+	if ik_r. interpolation < 0.5 and foot_r_up == false:
+		foot_r_up = true
+	
+#	if ik_l.interpolation == 1.0 and foot_l_up:
+#		foot_l_up = false
+#		audio.step()
+#	if ik_r.interpolation == 1.0 and foot_r_up:
+#		foot_r_up = false
+#		audio.step()
+	
 func tact_init(delta : float) -> void:
-	$LegLCast/LegLCast.force_raycast_update()
-	$LegRCast/LegRCast.force_raycast_update()
-	if not $LegLCast/LegLCast.is_colliding():
-		$Body/Skeleton/LegL.interpolation = 0
-	if not $LegRCast/LegRCast.is_colliding():
-		$Body/Skeleton/LegR.interpolation = 0
-	$LegL.global_transform.origin = $LegLCast/LegLCast.get_collision_point()
-	$LegR.global_transform.origin = $LegRCast/LegRCast.get_collision_point()
 	.tact_init(delta)
+	ik_setup()
 
 func _process(delta : float) -> void:
 	if global_transform.origin.y < -50:

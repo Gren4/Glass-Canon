@@ -175,6 +175,7 @@ ads={
 
 common/physics_fps=120
 common/enable_pause_aware_picking=true
+3d/active_soft_world=false
 
 [rendering]
 

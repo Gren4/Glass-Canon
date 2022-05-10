@@ -277,7 +277,7 @@ nodes/Jump/position = Vector2( 680, 60 )
 nodes/Land/node = SubResource( 19 )
 nodes/Land/position = Vector2( 400, 60 )
 nodes/output/position = Vector2( 960, 80 )
-node_connections = [ "output", 0, "Jump", "Jump", 0, "Land", "Jump", 1, "Animation 4", "HeadBopSpeed", 0, "HeadBop", "Land", 0, "Hit", "Land", 1, "Animation 3", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2", "Hit", 0, "HeadBopSpeed", "Hit", 1, "HitTransition" ]
+node_connections = [ "output", 0, "Jump", "Hit", 0, "HeadBopSpeed", "Hit", 1, "HitTransition", "Jump", 0, "Land", "Jump", 1, "Animation 4", "Land", 0, "Hit", "Land", 1, "Animation 3", "HeadBopSpeed", 0, "HeadBop", "HitTransition", 0, "Animation", "HitTransition", 1, "Animation 2" ]
 
 [node name="Player" type="KinematicBody" groups=["Player"]]
 collision_mask = 10
@@ -395,7 +395,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0 )
 cull_mask = 1048573
 current = true
 fov = 90.0
-far = 250.0
+far = 400.0
 
 [node name="RayCast" type="RayCast" parent="Head/Hit/WallRun/HeadBop/Camera"]
 cast_to = Vector3( 0, 0, -200 )

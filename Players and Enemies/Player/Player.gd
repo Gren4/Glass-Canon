@@ -91,7 +91,7 @@ const JUMP_POWER : float = 20.0
 # Таймеры
 const ABLILTY_TO_JUMP_TIME : float = 0.5
 const DASHING_TIME : float = 0.2
-const DASHING_TIME_CD : float = 0.5
+const DASHING_TIME_CD : float = 0.8
 const HP_RECOVERY_CD : float = 4.0
 # Отклонения для параметров игрока
 const PLAYER_HEIGHT_DEVIATION : float = 0.1
@@ -768,7 +768,6 @@ func process_weapons(delta) -> void:
 
 	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(true, delta)
-		
 	else:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(false, delta)
 #

@@ -1,15 +1,15 @@
 [gd_scene load_steps=99 format=2]
 
-[ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=1]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=3]
-[ext_resource path="res://Materials/Grunt.tres" type="Material" id=4]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioMeleeGrunt.gd" type="Script" id=5]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep1.tres" type="Animation" id=6]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep3.tres" type="Animation" id=7]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep4.tres" type="Animation" id=8]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep2.tres" type="Animation" id=9]
-[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/Material.material" type="Material" id=10]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep1.tres" type="Animation" id=1]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep3.tres" type="Animation" id=2]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioMeleeGrunt.gd" type="Script" id=3]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.gd" type="Script" id=4]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntRagdoll.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/Material.material" type="Material" id=6]
+[ext_resource path="res://Materials/Grunt.tres" type="Material" id=7]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep2.tres" type="Animation" id=8]
+[ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep4.tres" type="Animation" id=9]
+[ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=10]
 
 [sub_resource type="ArrayMesh" id=441]
 resource_name = "MeleeGruntNew_Cube"
@@ -20,7 +20,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 2194903,
 "index_count": 3954,
-"material": ExtResource( 10 ),
+"material": ExtResource( 6 ),
 "primitive": 4,
 "skeleton_aabb": [ AABB( -0.219653, 2.10106, -0.867835, 0.421127, 0.750563, 0.923554 ), AABB( -0.549425, 2.40327, -0.259118, 1.08067, 0.381197, 0.519438 ), AABB( -0.909763, 2.10106, -0.679517, 1.80135, 1.1598, 0.956317 ), AABB( -0.132307, 2.9021, -0.689101, 0.246435, 0.207358, 0.179651 ), AABB( -0.404967, 2.75268, -1.0333, 0.791755, 0.577877, 1.05216 ), AABB( -0.909763, 2.44947, -0.62443, 0.647507, 0.61799, 0.660282 ), AABB( -1.43896, 1.51393, -1.24007, 0.823004, 0.982614, 0.810976 ), AABB( -1.95672, 0.538366, -1.42242, 0.956446, 1.46269, 0.826021 ), AABB( 0.244077, 2.44947, -0.62443, 0.647507, 0.61799, 0.660282 ), AABB( 0.597787, 1.51393, -1.24007, 0.822994, 0.982614, 0.810976 ), AABB( 0.982099, 0.538366, -1.42242, 0.956446, 1.46269, 0.826021 ), AABB( -0.54106, 1.45961, -0.596977, 0.472618, 0.919907, 0.637349 ), AABB( -0.368531, 1.0625, -0.221747, 0.109838, 0.644704, 0.512304 ), AABB( -0.438345, 0.00928998, -0.224115, 0.248557, 1.08326, 0.733885 ), AABB( 0.0502635, 1.45961, -0.596977, 0.472618, 0.919907, 0.637349 ), AABB( 0.240514, 1.0625, -0.221747, 0.109848, 0.644704, 0.512304 ), AABB( 0.17161, 0.00928998, -0.224115, 0.248557, 1.08326, 0.733885 ) ],
 "vertex_count": 2838
@@ -28,7 +28,7 @@ surfaces/0 = {
 
 [sub_resource type="Skin" id=442]
 resource_name = "Skin"
-bind_count = 21
+bind_count = 23
 bind/0/name = "Hip"
 bind/0/bone = -1
 bind/0/pose = Transform( -1, -5.03386e-08, 4.37144e-07, 1.34663e-07, 0.910763, 0.412929, -4.18921e-07, 0.412929, -0.910763, -0.00363565, -1.88621, -1.10145 )
@@ -92,6 +92,12 @@ bind/19/pose = Transform( 0.999949, 0.0101471, -7.51637e-07, 7.51637e-07, 3.8135
 bind/20/name = "Pull.R"
 bind/20/bone = -1
 bind/20/pose = Transform( 0.99957, -0.0101471, 0.0274965, -0.0274979, 1.16415e-10, 0.999622, -0.0101432, -0.999949, -0.000279023, -0.306977, -0.289242, 1.12815 )
+bind/21/name = "Toe.L"
+bind/21/bone = -1
+bind/21/pose = Transform( 0.999993, 0.00364389, -1.16415e-10, -4.27858e-08, 2.08462e-07, 1, 0.0036439, -0.999993, -4.24205e-13, 0.313505, 0.213876, 0.0933558 )
+bind/22/name = "Toe.R"
+bind/22/bone = -1
+bind/22/pose = Transform( 0.999396, -0.00364392, 0.0345546, -0.0345548, 2.91038e-10, 0.999401, -0.00364173, -0.999993, -0.000125915, -0.298659, 0.224341, 0.0933015 )
 
 [sub_resource type="BoxShape" id=392]
 extents = Vector3( 0.121, 0.9, 0.242 )
@@ -99,6 +105,7 @@ extents = Vector3( 0.121, 0.9, 0.242 )
 [sub_resource type="Animation" id=443]
 resource_name = "Alert"
 length = 0.375
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:Head")
 tracks/0/interp = 1
@@ -277,8 +284,8 @@ tracks/23/loop_wrap = true
 tracks/23/imported = false
 tracks/23/enabled = true
 tracks/23/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.38 )
 }
 tracks/24/type = "bezier"
 tracks/24/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -287,8 +294,8 @@ tracks/24/loop_wrap = true
 tracks/24/imported = false
 tracks/24/enabled = true
 tracks/24/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.380251, 1.06032, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.0666134, 0.267841 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.380251, 1.06032, 0, -0.25, 0, 0.380251, 1.06032, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.14, 0.267841, 0.38 )
 }
 
 [sub_resource type="Animation" id=444]
@@ -631,6 +638,7 @@ tracks/21/keys = {
 resource_name = "Idle"
 length = 1.625
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:Head")
 tracks/0/interp = 1
@@ -651,7 +659,7 @@ tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/keys = PoolRealArray( 0, 1, -8.19564e-08, 5.96046e-08, -8.9407e-08, -0.00515804, 0.0336442, 0.0766281, 0.996479, 1, 1, 1, 1.625, 1, -8.19564e-08, 5.96046e-08, -8.9407e-08, -0.00515804, 0.0336442, 0.0766281, 0.996479, 1, 1, 1 )
+tracks/2/keys = PoolRealArray( 0, 1, -8.19564e-08, 5.96046e-08, -8.9407e-08, -0.00515804, 0.0336442, 0.0766281, 0.996479, 1, 1, 1, 1.62, 1, -8.19564e-08, 5.96046e-08, -8.9407e-08, -0.00515804, 0.0336442, 0.0766281, 0.996479, 1, 1, 1 )
 tracks/3/type = "transform"
 tracks/3/path = NodePath("Body/Skeleton:BottomArm.L")
 tracks/3/interp = 1
@@ -785,10 +793,10 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1.62 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 1.0 ]
+"values": [ 1.0, 1.0 ]
 }
 tracks/22/type = "value"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -797,10 +805,10 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1.62 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ 0.0, 0.0 ]
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegLCast:translation")
@@ -809,10 +817,10 @@ tracks/23/loop_wrap = true
 tracks/23/imported = false
 tracks/23/enabled = true
 tracks/23/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1.62 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.49853, -1.64559, -0.296498 ) ]
+"values": [ Vector3( -0.49853, -1.64559, -0.296498 ), Vector3( -0.49853, -1.64559, -0.296498 ) ]
 }
 tracks/24/type = "value"
 tracks/24/path = NodePath("LegRCast:translation")
@@ -821,10 +829,10 @@ tracks/24/loop_wrap = true
 tracks/24/imported = false
 tracks/24/enabled = true
 tracks/24/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1.62 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.504116, -1.65351, -0.295572 ) ]
+"values": [ Vector3( 0.504116, -1.65351, -0.295572 ), Vector3( 0.504116, -1.65351, -0.295572 ) ]
 }
 
 [sub_resource type="Animation" id=447]
@@ -1001,6 +1009,7 @@ tracks/22/keys = {
 [sub_resource type="Animation" id=448]
 resource_name = "JumpEnd"
 length = 0.291667
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:Head")
 tracks/0/interp = 1
@@ -1155,8 +1164,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.0235922 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.0235922, 0.29 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -1165,8 +1174,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.157059 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.157059, 0.29 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegLCast:translation")
@@ -1175,10 +1184,10 @@ tracks/23/loop_wrap = true
 tracks/23/imported = false
 tracks/23/enabled = true
 tracks/23/keys = {
-"times": PoolRealArray( 0, 0.0661687, 0.132337, 0.199413 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.0661687, 0.132337, 0.199413, 0.29 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.248591, -1.64559, -0.822264 ), Vector3( -0.41097, -1.64559, -0.822264 ), Vector3( -0.637545, -1.64559, -0.822264 ), Vector3( -0.697964, -1.64559, -0.822264 ) ]
+"values": [ Vector3( -0.248591, -1.64559, -0.822264 ), Vector3( -0.41097, -1.64559, -0.822264 ), Vector3( -0.637545, -1.64559, -0.822264 ), Vector3( -0.697964, -1.64559, -0.822264 ), Vector3( -0.697964, -1.64559, -0.822264 ) ]
 }
 tracks/24/type = "value"
 tracks/24/path = NodePath("LegRCast:translation")
@@ -1370,10 +1379,10 @@ tracks/23/loop_wrap = true
 tracks/23/imported = false
 tracks/23/enabled = true
 tracks/23/keys = {
-"times": PoolRealArray( 0.0672807, 0.0679815, 0.129619, 0.200319, 0.200906, 0.201225, 0.290961 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.0672807, 0.0679815, 0.129619, 0.200319, 0.200906, 0.201225, 0.290961 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.637545, -1.64559, -0.822264 ), Vector3( -0.69125, -1.64559, -0.822264 ), Vector3( -0.697964, -1.64559, -0.822264 ), Vector3( -0.507614, -1.61024, -0.822264 ), Vector3( -0.41097, -1.64559, -0.822264 ), Vector3( -0.50319, -1.6235, -0.822264 ), Vector3( -0.248591, -1.64559, -0.822264 ) ]
+"values": [ Vector3( -0.694738, -1.64559, -0.822264 ), Vector3( -0.637545, -1.64559, -0.822264 ), Vector3( -0.69125, -1.64559, -0.822264 ), Vector3( -0.697964, -1.64559, -0.822264 ), Vector3( -0.507614, -1.61024, -0.822264 ), Vector3( -0.41097, -1.64559, -0.822264 ), Vector3( -0.50319, -1.6235, -0.822264 ), Vector3( -0.248591, -1.64559, -0.822264 ) ]
 }
 tracks/24/type = "value"
 tracks/24/path = NodePath("LegRCast:translation")
@@ -1625,8 +1634,8 @@ tracks/23/loop_wrap = true
 tracks/23/imported = false
 tracks/23/enabled = true
 tracks/23/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.03, 0.23, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.03, 0.23, 0.27, 0.5 )
 }
 tracks/24/type = "bezier"
 tracks/24/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -1798,8 +1807,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.03, 0.23, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.03, 0.23, 0.27, 0.5 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -1995,8 +2004,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.03, 0.23, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.03, 0.23, 0.27, 0.5 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -2202,8 +2211,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.02, 0.233496, 0.265557 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.02, 0.233496, 0.265557, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -2399,8 +2408,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.02, 0.233496, 0.265557 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.02, 0.233496, 0.265557, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -2596,8 +2605,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.02, 0.233496, 0.265557 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.02, 0.233496, 0.265557, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -2783,8 +2792,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.03, 0.14, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.03, 0.14, 0.27, 0.5 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -2793,8 +2802,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.14, 0.2, 0.33, 0.4 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.14, 0.2, 0.33, 0.4, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -2980,8 +2989,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.13, 0.2, 0.37, 0.4 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.13, 0.2, 0.37, 0.4, 0.5 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -2990,8 +2999,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.03, 0.2, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.03, 0.2, 0.27, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -3022,6 +3031,7 @@ tracks/24/keys = {
 resource_name = "Stand"
 length = 0.875
 loop = true
+step = 0.01
 tracks/0/type = "transform"
 tracks/0/path = NodePath("Body/Skeleton:Head")
 tracks/0/interp = 1
@@ -3176,8 +3186,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.87 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -3186,8 +3196,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.87 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -3196,10 +3206,10 @@ tracks/23/loop_wrap = true
 tracks/23/imported = false
 tracks/23/enabled = true
 tracks/23/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.87 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0.674317, -1.65351, 0.300651 ) ]
+"values": [ Vector3( 0.674317, -1.65351, 0.300651 ), Vector3( 0.674317, -1.65351, 0.300651 ) ]
 }
 tracks/24/type = "value"
 tracks/24/path = NodePath("LegLCast:translation")
@@ -3208,10 +3218,10 @@ tracks/24/loop_wrap = true
 tracks/24/imported = false
 tracks/24/enabled = true
 tracks/24/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.87 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( -0.689448, -1.64559, -0.859644 ) ]
+"values": [ Vector3( -0.689448, -1.64559, -0.859644 ), Vector3( -0.689448, -1.64559, -0.859644 ) ]
 }
 
 [sub_resource type="Animation" id=460]
@@ -3568,8 +3578,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.27, 0.34, 0.4 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.34, 0.4, 0.5 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -3578,8 +3588,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.14, 0.2 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -3764,8 +3774,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.27, 0.33, 0.4 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.27, 0.33, 0.4, 0.5 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -3774,8 +3784,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.14, 0.2 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.14, 0.2, 0.5 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -3971,8 +3981,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.47, 0.67 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.47, 0.67, 1.13 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -4168,8 +4178,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.47, 0.67 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.47, 0.67, 1.13 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -4365,8 +4375,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.2, 0.47, 0.67 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.47, 0.67, 1.13 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -4562,8 +4572,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.4, 0.54 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.4, 0.54, 1.13 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -4759,8 +4769,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.4, 0.54 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.4, 0.54, 1.13 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -4956,8 +4966,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.4, 0.54 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.4, 0.54, 1.13 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -5131,8 +5141,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.2, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.2, 0.27, 0.88 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -5141,8 +5151,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.27, 0.33, 0.47, 0.54 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.27, 0.33, 0.47, 0.54, 0.88 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -5328,8 +5338,8 @@ tracks/21/loop_wrap = true
 tracks/21/imported = false
 tracks/21/enabled = true
 tracks/21/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.27, 0.4, 0.47, 0.54 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.27, 0.4, 0.47, 0.54, 0.88 )
 }
 tracks/22/type = "bezier"
 tracks/22/path = NodePath("Body/Skeleton/LegR:interpolation")
@@ -5338,8 +5348,8 @@ tracks/22/loop_wrap = true
 tracks/22/imported = false
 tracks/22/enabled = true
 tracks/22/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.07, 0.2, 0.27 )
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.2, 0.27, 0.88 )
 }
 tracks/23/type = "value"
 tracks/23/path = NodePath("LegRCast:translation")
@@ -5609,9 +5619,9 @@ input_1/name = "Stay"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=300]
-graph_offset = Vector2( -774.893, 43.2309 )
+graph_offset = Vector2( -343.678, -309.167 )
 nodes/Add2/node = SubResource( 418 )
-nodes/Add2/position = Vector2( -80, 80 )
+nodes/Add2/position = Vector2( 60, 120 )
 nodes/Animation/node = SubResource( 49 )
 nodes/Animation/position = Vector2( -960, 200 )
 "nodes/Animation 2/node" = SubResource( 66 )
@@ -5637,7 +5647,7 @@ nodes/AudioMovement/position = Vector2( -460, 400 )
 nodes/IdleAlert/node = SubResource( 412 )
 nodes/IdleAlert/position = Vector2( 468.711, -79.3152 )
 nodes/JumpBlend/node = SubResource( 75 )
-nodes/JumpBlend/position = Vector2( 160, 80 )
+nodes/JumpBlend/position = Vector2( 360, 160 )
 nodes/JumpTransition/node = SubResource( 69 )
 nodes/JumpTransition/position = Vector2( 159.772, 357.52 )
 nodes/Movement/node = SubResource( 410 )
@@ -5649,7 +5659,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "TimeScale 2", 0, "Animation", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend" ]
+node_connections = [ "output", 0, "IdleAlert", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -5661,7 +5671,7 @@ height = 1.74
 [node name="MeleeGruntNew" type="KinematicBody" groups=["Enemy", "Melee"]]
 collision_layer = 8
 collision_mask = 11
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 animation_tree_path = NodePath("AnimationTree")
 area_detection_path = NodePath("Area")
 front_ray_path = NodePath("FrontRayCast")
@@ -5671,14 +5681,20 @@ right_down_ray_path = NodePath("DownRightRayCast")
 left_down_ray_path = NodePath("DownLeftRayCast")
 audio_path = NodePath("Audio")
 StartTimer_path = NodePath("Start")
-ragdoll = ExtResource( 2 )
+ragdoll = ExtResource( 5 )
 current_health = 60
 attack_damage = 5
 hitboxl_path = NodePath("Body/Skeleton/ClawL/Left")
 hitboxr_path = NodePath("Body/Skeleton/ClawR/Right")
+ray_l_path = NodePath("LegLCast/LegLCast")
+ray_r_path = NodePath("LegRCast/LegRCast")
+ik_l_path = NodePath("Body/Skeleton/LegL")
+ik_r_path = NodePath("Body/Skeleton/LegR")
+point_l_path = NodePath("LegL")
+point_r_path = NodePath("LegR")
 
 [node name="Audio" type="Spatial" parent="."]
-script = ExtResource( 5 )
+script = ExtResource( 3 )
 
 [node name="Step" type="AudioStreamPlayer3D" parent="Audio"]
 unit_size = 20.0
@@ -5696,7 +5712,7 @@ max_db = 2.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 
 [node name="LookAt" type="Spatial" parent="Target"]
-script = ExtResource( 1 )
+script = ExtResource( 10 )
 skeleton_path = NodePath("../../Body/Skeleton")
 bone_name = "MidTorso"
 update_mode = 1
@@ -5718,12 +5734,17 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2
 
+[node name="LegL" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.374004, -1.78908, 0.451357 )
+
+[node name="LegLOffset" type="Position3D" parent="LegL"]
+
+[node name="LegR" type="Position3D" parent="."]
+
+[node name="LegROffset" type="Position3D" parent="LegR"]
+
 [node name="Body" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.667, 0 )
-
-[node name="RayCast2" type="RayCast" parent="Body"]
-transform = Transform( 1, 0, 0, 0, 0.999998, 0, 0, 0, 1, -2.73592, 0.5, 0.32951 )
-collision_mask = 2
 
 [node name="Skeleton" type="Skeleton" parent="Body"]
 bones/0/name = "Hip"
@@ -5765,7 +5786,7 @@ bones/7/name = "Claw.L"
 bones/7/parent = 6
 bones/7/rest = Transform( -0.982375, -0.186902, -0.00260486, 0.139045, -0.721381, -0.678437, 0.124922, -0.666842, 0.734654, 1.07109e-07, 0.720556, 1.37038e-07 )
 bones/7/enabled = true
-bones/7/bound_children = [ NodePath("ClawL") ]
+bones/7/bound_children = [  ]
 bones/8/name = "UpperArm.R"
 bones/8/parent = 2
 bones/8/rest = Transform( 0.318269, -0.879295, 0.354323, 0.799766, 0.0483651, -0.598362, 0.508999, 0.473815, 0.718623, -0.351179, 0.317814, 0.0771444 )
@@ -5780,7 +5801,7 @@ bones/10/name = "Claw.R"
 bones/10/parent = 9
 bones/10/rest = Transform( -0.982375, 0.186902, 0.00260474, -0.139045, -0.721381, -0.678437, -0.124922, -0.666842, 0.734655, -2.70788e-07, 0.720556, -3.54956e-08 )
 bones/10/enabled = true
-bones/10/bound_children = [ NodePath("ClawR") ]
+bones/10/bound_children = [  ]
 bones/11/name = "UpperLeg.L"
 bones/11/parent = 0
 bones/11/rest = Transform( -0.992542, -0.0896887, 0.082574, 0.121735, -0.765646, 0.631638, 0.00657161, 0.63698, 0.770852, 0.324961, 0.146779, -0.0417387 )
@@ -5831,14 +5852,24 @@ bones/20/parent = -1
 bones/20/rest = Transform( 0.726246, 0.687396, -0.00736967, -0.0101472, 1.19209e-07, -0.999948, -0.68736, 0.726283, 0.00697523, 3.28997, 2.57453, 2.44936 )
 bones/20/enabled = true
 bones/20/bound_children = [  ]
+bones/21/name = "Toe.L"
+bones/21/parent = 13
+bones/21/rest = Transform( 1, -2.40558e-07, -6.18767e-07, 4.47623e-07, -0.444003, 0.896025, -4.90281e-07, -0.896025, -0.444003, 3.03084e-09, 1.15262, -2.24216e-08 )
+bones/21/enabled = true
+bones/21/bound_children = [  ]
+bones/22/name = "Toe.R"
+bones/22/parent = 16
+bones/22/rest = Transform( 0.999403, -0.0345551, 2.71946e-06, -0.0153411, -0.443624, 0.896082, -0.030963, -0.895547, -0.443889, -8.07666e-08, 1.15261, -4.87991e-09 )
+bones/22/enabled = true
+bones/22/bound_children = [  ]
 
 [node name="Cube" type="MeshInstance" parent="Body/Skeleton"]
 mesh = SubResource( 441 )
 skin = SubResource( 442 )
-material/0 = ExtResource( 4 )
+material/0 = ExtResource( 7 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.118897, 0.922453, 0.367348, -0.675041, -0.346413, 0.651397, 0.728138, -0.170527, 0.663882, 0.162761, 1.83904, -0.687488 )
+transform = Transform( -0.849445, 0.275918, -0.449791, -0.481283, -0.754608, 0.446019, -0.216351, 0.595347, 0.773794, 1.13932, 2.94997, -1.13551 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
@@ -5852,7 +5883,7 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.0550356, -0.963335, -0.262599, 0.951723, -0.130154, 0.278001, -0.301986, -0.234621, 0.92399, 0.0670269, 1.98904, -1.11795 )
+transform = Transform( -0.863607, -0.385895, 0.324451, 0.502502, -0.711063, 0.491813, 0.0409177, 0.587772, 0.807992, -1.03616, 2.8213, -1.2316 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
@@ -5867,40 +5898,28 @@ shape = SubResource( 392 )
 
 [node name="LegL" type="SkeletonIK" parent="Body/Skeleton"]
 process_priority = 1
-root_bone = "BottomLeg.L"
-tip_bone = "IkLeg.L"
+root_bone = "UpperLeg.L"
+tip_bone = "Toe.L"
 override_tip_basis = false
-use_magnet = true
-magnet = Vector3( 0, 0, -10 )
 target_node = NodePath("../../../LegL/LegLOffset")
 max_iterations = 1
 
 [node name="LegR" type="SkeletonIK" parent="Body/Skeleton"]
 process_priority = 1
-root_bone = "BottomLeg.R"
-tip_bone = "IkLeg.R"
+root_bone = "UpperLeg.R"
+tip_bone = "Toe.R"
 override_tip_basis = false
-use_magnet = true
-magnet = Vector3( 0, 0, -10 )
 target_node = NodePath("../../../LegR/LegROffset")
 max_iterations = 1
-
-[node name="LegL" type="Position3D" parent="."]
-
-[node name="LegLOffset" type="Position3D" parent="LegL"]
-
-[node name="LegR" type="Position3D" parent="."]
-
-[node name="LegROffset" type="Position3D" parent="LegR"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Alert = SubResource( 443 )
 anims/AttackLeft = SubResource( 444 )
 anims/AttackRight = SubResource( 445 )
-anims/AudioStep1 = ExtResource( 6 )
-anims/AudioStep2 = ExtResource( 9 )
-anims/AudioStep3 = ExtResource( 7 )
-anims/AudioStep4 = ExtResource( 8 )
+anims/AudioStep1 = ExtResource( 1 )
+anims/AudioStep2 = ExtResource( 8 )
+anims/AudioStep3 = ExtResource( 2 )
+anims/AudioStep4 = ExtResource( 9 )
 anims/Idle = SubResource( 446 )
 anims/Jump = SubResource( 447 )
 anims/JumpEnd = SubResource( 448 )
