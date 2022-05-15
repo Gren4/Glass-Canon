@@ -11,7 +11,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 5
+const max_enem : int = 1
 
 var col_enem_to_spawn = 300
 

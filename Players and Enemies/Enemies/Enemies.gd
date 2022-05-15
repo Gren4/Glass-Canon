@@ -10,6 +10,8 @@ export(NodePath) var left_ray_path = null
 export(NodePath) var right_down_ray_path = null
 export(NodePath) var left_down_ray_path = null
 export(NodePath) var audio_path
+export(NodePath) var skeleton_path
+export(NodePath) var target_look_path
 export(NodePath) var StartTimer_path = null
 
 export(PackedScene) var ragdoll = null
@@ -25,6 +27,8 @@ onready var  right_ray = get_node(right_ray_path)
 onready var  left_ray = get_node(left_ray_path)
 onready var  right_down_ray = get_node(right_down_ray_path)
 onready var  left_down_ray = get_node(left_down_ray_path)
+onready var  skeleton = get_node(skeleton_path)
+onready var  target_look = get_node(target_look_path)
 onready var StartTimer : Timer = get_node(StartTimer_path)
 
 onready var prev_origin : Vector3 = Vector3.ZERO
@@ -207,8 +211,8 @@ func death() -> void:
 	if ragdoll_create:
 		ragdoll_create = false
 		var new_rag = ragdoll.instance()
-		for i in $Body/Skeleton.get_bone_count():
-			new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
+		for i in skeleton.get_bone_count():
+			new_rag.pose[i] = skeleton.get_bone_global_pose(i)
 		new_rag.global_transform = self.global_transform
 		new_rag.set_dir(death_dir)
 		root.call_deferred("add_child",new_rag)
@@ -217,13 +221,21 @@ func death() -> void:
 
 func face_threat(d1 : int, delta : float, look : Vector3 = Vector3.ZERO, turn : Vector3 = Vector3.ZERO) -> void:
 	Global.turn_face(self,turn,d1,delta)
-	$Target.global_transform.origin = look
+	target_look.global_transform.origin = target_look.global_transform.origin.linear_interpolate(look,10*delta)
 	pass
 
 func update_hp(damage : int, dir : Vector3) -> void:
 	if _state < LOOK_AT_ALLERT:
 		set_state(LOOK_AT_ALLERT)
-		
+	
+	var get_sign = randf()-0.5
+	var new_sign = 1
+	if get_sign >= 0:
+		new_sign = 1
+	else:
+		new_sign = -1
+	target_look.transform.origin = Vector3(1.5*new_sign,0,-1)
+	
 	current_health -= damage
 	if _state != JUMP and _state != JUMP_END:
 		_evade_timer -= 1
