@@ -191,6 +191,8 @@ func set_state(state : int) -> void:
 		JUMP_END:
 			direction = Vector3.ZERO
 			velocityXY = Vector3.ZERO
+		ATTACK_MELEE:
+			hitbox.monitoring = true
 		SHOOT:
 			direction = Vector3.ZERO
 		DEATH:
@@ -222,6 +224,7 @@ func on_animation_finish(anim_name:String) -> void:
 			velocityXY = Vector3.ZERO
 			dop_speed = 0.0
 			hit_confirm = false
+			hitbox.monitoring = false
 		"Shoot":
 			_shoot_timer = 0.0
 			set_state(ALLERTED_AND_KNOWS_LOC)

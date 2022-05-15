@@ -5659,7 +5659,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Zero", 0, "Movement", "Zero", 1, "Animation 8" ]
+node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "TimeScale", 0, "Animation 2", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Attack", 0, "Zero", "Attack", 1, "AttackTransition" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -5869,13 +5869,14 @@ skin = SubResource( 442 )
 material/0 = ExtResource( 7 )
 
 [node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.120389, 0.923247, 0.364858, -0.779933, -0.315345, 0.540612, 0.614176, -0.219482, 0.758036, 0.157743, 1.95496, -1.02638 )
+transform = Transform( -0.972479, 0.179812, -0.148166, -0.145217, 0.0295295, 0.98896, 0.182202, 0.983259, -0.00260666, 0.559137, 1.34199, -0.838415 )
 bone_name = "Claw.R"
 
 [node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
 transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
 collision_layer = 0
 input_ray_pickable = false
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Right"]
@@ -5883,13 +5884,14 @@ transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.47
 shape = SubResource( 392 )
 
 [node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.0532576, -0.962711, -0.265239, 0.987208, -0.0907337, 0.131102, -0.15028, -0.254864, 0.955228, 0.0630235, 2.17044, -1.42895 )
+transform = Transform( -0.97419, -0.170323, 0.148133, 0.145216, 0.0295312, 0.98896, -0.172816, 0.984946, -0.00403553, -0.558814, 1.34198, -0.833024 )
 bone_name = "Claw.L"
 
 [node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
 transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
 collision_layer = 0
 input_ray_pickable = false
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawL/Left"]

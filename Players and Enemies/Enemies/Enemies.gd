@@ -228,7 +228,7 @@ func update_hp(damage : int) -> void:
 		set_state(DEATH)
 		
 func is_player_in_sight() -> bool:	
-	if (self.global_transform.basis.z.angle_to(dist) < 1.05 and dist_length <= 250):
+	if (self.global_transform.basis.z.angle_to(dist) < 1.39 and dist_length <= 250):
 		return true
 	else:
 		return false
@@ -243,13 +243,13 @@ func move_to_target(delta : float, threshold_distance : float, dir : Vector3, st
 			face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
 		ALLERTED_AND_KNOWS_LOC:
 			direction = dir
-			if (turn_to != null and dist_length > 10.0):
+			if (turn_to != null and dist_length > 20.0):
 				if (is_player_in_sight()):
-					face_threat(10,delta,player.global_transform.origin,turn_to)
+					face_threat(5,delta,player.global_transform.origin,turn_to)
 				else:
-					face_threat(10,delta,turn_to,turn_to)
+					face_threat(5,delta,turn_to,turn_to)
 			else: 
-				face_threat(10,delta,player.global_transform.origin,player.global_transform.origin)
+				face_threat(5,delta,player.global_transform.origin,player.global_transform.origin)
 	
 	front_ray.force_raycast_update()
 	if not front_ray.is_colliding():

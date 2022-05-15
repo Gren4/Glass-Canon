@@ -194,6 +194,12 @@ func set_state(state : int) -> void:
 			velocityXY = Vector3.ZERO
 		DEATH:
 			death()
+		ATTACK_MELEE:
+			match animation_tree.get("parameters/AttackTransition/current"):
+				0:
+					hitboxl.monitoring = true
+				1:
+					hitboxr.monitoring = true
 	
 func attack() -> void:
 	if hit_confirm:
@@ -223,6 +229,11 @@ func on_animation_finish(anim_name:String) -> void:
 			else:
 				attack_side += 1
 			hit_confirm = false
+			match animation_tree.get("parameters/AttackTransition/current"):
+				0:
+					hitboxl.monitoring = false
+				1:
+					hitboxr.monitoring = false
 	
 func analyze_and_prepare_attack(delta : float) -> void:
 	if _attack_timer < ATTACK_CD_TIMER:
@@ -253,7 +264,7 @@ func move_along_path(delta : float) -> bool:
 					direction = Vector3.ZERO
 					velocityXY = Vector3.ZERO
 					start_jump_pos = self.global_transform.origin
-					p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1*max(start_jump_pos.y,link_to[0].y),0)
+					p1 = (link_to[0] + start_jump_pos) / 2  + Vector3(0,1.1*max(start_jump_pos.y,link_to[0].y),0)
 					var jdist = (link_to[0] - start_jump_pos)
 					jump_time_coeff = jdist.length() / speed
 					jump_time_coeff = clamp(jump_time_coeff,0.5,0.8)

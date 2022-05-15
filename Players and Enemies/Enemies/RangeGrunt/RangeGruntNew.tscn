@@ -4190,6 +4190,30 @@ tracks/31/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.8 )
 }
+tracks/32/type = "value"
+tracks/32/path = NodePath("LegLCast:translation")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1.12701, -1.47178, -0.101577 ), Vector3( -1.12701, -1.47178, -0.101577 ) ]
+}
+tracks/33/type = "value"
+tracks/33/path = NodePath("LegRCast:translation")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.81256, -1.46715, -1.18534 ), Vector3( 0.81256, -1.46715, -1.18534 ) ]
+}
 
 [sub_resource type="Animation" id=441]
 resource_name = "Stand"
@@ -7460,7 +7484,7 @@ blend_point_16/pos = Vector2( -0.2, 0 )
 
 [sub_resource type="AnimationNodeOneShot" id=409]
 filter_enabled = true
-filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton/LegL:interpolation", "Body/Skeleton/LegR:interpolation", "Body/Skeleton:Abdomen1", "Body/Skeleton:Abdomen2", "Body/Skeleton:Abdomen3", "Body/Skeleton:Abdomen4", "Body/Skeleton:BigF.L", "Body/Skeleton:BigF.R", "Body/Skeleton:DownArm.L", "Body/Skeleton:DownArm.R", "Body/Skeleton:DownLeg.L", "Body/Skeleton:DownLeg.R", "Body/Skeleton:Head", "Body/Skeleton:Hip", "Body/Skeleton:MandibleEnd.L", "Body/Skeleton:MandibleEnd.R", "Body/Skeleton:MandibleStart.L", "Body/Skeleton:MandibleStart.R", "Body/Skeleton:MidLeg.L", "Body/Skeleton:MidLeg.R", "Body/Skeleton:MidleTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpArm.L", "Body/Skeleton:UpArm.R", "Body/Skeleton:UpLeg.L", "Body/Skeleton:UpLeg.R", "Body/Skeleton:UpTorso" ]
+filters = [ ".", "Body/Armature/Skeleton:Abdomen1", "Body/Armature/Skeleton:Abdomen2", "Body/Armature/Skeleton:Abdomen3", "Body/Armature/Skeleton:Abdomen4", "Body/Armature/Skeleton:BigF.L", "Body/Armature/Skeleton:BigF.R", "Body/Armature/Skeleton:DownArm.L", "Body/Armature/Skeleton:DownArm.R", "Body/Armature/Skeleton:Head", "Body/Armature/Skeleton:MandibleEnd.L", "Body/Armature/Skeleton:MandibleEnd.R", "Body/Armature/Skeleton:MandibleStart.L", "Body/Armature/Skeleton:MandibleStart.R", "Body/Armature/Skeleton:Neck", "Body/Armature/Skeleton:UpArm.L", "Body/Armature/Skeleton:UpArm.R", "Body/Armature/Skeleton:UpTorso", "Body/Skeleton/LegL:interpolation", "Body/Skeleton/LegR:interpolation", "Body/Skeleton:Abdomen1", "Body/Skeleton:Abdomen2", "Body/Skeleton:Abdomen3", "Body/Skeleton:Abdomen4", "Body/Skeleton:BigF.L", "Body/Skeleton:BigF.R", "Body/Skeleton:DownArm.L", "Body/Skeleton:DownArm.R", "Body/Skeleton:DownLeg.L", "Body/Skeleton:DownLeg.R", "Body/Skeleton:Head", "Body/Skeleton:Hip", "Body/Skeleton:MandibleEnd.L", "Body/Skeleton:MandibleEnd.R", "Body/Skeleton:MandibleStart.L", "Body/Skeleton:MandibleStart.R", "Body/Skeleton:MidLeg.L", "Body/Skeleton:MidLeg.R", "Body/Skeleton:MidleTorso", "Body/Skeleton:Neck", "Body/Skeleton:UpArm.L", "Body/Skeleton:UpArm.R", "Body/Skeleton:UpLeg.L", "Body/Skeleton:UpLeg.R", "Body/Skeleton:UpTorso", "LegLCast:translation", "LegRCast:translation" ]
 fadein_time = 0.2
 fadeout_time = 0.2
 sync = true
@@ -7477,7 +7501,7 @@ input_1/name = "Stand"
 input_1/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=406]
-graph_offset = Vector2( -712.907, 20.0837 )
+graph_offset = Vector2( -800.701, -222.17 )
 nodes/Add2/node = SubResource( 465 )
 nodes/Add2/position = Vector2( -160, 60 )
 nodes/Animation/node = SubResource( 49 )
@@ -7521,7 +7545,7 @@ nodes/TimeScale/position = Vector2( -1060, 420 )
 nodes/Zero/node = SubResource( 460 )
 nodes/Zero/position = Vector2( -880, 20 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "TimeScale 2", 0, "Animation", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale", 0, "Animation 2", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Zero", 0, "Movement", "Zero", 1, "Animation 9" ]
+node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 9", "TimeScale", 0, "Animation 2", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 8", "IdleAlert", 2, "JumpBlend", "Add2", 0, "Shoot", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "Shoot", 0, "Attack", "Shoot", 1, "Animation 7" ]
 
 [sub_resource type="BoxShape" id=27]
 extents = Vector3( 2.02667, 2.45623, 1.83757 )
@@ -7590,7 +7614,7 @@ additional_rotation = Vector3( -45, 180, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.939869, -1.41232, 0.229469 )
 
 [node name="LegLCast" type="RayCast" parent="LegLCast"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.999998, 0, 1, 0 )
+transform = Transform( 0.984808, -0.173648, 0, 0.173648, 0.984808, 0, 0, 0, 0.999998, -0.18, 1, 0 )
 cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2
 
@@ -7598,7 +7622,7 @@ collision_mask = 2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.612308, -1.47191, -0.944158 )
 
 [node name="LegRCast" type="RayCast" parent="LegRCast"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0, 0, 1, 0.18, 1, 0 )
 cast_to = Vector3( 0, -3, 0 )
 collision_mask = 2
 
@@ -7779,13 +7803,14 @@ skin = SubResource( 424 )
 material/0 = null
 
 [node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( 1, 2.62782e-08, 1.00899e-08, 4.02451e-10, -0.371537, 0.928418, 2.81466e-08, -0.928419, -0.371537, 4.5566e-09, 0.223582, -0.948138 )
+transform = Transform( 1, 2.63154e-08, 1.01048e-08, 4.02338e-10, -0.371537, 0.928417, 2.81867e-08, -0.928418, -0.371538, 4.49833e-09, 0.223582, -0.948143 )
 bone_name = "Head"
 
 [node name="Head" type="Area" parent="Body/Skeleton/Head"]
 transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
 collision_layer = 0
 input_ray_pickable = false
+monitoring = false
 monitorable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/Head/Head"]

@@ -396,7 +396,7 @@ __meta__ = {
 }
 
 [node name="Wall9" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
-transform = Transform( -4.37114e-06, 0, -1, 0, 20, 0, 100, 0, -4.37114e-08, -37, -1.6707, -62 )
+transform = Transform( -4.37114e-06, 0, -1, 0, 20, 0, 100, 0, -4.37114e-08, -37, 15.2106, -62 )
 collision_layer = 2
 collision_mask = 0
 
@@ -404,6 +404,7 @@ collision_mask = 0
 shape = SubResource( 54 )
 
 [node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall9"]
+transform = Transform( 1, 0, 0, 0, 1, 0, -4.54747e-13, 0, 1, 0, 0, 0 )
 mesh = SubResource( 55 )
 material/0 = ExtResource( 7 )
 __meta__ = {
