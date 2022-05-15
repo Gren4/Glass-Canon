@@ -769,7 +769,7 @@ func process_weapons(delta) -> void:
 #	if Input.is_action_just_pressed("secondary"):
 #		weapon_manager.change_weapon("Secondary")
 
-	if Input.is_action_pressed("ads") and not weapon_manager.current_weapon.is_reloading:
+	if Input.is_action_pressed("ads"):
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(true, delta)
 	else:
 		weapon_regime = weapon_manager.current_weapon.weapon_regime(false, delta)

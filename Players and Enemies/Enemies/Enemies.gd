@@ -97,6 +97,8 @@ var attack_side : int = 0
 var ragdoll_create : bool = true
 var hit_confirm : bool = false
 
+var death_dir : Vector3 = Vector3.ZERO
+
 func _physics_process(delta : float) -> void:
 	ai(delta)
 	
@@ -208,6 +210,7 @@ func death() -> void:
 		for i in $Body/Skeleton.get_bone_count():
 			new_rag.pose[i] = $Body/Skeleton.get_bone_global_pose(i)
 		new_rag.global_transform = self.global_transform
+		new_rag.set_dir(death_dir)
 		root.call_deferred("add_child",new_rag)
 	call_deferred("queue_free")
 	
@@ -217,14 +220,15 @@ func face_threat(d1 : int, delta : float, look : Vector3 = Vector3.ZERO, turn : 
 	$Target.global_transform.origin = look
 	pass
 
-func update_hp(damage : int) -> void:
+func update_hp(damage : int, dir : Vector3) -> void:
 	if _state < LOOK_AT_ALLERT:
 		set_state(LOOK_AT_ALLERT)
 		
 	current_health -= damage
-	if _state != JUMP or _state != JUMP_END:
+	if _state != JUMP and _state != JUMP_END:
 		_evade_timer -= 1
 	if (current_health <= 0):
+		death_dir = dir
 		set_state(DEATH)
 		
 func is_player_in_sight() -> bool:	

@@ -98,11 +98,12 @@ func fire_bullet():
 			hole.cur_transparency = 1.0
 			#var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
 			#smoke.emitting = true
-		elif (obj.is_in_group("Enemy")):
+		elif (obj.is_in_group("Hitbox")):
+			var vector_pte : Vector3 = (obj.global_transform.origin - player.global_transform.origin).normalized()*100
 			if heat > 60.0:
-				obj.update_hp(1.5 * damage)
+				obj.hitbox_processing(1.5 * damage, vector_pte)
 			else:
-				obj.update_hp(damage)
+				obj.hitbox_processing(damage, vector_pte)
 			weapon_manager.hud.hit_confirm.visible = true
 			audio.Hit.hit()
 	else:
@@ -138,7 +139,7 @@ func fire_spray():
 				hole.cur_transparency = 1.0
 				#var smoke = Global.spawn_node_from_pool(smoke_effect, ray_point)
 				#smoke.emitting = true
-			elif (obj.is_in_group("Enemy")):
+			elif (obj.is_in_group("Hitbox")):
 				hit_confirm = true
 				if obj in Enemies:
 					Enemies[obj] += 1
@@ -152,10 +153,11 @@ func fire_spray():
 		weapon_manager.hud.hit_confirm.visible = true
 		audio.Hit.hit()
 	for e in Enemies:
+		var vector_pte : Vector3 = (e.global_transform.origin - player.global_transform.origin).normalized()*200
 		if heat > 60.0:
-			e.update_hp(1.25 * alt_damage * Enemies[e])
+			e.hitbox_processing(1.25 * alt_damage * Enemies[e], vector_pte)
 		else:
-			e.update_hp(alt_damage * Enemies[e])
+			e.hitbox_processing(alt_damage * Enemies[e], vector_pte)
 			
 func reload():
 	if not is_reloading:
@@ -240,6 +242,7 @@ func on_animation_finish(anim_name):
 		"SwitchFromCoolOff":
 			animation_tree.set("parameters/CoolOff/blend_amount",0)	
 			is_reloading = false
+			is_switching_active = false
 		"Climb":
 			arms.set_left_hand(left_hand.get_path())
 			arms.left_hand.interpolation = 0.5
@@ -266,7 +269,7 @@ func sway(mouse_input,delta):
 func weapon_regime(value, delta) -> int:
 	if is_equipped:
 		if value:
-			if not is_alt_active and not is_firing and not is_reloading:
+			if not is_alt_active and not is_firing:
 				weapon_manager.update_sight(0)
 				animation_tree.set("parameters/Idle/current",1)
 				animation_tree.set("parameters/FireRifle/active", false)
@@ -277,7 +280,7 @@ func weapon_regime(value, delta) -> int:
 			else:
 				return BASE
 		else:
-			if is_alt_active and not is_firing and not is_reloading:
+			if is_alt_active and not is_firing:
 				weapon_manager.update_sight(1)
 				animation_tree.set("parameters/Idle/current",3)
 				animation_tree.set("parameters/FireShotgun/active", false)

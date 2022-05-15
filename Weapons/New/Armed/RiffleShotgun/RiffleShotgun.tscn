@@ -1003,7 +1003,7 @@ input_2/auto_advance = false
 [sub_resource type="AnimationNodeOneShot" id=32]
 
 [sub_resource type="AnimationNodeBlendTree" id=33]
-graph_offset = Vector2( -277.181, -141.986 )
+graph_offset = Vector2( -613.222, -53.3264 )
 nodes/Animation/node = SubResource( 27 )
 nodes/Animation/position = Vector2( 40, 300 )
 "nodes/Animation 10/node" = SubResource( 38 )
@@ -1019,7 +1019,7 @@ nodes/Animation/position = Vector2( 40, 300 )
 "nodes/Animation 4/node" = SubResource( 22 )
 "nodes/Animation 4/position" = Vector2( -1180, 140 )
 "nodes/Animation 5/node" = SubResource( 23 )
-"nodes/Animation 5/position" = Vector2( -860, -20 )
+"nodes/Animation 5/position" = Vector2( -900, -20 )
 "nodes/Animation 6/node" = SubResource( 24 )
 "nodes/Animation 6/position" = Vector2( -860, 320 )
 "nodes/Animation 7/node" = SubResource( 25 )
@@ -1031,7 +1031,7 @@ nodes/Animation/position = Vector2( 40, 300 )
 nodes/Climb/node = SubResource( 64 )
 nodes/Climb/position = Vector2( 660, 0 )
 nodes/CoolOff/node = SubResource( 41 )
-nodes/CoolOff/position = Vector2( -100, -40 )
+nodes/CoolOff/position = Vector2( -120, 0 )
 nodes/Equip/node = SubResource( 28 )
 nodes/Equip/position = Vector2( 120, -20 )
 nodes/FireRifle/node = SubResource( 29 )
@@ -1039,7 +1039,7 @@ nodes/FireRifle/position = Vector2( -940, -200 )
 nodes/FireShotgun/node = SubResource( 30 )
 nodes/FireShotgun/position = Vector2( -960, 120 )
 nodes/Idle/node = SubResource( 31 )
-nodes/Idle/position = Vector2( -360, -80 )
+nodes/Idle/position = Vector2( -340, -100 )
 nodes/SetCool/node = SubResource( 42 )
 nodes/SetCool/position = Vector2( -300, 320 )
 nodes/TimeScale/node = SubResource( 37 )
@@ -1049,13 +1049,13 @@ nodes/TimeScale/position = Vector2( -1120, -40 )
 "nodes/TimeScale 3/node" = SubResource( 35 )
 "nodes/TimeScale 3/position" = Vector2( -620, 240 )
 "nodes/TimeScale 4/node" = SubResource( 36 )
-"nodes/TimeScale 4/position" = Vector2( -640, -60 )
+"nodes/TimeScale 4/position" = Vector2( -620, -40 )
 "nodes/TimeScale 5/node" = SubResource( 66 )
 "nodes/TimeScale 5/position" = Vector2( 460, 220 )
 nodes/Unequip/node = SubResource( 32 )
 nodes/Unequip/position = Vector2( 400, -20 )
 nodes/output/position = Vector2( 840, -20 )
-node_connections = [ "output", 0, "Climb", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale 2", 0, "Animation 8", "TimeScale", 0, "Animation 7", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "TimeScale 4", 0, "Animation 5", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool", "TimeScale 3", 0, "Animation 6", "TimeScale 5", 0, "Animation 12", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2" ]
+node_connections = [ "output", 0, "Climb", "Idle", 0, "FireRifle", "Idle", 1, "TimeScale 4", "Idle", 2, "FireShotgun", "Idle", 3, "TimeScale 3", "TimeScale", 0, "Animation 7", "TimeScale 2", 0, "Animation 8", "TimeScale 5", 0, "Animation 12", "Climb", 0, "Unequip", "Climb", 1, "TimeScale 5", "Unequip", 0, "Equip", "Unequip", 1, "Animation 2", "FireShotgun", 0, "Animation 4", "FireShotgun", 1, "TimeScale 2", "Equip", 0, "CoolOff", "Equip", 1, "Animation", "SetCool", 0, "Animation 9", "SetCool", 1, "Animation 10", "SetCool", 2, "Animation 11", "TimeScale 3", 0, "Animation 6", "FireRifle", 0, "Animation 3", "FireRifle", 1, "TimeScale", "TimeScale 4", 0, "Animation 5", "CoolOff", 0, "Idle", "CoolOff", 1, "SetCool" ]
 
 [sub_resource type="SpatialMaterial" id=59]
 params_line_width = 128.0
@@ -1078,7 +1078,7 @@ equip_pos = Vector3( 0.25, -0.15, -0.25 )
 left_hand_def_pos = Transform( 0.164, 0.791, -0.59, 0.115, 0.578, 0.808, 0.98, -0.2, 0.004, -0.163, 0.055, -0.088 )
 
 [node name="LeftHandForAnim" type="Position3D" parent="."]
-transform = Transform( 0.177589, -0.0238395, -0.357821, 0.321059, 0.188198, 0.146864, 0.159581, -0.352102, 0.102725, -0.256826, 0.176452, -0.611838 )
+transform = Transform( 0.0656, 0.316387, -0.235858, 0.392, -0.080076, 0.00153134, -0.046, -0.231191, -0.323304, -0.0652, -0.0475725, -0.264081 )
 
 [node name="Skeleton" type="Skeleton" parent="."]
 transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.0674719, 0.263691 )
@@ -1086,7 +1086,7 @@ bones/0/name = "Bone"
 bones/0/parent = -1
 bones/0/rest = Transform( 1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0 )
 bones/0/enabled = true
-bones/0/bound_children = [  ]
+bones/0/bound_children = [ NodePath("BoneAttachment") ]
 bones/1/name = "Bone.001"
 bones/1/parent = 0
 bones/1/rest = Transform( 1, -2.22471e-15, -1.59156e-15, 2.22471e-15, 0.322927, 0.946424, -1.59156e-15, -0.946424, 0.322927, -1.39775e-17, 0.668364, -0.130421 )
@@ -1126,7 +1126,7 @@ bones/8/name = "Bone.004"
 bones/8/parent = 0
 bones/8/rest = Transform( 1, 0, 0, 0, 1, -3.10474e-08, 0, 3.10474e-08, 1, 0, 1.26443, -0.199611 )
 bones/8/enabled = true
-bones/8/bound_children = [  ]
+bones/8/bound_children = [ NodePath("BoneAttachment2") ]
 
 [node name="Cube001" type="MeshInstance" parent="Skeleton"]
 layers = 2

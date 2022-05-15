@@ -1,4 +1,4 @@
-[gd_scene load_steps=99 format=2]
+[gd_scene load_steps=109 format=2]
 
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep1.tres" type="Animation" id=1]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep3.tres" type="Animation" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep2.tres" type="Animation" id=8]
 [ext_resource path="res://Players and Enemies/Enemies/MeleeGrunt/AudioStep4.tres" type="Animation" id=9]
 [ext_resource path="res://Players and Enemies/Enemies/LookAt.gd" type="Script" id=10]
+[ext_resource path="res://Players and Enemies/Enemies/HitBox.gd" type="Script" id=11]
 
 [sub_resource type="ArrayMesh" id=441]
 resource_name = "MeleeGruntNew_Cube"
@@ -100,7 +101,34 @@ bind/22/bone = -1
 bind/22/pose = Transform( 0.999396, -0.00364392, 0.0345546, -0.0345548, 2.91038e-10, 0.999401, -0.00364173, -0.999993, -0.000125915, -0.298659, 0.224341, 0.0933015 )
 
 [sub_resource type="BoxShape" id=392]
-extents = Vector3( 0.121, 0.9, 0.242 )
+extents = Vector3( 0.121, 0.773141, 0.156253 )
+
+[sub_resource type="BoxShape" id=476]
+extents = Vector3( 0.187136, 0.205899, 0.205195 )
+
+[sub_resource type="BoxShape" id=477]
+extents = Vector3( 0.243774, 0.313056, 0.23303 )
+
+[sub_resource type="BoxShape" id=474]
+extents = Vector3( 0.414421, 0.703215, 0.276516 )
+
+[sub_resource type="BoxShape" id=475]
+extents = Vector3( 0.298, 0.1, 0.42 )
+
+[sub_resource type="BoxShape" id=478]
+extents = Vector3( 0.0954833, 0.0834169, 0.238133 )
+
+[sub_resource type="BoxShape" id=479]
+extents = Vector3( 0.100688, 0.0920446, 0.313573 )
+
+[sub_resource type="BoxShape" id=480]
+extents = Vector3( 0.171125, 0.246562, 0.435532 )
+
+[sub_resource type="BoxShape" id=481]
+extents = Vector3( 0.054703, 0.0884283, 0.45291 )
+
+[sub_resource type="BoxShape" id=482]
+extents = Vector3( 0.106494, 0.176729, 0.572276 )
 
 [sub_resource type="Animation" id=443]
 resource_name = "Alert"
@@ -5659,7 +5687,7 @@ nodes/TimeScale/position = Vector2( -700, 340 )
 nodes/Zero/node = SubResource( 414 )
 nodes/Zero/position = Vector2( -540, -40 )
 nodes/output/position = Vector2( 813, 118.32 )
-node_connections = [ "output", 0, "IdleAlert", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "TimeScale", 0, "Animation 2", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "Attack", 0, "Zero", "Attack", 1, "AttackTransition" ]
+node_connections = [ "output", 0, "IdleAlert", "Add2", 0, "Attack", "Add2", 1, "AudioMovement", "Attack", 0, "Zero", "Attack", 1, "AttackTransition", "AttackTransition", 0, "TimeScale 2", "AttackTransition", 1, "TimeScale", "TimeScale", 0, "Animation 2", "JumpTransition", 0, "Animation 4", "JumpTransition", 1, "Animation 5", "JumpTransition", 2, "Animation 6", "TimeScale 2", 0, "Animation", "JumpBlend", 0, "Add2", "JumpBlend", 1, "JumpTransition", "Zero", 0, "Movement", "Zero", 1, "Animation 8", "IdleAlert", 0, "Animation 3", "IdleAlert", 1, "Animation 7", "IdleAlert", 2, "JumpBlend" ]
 
 [sub_resource type="BoxShape" id=79]
 extents = Vector3( 2.02667, 2.45623, 2.006 )
@@ -5868,36 +5896,6 @@ mesh = SubResource( 441 )
 skin = SubResource( 442 )
 material/0 = ExtResource( 7 )
 
-[node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.972479, 0.179812, -0.148166, -0.145217, 0.0295295, 0.98896, 0.182202, 0.983259, -0.00260666, 0.559137, 1.34199, -0.838415 )
-bone_name = "Claw.R"
-
-[node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
-transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
-collision_layer = 0
-input_ray_pickable = false
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Right"]
-transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0, 1.1, 0.2 )
-shape = SubResource( 392 )
-
-[node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
-transform = Transform( -0.97419, -0.170323, 0.148133, 0.145216, 0.0295312, 0.98896, -0.172816, 0.984946, -0.00403553, -0.558814, 1.34198, -0.833024 )
-bone_name = "Claw.L"
-
-[node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
-transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
-collision_layer = 0
-input_ray_pickable = false
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawL/Left"]
-transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0, 1.1, 0.2 )
-shape = SubResource( 392 )
-
 [node name="LegL" type="SkeletonIK" parent="Body/Skeleton"]
 process_priority = 1
 root_bone = "UpperLeg.L"
@@ -5913,6 +5911,293 @@ tip_bone = "Toe.R"
 override_tip_basis = false
 target_node = NodePath("../../../LegR/LegROffset")
 max_iterations = 1
+
+[node name="ClawR" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.11774, 0.922297, 0.368112, -0.779216, -0.315599, 0.541497, 0.615598, -0.223083, 0.755828, 0.161831, 1.95429, -1.04319 )
+bone_name = "Claw.R"
+
+[node name="Right" type="Area" parent="Body/Skeleton/ClawR"]
+transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
+collision_layer = 0
+input_ray_pickable = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Right"]
+transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0, 1.1, 0.2 )
+shape = SubResource( 392 )
+
+[node name="Area" type="Area" parent="Body/Skeleton/ClawR" groups=["Hitbox"]]
+transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
+collision_layer = 16
+collision_mask = 0
+input_ray_pickable = false
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+damage_koeff = 0.5
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawR/Area"]
+transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, -0.01, 0.972, 0.14 )
+shape = SubResource( 392 )
+
+[node name="ClawL" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.0539107, -0.963798, -0.261128, 0.987031, -0.091033, 0.132216, -0.151201, -0.250614, 0.956207, 0.0653791, 2.16931, -1.44561 )
+bone_name = "Claw.L"
+
+[node name="Left" type="Area" parent="Body/Skeleton/ClawL"]
+transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
+collision_layer = 0
+input_ray_pickable = false
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawL/Left"]
+transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, 0, 1.1, 0.2 )
+shape = SubResource( 392 )
+
+[node name="Area" type="Area" parent="Body/Skeleton/ClawL" groups=["Hitbox"]]
+transform = Transform( 1, -1.49012e-08, 5.72763e-08, -1.49012e-08, 1, -2.6077e-08, 1.39698e-08, 7.45058e-09, 1, -2.38419e-07, 5.96046e-08, 1.78814e-07 )
+collision_layer = 16
+collision_mask = 0
+input_ray_pickable = false
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+damage_koeff = 0.5
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/ClawL/Area"]
+transform = Transform( 0.993637, 0.0194139, 0.110956, 0.0357901, 0.879577, -0.474409, -0.106805, 0.475361, 0.873284, -0.01, 0.972, 0.14 )
+shape = SubResource( 392 )
+
+[node name="Hip" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.706676, -0.205175, -0.677136, 0.0348993, 0.945758, -0.322991, 0.706676, -0.251881, -0.661184, 0.0830183, 1.48755, -0.220122 )
+bone_name = "Hip"
+
+[node name="Area" type="Area" parent="Body/Skeleton/Hip" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/Hip/Area"]
+transform = Transform( 1, 0, -1.42109e-14, -1.42109e-14, 2.98023e-08, 1, 0, -1, 2.98023e-08, 4.65661e-10, 0.182, 0 )
+shape = SubResource( 476 )
+
+[node name="MidTorso" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.999981, 0.000371709, -0.00611147, -2.98023e-08, 0.998155, 0.0607088, 0.0061228, 0.0607077, -0.998137, 0.0101938, 1.85727, -0.335117 )
+bone_name = "MidTorso"
+
+[node name="Area" type="Area" parent="Body/Skeleton/MidTorso" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/MidTorso/Area"]
+transform = Transform( 1, 4.65661e-10, -7.27596e-12, 0, 0, 1, 0, -1, 0, 9.31323e-10, 0.139, -3.72529e-09 )
+shape = SubResource( 477 )
+
+[node name="UpTorso" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.999981, -0.0059459, -0.00146135, -3.32971e-06, 0.239195, -0.970971, 0.00612287, -0.970954, -0.23919, 0.0103234, 2.20551, -0.313937 )
+bone_name = "UpTorso"
+
+[node name="Area" type="Area" parent="Body/Skeleton/UpTorso" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/UpTorso/Area"]
+transform = Transform( -1.86265e-09, -1, -4.07454e-10, 1, -1.39698e-09, 0, -1.49012e-08, -1.16415e-10, 1, 2.07685e-07, 0.134685, -0.0566178 )
+shape = SubResource( 474 )
+
+[node name="Head" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.999981, -0.0050123, 0.00351715, -2.02852e-07, -0.574374, -0.818592, 0.00612321, -0.818578, 0.574365, 0.00653821, 2.36755, -0.932029 )
+bone_name = "Head"
+
+[node name="Area" type="Area" parent="Body/Skeleton/Head" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+damage_koeff = 2.0
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/Head/Area"]
+transform = Transform( 1, 2.32831e-10, 4.65661e-10, 0, 0.233734, 0.972301, -2.32831e-10, -0.972301, 0.233734, 0, 0, 0 )
+shape = SubResource( 475 )
+
+[node name="UpperArmL" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.799618, -0.39843, 0.449293, -0.386011, -0.232101, -0.892818, 0.460007, -0.887346, 0.0317935, -0.353758, 2.20662, -0.638755 )
+bone_name = "UpperArm.L"
+
+[node name="Area" type="Area" parent="Body/Skeleton/UpperArmL" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/UpperArmL/Area"]
+transform = Transform( 1, 2.98023e-08, -7.45058e-09, 7.45058e-09, -2.23517e-08, 1, -5.96046e-08, -1, 5.96046e-08, 0.012, 0.288, -0.025 )
+shape = SubResource( 478 )
+
+[node name="BottomArmL" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.233776, 0.864927, 0.444127, -0.952965, 0.113211, 0.28114, 0.192885, -0.488962, 0.850713, -0.55785, 2.08773, -1.09329 )
+bone_name = "BottomArm.L"
+
+[node name="Area" type="Area" parent="Body/Skeleton/BottomArmL" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/BottomArmL/Area"]
+transform = Transform( 1, 1.49012e-08, 0, 1.49012e-08, 2.98023e-08, 1, 0, -1, -2.98023e-08, 5.96046e-08, 0.366, 1.49012e-08 )
+shape = SubResource( 479 )
+
+[node name="UpperArmR" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( -0.323762, 0.878299, -0.351809, -0.302925, -0.448489, -0.840889, -0.896335, -0.165676, 0.411264, 0.359493, 2.20662, -0.643122 )
+bone_name = "UpperArm.R"
+
+[node name="Area" type="Area" parent="Body/Skeleton/UpperArmR" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/UpperArmR/Area"]
+transform = Transform( 1, -2.98023e-08, -1.49012e-08, 7.45058e-09, 1.49012e-08, 1, 2.98023e-08, -1, -1.49012e-08, 0.012, 0.288, -0.025 )
+shape = SubResource( 478 )
+
+[node name="BottomArmR" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.289002, -0.898696, -0.329882, 0.707907, -0.0313576, 0.705608, -0.644474, -0.437449, 0.627131, 0.809392, 1.97689, -0.727988 )
+bone_name = "BottomArm.R"
+
+[node name="Area" type="Area" parent="Body/Skeleton/BottomArmR" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/BottomArmR/Area"]
+transform = Transform( 1, 1.49012e-08, -1.49012e-08, 0, -2.98023e-08, 1, 1.49012e-08, -1, 0, 0, 0.366, -2.98023e-08 )
+shape = SubResource( 479 )
+
+[node name="UpperLegL" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.671979, -0.21085, -0.709921, 0.0783703, -0.932985, 0.35128, -0.736413, -0.29169, -0.61042, -0.148476, 1.65119, 0.000146285 )
+bone_name = "UpperLeg.L"
+
+[node name="Area" type="Area" parent="Body/Skeleton/UpperLegL" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+damage_koeff = 0.5
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/UpperLegL/Area"]
+transform = Transform( 0.994124, -0.0142612, -0.107306, 0.107371, 0.00383256, 0.994211, -0.0137677, -0.999891, 0.00534137, 0, 0.4, 0.125 )
+shape = SubResource( 480 )
+
+[node name="MiddleLegL" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.672054, 0.633577, -0.383307, 0.0848767, -0.580127, -0.810092, -0.735622, 0.511891, -0.443652, -0.271693, 1.10597, -0.170313 )
+bone_name = "MiddleLeg.L"
+
+[node name="Area" type="Area" parent="Body/Skeleton/MiddleLegL" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/MiddleLegL/Area"]
+transform = Transform( 1, 7.45058e-09, -3.72529e-09, 7.45058e-09, -5.96046e-08, 1, -3.72529e-09, -1, -5.96046e-08, 0, 0.4, -1.19209e-07 )
+shape = SubResource( 481 )
+
+[node name="UpperLegR" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.70571, 0.472463, -0.527973, -0.0396691, -0.717674, -0.695252, -0.707389, 0.511587, -0.487731, 0.3031, 1.62889, -0.45143 )
+bone_name = "UpperLeg.R"
+
+[node name="Area" type="Area" parent="Body/Skeleton/UpperLegR" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+damage_koeff = 0.5
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/UpperLegR/Area"]
+transform = Transform( 0.994124, -0.0142612, -0.107306, 0.107371, 0.00383256, 0.994211, -0.0137677, -0.999891, 0.00534137, 0, 0.4, 0.125 )
+shape = SubResource( 480 )
+
+[node name="MiddleLegR" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.706944, 0.701201, -0.0924466, -0.0438701, -0.0869766, -0.995248, -0.705907, 0.707636, -0.0307305, 0.579203, 1.20949, -0.152464 )
+bone_name = "MiddleLeg.R"
+
+[node name="Area" type="Area" parent="Body/Skeleton/MiddleLegR" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/MiddleLegR/Area"]
+transform = Transform( 1, -9.31323e-10, 7.45058e-09, 3.72529e-09, -2.98023e-08, 1, -8.3819e-09, -1, -2.98023e-08, 2.98023e-08, 0.4, -1.19209e-07 )
+shape = SubResource( 481 )
+
+[node name="BottomLegR" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.703866, 0.20077, -0.681369, -0.0392825, -0.946758, -0.319556, -0.709245, 0.251684, -0.658501, 1.11905, 1.14253, 0.392337 )
+bone_name = "BottomLeg.R"
+
+[node name="Area" type="Area" parent="Body/Skeleton/BottomLegR" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/BottomLegR/Area"]
+transform = Transform( 1, -3.72529e-09, -1.86265e-09, 1.11759e-08, 2.98023e-08, -1, 5.58794e-09, 1, 0, 0, 0.651, -0.103 )
+shape = SubResource( 482 )
+
+[node name="BottomLegL" type="BoneAttachment" parent="Body/Skeleton"]
+transform = Transform( 0.671818, -0.617803, -0.408634, 0.0750866, -0.492031, 0.867334, -0.736901, -0.613372, -0.284166, 0.216092, 0.659335, 0.223787 )
+bone_name = "BottomLeg.L"
+
+[node name="Area" type="Area" parent="Body/Skeleton/BottomLegL" groups=["Hitbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource( 11 )
+parent_path = NodePath("../../../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Body/Skeleton/BottomLegL/Area"]
+transform = Transform( 1, -3.72529e-09, -1.86265e-09, 1.11759e-08, 2.98023e-08, -1, 5.58794e-09, 1, 0, 0, 0.651, -0.103 )
+shape = SubResource( 482 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Alert = SubResource( 443 )

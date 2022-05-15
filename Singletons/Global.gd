@@ -50,10 +50,8 @@ func place_node(root, clone, pos = null, normal = null, parent = null):
 		parent = root
 		parent.add_child(clone)
 	else:
-		if parent.is_in_group("Enemy"):
-			var place_holder : Spatial = parent.get_node("GlobalParticles")
-			place_holder.set_disable_scale(true)
-			place_holder.add_child(clone)
+		if parent.is_in_group("Hitbox"):
+			parent.place_node(clone)
 		elif parent.is_in_group("Ragdoll"):
 			parent = root
 			parent.add_child(clone)

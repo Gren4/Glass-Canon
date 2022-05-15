@@ -44,6 +44,8 @@ func _ready() -> void:
 	set_process(true)
 	set_physics_process(true)
 	call_deferred("init_timer_set")
+	var place_holder : Spatial = get_node("GlobalParticles")
+	place_holder.set_disable_scale(true)
 	#$Body.scale.y = (0.9 + 0.2*randf())
 	pass
 	

@@ -45,7 +45,8 @@ func _on_Area_body_entered(body):
 			body.update_health(-attack_damage, self.global_transform.origin)
 			splash()
 		elif body.is_in_group("Enemy"): 
-			body.update_hp(attack_damage)
+			var vector_pte : Vector3 = (body.global_transform.origin - self.global_transform.origin).normalized()*100
+			body.update_hp(attack_damage,vector_pte)
 			splash()
 		else:
 			splash()
