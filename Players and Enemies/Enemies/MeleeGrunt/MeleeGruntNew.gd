@@ -43,15 +43,11 @@ func _ready() -> void:
 	animation_tree.set("parameters/JumpBlend/blend_amount",0)
 	set_process(true)
 	set_physics_process(true)
-	call_deferred("init_timer_set")
+	animation_tree.active = true
 	var place_holder : Spatial = get_node("GlobalParticles")
 	place_holder.set_disable_scale(true)
 	#$Body.scale.y = (0.9 + 0.2*randf())
 	pass
-	
-func init_timer_set() -> void:
-	StartTimer.wait_time = 0.1 + randf()*0.1
-	StartTimer.start()
 	
 func ik_update() -> void:
 	ray_l.force_raycast_update()
@@ -122,6 +118,7 @@ func state_machine(delta : float) -> void:
 					timer_not_on_ground += delta
 				return
 			analyze_and_prepare_attack(delta)
+			#face_threat(15,delta,player.global_transform.origin,player.global_transform.origin)
 		ATTACK_MELEE:
 			attack()
 			move_to_target(delta, 3.5, -dist, ATTACK_MELEE)
@@ -374,6 +371,8 @@ func play_audio(var name : String) -> void:
 		"Step":
 			if is_moving:
 				audio.step()
+		"StepTurn":
+			audio.step()
 		"Whoosh":
 			audio.whoosh()
 			hit_confirm = true
@@ -382,6 +381,3 @@ func _on_Area_body_entered(body) -> void:
 	if _state == IDLE:
 		set_state(LOOK_AT_ALLERT)
 		set_deferred("area_detection.monitoring", false)
-
-func _on_Start_timeout() -> void:
-	animation_tree.active = true

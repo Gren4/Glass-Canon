@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://NavLinkAstarPath.gd" type="Script" id=1]
+
+[node name="Link" type="Spatial"]
+script = ExtResource( 1 )
+One_path = NodePath("Start")
+Two_path = NodePath("End")
+
+[node name="Start" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.89183, 2.03032, -29.8607 )
+
+[node name="End" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.89183, 2.03032, -15.8607 )

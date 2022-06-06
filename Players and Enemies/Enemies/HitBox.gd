@@ -16,3 +16,4 @@ func place_node(node) -> void:
 
 func hitbox_processing(damage : int, dir : Vector3) -> void:
 	parent.update_hp(damage_koeff * damage, dir)
+	pass

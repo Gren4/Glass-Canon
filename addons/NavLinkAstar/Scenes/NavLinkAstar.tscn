@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://NavLinkAstar.gd" type="Script" id=1]
+
+[node name="NavLinkAstar" type="Navigation"]
+script = ExtResource( 1 )
+NavLink_path = NodePath("../NavLinks")
+NavMesh_path = NodePath("NavigationMeshInstance")
+
+[node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="."]

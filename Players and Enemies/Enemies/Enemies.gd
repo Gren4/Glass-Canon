@@ -12,7 +12,6 @@ export(NodePath) var left_down_ray_path = null
 export(NodePath) var audio_path
 export(NodePath) var skeleton_path
 export(NodePath) var target_look_path
-export(NodePath) var StartTimer_path = null
 
 export(PackedScene) var ragdoll = null
 
@@ -29,12 +28,13 @@ onready var  right_down_ray = get_node(right_down_ray_path)
 onready var  left_down_ray = get_node(left_down_ray_path)
 onready var  skeleton = get_node(skeleton_path)
 onready var  target_look = get_node(target_look_path)
-onready var StartTimer : Timer = get_node(StartTimer_path)
 
 onready var prev_origin : Vector3 = Vector3.ZERO
 onready var space_state : PhysicsDirectSpaceState = get_world().direct_space_state
 onready var player
 onready var _state : int
+
+onready var turn_angle = self.rotation_degrees.y
 
 enum {
 		RESET,
@@ -154,9 +154,25 @@ func finalize_velocity(delta : float) -> void:
 		is_moving = false
 	else:
 		is_moving = true
+		
+	var new_angle = turn_angle - self.rotation_degrees.y
+	var do_turn : bool = false
+	if abs(new_angle) > 10.0:
+		turn_angle = self.rotation_degrees.y
+		do_turn = true
+		
 	if velocity.length() < 1.0:
 		animation_tree.set("parameters/Zero/current", 1)
 		animation_tree.set("parameters/AudioMovement/blend_position", Vector2.ZERO)
+		if do_turn:
+			if new_angle < 0:
+				if animation_tree.get("parameters/Turn/active") == false:
+					animation_tree.set("parameters/TurnSide/current", 0)
+					animation_tree.set("parameters/Turn/active", true)
+			else:
+				if animation_tree.get("parameters/Turn/active") == false:
+					animation_tree.set("parameters/TurnSide/current", 1)
+					animation_tree.set("parameters/Turn/active", true)
 	else:
 		animation_tree.set("parameters/Zero/current", 0)
 		animation_tree.set("parameters/Movement/blend_position", Vector2(loc_v.x,loc_v.z))
@@ -228,13 +244,13 @@ func update_hp(damage : int, dir : Vector3) -> void:
 	if _state < LOOK_AT_ALLERT:
 		set_state(LOOK_AT_ALLERT)
 	
-	var get_sign = randf()-0.5
-	var new_sign = 1
-	if get_sign >= 0:
-		new_sign = 1
-	else:
-		new_sign = -1
-	target_look.transform.origin = Vector3(1.5*new_sign,0,-1)
+#	var get_sign = randf()-0.5
+#	var new_sign = 1
+#	if get_sign >= 0:
+#		new_sign = 1
+#	else:
+#		new_sign = -1
+#	target_look.transform.origin = Vector3(1.5*new_sign,0,-1)*target_look.transform.origin.z + target_look.transform.origin
 	
 	current_health -= damage
 	if _state != JUMP and _state != JUMP_END:

@@ -30,6 +30,16 @@ _global_script_classes=[ {
 "path": "res://addons/NavLink/Scripts/NavLinkAgent.gd"
 }, {
 "base": "Navigation",
+"class": "NavLinkAstar",
+"language": "GDScript",
+"path": "res://addons/NavLinkAstar/Scripts/NavLinkAstar.gd"
+}, {
+"base": "Spatial",
+"class": "NavLinkAstarPath",
+"language": "GDScript",
+"path": "res://addons/NavLinkAstar/Scripts/NavLinkAstarPath.gd"
+}, {
+"base": "Navigation",
 "class": "NavLinkNavigation",
 "language": "GDScript",
 "path": "res://addons/NavLink/Scripts/NavLinkNavigation.gd"
@@ -54,6 +64,8 @@ _global_script_class_icons={
 "MeshMerger": "",
 "NavLink": "",
 "NavLinkAgent": "",
+"NavLinkAstar": "",
+"NavLinkAstarPath": "",
 "NavLinkNavigation": "",
 "NavLinkPath": "",
 "Players_and_Enemies": "",
@@ -84,7 +96,7 @@ window/stretch/aspect="keep_height"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NavLink/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NavLink/plugin.cfg", "res://addons/NavLinkAstar/plugin.cfg" )
 
 [input]
 

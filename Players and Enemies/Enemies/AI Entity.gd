@@ -11,7 +11,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 1
+const max_enem : int = 0
 
 var col_enem_to_spawn = 300
 
@@ -27,21 +27,21 @@ func _ready():
 	for i in forces:
 		init_target(i)
 
+	pass
+
 func init_target(target):
 	target.player = player
 	target.attack_side = pl_sides_it
+	if pl_sides_it + 1 >= 8:
+		pl_sides_it = 0
+	else:
+		pl_sides_it += 1
 	if target.is_in_group("Melee"):
-		if pl_sides_it + 1 >= 8:
-			pl_sides_it = 0
-		else:
-			pl_sides_it += 1
-		timer.append(randi()%21)
+		timer.append(randi()%6)
 	elif target.is_in_group("Range"):
-		if pl_sides_it + 1 >= 8:
-			pl_sides_it = 0
-		else:
-			pl_sides_it += 1
-		timer.append(randi()%41)
+		timer.append(randi()%51)
+	elif target.is_in_group("Flying"):
+		timer.append(randi()%51)
 
 func set_target(target,point):
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
@@ -100,6 +100,12 @@ func _physics_process(delta):
 							move_to(forces[e],dist_l)
 							it = e
 							break
+				elif forces[e].is_in_group("Flying"):
+					if (forces[e].give_path):
+						if timer[e]%50 == 0:
+							move_to(forces[e],dist_l)
+							it = e
+							break
 			else:
 				forces.remove(e)
 				timer.remove(e)
@@ -146,3 +152,10 @@ func move_to(target,dist_l):
 		if path.has("complete_path"):
 			target.get_nav_path(path)
 		target.attack_side = randi()%8	
+	elif target.is_in_group("Flying"):
+		var plV3 : Vector3 = player.get_point_for_npc(15.0, target.attack_side)
+		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
+		var closest_p : Vector3 = nav.get_closest_point(plV3)
+		path = nav.get_nav_link_path(closest_t, closest_p)
+		if path.has("complete_path"):
+			target.get_nav_path(path["complete_path"])	
