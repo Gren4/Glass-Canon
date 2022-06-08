@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Players and Enemies/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Materials/Test_material.tres" type="Material" id=2]
@@ -8,12 +8,9 @@
 [ext_resource path="res://Nav/NavMesh.tres" type="NavigationMesh" id=6]
 [ext_resource path="res://Materials/Test_material4.tres" type="Material" id=7]
 [ext_resource path="res://WorldAmbience.gd" type="Script" id=8]
-[ext_resource path="res://Players and Enemies/Enemies/Flyer/Flyer.tscn" type="PackedScene" id=9]
+[ext_resource path="res://addons/NavLinkAstar/Scripts/NavLinkAstar.gd" type="Script" id=10]
+[ext_resource path="res://addons/NavLinkAstar/Scripts/NavLinkAstarPath.gd" type="Script" id=11]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
-[ext_resource path="res://addons/NavLink/Scripts/NavLinkNavigation.gd" type="Script" id=17]
-[ext_resource path="res://addons/NavLink/Scripts/NavLinkPath.gd" type="Script" id=18]
-[ext_resource path="res://addons/NavLink/Scenes/NavLinkPathEnd.tscn" type="PackedScene" id=19]
-[ext_resource path="res://addons/NavLink/Scenes/NavLinkPathStart.tscn" type="PackedScene" id=20]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -70,50 +67,6 @@ extents = Vector3( 5, 0.5, 5 )
 [sub_resource type="CubeMesh" id=48]
 size = Vector3( 10, 1, 10 )
 
-[sub_resource type="CylinderMesh" id=28]
-top_radius = 0.1
-bottom_radius = 0.001
-height = 0.2
-radial_segments = 8
-rings = 1
-
-[sub_resource type="SpatialMaterial" id=29]
-flags_unshaded = true
-albedo_color = Color( 0, 1, 0, 1 )
-
-[sub_resource type="CylinderMesh" id=30]
-top_radius = 0.001
-bottom_radius = 0.1
-height = 0.2
-radial_segments = 8
-rings = 1
-
-[sub_resource type="SpatialMaterial" id=31]
-flags_unshaded = true
-albedo_color = Color( 1, 0, 0, 1 )
-
-[sub_resource type="CylinderMesh" id=32]
-top_radius = 0.1
-bottom_radius = 0.001
-height = 0.2
-radial_segments = 8
-rings = 1
-
-[sub_resource type="SpatialMaterial" id=33]
-flags_unshaded = true
-albedo_color = Color( 0, 1, 0, 1 )
-
-[sub_resource type="CylinderMesh" id=34]
-top_radius = 0.001
-bottom_radius = 0.1
-height = 0.2
-radial_segments = 8
-rings = 1
-
-[sub_resource type="SpatialMaterial" id=35]
-flags_unshaded = true
-albedo_color = Color( 1, 0, 0, 1 )
-
 [node name="World" type="Spatial"]
 script = ExtResource( 5 )
 
@@ -124,287 +77,289 @@ transform = Transform( 0.999989, 0, 0.00455469, 0, 1, 0, -0.00455469, 0, 0.99998
 
 [node name="Pickups" type="Node" parent="."]
 
-[node name="NavLinkNavigation" type="Navigation" parent="."]
-script = ExtResource( 17 )
+[node name="NavLinkAstar" type="Navigation" parent="."]
+script = ExtResource( 10 )
+NavLink_path = NodePath("../NavLinkPaths")
+NavMesh_path = NodePath("NavigationMeshInstance")
 
-[node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="NavLinkNavigation"]
+[node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="NavLinkAstar"]
 navmesh = ExtResource( 6 )
 
-[node name="Map" type="Spatial" parent="NavLinkNavigation/NavigationMeshInstance"]
+[node name="Map" type="Spatial" parent="NavLinkAstar/NavigationMeshInstance"]
 
-[node name="Ground" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Ground" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 62.6214, -0.0877686, -61.9478 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Ground"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Ground"]
 shape = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Ground"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Ground"]
 mesh = SubResource( 2 )
 material/0 = ExtResource( 4 )
 __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Ground2" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Ground2" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 35, 0, 0, 0, 1, 0, 0, 0, 70, -5.80153, 11.834, -72.8504 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Ground2"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Ground2"]
 shape = SubResource( 24 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Ground2"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Ground2"]
 mesh = SubResource( 25 )
 material/0 = ExtResource( 4 )
 __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Platform" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 0, 3.97002, 0 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform"]
 shape = SubResource( 41 )
 
-[node name="Platform4" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform4" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 0, 3.97002, -25.4565 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform4"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform4"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform4"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform4"]
 shape = SubResource( 41 )
 
-[node name="Platform5" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform5" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 0, 3.97002, -51.5916 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform5"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform5"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform5"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform5"]
 shape = SubResource( 41 )
 
-[node name="Platform6" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform6" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 20.2122, 3.97002, -51.5916 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform6"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform6"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform6"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform6"]
 shape = SubResource( 41 )
 
-[node name="Platform12" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform12" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -8.98293, 15.8249, -38.8989 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform12"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform12"]
 mesh = SubResource( 37 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform12"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform12"]
 shape = SubResource( 49 )
 
-[node name="Platform8" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform8" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -30.6264, 15.8249, -68.6365 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform8"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform8"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform8"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform8"]
 shape = SubResource( 41 )
 
-[node name="Platform9" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform9" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -30.6264, 15.8249, -101.197 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform9"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform9"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform9"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform9"]
 shape = SubResource( 41 )
 
-[node name="Platform10" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform10" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -8.18233, 15.8249, -101.197 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform10"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform10"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform10"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform10"]
 shape = SubResource( 41 )
 
-[node name="Platform14" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform14" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 4.82963, 0, 1.2941, 0, 3, 0, -1.2941, 0, 4.82963, 54.6771, 15.8249, -114.197 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform14"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform14"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform14"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform14"]
 shape = SubResource( 41 )
 
-[node name="Platform15" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform15" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 4.33013, 0, -2.5, 0, 3, 0, 2.5, 0, 4.33013, 69.6771, 15.8249, -96.197 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform15"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform15"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform15"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform15"]
 shape = SubResource( 41 )
 
-[node name="Platform16" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform16" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 1.94144, 0, -4.60769, 0, 3, 0, 4.60769, 0, 1.94144, 93.7817, 15.8249, -80.1223 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform16"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform16"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform16"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform16"]
 shape = SubResource( 41 )
 
-[node name="Platform17" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform17" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -0.865404, 0, -4.92454, 0, 3, 0, 4.92454, 0, -0.865404, 91.7253, 15.8249, -51.0612 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform17"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform17"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform17"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform17"]
 shape = SubResource( 41 )
 
-[node name="Platform18" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform18" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -3.23142, 0, -3.81549, 0, 3, 0, 3.81549, 0, -3.23142, 91.7253, 7.48979, -22.8267 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform18"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform18"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform18"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform18"]
 shape = SubResource( 41 )
 
-[node name="Platform19" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform19" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.99782, 0, -0.147634, 0, 3, 0, 0.147634, 0, -4.99782, 68.2881, 7.48979, 0.325934 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform19"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform19"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform19"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform19"]
 shape = SubResource( 41 )
 
-[node name="MoovingPlatform" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="MoovingPlatform" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 54.8686, 4.05308, -50.6885 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/MoovingPlatform"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/MoovingPlatform"]
 shape = SubResource( 41 )
 
-[node name="Platform2" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform2" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 32.694, 2, 0 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform2"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform2"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform2"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform2"]
 shape = SubResource( 41 )
 
-[node name="Platform3" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Platform3" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 41.3022, 9.84936, 0 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform3"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform3"]
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Platform3"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform3"]
 shape = SubResource( 41 )
 
-[node name="Wall" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 20, 0, 0, 0, 10, 0, 0, 0, 1, 16.1696, 10.9438, 5.82087 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall"]
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Wall4" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall4" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 100, 0, 0, 0, 20, 1.49012e-08, 0, 0, 1, 59.702, -1.6707, 38.764 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall4"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall4"]
 shape = SubResource( 54 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall4"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall4"]
 mesh = SubResource( 55 )
 material/0 = ExtResource( 7 )
 __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Wall9" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall9" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.37114e-06, 0, -1, 0, 20, 0, 100, 0, -4.37114e-08, -37, 15.2106, -62 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall9"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall9"]
 shape = SubResource( 54 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall9"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall9"]
 transform = Transform( 1, 0, 0, 0, 1, 0, -4.54747e-13, 0, 1, 0, 0, 0 )
 mesh = SubResource( 55 )
 material/0 = ExtResource( 7 )
@@ -412,692 +367,436 @@ __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Wall10" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall10" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -100, 0, -1.50996e-07, 2.27374e-13, 20, -1.49012e-08, 1.50996e-05, 0, -1, 62, 18.3293, -162 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall10"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall10"]
 shape = SubResource( 54 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall10"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall10"]
 mesh = SubResource( 55 )
 material/0 = ExtResource( 7 )
 __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Wall11" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall11" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.37114e-06, 0, 1, 0, 20, 0, -100, 0, -4.37114e-08, 158.702, -1.6707, -61.236 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall11"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall11"]
 shape = SubResource( 54 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall11"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall11"]
 mesh = SubResource( 55 )
 material/0 = ExtResource( 7 )
 __meta__ = {
 "apply_volumetrics": false
 }
 
-[node name="Wall2" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall2" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 20, 0, 0, 0, 10, 0, 0, 0, 1, 56.1736, 10.9438, 5.82087 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall2"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall2"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall2"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall2"]
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
-[node name="Wall3" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall3" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 12.4832, 0.175871, 0.781095, -0.563316, 9.99604, 0, -15.6157, -0.220003, 0.624411, 86.305, 10.494, -9.062 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall3"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall3"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall3"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall3"]
 transform = Transform( 1, -7.45058e-09, -1.86265e-09, -1.49012e-08, 1, 0, 9.53674e-07, 0, 1, 0, 0, 0 )
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
-[node name="Wall7" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall7" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 4.20978, 0, 0.977596, 0, 10, 0, -19.5519, 0, 0.210489, 84.113, 18.9438, -41.7881 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall7"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall7"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall7"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall7"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 1.90735e-06, 0, 1, 0, 0, 0 )
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
-[node name="Wall5" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall5" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -7.63335, 0, 0.9243, 0, 10, 0, -18.486, 0, -0.381667, 98.8822, 20.9438, -78.9632 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall5"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall5"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall5"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall5"]
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
-[node name="Wall6" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall6" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -16.9116, 0, 0.533851, 0, 10, 0, -10.677, 0, -0.845579, 65.6051, 22.9438, -92.409 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall6"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall6"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall6"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall6"]
 transform = Transform( 1, 0, 1.86265e-09, 0, 1, 0, -9.53674e-07, 0, 1, 0, 0, 0 )
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
-[node name="Wall8" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="Wall8" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.40853, 0, 0.975404, 0, 10, 0, -19.5081, 0, -0.220425, 56.6051, 22.9438, -130.409 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall8"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall8"]
 shape = SubResource( 42 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Wall8"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Wall8"]
 transform = Transform( 1, 0, 1.86265e-09, 0, 1, 0, -9.53674e-07, 0, 1, 0, 0, 0 )
 mesh = SubResource( 43 )
 material/0 = ExtResource( 2 )
 
-[node name="Stairs" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Stairs" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 5, 0, 0, 0, 6.32093, -0.948744, 0, 18.9749, 0.316047, 41.2144, 6.05864, -23.5044 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs"]
 transform = Transform( 1, 0, 0, 0, 1, 2.79397e-09, 0, 0, 1, 0, -0.0075134, 0.45108 )
 mesh = SubResource( 21 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs"]
 transform = Transform( 1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 1, 0, -0.00722086, 0.433548 )
 shape = SubResource( 8 )
 
-[node name="Stairs2" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Stairs2" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 4.8438, 4.29544, 0.123998, 0, 10, -0.866026, -1.23998, 16.7795, 0.484381, 49.2144, 8.44961, -135.504 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs2"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs2"]
 transform = Transform( 1, 0, 0, 0, 1, 2.79397e-09, 0, 0, 1, 0, -0.0075134, 0.45108 )
 mesh = SubResource( 21 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs2"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs2"]
 transform = Transform( 1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 1, 0, -0.00722086, 0.433548 )
 shape = SubResource( 8 )
 
-[node name="Stairs3" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Stairs3" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 4.39533, -8.25667, -0.238349, 0, 10, -0.866026, 2.38349, 15.2259, 0.439534, 80.1374, 8.34402, -115.381 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs3"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs3"]
 transform = Transform( 1, 0, 0, 0, 1, 2.79397e-09, 0, 0, 1, 0, -0.0075134, 0.45108 )
 mesh = SubResource( 21 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs3"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs3"]
 transform = Transform( 1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 1, 0, -0.00722086, 0.433548 )
 shape = SubResource( 8 )
 
-[node name="Stairs4" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Stairs4" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( -1.98534, 15.8966, 0.458895, 0, 10, -0.866026, -4.58895, -6.87743, -0.198534, 73.586, 8.34402, -71.5902 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs4"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs4"]
 transform = Transform( 1, 0, 0, 0, 1, 2.79397e-09, 0, 0, 1, 0, -0.0075134, 0.45108 )
 mesh = SubResource( 21 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs4"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs4"]
 transform = Transform( 1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 1, 0, -0.00722086, 0.433548 )
 shape = SubResource( 8 )
 
-[node name="Stairs5" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="Stairs5" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 3.90182, -12.0804, -0.161846, 0, 5.17639, -0.965926, 3.12662, 15.0755, 0.201973, 105.616, 4.92913, -42.4491 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs5"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs5"]
 transform = Transform( 1, 0, 0, 0, 1, 2.79397e-09, 0, 0, 1, 0, -0.0075134, 0.45108 )
 mesh = SubResource( 21 )
 material/0 = ExtResource( 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/Stairs5"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Stairs5"]
 transform = Transform( 1, 0, 0, 0, 1, 3.72529e-09, 0, 0, 1, 0, -0.00722086, 0.433548 )
 shape = SubResource( 8 )
 
-[node name="StaticBody" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="StaticBody" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35.189, 3, -35.815 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody"]
 mesh = SubResource( 22 )
 material/0 = ExtResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody"]
 shape = SubResource( 23 )
 
-[node name="StaticBody4" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="StaticBody4" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.37114e-08, 0, 3.889, 0, 1.5, 0, -1, 0, -1.69994e-07, -8.966, 17, -32.884 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody4"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody4"]
 mesh = SubResource( 22 )
 material/0 = ExtResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody4"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody4"]
 shape = SubResource( 23 )
 
-[node name="StaticBody18" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="StaticBody18" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.37114e-08, 0, 3.889, 0, 1.5, 0, -1, 0, -1.69994e-07, -18.966, 17, -3.884 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody18"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody18"]
 transform = Transform( 1, 0, 5.68434e-14, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 mesh = SubResource( 50 )
 material/0 = ExtResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody18"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody18"]
 shape = SubResource( 51 )
 
-[node name="StaticBody5" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="StaticBody5" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( -4.37114e-08, 0, 3.889, 0, 1.5, 0, -1, 0, -1.69994e-07, -8.966, 17, -44.889 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody5"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody5"]
 mesh = SubResource( 22 )
 material/0 = ExtResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody5"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody5"]
 shape = SubResource( 23 )
 
-[node name="StaticBody2" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="StaticBody2" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.216, 3, -35.985 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody2"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody2"]
 mesh = SubResource( 22 )
 material/0 = ExtResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody2"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody2"]
 shape = SubResource( 23 )
 
-[node name="StaticBody3" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["World"]]
+[node name="StaticBody3" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["World"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.953, 21.9465, 12.3373, 0.865366 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody3"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody3"]
 shape = SubResource( 26 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody3"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody3"]
 mesh = SubResource( 27 )
 material/0 = ExtResource( 4 )
 
-[node name="MoovingPlatform2" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map" groups=["Wall", "World"]]
+[node name="MoovingPlatform2" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, 54.8686, 4.05308, -86.4745 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform2"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/MoovingPlatform2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00649261, -0.0176239, 0.00579453 )
 mesh = SubResource( 3 )
 material/0 = ExtResource( 3 )
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/MoovingPlatform2"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/MoovingPlatform2"]
 shape = SubResource( 41 )
 
-[node name="StaticBody12" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
+[node name="StaticBody12" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 1, -31 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody12"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody12"]
 shape = SubResource( 47 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody12"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody12"]
 mesh = SubResource( 48 )
 material/0 = ExtResource( 4 )
 
-[node name="StaticBody13" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
+[node name="StaticBody13" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1, -46 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody13"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody13"]
 shape = SubResource( 47 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody13"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody13"]
 mesh = SubResource( 48 )
 material/0 = ExtResource( 4 )
 
-[node name="StaticBody14" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
+[node name="StaticBody14" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 1, -55 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody14"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody14"]
 shape = SubResource( 47 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody14"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody14"]
 mesh = SubResource( 48 )
 material/0 = ExtResource( 4 )
 
-[node name="StaticBody15" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
+[node name="StaticBody15" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 1, -67 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody15"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody15"]
 shape = SubResource( 47 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody15"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody15"]
 mesh = SubResource( 48 )
 material/0 = ExtResource( 4 )
 
-[node name="StaticBody16" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
+[node name="StaticBody16" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -81 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody16"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody16"]
 shape = SubResource( 47 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody16"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody16"]
 mesh = SubResource( 48 )
 material/0 = ExtResource( 4 )
 
-[node name="StaticBody17" type="StaticBody" parent="NavLinkNavigation/NavigationMeshInstance/Map"]
+[node name="StaticBody17" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -61 )
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape" type="CollisionShape" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody17"]
+[node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody17"]
 shape = SubResource( 47 )
 
-[node name="MeshInstance" type="MeshInstance" parent="NavLinkNavigation/NavigationMeshInstance/Map/StaticBody17"]
+[node name="MeshInstance" type="MeshInstance" parent="NavLinkAstar/NavigationMeshInstance/Map/StaticBody17"]
 mesh = SubResource( 48 )
 material/0 = ExtResource( 4 )
 
-[node name="AI Entity" type="Node" parent="NavLinkNavigation"]
+[node name="AI Entity" type="Node" parent="NavLinkAstar"]
 pause_mode = 2
 script = ExtResource( 16 )
 player_path = NodePath("../../Player")
 
 [node name="NavLinkPaths" type="Node" parent="."]
 
-[node name="NavLinkPath1" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 42.9848, 13.0313, -48.9561 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath1" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.205, 0, 0 )
-mesh = SubResource( 28 )
-material/0 = SubResource( 29 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath1" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8473, -5.4876, 0 )
-mesh = SubResource( 30 )
-material/0 = SubResource( 31 )
-
-[node name="NavLinkPath2" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 32.8622, 7.86136, -12.1522 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath2" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0414391, -2.85227, 11.6228 )
-mesh = SubResource( 28 )
-material/0 = SubResource( 29 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath2" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.617249, -5.4876, 0 )
-mesh = SubResource( 30 )
-material/0 = SubResource( 31 )
-
-[node name="NavLinkPath3" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 67.5049, 10.5561, -48.9415 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath3" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6701, -2.87616, 0 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath3" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.43567, -9.11076, 0 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath4" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.00760958, 0, 0.999971, 0, 1, 0, -0.999971, 0, -0.00760958, -10.9061, 7.86136, -0.471482 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath4" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0414391, 0.143195, 11.6228 )
-mesh = SubResource( 28 )
-material/0 = SubResource( 29 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath4" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.617249, -6.40721, 0 )
-mesh = SubResource( 30 )
-material/0 = SubResource( 31 )
-
-[node name="NavLinkPath5" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.0119727, 0, 0.999928, 0, 1, 0, -0.999928, 0, -0.0119727, 0.771261, 14.3047, -1.1898 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath5" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0414391, 0.143195, 11.6228 )
-mesh = SubResource( 28 )
-material/0 = SubResource( 29 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath5" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.617249, -6.40721, 0 )
-mesh = SubResource( 30 )
-material/0 = SubResource( 31 )
-
-[node name="NavLinkPath6" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 67.5049, 10.5561, -48.9415 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath6" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6701, -2.87616, 0 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath6" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.3205, -9.21186, -9.9977 )
-
-[node name="NavLinkPath7" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.8053, 3.43599, -74.7432 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath7" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.239864, -2.2571, 5.28178 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath7" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.132099, 4.23513, -11.5307 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath8" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40.4764, 12.7611, -86.3707 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath8" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.3539, -5.0729, -0.277962 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath8" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15.9828, 0.297899, -0.127411 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath15" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.0286542, 1.74575e-09, -0.999589, -1.45424e-11, 1, 1.74688e-09, 0.999589, 6.45943e-11, -0.0286542, -27.1115, 16.3131, -100.01 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath15" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, -1.07111e-15, 0, 1.17636e-17, 1, -1.07813, 2.77452, 5.48504 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath15" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, -6.27021e-16, 0, 1.17636e-17, 1, -1.25132, -3.06153, -4.37181 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath16" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 0.99965, 6.07245e-11, -0.0264385, -1.45424e-11, 1, 1.74688e-09, 0.0264385, -1.74589e-09, 0.99965, -31.3101, 16.3131, -106.796 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath16" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 1.33227e-15, 0, 0, 1, -1.11328, 2.74274, 5.48642 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath16" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 6.66134e-16, 0, 0, 1, -1.2304, -2.96019, -4.47022 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath17" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.999856, 0, 0.0169986, 0, 1, 0, -0.0169986, 0, -0.999856, -33.7788, 16.3131, -96.0835 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath17" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19284, -3.08969, -4.35381 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath17" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1362, 2.63783, 5.50604 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath18" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.999856, 0, 0.0169986, 0, 1, 0, -0.0169986, 0, -0.999856, -34.455, 17, -62.608 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath18" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19284, 2.66742, 5.54798 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath18" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1362, -3.05645, -4.36871 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath19" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.0286542, 1.74575e-09, -0.999589, -1.45424e-11, 1, 1.74688e-09, 0.999589, 6.45943e-11, -0.0286542, -27.753, 17, -66.798 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath19" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, -1.07111e-15, 0, 1.17636e-17, 1, -1.07813, 2.77452, 5.48504 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath19" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, -6.27021e-16, 0, 1.17636e-17, 1, -1.25132, -3.06153, -4.37181 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath20" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 0.99965, 6.07245e-11, -0.0264385, -1.45424e-11, 1, 1.74688e-09, 0.0264385, -1.74589e-09, 0.99965, -31.952, 17, -73.584 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath20" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 1.33227e-15, 0, 0, 1, -1.11328, 2.74274, 5.48642 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath20" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 6.66134e-16, 0, 0, 1, -1.2304, -2.96019, -4.47022 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath22" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.999955, -3.10382e-11, 0.00944201, -1.45424e-11, 1, 1.74688e-09, -0.00944201, 1.74667e-09, -0.999955, -9.57418, 16.3131, -96.0267 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath22" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 1.33227e-15, 0, 0, 1, -1.11328, 2.74274, 5.48642 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath22" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 6.66134e-16, 0, 0, 1, -1.2304, -2.96019, -4.47022 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath23" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.28797, 16.3131, -106.78 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath23" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19284, -3.08969, -4.35381 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath23" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1362, 2.63783, 5.50604 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath24" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.00174541, 1.74685e-09, -0.999998, -1.45424e-11, 1, 1.74688e-09, 0.999998, 1.75937e-11, -0.00174541, -2.70633, 16.3131, -100.675 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath24" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19284, -3.08969, -4.35381 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath24" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1362, 2.63783, 5.50604 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath25" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 0.00174532, -1.74685e-09, 0.999998, -1.45424e-11, 1, 1.74688e-09, -0.999998, -1.75935e-11, 0.00174532, -13.7063, 16.3131, -102.675 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath25" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.19284, -3.08969, -4.35381 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath25" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1362, 2.63783, 5.50604 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath26" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 0.00174532, -1.74685e-09, 0.999998, -1.45424e-11, 1, 1.74688e-09, -0.999998, -1.75935e-11, 0.00174532, 56.7415, 16.3131, 0.175385 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath26" instance=ExtResource( 20 )]
-transform = Transform( 1, 0, -2.32831e-10, 6.93889e-18, 1, -6.15349e-16, 2.32831e-10, 4.68579e-17, 1, 0.0490183, -3.08969, -12.3303 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath26" instance=ExtResource( 19 )]
-transform = Transform( 1, 0, -6.98492e-10, 1.73472e-17, 1, -1.28151e-15, 6.98492e-10, 4.68579e-17, 1, 0.822806, -4.66955, 9.19031 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath27" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.631515, -1.36365e-09, 0.775363, -1.45424e-11, 1, 1.74688e-09, -0.775363, 1.0919e-09, -0.631515, 83.0049, 16.3131, -12.4205 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath27" instance=ExtResource( 20 )]
-transform = Transform( 1, 5.55112e-17, 4.17233e-07, -1.11022e-16, 1, -9.99201e-16, -4.17233e-07, -5.55112e-17, 1, -1.03669, -5.45617, -17.3348 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath27" instance=ExtResource( 19 )]
-transform = Transform( 1, 5.55112e-17, 0, -2.22045e-16, 1, -1.33227e-15, 0, -5.55112e-17, 1, 2.59763, -4.66955, 10.6359 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath28" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.998757, 7.25439e-11, -0.0498433, -1.45424e-11, 1, 1.74688e-09, 0.0498433, 1.74543e-09, -0.998757, 89.0775, 16.3131, -41.5742 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath28" instance=ExtResource( 20 )]
-transform = Transform( 1, 5.55112e-17, 4.28408e-07, -7.63278e-17, 1, -2.22045e-15, -4.28408e-07, 0, 1, -3.24602, -5.45617, -15.3057 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath28" instance=ExtResource( 19 )]
-transform = Transform( 1, 5.55112e-17, 0, -1.249e-16, 1, -2.88658e-15, 0, 0, 1, -3.01999, 3.66709, 6.62285 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath29" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.998757, 7.25439e-11, -0.0498433, -1.45424e-11, 1, 1.74688e-09, 0.0498433, 1.74543e-09, -0.998757, 89.0775, 16.3131, -71.5038 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath29" instance=ExtResource( 20 )]
-transform = Transform( 1, 5.55112e-17, 4.35859e-07, -5.55112e-17, 1, -3.44169e-15, -4.35859e-07, 0, 1, -3.0947, 3.43085, -18.3384 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath29" instance=ExtResource( 19 )]
-transform = Transform( 1, 5.55112e-17, 0, -9.71445e-17, 1, -3.33067e-15, 0, 0, 1, -4.11628, 3.66709, 5.00747 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath30" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.496898, 1.50873e-09, -0.867808, -1.45424e-11, 1, 1.74688e-09, 0.867808, 8.80642e-10, -0.496898, 74.3517, 16.3131, -90.782 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath30" instance=ExtResource( 20 )]
-transform = Transform( 1, 5.55112e-17, 4.47035e-07, -1.66533e-16, 1, -3.66374e-15, -4.47035e-07, 0, 1, -1.13997, 3.43085, -19.4577 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath30" instance=ExtResource( 19 )]
-transform = Transform( 1, 5.55112e-17, -5.96046e-08, -2.77556e-16, 1, -4.10783e-15, 5.96046e-08, 0, 1, -3.5148, 3.66709, 3.18964 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath31" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.496898, 1.50873e-09, -0.867808, -1.45424e-11, 1, 1.74688e-09, 0.867808, 8.80642e-10, -0.496898, 52.2249, 16.3131, -107.66 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath31" instance=ExtResource( 20 )]
-transform = Transform( 1, 5.55112e-17, 4.17233e-07, -2.22045e-16, 1, -3.9968e-15, -4.17233e-07, 0, 1, -0.530411, 3.43085, -18.3931 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath31" instance=ExtResource( 19 )]
-transform = Transform( 1, 5.55112e-17, -5.96046e-08, -2.77556e-16, 1, -4.94049e-15, 5.96046e-08, 0, 1, -4.88759, 3.66709, -1.06215 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
-
-[node name="NavLinkPath32" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.496898, 1.50873e-09, -0.867808, -1.45424e-11, 1, 1.74688e-09, 0.867808, 8.80642e-10, -0.496898, 38.1058, 16.3131, -113.506 )
-script = ExtResource( 18 )
-
-[node name="Start" parent="NavLinkPaths/NavLinkPath32" instance=ExtResource( 20 )]
-transform = Transform( 1, 5.55112e-17, 3.27826e-07, -4.44089e-16, 1, -4.4964e-15, -3.27826e-07, 0, 1, -8.14445, 3.43085, -11.8131 )
-mesh = SubResource( 32 )
-material/0 = SubResource( 33 )
-
-[node name="End" parent="NavLinkPaths/NavLinkPath32" instance=ExtResource( 19 )]
-transform = Transform( 1, 5.55112e-17, -1.19209e-07, -4.996e-16, 1, -5.57887e-15, 1.19209e-07, 0, 1, 2.35583, -2.55894, 11.5882 )
-mesh = SubResource( 34 )
-material/0 = SubResource( 35 )
+[node name="NavLinkAstarPath" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0821, 14.1006, -86.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -6, 0 )
+
+[node name="NavLinkAstarPath2" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0821, 14.1006, -50.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -6, 0 )
+
+[node name="NavLinkAstarPath3" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53.0821, 14.1006, -1.30939 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -2, 1 )
+
+[node name="NavLinkAstarPath4" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 78.0821, 14.1006, -10.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1213, -2, 0.707108 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5355, -2, 0.292892 )
+
+[node name="NavLinkAstarPath5" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 89.0821, 14.1006, -38.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -2, 3 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 6, 3 )
+
+[node name="NavLinkAstarPath6" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 89.0821, 14.1006, -64.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 6, 3 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 6, 4 )
+
+[node name="NavLinkAstarPath7" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 79.0821, 14.1006, -86.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.232, 6, 3.13399 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.7679, 6, 4.134 )
+
+[node name="NavLinkAstarPath8" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 52.0821, 14.1006, -100.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8301, 6, 6.36604 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.60772, 6, 11.7321 )
+
+[node name="NavLinkAstarPath9" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 30.0821, 14.1006, -115.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath9"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5262, 6, 10.2321 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath9"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.90194, 0, -5.75829 )
 
 [node name="SpawnPoints" type="Node" parent="."]
 
@@ -1135,8 +834,5 @@ volume_db = -5.0
 autoplay = true
 script = ExtResource( 8 )
 
-[node name="Flyer" parent="." instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8959, 20.6217, -88.6078 )
-
-[node name="Flyer2" parent="." instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8959, 20.6217, -78.0289 )
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23.082, 14.32, -86.309 )

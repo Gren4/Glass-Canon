@@ -11,7 +11,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 0
+const max_enem : int = 20
 
 var col_enem_to_spawn = 300
 
@@ -60,7 +60,7 @@ func _physics_process(delta):
 				spawn_timer = 0.0
 				var en_type = randi()%100
 				var new_t
-				if en_type <= 50:
+				if en_type <= 100:
 					new_t = MeleeGrunt.instance()
 				else:
 					new_t = RangeGrunt.instance()			
@@ -126,24 +126,39 @@ func move_to(target,dist_l):
 				plV3 = player.get_point_for_npc(8, target.attack_side)
 			else:
 				plV3 = player.get_point_for_npc(4.5, target.attack_side)
-			var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
-			var closest_p : Vector3 = nav.get_closest_point(plV3)
-			path = nav.get_nav_link_path(closest_t, closest_p)
-			if path.has("complete_path"):
-				target.get_nav_path(path)
-				if path["nav_link_to_first"].size() > 0:
-					var j : int = 0
-					for i in forces:
-						if i == target:
-							continue
-						if is_instance_valid(i):
-							if i.is_in_group("Melee") and i.my_path.size() == 0:
-								var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
-								if (dt.length() <= 5.0):
-									timer[j] = 0
-									i.get_nav_path(path)
-									pass
-						j += 1
+			path = nav.get_path_links(target.global_transform.origin, plV3)
+			target.get_nav_path(path)
+#			if path["type"] == 1:
+#				var j : int = 0
+#				for i in forces:
+#					if i == target:
+#						continue
+#					if is_instance_valid(i):
+#						if i.is_in_group("Melee") and i.my_path.size() == 0:
+#							var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
+#							if (dt.length() <= 5.0):
+#								timer[j] = 0
+#								i.get_nav_path(path)
+#								pass
+#					j += 1
+#			var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
+#			var closest_p : Vector3 = nav.get_closest_point(plV3)
+#			path = nav.get_nav_link_path(closest_t, closest_p)
+#			if path.has("complete_path"):
+#				target.get_nav_path(path)
+#				if path["nav_link_to_first"].size() > 0:
+#					var j : int = 0
+#					for i in forces:
+#						if i == target:
+#							continue
+#						if is_instance_valid(i):
+#							if i.is_in_group("Melee") and i.my_path.size() == 0:
+#								var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
+#								if (dt.length() <= 5.0):
+#									timer[j] = 0
+#									i.get_nav_path(path)
+#									pass
+#						j += 1
 	elif target.is_in_group("Range"):
 		var plV3 : Vector3 = player.get_point_for_npc(25.0, target.attack_side)
 		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
