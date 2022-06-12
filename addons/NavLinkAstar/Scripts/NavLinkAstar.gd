@@ -1,5 +1,4 @@
 extends Navigation
-var res : Resource
 
 class_name NavLinkAstar
 
@@ -17,12 +16,12 @@ onready var NavMeshInstance = get_node(NavMesh_path)
 onready var NavMesh = NavMeshInstance.navmesh
 
 var astar : AStar
+var astar_points : PoolVector3Array = []
+var col_points : int = 0
+var polygon : Dictionary = {}
+
 var links_paths : Dictionary
-var doubles : Dictionary = {}
-var main_vert : PoolVector3Array = []
-var main_id : Array = []
-var main_col : int
-var links_col : int
+var links_col : int = 0
 var link_one : PoolVector3Array = []
 var link_two : PoolVector3Array = []
 var id_one : Array = []
@@ -34,7 +33,7 @@ func _ready():
 	cube_mesh.size = Vector3(0.25, 0.25, 0.25)
 	if generate_nav == true:
 		_generate_astar_points()
-	
+
 func _create_nav_cube(position: Vector3, material):
 	var cube = MeshInstance.new()
 	cube.mesh = cube_mesh
@@ -51,7 +50,7 @@ func get_path_links(from: Vector3, to: Vector3) -> Dictionary:
 	var link_to : PoolVector3Array = []
 	var link_from_id : Array = []
 	var link_to_id : Array = []
-	
+
 	var a_path : PoolVector3Array = _find_path(from, to)
 	var size_a = a_path.size()
 
@@ -100,27 +99,56 @@ func get_path_links(from: Vector3, to: Vector3) -> Dictionary:
 	}	
 	
 func _find_path(from: Vector3, to: Vector3) -> PoolVector3Array:
-	var from_d : float = 1e20
-	var from_id : int
-	var to_d : float = 1e20
-	var to_id : int
-	
-	for i in main_col:
-		var vt : Vector3 = main_vert[i] - from
-		vt.y *= 4
-		var dt : float = vt.length()
-		if dt < from_d:
-			from_d = dt
-			from_id = main_id[i]
-		vt = main_vert[i] - to
-		vt.y *= 4
-		dt = vt.length()
-		if dt < to_d:
-			to_d = dt
-			to_id = main_id[i]
-#	#var start_id = astar.get_closest_point(from)
-#	#var end_id = astar.get_closest_point(to)
-	return astar.get_point_path(from_id, to_id)
+#	var from_d : float = 1e20
+#	var from_id : int
+#	var to_d : float = 1e20
+#	var to_id : int
+#
+#	for i in main_col:
+#		var vt : Vector3 = main_vert[i] - from
+#		vt.y *= 4
+#		var dt : float = vt.length()
+#		if dt < from_d:
+#			from_d = dt
+#			from_id = main_id[i]
+#		vt = main_vert[i] - to
+#		vt.y *= 4
+#		dt = vt.length()
+#		if dt < to_d:
+#			to_d = dt
+#			to_id = main_id[i]
+	var start_id : int = 0
+	var end_id : int = 0
+	var start_d : float = 1e20
+	var end_d : float = 1e20
+	var one_stop : bool = false
+	var two_stop : bool = false
+	for d in range(polygon.size()):
+		var vstart = Geometry.ray_intersects_triangle(from + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
+		if vstart != null and not one_stop:
+			var d_temp : float = (vstart - from).length()
+			if (d_temp < start_d):
+				start_id = polygon[d]["id"]
+				start_d = d_temp
+		for i in polygon[d]["verts"]:
+			var d_temp : float = (i - from).length()
+			if (d_temp < start_d):
+				start_id = polygon[d]["id"]
+				start_d = d_temp
+			
+		var vend = Geometry.ray_intersects_triangle(to + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
+		if vend != null and not two_stop:
+			var d_temp : float = (vend - to).length()
+			if (d_temp < end_d):
+				end_id = polygon[d]["id"]
+				end_d = d_temp
+		for i in polygon[d]["verts"]:
+			var d_temp : float = (i - to).length()
+			if (d_temp < end_d):
+				end_id = polygon[d]["id"]
+				end_d = d_temp
+
+	return astar.get_point_path(start_id, end_id)
 	
 func _check_doubles(d : Dictionary, i : int) -> int:
 	if d.has(i):
@@ -129,8 +157,10 @@ func _check_doubles(d : Dictionary, i : int) -> int:
 		return i
 	
 func _generate_astar_points() -> void:
-	var dop_id : Array = []
-	var dop_vert : PoolVector3Array = []
+	var doubles : Dictionary = {} 
+	var main_vert : PoolVector3Array = []
+	var points_of_verts : Dictionary = {}
+	
 	main_vert = NavMesh.get_vertices()
 	astar = AStar.new()
 	
@@ -148,46 +178,40 @@ func _generate_astar_points() -> void:
 				if main_vert[i] == main_vert[j]:
 					exclude.append(j)
 					doubles[j] = i
-	
-	for i in range(vert_count):
-		var a_id : int = astar.get_available_point_id()
-		main_id.append(a_id)
-		astar.add_point(a_id, main_vert[i])
-		#_create_nav_cube(main_vert[i],green_material)
 					
 	for i in range(poly_count):
 		var index_arr : Array = NavMesh.get_polygon(i)
-		var col_v : int = index_arr.size()
+		var a_id = astar.get_available_point_id()
 		var center : Vector3 = Vector3.ZERO
-		for j in col_v:
-			center += main_vert[index_arr[j]]
-			for c in col_v:
-				if c == j:
-					continue
-				else:
-					var i1 : int = _check_doubles(doubles,main_id[index_arr[j]])
-					var i2 : int = _check_doubles(doubles,main_id[index_arr[c]])
-					if not astar.are_points_connected(i1,i2):
-						astar.connect_points(i1,i2)
+		var col_v : int = index_arr.size()
+		var verts : PoolVector3Array
+		for a in range(col_v):
+			var chck : int = _check_doubles(doubles, index_arr[a])
+			verts.append(main_vert[chck])
+			center += main_vert[chck]
+			if points_of_verts.has(chck):
+				points_of_verts[chck].append(a_id)
+			else:
+				points_of_verts[chck] = [a_id]
+		polygon[i] = {"verts" : verts, "id" : a_id }
 		center = center / col_v
-		var a_id : int = astar.get_available_point_id()
 		astar.add_point(a_id,center)
+		astar_points.append(center)
+		col_points += 1
 		#_create_nav_cube(center,green_material)
-		dop_id.append(a_id)
-		dop_vert.append(center)
-		for j in col_v:
-			var i1 : int = _check_doubles(doubles,main_id[index_arr[j]])
-			if not astar.are_points_connected(i1,dop_id[i]):
-				astar.connect_points(i1,dop_id[i])
-	
-	main_vert.append_array(dop_vert)
-	main_id.append_array(dop_id)
-	main_col = main_vert.size()
+		
+		for a in range(col_v):
+			var chck : int = _check_doubles(doubles, index_arr[a])
+			if points_of_verts[chck].size() > 0:
+				for j in range(points_of_verts[chck].size()):
+					if not astar.are_points_connected(a_id, points_of_verts[chck][j]) and a_id != points_of_verts[chck][j]:
+						astar.connect_points(a_id, points_of_verts[chck][j])
+						
 	var nav_link_group = NavLink.get_children()
 	for p in nav_link_group:
 		if p is NavLinkAstarPath:
-			var one : Vector3 = get_closest_point(p.One.global_transform.origin)
-			var two : Vector3 = get_closest_point(p.Two.global_transform.origin)
+			var one : Vector3 = p.One.global_transform.origin
+			var two : Vector3 = p.Two.global_transform.origin
 			link_one.append(one)
 			link_two.append(two)
 			var a_id1 = astar.get_available_point_id()
@@ -201,24 +225,29 @@ func _generate_astar_points() -> void:
 			if not astar.are_points_connected(a_id1, a_id2):
 				astar.connect_points(a_id1, a_id2)
 			# Search for nearest polygon to connect
-			var d1 : float = 1e20
-			var i1 : int
-			var d2 : float = 1e20
-			var i2 : int
-			for d in range(main_vert.size()):
-				var new_d1 : float = (main_vert[d] - one).length()
-				if (new_d1 < d1):
-					d1 = new_d1
-					i1 = _check_doubles(doubles,main_id[d])
-				var new_d2 : float = (main_vert[d] - two).length()
-				if (new_d2 < d2):
-					d2 = new_d2
-					i2 = _check_doubles(doubles,main_id[d])
-			if not astar.are_points_connected(a_id1, i1):
-				astar.connect_points(a_id1, i1)
-			if not astar.are_points_connected(a_id2, i2):
-				astar.connect_points(a_id2, i2)
-				
+			
+			var one_d : float = 1e20
+			var one_id : int = 0
+			var two_d : float = 1e20
+			var two_id : int = 0
+			for d in range(polygon.size()):
+				var vone = Geometry.ray_intersects_triangle(one, Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
+				if vone != null:
+					var d_temp : float = (vone - one).length()
+					if (d_temp < one_d):
+						one_id = polygon[d]["id"]
+						one_d = d_temp
+				var vtwo = Geometry.ray_intersects_triangle(two, Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
+				if vtwo != null:
+					var d_temp : float = (vtwo - two).length()
+					if (d_temp < two_d):
+						two_id = polygon[d]["id"]
+						two_d = d_temp
+			if not astar.are_points_connected(a_id1,one_id):
+				astar.connect_points(a_id1,one_id)
+			if not astar.are_points_connected(a_id2,two_id):
+				astar.connect_points(a_id2,two_id)
+
 	links_col = link_one.size()
 	for i in range(links_col):
 		for j in range(links_col):
@@ -242,7 +271,7 @@ func _generate_astar_points() -> void:
 				if path4.size() > 0:
 					links_paths[key4] = path4
 	pass
-	
+		
 func _world_point(world : Vector3) -> String:
 	return "%0.2f,%0.2f,%0.2f" % [stepify(world.x,0.01),stepify(world.y,0.01),stepify(world.z,0.01)]
 

@@ -11,7 +11,7 @@ onready var spawn_points : Array = []
 export(NodePath) var player_path
 onready var player = get_node(player_path)
 onready var nav = get_parent()
-const max_enem : int = 20
+const max_enem : int = 0
 
 var col_enem_to_spawn = 300
 
@@ -60,7 +60,7 @@ func _physics_process(delta):
 				spawn_timer = 0.0
 				var en_type = randi()%100
 				var new_t
-				if en_type <= 100:
+				if en_type < 50:
 					new_t = MeleeGrunt.instance()
 				else:
 					new_t = RangeGrunt.instance()			
@@ -161,16 +161,12 @@ func move_to(target,dist_l):
 #						j += 1
 	elif target.is_in_group("Range"):
 		var plV3 : Vector3 = player.get_point_for_npc(25.0, target.attack_side)
-		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
-		var closest_p : Vector3 = nav.get_closest_point(plV3)
-		path = nav.get_nav_link_path(closest_t, closest_p)
-		if path.has("complete_path"):
-			target.get_nav_path(path)
+		path = nav.get_path_links(target.global_transform.origin, plV3)
+		target.get_nav_path(path)
 		target.attack_side = randi()%8	
 	elif target.is_in_group("Flying"):
 		var plV3 : Vector3 = player.get_point_for_npc(15.0, target.attack_side)
 		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
 		var closest_p : Vector3 = nav.get_closest_point(plV3)
-		path = nav.get_nav_link_path(closest_t, closest_p)
-		if path.has("complete_path"):
-			target.get_nav_path(path["complete_path"])	
+		path = nav._find_path(target.global_transform.origin, plV3)
+		target.get_nav_path(path)

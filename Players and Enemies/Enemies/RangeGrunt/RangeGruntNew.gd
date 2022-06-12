@@ -424,29 +424,9 @@ func get_nav_path(path : Dictionary) -> void:
 	if _state != JUMP and _state != JUMP_END:
 		give_path = false
 		_path_timer = 0.0
-		my_path = path["complete_path"]
-		link_from.resize(0)
-		link_to.resize(0)
-		if not path["nav_link_to_first"].empty():
-			if path["nav_link_path_inbetween"].empty():
-				var to = path["nav_link_from_last"][0]
-				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
-				if to in my_path and from in my_path:
-					link_from.append(from)
-					link_to.append(to)
-			else:
-				var from = path["nav_link_to_first"][path["nav_link_to_first"].size()-1]
-				if from in my_path:
-					link_from.append(from)
-				for pp in path["nav_link_path_inbetween"].size():
-					for p in path["nav_link_path_inbetween"][pp].size():
-						if path["nav_link_path_inbetween"][pp][p][0] in my_path:
-							link_to.append(path["nav_link_path_inbetween"][pp][p][0])
-						if path["nav_link_path_inbetween"][pp][p][path["nav_link_path_inbetween"][pp][p].size()-1] in my_path:
-							link_from.append(path["nav_link_path_inbetween"][pp][p][path["nav_link_path_inbetween"][pp][p].size()-1])
-				var to = path["nav_link_from_last"][0]
-				if to in my_path:
-					link_to.append(to)
+		my_path = path["path"]
+		link_from = path["from"]
+		link_to = path["to"]
 
 
 func play_audio(var name : String) -> void:
