@@ -99,24 +99,6 @@ func get_path_links(from: Vector3, to: Vector3) -> Dictionary:
 	}	
 	
 func _find_path(from: Vector3, to: Vector3) -> PoolVector3Array:
-#	var from_d : float = 1e20
-#	var from_id : int
-#	var to_d : float = 1e20
-#	var to_id : int
-#
-#	for i in main_col:
-#		var vt : Vector3 = main_vert[i] - from
-#		vt.y *= 4
-#		var dt : float = vt.length()
-#		if dt < from_d:
-#			from_d = dt
-#			from_id = main_id[i]
-#		vt = main_vert[i] - to
-#		vt.y *= 4
-#		dt = vt.length()
-#		if dt < to_d:
-#			to_d = dt
-#			to_id = main_id[i]
 	var start_id : int = 0
 	var end_id : int = 0
 	var start_d : float = 1e20
@@ -126,24 +108,24 @@ func _find_path(from: Vector3, to: Vector3) -> PoolVector3Array:
 	for d in range(polygon.size()):
 		var vstart = Geometry.ray_intersects_triangle(from + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
 		if vstart != null and not one_stop:
-			var d_temp : float = (vstart - from).length()
+			var d_temp : float = (vstart - from).length_squared()
 			if (d_temp < start_d):
 				start_id = polygon[d]["id"]
 				start_d = d_temp
 		for i in polygon[d]["verts"]:
-			var d_temp : float = (i - from).length()
+			var d_temp : float = (i - from).length_squared()
 			if (d_temp < start_d):
 				start_id = polygon[d]["id"]
 				start_d = d_temp
 			
 		var vend = Geometry.ray_intersects_triangle(to + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
 		if vend != null and not two_stop:
-			var d_temp : float = (vend - to).length()
+			var d_temp : float = (vend - to).length_squared()
 			if (d_temp < end_d):
 				end_id = polygon[d]["id"]
 				end_d = d_temp
 		for i in polygon[d]["verts"]:
-			var d_temp : float = (i - to).length()
+			var d_temp : float = (i - to).length_squared()
 			if (d_temp < end_d):
 				end_id = polygon[d]["id"]
 				end_d = d_temp
@@ -233,13 +215,23 @@ func _generate_astar_points() -> void:
 			for d in range(polygon.size()):
 				var vone = Geometry.ray_intersects_triangle(one, Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
 				if vone != null:
-					var d_temp : float = (vone - one).length()
+					var d_temp : float = (vone - one).length_squared()
+					if (d_temp < one_d):
+						one_id = polygon[d]["id"]
+						one_d = d_temp
+				for i in polygon[d]["verts"]:
+					var d_temp : float = (i - one).length_squared()
 					if (d_temp < one_d):
 						one_id = polygon[d]["id"]
 						one_d = d_temp
 				var vtwo = Geometry.ray_intersects_triangle(two, Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
 				if vtwo != null:
-					var d_temp : float = (vtwo - two).length()
+					var d_temp : float = (vtwo - two).length_squared()
+					if (d_temp < two_d):
+						two_id = polygon[d]["id"]
+						two_d = d_temp
+				for i in polygon[d]["verts"]:
+					var d_temp : float = (i - two).length_squared()
 					if (d_temp < two_d):
 						two_id = polygon[d]["id"]
 						two_d = d_temp

@@ -358,9 +358,10 @@ func move_along_path(delta : float) -> bool:
 			my_path.remove(0)
 		else:
 			if not attack_shoot(delta):
-				if is_on_wall():
-					velocity.y = 1.0
-					snap = Vector3.ZERO
+#				if is_on_wall():
+#					velocity.y = 1.0
+#					snap = Vector3.ZERO
+				pass
 			else:
 				return true
 			if dist_length < 3.5:

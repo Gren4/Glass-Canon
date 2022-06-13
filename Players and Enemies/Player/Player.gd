@@ -189,7 +189,7 @@ func _input(event) -> void:
 				BUTTON_WHEEL_DOWN:
 					weapon_manager.previous_weapon()
 
-func get_point_for_npc(dist:float,side:int) -> Vector3:
+func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 	var result : Vector3 = Vector3.ZERO
 	var origin = self.global_transform.origin
 	match side:
@@ -200,7 +200,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.z = result.z + dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -213,7 +213,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x - dist*0.3
 				result.z = result.z + dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -225,7 +225,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.x = result.x - dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -238,7 +238,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x - dist*0.3
 				result.z = result.z - dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -250,7 +250,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.z = result.z - dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -263,7 +263,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x + dist*0.3
 				result.z = result.z - dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -275,7 +275,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.x = result.x + dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
@@ -288,7 +288,7 @@ func get_point_for_npc(dist:float,side:int) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x + dist*0.3
 				result.z = result.z + dist*0.3
-			else:
+			elif (check_down):
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():

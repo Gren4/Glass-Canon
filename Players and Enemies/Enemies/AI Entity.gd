@@ -4,9 +4,10 @@ extends Node
 onready var MeleeGrunt = preload("res://Players and Enemies/Enemies/MeleeGrunt/MeleeGruntNew.tscn")
 onready var RangeGrunt = preload("res://Players and Enemies/Enemies/RangeGrunt/RangeGruntNew.tscn")
 ########################
-onready var forces : Array = []
-onready var timer : Array = []
-onready var spawn_points : Array = []
+var forces : Array = []
+var timer : Array = []
+var taken_points : PoolVector3Array = []
+var spawn_points : Array = []
 
 export(NodePath) var player_path
 onready var player = get_node(player_path)
@@ -42,6 +43,8 @@ func init_target(target):
 		timer.append(randi()%51)
 	elif target.is_in_group("Flying"):
 		timer.append(randi()%51)
+	
+	taken_points.append(target.global_transform.origin)
 
 func set_target(target,point):
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
@@ -60,7 +63,7 @@ func _physics_process(delta):
 				spawn_timer = 0.0
 				var en_type = randi()%100
 				var new_t
-				if en_type < 50:
+				if en_type < 100:
 					new_t = MeleeGrunt.instance()
 				else:
 					new_t = RangeGrunt.instance()			
@@ -90,25 +93,32 @@ func _physics_process(delta):
 				var dist_l = dist_to_player.length()
 				if forces[e].is_in_group("Melee"):
 					if (forces[e].give_path):
-						if timer[e]%5 == 0:
-							move_to(forces[e],dist_l)
-							it = e
-							break
+						if dist_l > 10:
+							if timer[e]%10 == 0:
+								taken_points[e] = move_to(forces[e],dist_l,e)
+								it = e
+								break
+						else:
+							if timer[e]%5 == 0:
+								taken_points[e] = move_to(forces[e],dist_l,e)
+								it = e
+								break
 				elif forces[e].is_in_group("Range"):
 					if (forces[e].give_path):
 						if timer[e]%50 == 0:
-							move_to(forces[e],dist_l)
+							taken_points[e] = move_to(forces[e],dist_l,e)
 							it = e
 							break
 				elif forces[e].is_in_group("Flying"):
 					if (forces[e].give_path):
 						if timer[e]%50 == 0:
-							move_to(forces[e],dist_l)
+							taken_points[e] = move_to(forces[e],dist_l,e)
 							it = e
 							break
 			else:
 				forces.remove(e)
 				timer.remove(e)
+				taken_points.remove(e)
 				col_enem -= 1
 
 		if it+1 >= col_enem:
@@ -116,57 +126,44 @@ func _physics_process(delta):
 		else:
 			it += 1
 
-func move_to(target,dist_l):
+func move_to(target, dist_l : float, i : int) -> Vector3:
 	var path = {}
 	if target.is_in_group("Melee"):
-			var plV3 : Vector3 = Vector3.ZERO
-			if dist_l > 20:
-				plV3 = player.get_point_for_npc(15, target.attack_side)
-			elif dist_l > 10:
-				plV3 = player.get_point_for_npc(8, target.attack_side)
-			else:
-				plV3 = player.get_point_for_npc(4.5, target.attack_side)
-			path = nav.get_path_links(target.global_transform.origin, plV3)
-			target.get_nav_path(path)
-#			if path["type"] == 1:
-#				var j : int = 0
-#				for i in forces:
-#					if i == target:
-#						continue
-#					if is_instance_valid(i):
-#						if i.is_in_group("Melee") and i.my_path.size() == 0:
-#							var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
-#							if (dt.length() <= 5.0):
-#								timer[j] = 0
-#								i.get_nav_path(path)
-#								pass
-#					j += 1
-#			var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
-#			var closest_p : Vector3 = nav.get_closest_point(plV3)
-#			path = nav.get_nav_link_path(closest_t, closest_p)
-#			if path.has("complete_path"):
-#				target.get_nav_path(path)
-#				if path["nav_link_to_first"].size() > 0:
-#					var j : int = 0
-#					for i in forces:
-#						if i == target:
-#							continue
-#						if is_instance_valid(i):
-#							if i.is_in_group("Melee") and i.my_path.size() == 0:
-#								var dt : Vector3 = target.global_transform.origin - i.global_transform.origin
-#								if (dt.length() <= 5.0):
-#									timer[j] = 0
-#									i.get_nav_path(path)
-#									pass
-#						j += 1
+		var plV3 : Vector3 = Vector3.ZERO
+		if dist_l > 20:
+			plV3 = _get_point(15.0, target.attack_side, i)
+		elif dist_l > 10:
+			plV3 = _get_point(8.0, target.attack_side, i)
+		else:
+			plV3 = _get_point(4.5, target.attack_side, i)
+		path = nav.get_path_links(target.global_transform.origin, plV3)
+		target.get_nav_path(path)
+		return plV3
+
 	elif target.is_in_group("Range"):
-		var plV3 : Vector3 = player.get_point_for_npc(25.0, target.attack_side)
+		var plV3 : Vector3 = _get_point(25.0, target.attack_side, i)
 		path = nav.get_path_links(target.global_transform.origin, plV3)
 		target.get_nav_path(path)
 		target.attack_side = randi()%8	
+		return plV3
+		
 	elif target.is_in_group("Flying"):
-		var plV3 : Vector3 = player.get_point_for_npc(15.0, target.attack_side)
-		var closest_t : Vector3 = nav.get_closest_point(target.global_transform.origin)
-		var closest_p : Vector3 = nav.get_closest_point(plV3)
-		path = nav._find_path(target.global_transform.origin, plV3)
+		var plV3 : Vector3 = _get_point(15.0, target.attack_side, i, false)
+		path = nav.get_path_links(target.global_transform.origin, plV3)
 		target.get_nav_path(path)
+		return plV3
+		
+	return Vector3.ZERO
+
+func _get_point(dist : float, side : int, i : int, check_down : bool = true) -> Vector3:
+	var point : Vector3 = player.get_point_for_npc(dist, side, check_down)
+#	for j in range(taken_points.size()):
+#		if j == i: 
+#			continue
+#		else:
+#			if (point - taken_points[j]).length_squared() <= 1.94:
+#				point = point + Vector3(2.0,0,2.0)
+	return point
+	
+	
+	

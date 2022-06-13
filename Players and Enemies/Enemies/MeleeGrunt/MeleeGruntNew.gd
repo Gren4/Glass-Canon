@@ -277,9 +277,9 @@ func move_along_path(delta : float) -> bool:
 			if dir_to_path.length() < 1.4:
 				my_path.remove(0)
 			else:
-				if is_on_wall():
-					velocity.y = 1.0
-					snap = Vector3.ZERO
+#				if is_on_wall():
+#					velocity.y = 1.0
+#					snap = Vector3.ZERO
 				if dist_length < 3.5:
 					left_ray.force_raycast_update()
 					if not left_ray.is_colliding():

@@ -90,9 +90,9 @@ var pl_sides_range = {
 
 func _ready():
 	_state = ALLERTED_AND_KNOWS_LOC
-	accel = 2.5
+	accel = 1.5
 	SPEED_DOP_EVADE = 14.0
-	SPEED_NORMAL = 10.0
+	SPEED_NORMAL = 15.0
 	IDLE_TIMER = 3.0
 	RESET_TIMER = 3.0
 	ALLERTED_AND_KNOWS_LOC_TIMER = 20.0
@@ -273,7 +273,17 @@ func fly_to_target(dir : Vector3, delta : float, i_see_player : bool) -> void:
 		dp = Vector3(0,5.0,0)
 	if my_path.size() < 1:
 		if _timer >= 2.0:
-			attack_side = randi()%8	
+			if attack_side + side >= 8:
+				attack_side = 0
+			elif attack_side + side < 0:
+				attack_side = 7
+			else:
+				attack_side += side
+			var rnd : int = randi()%10
+			if rnd < 5:
+				side = -1
+			else:
+				side = 1
 			give_path = true
 			_timer = 0.0
 		else:
@@ -290,11 +300,11 @@ func fly_to_target(dir : Vector3, delta : float, i_see_player : bool) -> void:
 			dop_y_vel = lerp(dop_y_vel, (dp.y), 0.1)
 	else:		
 		direction = dir
-		if dist_length < 7.0:
-			var cross : Vector3 = Vector3.UP.cross(dist)
-			direction = direction + cross
-			attack_side = randi()%8	
-			give_path = true
+#		if dist_length < 7.0:
+#			var cross : Vector3 = Vector3.UP.cross(dist)
+#			direction = direction + (1/dist_length) * cross
+#			attack_side = randi()%8	
+#			give_path = true
 		if (dp.y > 2.0):
 			dop_y_vel = lerp(dop_y_vel, 2.5 * ( dir.y), 0.1)
 		else:
@@ -325,8 +335,8 @@ func finalize_velocity(delta : float) -> void:
 		turn_angle = self.rotation_degrees.y
 		do_turn = true
 		
-func get_nav_path(path : PoolVector3Array) -> void:
-	my_path = path
+func get_nav_path(path : Dictionary) -> void:
+	my_path = path["path"]
 	give_path = false
 	
 func update_hp(damage : int, dir : Vector3) -> void:
