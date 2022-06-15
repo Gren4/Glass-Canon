@@ -1,6 +1,6 @@
 extends RigidBody
 
-var attack_damage : int = 20
+export (int) var attack_damage : int = 20
 var timer : float = 8
 export(float) var speed_coef = 3.0
 var parent : Object = null
@@ -40,13 +40,14 @@ func _physics_process(delta):
 			queue_free()
 
 func _on_Area_body_entered(body):
-	if body != parent:
-		if body.is_in_group("Player"):
-			body.update_health(-attack_damage, self.global_transform.origin)
-			splash()
-		elif body.is_in_group("Enemy"): 
-			var vector_pte : Vector3 = (body.global_transform.origin - self.global_transform.origin).normalized()*100
-			body.update_hp(attack_damage,vector_pte)
-			splash()
-		else:
-			splash()
+	if not hit_confirm:
+		if body != parent:
+			if body.is_in_group("Player"):
+				body.update_health(-attack_damage, self.global_transform.origin)
+				splash()
+			elif body.is_in_group("Enemy"): 
+				var vector_pte : Vector3 = (body.global_transform.origin - self.global_transform.origin).normalized()*100
+				body.update_hp(attack_damage,vector_pte)
+				splash()
+			else:
+				splash()

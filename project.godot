@@ -63,6 +63,11 @@ _global_script_classes=[ {
 "class": "WeaponMain",
 "language": "GDScript",
 "path": "res://Weapons/New/WeaponMain.gd"
+}, {
+"base": "Node",
+"class": "ZonePath",
+"language": "GDScript",
+"path": "res://addons/NavLinkAstar/Scripts/Zone.gd"
 } ]
 _global_script_class_icons={
 "Enemies": "",
@@ -75,7 +80,8 @@ _global_script_class_icons={
 "NavLinkNavigation": "",
 "NavLinkPath": "",
 "Players_and_Enemies": "",
-"WeaponMain": ""
+"WeaponMain": "",
+"ZonePath": ""
 }
 
 [application]
@@ -102,7 +108,7 @@ window/stretch/aspect="keep_height"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/NavLink/plugin.cfg", "res://addons/NavLinkAstar/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/NavLinkAstar/plugin.cfg", "res://addons/Trail/plugin.cfg" )
 
 [input]
 

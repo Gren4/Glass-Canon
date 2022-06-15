@@ -189,7 +189,7 @@ func _input(event) -> void:
 				BUTTON_WHEEL_DOWN:
 					weapon_manager.previous_weapon()
 
-func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
+func get_point_for_npc(dist : float, side : int, height : float = 0.0, check_down : bool = true) -> Vector3:
 	var result : Vector3 = Vector3.ZERO
 	var origin = self.global_transform.origin
 	match side:
@@ -200,11 +200,37 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.z = result.z + dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
+				
 		1:
 			result = Vector3(origin.x+(dist/1.4),origin.y,origin.z-(dist/1.4))
 			rayForward.set_cast_to(to_local(result))
@@ -213,11 +239,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x - dist*0.3
 				result.z = result.z + dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 		2:
 			result = Vector3(origin.x+dist,origin.y,origin.z)
 			rayForward.set_cast_to(to_local(result))
@@ -225,11 +276,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.x = result.x - dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 		3:
 			result = Vector3(origin.x+(dist/1.4),origin.y,origin.z+(dist/1.4))
 			rayForward.set_cast_to(to_local(result))
@@ -238,11 +314,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x - dist*0.3
 				result.z = result.z - dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 		4:
 			result = Vector3(origin.x,origin.y,origin.z+dist)
 			rayForward.set_cast_to(to_local(result))
@@ -250,11 +351,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.z = result.z - dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 		5:
 			result = Vector3(origin.x-(dist/1.4),origin.y,origin.z+(dist/1.4))
 			rayForward.set_cast_to(to_local(result))
@@ -263,11 +389,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x + dist*0.3
 				result.z = result.z - dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 		6:
 			result = Vector3(origin.x-dist,origin.y,origin.z)
 			rayForward.set_cast_to(to_local(result))
@@ -275,11 +426,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 			if rayForward.is_colliding():
 				result = rayForward.get_collision_point()
 				result.x = result.x + dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 		7:
 			result = Vector3(origin.x-(dist/1.4),origin.y,origin.z-(dist/1.4))
 			rayForward.set_cast_to(to_local(result))
@@ -288,11 +464,36 @@ func get_point_for_npc(dist:float,side:int,check_down : bool) -> Vector3:
 				result = rayForward.get_collision_point()
 				result.x = result.x + dist*0.3
 				result.z = result.z + dist*0.3
-			elif (check_down):
+				if (check_down == false):
+					rayDown.set_cast_to(height*Vector3.UP)
+					rayDown.transform.origin = rayForward.get_cast_to()
+					rayDown.force_raycast_update()
+					if rayDown.is_colliding():
+						var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+						if col_point > height:
+							result.y += height
+						else:
+							result.y = rayDown.get_collision_point().y - height*0.3
+					else:
+						result.y += height
+			elif (check_down == true):
+				rayDown.set_cast_to(2*Vector3.DOWN)
 				rayDown.transform.origin = rayForward.get_cast_to()
 				rayDown.force_raycast_update()
 				if not rayDown.is_colliding():
 					result = origin
+			else:
+				rayDown.set_cast_to(height*Vector3.UP)
+				rayDown.transform.origin = rayForward.get_cast_to()
+				rayDown.force_raycast_update()
+				if rayDown.is_colliding():
+					var col_point : float = abs(rayDown.get_collision_point().y - result.y)
+					if col_point > height:
+						result.y += height
+					else:
+						result.y = rayDown.get_collision_point().y - height*0.3
+				else:
+					result.y += height
 	
 	return result
 

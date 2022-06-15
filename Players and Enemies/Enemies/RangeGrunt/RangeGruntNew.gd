@@ -208,9 +208,9 @@ func attack() -> void:
 
 func shoot() -> void:
 	if player.speed <= player.WALLRUNNING_SPEED:
-		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0))
+		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.global_transform.origin + Vector3(player.vel_info.x,0,player.vel_info.z)*dist_length/(45*1.2)) + Vector3(0,1,0),45)
 	else:
-		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.transform.origin) + Vector3(0,1,0))
+		Global.spawn_projectile_node_from_pool(projectile,self,shoot.global_transform.origin, (player.global_transform.origin) + Vector3(0,1,0),45)
 
 func on_animation_finish(anim_name:String) -> void:
 	match anim_name:

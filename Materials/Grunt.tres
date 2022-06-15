@@ -139,6 +139,7 @@ void light() {
 
 }
 "
+graph_offset = Vector2( 6.65215, -241.94 )
 modes/cull = 2
 modes/depth_draw = 3
 nodes/fragment/0/position = Vector2( 1040, 100 )
@@ -172,7 +173,7 @@ nodes/fragment/16/node = SubResource( 12 )
 nodes/fragment/16/position = Vector2( 500, 600 )
 nodes/fragment/17/node = SubResource( 18 )
 nodes/fragment/17/position = Vector2( 733.209, 223.898 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 4, 0, 3, 0, 5, 0, 6, 0, 3, 0, 8, 0, 8, 0, 10, 0, 6, 0, 7, 0, 7, 0, 8, 1, 11, 0, 5, 0, 8, 0, 12, 0, 12, 0, 13, 1, 13, 0, 14, 0, 14, 0, 15, 0, 16, 0, 15, 1, 15, 0, 0, 5, 10, 0, 0, 1, 17, 0, 0, 3 )
+nodes/fragment/connections = PoolIntArray( 2, 0, 0, 0, 4, 0, 3, 0, 5, 0, 6, 0, 3, 0, 8, 0, 8, 0, 10, 0, 6, 0, 7, 0, 7, 0, 8, 1, 11, 0, 5, 0, 8, 0, 12, 0, 12, 0, 13, 1, 13, 0, 14, 0, 14, 0, 15, 0, 16, 0, 15, 1, 15, 0, 0, 5, 17, 0, 0, 3, 10, 0, 0, 1 )
 
 [resource]
 resource_local_to_scene = true

@@ -8,9 +8,9 @@
 [ext_resource path="res://Nav/NavMesh.tres" type="NavigationMesh" id=6]
 [ext_resource path="res://Materials/Test_material4.tres" type="Material" id=7]
 [ext_resource path="res://WorldAmbience.gd" type="Script" id=8]
-[ext_resource path="res://Players and Enemies/Enemies/Flyer/Flyer.tscn" type="PackedScene" id=9]
 [ext_resource path="res://addons/NavLinkAstar/Scripts/NavLinkAstar.gd" type="Script" id=10]
 [ext_resource path="res://addons/NavLinkAstar/Scripts/NavLinkAstarPath.gd" type="Script" id=11]
+[ext_resource path="res://addons/NavLinkAstar/Scripts/Zone.gd" type="Script" id=12]
 [ext_resource path="res://Players and Enemies/Enemies/AI Entity.gd" type="Script" id=16]
 
 [sub_resource type="BoxShape" id=1]
@@ -28,7 +28,7 @@
 [sub_resource type="PrismMesh" id=37]
 size = Vector3( 5.713, 2, 2 )
 
-[sub_resource type="ConvexPolygonShape" id=49]
+[sub_resource type="ConvexPolygonShape" id=56]
 points = PoolVector3Array( -2.38419e-07, 1, 1, 2.8565, -1, 1, -2.38419e-07, 1, -1, -2.8565, -1, 1, 2.8565, -1, -1, -2.8565, -1, -1 )
 
 [sub_resource type="BoxShape" id=42]
@@ -66,16 +66,353 @@ size = Vector3( 30, 1, 4 )
 script = ExtResource( 5 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 0.999989, 0, 0.00455469, 0, 1, 0, -0.00455469, 0, 0.999989, 21.0841, 14.2637, -49.3572 )
+transform = Transform( 0.00455465, 0, -0.999989, 0, 1, 0, 0.999989, 0, 0.00455465, 21.0841, 14.2637, -49.3572 )
 
 [node name="Enemies" type="Node" parent="."]
 
 [node name="Pickups" type="Node" parent="."]
 
+[node name="FlyZones" type="Node" parent="."]
+
+[node name="Zone1" type="Node" parent="FlyZones"]
+script = ExtResource( 12 )
+
+[node name="Start" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 42, -158 )
+
+[node name="_1" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 3, 35 )
+
+[node name="_2" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 3, 35 )
+
+[node name="_3" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 3, -158 )
+
+[node name="_4" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 3, -158 )
+
+[node name="_5" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 42, 35 )
+
+[node name="_6" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 42, 35 )
+
+[node name="_7" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 42, -158 )
+
+[node name="_8" type="Position3D" parent="FlyZones/Zone1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 42, -158 )
+
+[node name="NavLinkPaths" type="Node" parent="."]
+
+[node name="NavLinkAstarPath" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0821, 14.1006, -86.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -5, 0 )
+
+[node name="NavLinkAstarPath2" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0821, 14.1006, -50.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -5, 0 )
+
+[node name="NavLinkAstarPath3" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53.0821, 14.1006, -1.30939 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -1, 1 )
+
+[node name="NavLinkAstarPath4" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 78.0821, 14.1006, -10.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1213, -1, 0.707108 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5355, -1, 0.292892 )
+
+[node name="NavLinkAstarPath5" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 89.0821, 14.1006, -38.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -1, 3 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 7, 3 )
+
+[node name="NavLinkAstarPath6" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 89.0821, 14.1006, -64.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 7, 3 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 7, 4 )
+
+[node name="NavLinkAstarPath7" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 79.0821, 14.1006, -86.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.232, 7, 3.13399 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath7"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.7679, 7, 4.134 )
+
+[node name="NavLinkAstarPath8" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 52.0821, 14.1006, -100.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8301, 7, 6.36604 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath8"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.60772, 7, 11.7321 )
+
+[node name="NavLinkAstarPath9" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 30.0821, 14.1006, -115.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath9"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5262, 7, 10.2321 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath9"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.90193, 1, -5.7583 )
+
+[node name="NavLinkAstarPath10" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45.0821, 14.1006, -86.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath10"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath10"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath11" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 55.0821, 14.1006, -96.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath11"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath11"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath12" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 55.0821, 14.1006, -76.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath12"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath12"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath13" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 65.0821, 14.1006, -86.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath13"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath13"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath14" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45.0821, 14.1006, -50.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath14"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath14"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath15" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 55.0821, 14.1006, -60.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath15"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath15"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath16" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 55.0821, 14.1006, -40.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath16"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath16"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath17" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 65.0821, 14.1006, -50.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath17"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath17"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath18" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -29.9179, 26.1006, -111.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath18"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath18"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath19" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -29.9179, 26.1006, -91.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath19"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath19"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath20" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -19.9179, 26.1006, -101.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath20"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath20"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath28" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -30.9179, 26.1006, -78.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath28"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath28"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath29" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -30.9179, 26.1006, -58.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath29"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath29"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath30" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -20.9179, 26.1006, -68.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath30"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath30"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath21" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.9179, 26.1006, -101.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath21"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath21"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath22" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.9179, 26.1006, -111.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath22"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath22"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath23" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.9179, 26.1006, -91.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath23"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath23"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath24" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.0821, 26.1006, -101.309 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath24"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath24"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath25" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -9.9179, 14.1006, -0.309395 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath25"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath25"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
+
+[node name="NavLinkAstarPath26" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 1.0821, 20.1006, -0.309395 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath26"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath26"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -5, 1.78814e-07 )
+
+[node name="NavLinkAstarPath27" type="Spatial" parent="NavLinkPaths"]
+transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 32.0821, 13.1006, -11.3094 )
+script = ExtResource( 11 )
+
+[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath27"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -10, 0 )
+
+[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath27"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -6, 0 )
+
 [node name="NavLinkAstar" type="Navigation" parent="."]
 script = ExtResource( 10 )
 NavLink_path = NodePath("../NavLinkPaths")
+Zone_path = NodePath("../FlyZones")
 NavMesh_path = NodePath("NavigationMeshInstance")
+step_gridy = 7
+bit_mask = 10
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="NavLinkAstar"]
 navmesh = ExtResource( 6 )
@@ -170,7 +507,7 @@ mesh = SubResource( 37 )
 material/0 = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="NavLinkAstar/NavigationMeshInstance/Map/Platform12"]
-shape = SubResource( 49 )
+shape = SubResource( 56 )
 
 [node name="Platform8" type="StaticBody" parent="NavLinkAstar/NavigationMeshInstance/Map" groups=["Wall", "World"]]
 transform = Transform( 5, 0, 0, 0, 3, 0, 0, 0, 5, -30.6264, 15.8249, -68.6365 )
@@ -653,336 +990,34 @@ pause_mode = 2
 script = ExtResource( 16 )
 player_path = NodePath("../../Player")
 
-[node name="NavLinkPaths" type="Node" parent="."]
-
-[node name="NavLinkAstarPath" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0821, 14.1006, -86.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -5, 0 )
-
-[node name="NavLinkAstarPath2" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0821, 14.1006, -50.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -5, 0 )
-
-[node name="NavLinkAstarPath3" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 53.0821, 14.1006, -1.30939 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath3"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -1, 1 )
-
-[node name="NavLinkAstarPath4" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 78.0821, 14.1006, -10.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1213, -1, 0.707108 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5355, -1, 0.292892 )
-
-[node name="NavLinkAstarPath5" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 89.0821, 14.1006, -38.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -1, 3 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 7, 3 )
-
-[node name="NavLinkAstarPath6" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 89.0821, 14.1006, -64.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath6"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 7, 3 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath6"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 7, 4 )
-
-[node name="NavLinkAstarPath7" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 79.0821, 14.1006, -86.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.232, 7, 3.13399 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath7"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.7679, 7, 4.134 )
-
-[node name="NavLinkAstarPath8" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 52.0821, 14.1006, -100.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8301, 7, 6.36604 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath8"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.60772, 7, 11.7321 )
-
-[node name="NavLinkAstarPath9" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, -0.866025, 30.0821, 14.1006, -115.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath9"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5262, 7, 10.2321 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath9"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.90193, 1, -5.7583 )
-
-[node name="NavLinkAstarPath10" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45.0821, 14.1006, -86.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath10"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath10"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath11" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 55.0821, 14.1006, -96.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath11"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath11"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath12" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 55.0821, 14.1006, -76.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath12"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath12"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath13" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 65.0821, 14.1006, -86.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath13"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath13"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath14" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 45.0821, 14.1006, -50.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath14"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath14"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath15" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 55.0821, 14.1006, -60.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath15"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath15"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath16" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 55.0821, 14.1006, -40.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath16"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath16"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath17" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 65.0821, 14.1006, -50.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath17"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath17"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath18" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -29.9179, 26.1006, -111.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath18"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath18"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath19" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -29.9179, 26.1006, -91.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath19"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath19"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath20" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -19.9179, 26.1006, -101.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath20"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath20"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath28" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -30.9179, 26.1006, -78.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath28"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath28"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath29" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -30.9179, 26.1006, -58.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath29"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath29"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath30" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -20.9179, 26.1006, -68.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath30"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath30"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath21" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.9179, 26.1006, -101.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath21"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath21"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath22" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -7.9179, 26.1006, -111.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath22"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath22"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath23" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -7.9179, 26.1006, -91.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath23"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath23"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath24" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.0821, 26.1006, -101.309 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath24"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath24"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath25" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -9.9179, 14.1006, -0.309395 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath25"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath25"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -5, 0 )
-
-[node name="NavLinkAstarPath26" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 1.0821, 20.1006, -0.309395 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath26"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -11, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath26"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -5, 1.78814e-07 )
-
-[node name="NavLinkAstarPath27" type="Spatial" parent="NavLinkPaths"]
-transform = Transform( 1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 32.0821, 13.1006, -11.3094 )
-script = ExtResource( 11 )
-
-[node name="One" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath27"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -10, 0 )
-
-[node name="Two" type="Position3D" parent="NavLinkPaths/NavLinkAstarPath27"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -6, 0 )
-
 [node name="SpawnPoints" type="Node" parent="."]
 
-[node name="Spawn1" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( -0.695073, 0, -0.71894, 0, 1, 0, 0.71894, 0, -0.695073, 90.1289, 19.567, -78.5213 )
+[node name="Spawn1" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( -0.695073, 0, -0.71894, 0, 1, 0, 0.71894, 0, -0.695073, 90.129, 21, -78.521 )
 
-[node name="Spawn2" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 73.3921, 4.93117, -77.6386 )
+[node name="Spawn2" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.3921, 8.93117, -85.6386 )
 
-[node name="Spawn3" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -33.5569, 21.4567, -68.619 )
+[node name="Spawn3" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -32.5569, 20.4567, -68.619 )
 
-[node name="Spawn4" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2279, 21.4567, -101.46 )
+[node name="Spawn4" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2279, 2.4567, -101.46 )
 
-[node name="Spawn5" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389904, 9.49724, 1.40786 )
+[node name="Spawn5" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.389904, 8.49724, 1.40786 )
 
-[node name="Spawn6" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 135.39, 9.49724, -37.5921 )
+[node name="Spawn6" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 135.39, 1.49724, -37.5921 )
 
-[node name="Spawn7" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.39, 9.49724, -110.592 )
+[node name="Spawn7" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 117.39, 2.49724, -110.592 )
 
-[node name="Spawn8" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 144.39, 9.49724, -146.592 )
+[node name="Spawn8" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 144.39, 2.49724, -146.592 )
 
-[node name="Spawn9" type="Spatial" parent="SpawnPoints" groups=["SpawnPoint"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 144.39, 9.49724, 3.40787 )
+[node name="Spawn9" type="Position3D" parent="SpawnPoints" groups=["SpawnPoint"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 144.39, 2.49724, 3.40787 )
 
 [node name="Audio" type="Node" parent="."]
 
@@ -990,6 +1025,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 144.39, 9.49724, 3.40787 )
 volume_db = -5.0
 autoplay = true
 script = ExtResource( 8 )
-
-[node name="Flyer" parent="." instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 57, -112 )

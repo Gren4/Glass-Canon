@@ -31,10 +31,11 @@ func spawn_node_simple_mesh(packed_scene):
 	root.add_child(clone)
 	return clone
 
-func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, target = null) -> void:
+func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, target = null, speed : float = 0.0) -> void:
 	var root = get_tree().root.get_child(get_tree().root.get_child_count()-1)
 	var clone = packed_scene.instance()
 	clone.parent = parent
+	clone.speed_coef = speed
 	root.add_child(clone)
 	if pos != null:
 		clone.global_transform.origin = pos
@@ -42,7 +43,7 @@ func spawn_projectile_node_from_pool(packed_scene, parent = null, pos = null, ta
 		clone.look_at(target, Vector3.UP)
 	
 	clone.set_linear_velocity(-clone.speed_coef*clone.transform.basis.z)
-	pass
+	return
 	
 func place_node(root, clone, pos = null, normal = null, parent = null):
 	clone.set_disable_scale(true)

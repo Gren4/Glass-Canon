@@ -11,9 +11,16 @@ export (bool) var generate_nav = true
 export (NodePath) var NavLink_path = null
 onready var NavLink = get_node(NavLink_path)
 
+export (NodePath) var Zone_path = null
+onready var FlyZones = get_node(Zone_path)
+
 export (NodePath) var NavMesh_path = null
 onready var NavMeshInstance = get_node(NavMesh_path)
 onready var NavMesh = NavMeshInstance.navmesh
+
+export (int) var step_gridxz = 10
+export (int) var step_gridy = 5
+export (int) var bit_mask = 1
 
 var astar : AStar
 var astar_points : PoolVector3Array = []
@@ -31,8 +38,14 @@ func _ready():
 	red_material.albedo_color = Color.red
 	green_material.albedo_color = Color.green
 	cube_mesh.size = Vector3(0.25, 0.25, 0.25)
+	#yield(get_tree().create_timer(1.0), "timeout")
 	if generate_nav == true:
-		_generate_astar_points()
+		var thread1 : Thread = Thread.new()
+		var thread2 : Thread = Thread.new()
+		thread1.start(self,"_generate_astar_points")
+		thread2.start(self,"_generate_fly_astar_points")
+		thread2.wait_to_finish()
+		thread1.wait_to_finish()
 
 func _create_nav_cube(position: Vector3, material):
 	var cube = MeshInstance.new()
@@ -40,7 +53,88 @@ func _create_nav_cube(position: Vector3, material):
 	cube.material_override = material
 	add_child(cube)
 	cube.global_transform.origin = position
+
+var astar_fly : AStar	
+var fly_points : PoolVector3Array = []
+var fly_points_id : Array = []
+var offset : PoolVector3Array
+
+func _generate_fly_astar_points():
+	astar_fly = AStar.new()
+	var ray : PhysicsDirectSpaceState = get_world().direct_space_state
+	var zones  = FlyZones.get_children()
+	offset = [Vector3( step_gridxz,0,0),
+			  Vector3(-step_gridxz,0,0),
+			  Vector3(0, step_gridy,0),
+			  Vector3(0,-step_gridy,0),
+			  Vector3(0,0, step_gridxz),
+			  Vector3(0,0,-step_gridxz),
+			  Vector3( step_gridxz,step_gridy,0),
+			  Vector3(-step_gridxz,step_gridy,0),
+			  Vector3(0,step_gridy, step_gridxz),
+			  Vector3(0,step_gridy,-step_gridxz),
+			  Vector3( step_gridxz,-step_gridy,0),
+			  Vector3(-step_gridxz,-step_gridy,0),
+			  Vector3(0,-step_gridy, step_gridxz),
+			  Vector3(0,-step_gridy,-step_gridxz),]
+	for z in zones:
+		if z is ZonePath:
+			check_and_place(z, ray, z.StartPoint)
+			pass
+
+func check_and_place(z : ZonePath,ray : PhysicsDirectSpaceState, start : Vector3):
 	
+	var stack : Array = [start]
+	var fly_points_locale : Array
+	
+	fly_points_locale.append(start)
+	#_create_nav_cube(start,green_material)
+	var a_id : int = astar_fly.get_available_point_id()
+	astar_fly.add_point(a_id,start)
+	fly_points_id.append(a_id)
+	
+	var id_stack : Array = [a_id]
+	var dead_end : bool
+	while (stack.size() > 0):
+		dead_end = true
+		for f in range(offset.size()):
+			var new_point : Vector3 = stack.back() + offset[f]
+			if new_point.x > z.x_max or new_point.x < z.x_min or new_point.y > z.y_max or new_point.y < z.y_min or new_point.z > z.z_max or new_point.z < z.z_min:
+				continue
+			else:
+				var result = ray.intersect_ray(stack.back(),new_point,[],bit_mask)
+				if not result:
+					var cont : bool = false
+					if not new_point in fly_points_locale:
+						fly_points_locale.append(new_point)
+						a_id = astar_fly.get_available_point_id()
+						fly_points_id.append(a_id)
+						astar_fly.add_point(a_id,new_point)
+						cont = true
+						#_create_nav_cube(new_point,green_material)
+					else:
+						a_id = fly_points_id[fly_points_locale.find(new_point)]
+					if not astar_fly.are_points_connected(a_id, id_stack.back()):
+						astar_fly.connect_points(id_stack.back(), a_id)
+					if cont == true:
+						stack.append(new_point)
+						id_stack.append(a_id)
+						dead_end = false
+						break
+		if dead_end == true:
+			stack.pop_back()
+			id_stack.pop_back()
+	fly_points.append_array(fly_points_locale)
+	pass
+	
+func get_flyer_path(from: Vector3, to: Vector3) -> Dictionary:
+	if not astar_fly == null:
+		var start_id : int = astar_fly.get_closest_point(from)
+		var end_id : int = astar_fly.get_closest_point(to)
+		return {"path" : astar_fly.get_point_path(start_id, end_id)}
+	else:
+		return {"path" : []}
+
 func get_path_links(from: Vector3, to: Vector3) -> Dictionary:
 	from = get_closest_point(from)
 	to = get_closest_point(to)
@@ -54,7 +148,7 @@ func get_path_links(from: Vector3, to: Vector3) -> Dictionary:
 	var a_path : PoolVector3Array = _find_path(from, to)
 	var size_a = a_path.size()
 
-	for i in range(size_a-1):
+	for i in range(size_a - 1):
 		for j in range(links_col):
 			if (a_path[i] == link_one[j] and a_path[i+1] == link_two[j]):
 				link_from.append(link_one[j])
@@ -99,38 +193,42 @@ func get_path_links(from: Vector3, to: Vector3) -> Dictionary:
 	}	
 	
 func _find_path(from: Vector3, to: Vector3) -> PoolVector3Array:
-	var start_id : int = 0
-	var end_id : int = 0
-	var start_d : float = 1e20
-	var end_d : float = 1e20
-	var one_stop : bool = false
-	var two_stop : bool = false
-	for d in range(polygon.size()):
-		var vstart = Geometry.ray_intersects_triangle(from + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
-		if vstart != null and not one_stop:
-			var d_temp : float = (vstart - from).length_squared()
-			if (d_temp < start_d):
-				start_id = polygon[d]["id"]
-				start_d = d_temp
-		for i in polygon[d]["verts"]:
-			var d_temp : float = (i - from).length_squared()
-			if (d_temp < start_d):
-				start_id = polygon[d]["id"]
-				start_d = d_temp
-			
-		var vend = Geometry.ray_intersects_triangle(to + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
-		if vend != null and not two_stop:
-			var d_temp : float = (vend - to).length_squared()
-			if (d_temp < end_d):
-				end_id = polygon[d]["id"]
-				end_d = d_temp
-		for i in polygon[d]["verts"]:
-			var d_temp : float = (i - to).length_squared()
-			if (d_temp < end_d):
-				end_id = polygon[d]["id"]
-				end_d = d_temp
+	if astar != null:
+		var start_id : int = 0
+		var end_id : int = 0
+		var start_d : float = 1e20
+		var end_d : float = 1e20
+		var one_stop : bool = false
+		var two_stop : bool = false
+		for d in range(polygon.size()):
+			var vstart = Geometry.ray_intersects_triangle(from + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
+			if vstart != null and not one_stop:
+				var d_temp : float = (vstart - from).length_squared()
+				if (d_temp < start_d):
+					start_id = polygon[d]["id"]
+					start_d = d_temp
+			for i in polygon[d]["verts"]:
+				var d_temp : float = (i - from).length_squared()
+				if (d_temp < start_d):
+					start_id = polygon[d]["id"]
+					start_d = d_temp
+				
+			var vend = Geometry.ray_intersects_triangle(to + Vector3(0,0.5,0), Vector3.DOWN,polygon[d]["verts"][0],polygon[d]["verts"][1],polygon[d]["verts"][2])
+			if vend != null and not two_stop:
+				var d_temp : float = (vend - to).length_squared()
+				if (d_temp < end_d):
+					end_id = polygon[d]["id"]
+					end_d = d_temp
+			for i in polygon[d]["verts"]:
+				var d_temp : float = (i - to).length_squared()
+				if (d_temp < end_d):
+					end_id = polygon[d]["id"]
+					end_d = d_temp
 
-	return astar.get_point_path(start_id, end_id)
+		return astar.get_point_path(start_id, end_id)
+	else:
+		var empty : PoolVector3Array = []
+		return empty
 	
 func _check_doubles(d : Dictionary, i : int) -> int:
 	if d.has(i):

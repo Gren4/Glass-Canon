@@ -3,6 +3,8 @@
 [ext_resource path="res://Players and Enemies/Enemies/RangeGrunt/EnemyProjectile.gd" type="Script" id=1]
 [ext_resource path="res://Materials/EnemyProjectile.tres" type="Material" id=2]
 [ext_resource path="res://Materials/EnemyProjectileGlow.tres" type="Material" id=3]
+[ext_resource path="res://addons/Trail/trail_3d.gd" type="Script" id=4]
+[ext_resource path="res://Materials/trail.tres" type="Material" id=5]
 
 [sub_resource type="SphereShape" id=10]
 radius = 0.359393
@@ -15,33 +17,21 @@ rings = 4
 
 [sub_resource type="QuadMesh" id=16]
 
-[sub_resource type="Curve" id=12]
-_data = [ Vector2( 0, 0.146591 ), 0.0, 0.0, 0, 0, Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.449664, 0.628409 ), 2.80585, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=13]
-curve = SubResource( 12 )
-
-[sub_resource type="ParticlesMaterial" id=5]
-trail_divisor = 5
-trail_size_modifier = SubResource( 13 )
-direction = Vector3( 0, 0, 0 )
-spread = 15.0
-initial_velocity = 10.0
-initial_velocity_random = 0.5
-scale = 0.5
-
-[sub_resource type="SphereMesh" id=7]
-material = ExtResource( 2 )
-radius = 0.3
-height = 0.6
-radial_segments = 6
-rings = 4
-
 [sub_resource type="BoxShape" id=11]
 extents = Vector3( 0.113876, 0.11513, 0.171033 )
 
+[sub_resource type="Curve" id=17]
+_data = [ Vector2( 0, 0.681818 ), 0.0, 0.0, 0, 0, Vector2( 0.504132, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=18]
+offsets = PoolRealArray( 0, 0.0547945, 1 )
+colors = PoolColorArray( 0.737255, 1, 0.223529, 1, 0.832017, 1, 0.269944, 0.843352, 0.929412, 1, 0.317647, 0.682353 )
+
 [node name="EnemyProjectile" type="RigidBody"]
-gravity_scale = 0.0
+collision_layer = 0
+collision_mask = 2
+input_ray_pickable = false
+gravity_scale = 0.1
 can_sleep = false
 script = ExtResource( 1 )
 speed_coef = 45.0
@@ -65,12 +55,6 @@ mesh = SubResource( 16 )
 skeleton = NodePath("../Area")
 material/0 = null
 
-[node name="Effect" type="Particles" parent="."]
-amount = 10
-lifetime = 0.5
-process_material = SubResource( 5 )
-draw_pass_1 = SubResource( 7 )
-
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 11 )
 disabled = true
@@ -79,8 +63,17 @@ disabled = true
 
 [node name="ProjectileSound" type="AudioStreamPlayer3D" parent="Audio"]
 unit_db = -2.0
-unit_size = 10.0
-max_db = 6.0
+unit_size = 5.0
+max_db = -1.0
 max_distance = 50.0
+
+[node name="Trail3D" type="ImmediateGeometry" parent="."]
+material_override = ExtResource( 5 )
+cast_shadow = 0
+script = ExtResource( 4 )
+segments = 10
+lifetime = 0.25
+width_profile = SubResource( 17 )
+color_gradient = SubResource( 18 )
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
